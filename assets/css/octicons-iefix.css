@@ -1,0 +1,747 @@
+.octicon-alert {
+  zoom: expression( this.innerHTML = '&#xf02d;' );
+}
+
+.octicon-alignment-align {
+  zoom: expression( this.innerHTML = '&#xf08a;' );
+}
+
+.octicon-alignment-aligned-to {
+  zoom: expression( this.innerHTML = '&#xf08e;' );
+}
+
+.octicon-alignment-unalign {
+  zoom: expression( this.innerHTML = '&#xf08b;' );
+}
+
+.octicon-arrow-down {
+  zoom: expression( this.innerHTML = '&#xf03f;' );
+}
+
+.octicon-arrow-left {
+  zoom: expression( this.innerHTML = '&#xf040;' );
+}
+
+.octicon-arrow-right {
+  zoom: expression( this.innerHTML = '&#xf03e;' );
+}
+
+.octicon-arrow-small-down {
+  zoom: expression( this.innerHTML = '&#xf0a0;' );
+}
+
+.octicon-arrow-small-left {
+  zoom: expression( this.innerHTML = '&#xf0a1;' );
+}
+
+.octicon-arrow-small-right {
+  zoom: expression( this.innerHTML = '&#xf071;' );
+}
+
+.octicon-arrow-small-up {
+  zoom: expression( this.innerHTML = '&#xf09f;' );
+}
+
+.octicon-arrow-up {
+  zoom: expression( this.innerHTML = '&#xf03d;' );
+}
+
+.octicon-beer {
+  zoom: expression( this.innerHTML = '&#xf069;' );
+}
+
+.octicon-book {
+  zoom: expression( this.innerHTML = '&#xf007;' );
+}
+
+.octicon-bookmark {
+  zoom: expression( this.innerHTML = '&#xf07b;' );
+}
+
+.octicon-broadcast {
+  zoom: expression( this.innerHTML = '&#xf048;' );
+}
+
+.octicon-bug {
+  zoom: expression( this.innerHTML = '&#xf091;' );
+}
+
+.octicon-calendar {
+  zoom: expression( this.innerHTML = '&#xf068;' );
+}
+
+.octicon-check {
+  zoom: expression( this.innerHTML = '&#xf03a;' );
+}
+
+.octicon-checklist {
+  zoom: expression( this.innerHTML = '&#xf076;' );
+}
+
+.octicon-chevron-down {
+  zoom: expression( this.innerHTML = '&#xf0a3;' );
+}
+
+.octicon-chevron-left {
+  zoom: expression( this.innerHTML = '&#xf0a4;' );
+}
+
+.octicon-chevron-right {
+  zoom: expression( this.innerHTML = '&#xf078;' );
+}
+
+.octicon-chevron-up {
+  zoom: expression( this.innerHTML = '&#xf0a2;' );
+}
+
+.octicon-circle-slash {
+  zoom: expression( this.innerHTML = '&#xf084;' );
+}
+
+.octicon-clippy {
+  zoom: expression( this.innerHTML = '&#xf035;' );
+}
+
+.octicon-clock {
+  zoom: expression( this.innerHTML = '&#xf046;' );
+}
+
+.octicon-cloud-download {
+  zoom: expression( this.innerHTML = '&#xf00b;' );
+}
+
+.octicon-cloud-upload {
+  zoom: expression( this.innerHTML = '&#xf00c;' );
+}
+
+.octicon-code {
+  zoom: expression( this.innerHTML = '&#xf05f;' );
+}
+
+.octicon-color-mode {
+  zoom: expression( this.innerHTML = '&#xf065;' );
+}
+
+.octicon-comment {
+  zoom: expression( this.innerHTML = '&#xf02b;' );
+}
+
+.octicon-comment-add {
+  zoom: expression( this.innerHTML = '&#xf06f;' );
+}
+
+.octicon-comment-discussion {
+  zoom: expression( this.innerHTML = '&#xf04f;' );
+}
+
+.octicon-credit-card {
+  zoom: expression( this.innerHTML = '&#xf045;' );
+}
+
+.octicon-dashboard {
+  zoom: expression( this.innerHTML = '&#xf07d;' );
+}
+
+.octicon-database {
+  zoom: expression( this.innerHTML = '&#xf096;' );
+}
+
+.octicon-device-camera {
+  zoom: expression( this.innerHTML = '&#xf056;' );
+}
+
+.octicon-device-camera-video {
+  zoom: expression( this.innerHTML = '&#xf057;' );
+}
+
+.octicon-device-desktop {
+  zoom: expression( this.innerHTML = '&#xf27c;' );
+}
+
+.octicon-device-mobile {
+  zoom: expression( this.innerHTML = '&#xf038;' );
+}
+
+.octicon-diff {
+  zoom: expression( this.innerHTML = '&#xf04d;' );
+}
+
+.octicon-diff-added {
+  zoom: expression( this.innerHTML = '&#xf06b;' );
+}
+
+.octicon-diff-ignored {
+  zoom: expression( this.innerHTML = '&#xf099;' );
+}
+
+.octicon-diff-modified {
+  zoom: expression( this.innerHTML = '&#xf06d;' );
+}
+
+.octicon-diff-removed {
+  zoom: expression( this.innerHTML = '&#xf06c;' );
+}
+
+.octicon-diff-renamed {
+  zoom: expression( this.innerHTML = '&#xf06e;' );
+}
+
+.octicon-ellipsis {
+  zoom: expression( this.innerHTML = '&#xf09a;' );
+}
+
+.octicon-eye {
+  zoom: expression( this.innerHTML = '&#xf04e;' );
+}
+
+.octicon-eye-unwatch {
+  zoom: expression( this.innerHTML = '&#xf01e;' );
+}
+
+.octicon-eye-watch {
+  zoom: expression( this.innerHTML = '&#xf01d;' );
+}
+
+.octicon-file-add {
+  zoom: expression( this.innerHTML = '&#xf086;' );
+}
+
+.octicon-file-binary {
+  zoom: expression( this.innerHTML = '&#xf094;' );
+}
+
+.octicon-file-code {
+  zoom: expression( this.innerHTML = '&#xf010;' );
+}
+
+.octicon-file-directory {
+  zoom: expression( this.innerHTML = '&#xf016;' );
+}
+
+.octicon-file-directory-create {
+  zoom: expression( this.innerHTML = '&#xf095;' );
+}
+
+.octicon-file-media {
+  zoom: expression( this.innerHTML = '&#xf012;' );
+}
+
+.octicon-file-pdf {
+  zoom: expression( this.innerHTML = '&#xf014;' );
+}
+
+.octicon-file-submodule {
+  zoom: expression( this.innerHTML = '&#xf017;' );
+}
+
+.octicon-file-symlink-directory {
+  zoom: expression( this.innerHTML = '&#xf0b1;' );
+}
+
+.octicon-file-symlink-file {
+  zoom: expression( this.innerHTML = '&#xf0b0;' );
+}
+
+.octicon-file-text {
+  zoom: expression( this.innerHTML = '&#xf011;' );
+}
+
+.octicon-file-zip {
+  zoom: expression( this.innerHTML = '&#xf013;' );
+}
+
+.octicon-gear {
+  zoom: expression( this.innerHTML = '&#xf02f;' );
+}
+
+.octicon-gift {
+  zoom: expression( this.innerHTML = '&#xf042;' );
+}
+
+.octicon-gist {
+  zoom: expression( this.innerHTML = '&#xf00e;' );
+}
+
+.octicon-gist-fork {
+  zoom: expression( this.innerHTML = '&#xf079;' );
+}
+
+.octicon-gist-new {
+  zoom: expression( this.innerHTML = '&#xf07a;' );
+}
+
+.octicon-gist-private {
+  zoom: expression( this.innerHTML = '&#xf00f;' );
+}
+
+.octicon-gist-secret {
+  zoom: expression( this.innerHTML = '&#xf08c;' );
+}
+
+.octicon-git-branch {
+  zoom: expression( this.innerHTML = '&#xf020;' );
+}
+
+.octicon-git-branch-create {
+  zoom: expression( this.innerHTML = '&#xf098;' );
+}
+
+.octicon-git-branch-delete {
+  zoom: expression( this.innerHTML = '&#xf09b;' );
+}
+
+.octicon-git-commit {
+  zoom: expression( this.innerHTML = '&#xf01f;' );
+}
+
+.octicon-git-compare {
+  zoom: expression( this.innerHTML = '&#xf0ac;' );
+}
+
+.octicon-git-fork-private {
+  zoom: expression( this.innerHTML = '&#xf021;' );
+}
+
+.octicon-git-merge {
+  zoom: expression( this.innerHTML = '&#xf023;' );
+}
+
+.octicon-git-pull-request {
+  zoom: expression( this.innerHTML = '&#xf009;' );
+}
+
+.octicon-git-pull-request-abandoned {
+  zoom: expression( this.innerHTML = '&#xf090;' );
+}
+
+.octicon-globe {
+  zoom: expression( this.innerHTML = '&#xf0b6;' );
+}
+
+.octicon-graph {
+  zoom: expression( this.innerHTML = '&#xf043;' );
+}
+
+.octicon-heart {
+  zoom: expression( this.innerHTML = '&#x2665;' );
+}
+
+.octicon-history {
+  zoom: expression( this.innerHTML = '&#xf07e;' );
+}
+
+.octicon-home {
+  zoom: expression( this.innerHTML = '&#xf08d;' );
+}
+
+.octicon-horizontal-rule {
+  zoom: expression( this.innerHTML = '&#xf070;' );
+}
+
+.octicon-hourglass {
+  zoom: expression( this.innerHTML = '&#xf09e;' );
+}
+
+.octicon-hubot {
+  zoom: expression( this.innerHTML = '&#xf09d;' );
+}
+
+.octicon-info {
+  zoom: expression( this.innerHTML = '&#xf059;' );
+}
+
+.octicon-issue-closed {
+  zoom: expression( this.innerHTML = '&#xf028;' );
+}
+
+.octicon-issue-opened {
+  zoom: expression( this.innerHTML = '&#xf026;' );
+}
+
+.octicon-issue-reopened {
+  zoom: expression( this.innerHTML = '&#xf027;' );
+}
+
+.octicon-jersey {
+  zoom: expression( this.innerHTML = '&#xf019;' );
+}
+
+.octicon-jump-down {
+  zoom: expression( this.innerHTML = '&#xf072;' );
+}
+
+.octicon-jump-left {
+  zoom: expression( this.innerHTML = '&#xf0a5;' );
+}
+
+.octicon-jump-right {
+  zoom: expression( this.innerHTML = '&#xf0a6;' );
+}
+
+.octicon-jump-up {
+  zoom: expression( this.innerHTML = '&#xf073;' );
+}
+
+.octicon-key {
+  zoom: expression( this.innerHTML = '&#xf049;' );
+}
+
+.octicon-keyboard {
+  zoom: expression( this.innerHTML = '&#xf00d;' );
+}
+
+.octicon-light-bulb {
+  zoom: expression( this.innerHTML = '&#xf000;' );
+}
+
+.octicon-link {
+  zoom: expression( this.innerHTML = '&#xf05c;' );
+}
+
+.octicon-link-external {
+  zoom: expression( this.innerHTML = '&#xf07f;' );
+}
+
+.octicon-list-ordered {
+  zoom: expression( this.innerHTML = '&#xf062;' );
+}
+
+.octicon-list-unordered {
+  zoom: expression( this.innerHTML = '&#xf061;' );
+}
+
+.octicon-location {
+  zoom: expression( this.innerHTML = '&#xf060;' );
+}
+
+.octicon-lock {
+  zoom: expression( this.innerHTML = '&#xf06a;' );
+}
+
+.octicon-log-in {
+  zoom: expression( this.innerHTML = '&#xf036;' );
+}
+
+.octicon-log-out {
+  zoom: expression( this.innerHTML = '&#xf032;' );
+}
+
+.octicon-logo-github {
+  zoom: expression( this.innerHTML = '&#xf092;' );
+}
+
+.octicon-mail {
+  zoom: expression( this.innerHTML = '&#xf03b;' );
+}
+
+.octicon-mail-read {
+  zoom: expression( this.innerHTML = '&#xf03c;' );
+}
+
+.octicon-mail-reply {
+  zoom: expression( this.innerHTML = '&#xf051;' );
+}
+
+.octicon-mark-github {
+  zoom: expression( this.innerHTML = '&#xf00a;' );
+}
+
+.octicon-mark-twitter {
+  zoom: expression( this.innerHTML = '&#xf0ae;' );
+}
+
+.octicon-megaphone {
+  zoom: expression( this.innerHTML = '&#xf077;' );
+}
+
+.octicon-mention {
+  zoom: expression( this.innerHTML = '&#xf0be;' );
+}
+
+.octicon-microscope {
+  zoom: expression( this.innerHTML = '&#xf089;' );
+}
+
+.octicon-milestone {
+  zoom: expression( this.innerHTML = '&#xf075;' );
+}
+
+.octicon-mirror-private {
+  zoom: expression( this.innerHTML = '&#xf025;' );
+}
+
+.octicon-mirror-public {
+  zoom: expression( this.innerHTML = '&#xf024;' );
+}
+
+.octicon-move-down {
+  zoom: expression( this.innerHTML = '&#xf0a8;' );
+}
+
+.octicon-move-left {
+  zoom: expression( this.innerHTML = '&#xf074;' );
+}
+
+.octicon-move-right {
+  zoom: expression( this.innerHTML = '&#xf0a9;' );
+}
+
+.octicon-move-up {
+  zoom: expression( this.innerHTML = '&#xf0a7;' );
+}
+
+.octicon-mute {
+  zoom: expression( this.innerHTML = '&#xf080;' );
+}
+
+.octicon-mute-video {
+  zoom: expression( this.innerHTML = '&#xf0b8;' );
+}
+
+.octicon-no-newline {
+  zoom: expression( this.innerHTML = '&#xf09c;' );
+}
+
+.octicon-octoface {
+  zoom: expression( this.innerHTML = '&#xf008;' );
+}
+
+.octicon-organization {
+  zoom: expression( this.innerHTML = '&#xf037;' );
+}
+
+.octicon-pencil {
+  zoom: expression( this.innerHTML = '&#xf058;' );
+}
+
+.octicon-person {
+  zoom: expression( this.innerHTML = '&#xf018;' );
+}
+
+.octicon-person-add {
+  zoom: expression( this.innerHTML = '&#xf01a;' );
+}
+
+.octicon-person-follow {
+  zoom: expression( this.innerHTML = '&#xf01c;' );
+}
+
+.octicon-person-remove {
+  zoom: expression( this.innerHTML = '&#xf01b;' );
+}
+
+.octicon-pin {
+  zoom: expression( this.innerHTML = '&#xf041;' );
+}
+
+.octicon-playback-fast-forward {
+  zoom: expression( this.innerHTML = '&#xf0bd;' );
+}
+
+.octicon-playback-pause {
+  zoom: expression( this.innerHTML = '&#xf0bb;' );
+}
+
+.octicon-playback-play {
+  zoom: expression( this.innerHTML = '&#xf0bf;' );
+}
+
+.octicon-playback-rewind {
+  zoom: expression( this.innerHTML = '&#xf0bc;' );
+}
+
+.octicon-plus {
+  zoom: expression( this.innerHTML = '&#xf05d;' );
+}
+
+.octicon-podium {
+  zoom: expression( this.innerHTML = '&#xf0af;' );
+}
+
+.octicon-primitive-dot {
+  zoom: expression( this.innerHTML = '&#xf052;' );
+}
+
+.octicon-primitive-square {
+  zoom: expression( this.innerHTML = '&#xf053;' );
+}
+
+.octicon-pulse {
+  zoom: expression( this.innerHTML = '&#xf085;' );
+}
+
+.octicon-puzzle {
+  zoom: expression( this.innerHTML = '&#xf0c0;' );
+}
+
+.octicon-question {
+  zoom: expression( this.innerHTML = '&#xf02c;' );
+}
+
+.octicon-quote {
+  zoom: expression( this.innerHTML = '&#xf063;' );
+}
+
+.octicon-radio-tower {
+  zoom: expression( this.innerHTML = '&#xf030;' );
+}
+
+.octicon-remove-close {
+  zoom: expression( this.innerHTML = '&#xf050;' );
+}
+
+.octicon-repo {
+  zoom: expression( this.innerHTML = '&#xf001;' );
+}
+
+.octicon-repo-clone {
+  zoom: expression( this.innerHTML = '&#xf04c;' );
+}
+
+.octicon-repo-create {
+  zoom: expression( this.innerHTML = '&#xf003;' );
+}
+
+.octicon-repo-delete {
+  zoom: expression( this.innerHTML = '&#xf004;' );
+}
+
+.octicon-repo-force-push {
+  zoom: expression( this.innerHTML = '&#xf04a;' );
+}
+
+.octicon-repo-forked {
+  zoom: expression( this.innerHTML = '&#xf002;' );
+}
+
+.octicon-repo-pull {
+  zoom: expression( this.innerHTML = '&#xf006;' );
+}
+
+.octicon-repo-push {
+  zoom: expression( this.innerHTML = '&#xf005;' );
+}
+
+.octicon-repo-sync {
+  zoom: expression( this.innerHTML = '&#xf04b;' );
+}
+
+.octicon-rocket {
+  zoom: expression( this.innerHTML = '&#xf033;' );
+}
+
+.octicon-rss {
+  zoom: expression( this.innerHTML = '&#xf034;' );
+}
+
+.octicon-ruby {
+  zoom: expression( this.innerHTML = '&#xf047;' );
+}
+
+.octicon-screen-full {
+  zoom: expression( this.innerHTML = '&#xf066;' );
+}
+
+.octicon-screen-normal {
+  zoom: expression( this.innerHTML = '&#xf067;' );
+}
+
+.octicon-search {
+  zoom: expression( this.innerHTML = '&#xf02e;' );
+}
+
+.octicon-server {
+  zoom: expression( this.innerHTML = '&#xf097;' );
+}
+
+.octicon-settings {
+  zoom: expression( this.innerHTML = '&#xf07c;' );
+}
+
+.octicon-squirrel {
+  zoom: expression( this.innerHTML = '&#xf0b2;' );
+}
+
+.octicon-star {
+  zoom: expression( this.innerHTML = '&#xf02a;' );
+}
+
+.octicon-star-add {
+  zoom: expression( this.innerHTML = '&#xf082;' );
+}
+
+.octicon-star-delete {
+  zoom: expression( this.innerHTML = '&#xf083;' );
+}
+
+.octicon-stop {
+  zoom: expression( this.innerHTML = '&#xf08f;' );
+}
+
+.octicon-sync {
+  zoom: expression( this.innerHTML = '&#xf087;' );
+}
+
+.octicon-tag {
+  zoom: expression( this.innerHTML = '&#xf015;' );
+}
+
+.octicon-tag-add {
+  zoom: expression( this.innerHTML = '&#xf054;' );
+}
+
+.octicon-tag-remove {
+  zoom: expression( this.innerHTML = '&#xf055;' );
+}
+
+.octicon-telescope {
+  zoom: expression( this.innerHTML = '&#xf088;' );
+}
+
+.octicon-three-bars {
+  zoom: expression( this.innerHTML = '&#xf05e;' );
+}
+
+.octicon-tools {
+  zoom: expression( this.innerHTML = '&#xf031;' );
+}
+
+.octicon-triangle-down {
+  zoom: expression( this.innerHTML = '&#xf05b;' );
+}
+
+.octicon-triangle-left {
+  zoom: expression( this.innerHTML = '&#xf044;' );
+}
+
+.octicon-triangle-right {
+  zoom: expression( this.innerHTML = '&#xf05a;' );
+}
+
+.octicon-triangle-up {
+  zoom: expression( this.innerHTML = '&#xf0aa;' );
+}
+
+.octicon-unfold {
+  zoom: expression( this.innerHTML = '&#xf039;' );
+}
+
+.octicon-unmute {
+  zoom: expression( this.innerHTML = '&#xf0ba;' );
+}
+
+.octicon-unmute-video {
+  zoom: expression( this.innerHTML = '&#xf0b9;' );
+}
+
+.octicon-versions {
+  zoom: expression( this.innerHTML = '&#xf064;' );
+}
+
+.octicon-x {
+  zoom: expression( this.innerHTML = '&#xf081;' );
+}
+
+.octicon-zap {
+  zoom: expression( this.innerHTML = '&#x26a1;' );
+}
