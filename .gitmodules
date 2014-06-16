@@ -1,0 +1,3 @@
+[submodule "components/octicons"]
+	path = components/octicons
+	url = https://github.com/github/octicons.git

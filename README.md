@@ -1,7 +1,7 @@
 github-buttons
 ==============
 
-github:buttons
+[github:buttons](https://buttons.github.io)
 
 ## We already have [ghbtns.com](http://ghbtns.com), why don't use that?
 
@@ -17,7 +17,7 @@ Usage
   data-count-href="/ntkme/followers" data-count-api="/users/ntkme#followers">Follow @ntkme</a>
 <a href="https://github.com/ntkme/github-buttons" class="github-button" data-icon="octicon-star"
   data-count-href="/ntkme/github-buttons/stargazers" data-count-api="/repos/ntkme/github-buttons#stargazers_count">Star</a>
-<a href="https://github.com/ntkme/github-buttons" class="github-button" data-icon="octicon-git-branch-create"
+<a href="https://github.com/ntkme/github-buttons" class="github-button" data-icon="octicon-git-branch"
   data-count-href="/ntkme/github-buttons/network" data-count-api="/repos/ntkme/github-buttons#forks_count">Fork</a>
 <a href="https://github.com/ntkme/github-buttons/issues" class="github-button" data-icon="octicon-issue-opened"
   data-count-api="/repos/ntkme/github-buttons#open_issues_count">Issue</a>
@@ -84,7 +84,7 @@ data-icon="{{ octicon }}"
 
 Octicon for the button. The default is `octicon-mark-github`.
 
-All available icons can be found at [Octicons](https://github.com/styleguide/css/7.0).
+All available icons can be found at [Octicons](https://octicons.github.com).
 
 ```
 data-count-href="{{ count_link }}"
@@ -104,6 +104,4 @@ The button will show the count only if `data-count-api` is defined.
 License
 -------
 
-The Octicons from [github/android](https://github.com/github/android) are licensed under [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0.html).
-
-Everything else is licensed under [BSD 2-Clause License](LICENSE.md).
+See [LICENSE.md](LICENSE.md).

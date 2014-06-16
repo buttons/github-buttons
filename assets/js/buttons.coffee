@@ -100,7 +100,7 @@ class Button
         <meta charset="utf-8">
         <title></title>
         <base target="_blank"><!--[if lte IE 6]></base><![endif]-->
-        <link rel="stylesheet" href="#{Config.url}buttons.css">
+        <link rel="stylesheet" href="#{Config.url}assets/css/buttons.css">
         <style>html{visibility:hidden;}</style>
         <script>document.location.hash = "#{@hash @data}";</script>
       </head>

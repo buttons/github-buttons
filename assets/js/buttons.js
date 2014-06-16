@@ -166,7 +166,7 @@
     };
 
     Button.prototype.html = function() {
-      return "<!DOCTYPE html>\n<html>\n  <head>\n    <meta charset=\"utf-8\">\n    <title></title>\n    <base target=\"_blank\"><!--[if lte IE 6]></base><![endif]-->\n    <link rel=\"stylesheet\" href=\"" + Config.url + "buttons.css\">\n    <style>html{visibility:hidden;}</style>\n    <script>document.location.hash = \"" + (this.hash(this.data)) + "\";</script>\n  </head>\n  <body>\n    <script src=\"" + Config.script.src + "\"></script>\n  </body>\n</html>";
+      return "<!DOCTYPE html>\n<html>\n  <head>\n    <meta charset=\"utf-8\">\n    <title></title>\n    <base target=\"_blank\"><!--[if lte IE 6]></base><![endif]-->\n    <link rel=\"stylesheet\" href=\"" + Config.url + "assets/css/buttons.css\">\n    <style>html{visibility:hidden;}</style>\n    <script>document.location.hash = \"" + (this.hash(this.data)) + "\";</script>\n  </head>\n  <body>\n    <script src=\"" + Config.script.src + "\"></script>\n  </body>\n</html>";
     };
 
     function Button(a) {
