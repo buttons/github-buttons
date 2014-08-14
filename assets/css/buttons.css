@@ -767,13 +767,13 @@
   width: 14px;
 }
 .octicon-alignment-align {
-  width: 14px;
+  width: 13px;
 }
 .octicon-alignment-aligned-to {
-  width: 14px;
+  width: 13px;
 }
 .octicon-alignment-unalign {
-  width: 13px;
+  width: 12px;
 }
 .octicon-arrow-down {
   width: 9px;
@@ -785,16 +785,16 @@
   width: 9px;
 }
 .octicon-arrow-small-down {
-  width: 6px;
+  width: 5px;
 }
 .octicon-arrow-small-left {
-  width: 6px;
+  width: 5px;
 }
 .octicon-arrow-small-right {
-  width: 6px;
+  width: 5px;
 }
 .octicon-arrow-small-up {
-  width: 6px;
+  width: 5px;
 }
 .octicon-arrow-up {
   width: 9px;
@@ -806,19 +806,19 @@
   width: 14px;
 }
 .octicon-bookmark {
-  width: 6px;
+  width: 5px;
 }
 .octicon-briefcase {
   width: 14px;
 }
 .octicon-broadcast {
-  width: 13px;
+  width: 12px;
 }
 .octicon-browser {
-  width: 13px;
+  width: 12px;
 }
 .octicon-bug {
-  width: 11px;
+  width: 10px;
 }
 .octicon-calendar {
   width: 14px;
@@ -827,16 +827,16 @@
   width: 11px;
 }
 .octicon-checklist {
-  width: 11px;
+  width: 10px;
 }
 .octicon-chevron-down {
   width: 9px;
 }
 .octicon-chevron-left {
-  width: 7px;
+  width: 6px;
 }
 .octicon-chevron-right {
-  width: 7px;
+  width: 6px;
 }
 .octicon-chevron-up {
   width: 9px;
@@ -848,10 +848,10 @@
   width: 14px;
 }
 .octicon-clippy {
-  width: 13px;
+  width: 12px;
 }
 .octicon-clock {
-  width: 13px;
+  width: 12px;
 }
 .octicon-cloud-download {
   width: 14px;
@@ -860,19 +860,17 @@
   width: 14px;
 }
 .octicon-code {
-  width: 13px;
+  width: 12px;
 }
 .octicon-color-mode {
   width: 11px;
 }
-.octicon-comment-add {
-  width: 13px;
-}
+.octicon-comment-add,
 .octicon-comment {
-  width: 13px;
+  width: 12px;
 }
 .octicon-comment-discussion {
-  width: 13px;
+  width: 12px;
 }
 .octicon-credit-card {
   width: 14px;
@@ -881,7 +879,7 @@
   width: 7px;
 }
 .octicon-dashboard {
-  width: 12px;
+  width: 11px;
 }
 .octicon-database {
   width: 11px;
@@ -899,32 +897,28 @@
   width: 9px;
 }
 .octicon-diff {
-  width: 13px;
+  width: 12px;
 }
 .octicon-diff-added {
-  width: 13px;
+  width: 12px;
 }
 .octicon-diff-ignored {
-  width: 13px;
+  width: 12px;
 }
 .octicon-diff-modified {
-  width: 13px;
+  width: 12px;
 }
 .octicon-diff-removed {
-  width: 13px;
+  width: 12px;
 }
 .octicon-diff-renamed {
-  width: 13px;
+  width: 12px;
 }
 .octicon-ellipsis {
   width: 11px;
 }
-.octicon-eye-unwatch {
-  width: 14px;
-}
-.octicon-eye-watch {
-  width: 14px;
-}
+.octicon-eye-unwatch,
+.octicon-eye-watch,
 .octicon-eye {
   width: 14px;
 }
@@ -935,7 +929,7 @@
   width: 11px;
 }
 .octicon-file-directory {
-  width: 13px;
+  width: 12px;
 }
 .octicon-file-media {
   width: 11px;
@@ -944,10 +938,10 @@
   width: 11px;
 }
 .octicon-file-submodule {
-  width: 13px;
+  width: 12px;
 }
 .octicon-file-symlink-directory {
-  width: 13px;
+  width: 12px;
 }
 .octicon-file-symlink-file {
   width: 11px;
@@ -962,41 +956,35 @@
   width: 14px;
 }
 .octicon-fold {
-  width: 13px;
+  width: 12px;
 }
 .octicon-gear {
-  width: 13px;
+  width: 12px;
 }
 .octicon-gift {
-  width: 13px;
+  width: 12px;
 }
 .octicon-gist {
   width: 11px;
 }
 .octicon-gist-secret {
-  width: 13px;
+  width: 12px;
 }
-.octicon-git-branch-create {
-  width: 9px;
-}
-.octicon-git-branch-delete {
-  width: 9px;
-}
+.octicon-git-branch-create,
+.octicon-git-branch-delete,
 .octicon-git-branch {
   width: 9px;
 }
 .octicon-git-commit {
-  width: 13px;
+  width: 12px;
 }
 .octicon-git-compare {
-  width: 13px;
+  width: 12px;
 }
 .octicon-git-merge {
   width: 11px;
 }
-.octicon-git-pull-request-abandoned {
-  width: 11px;
-}
+.octicon-git-pull-request-abandoned,
 .octicon-git-pull-request {
   width: 11px;
 }
@@ -1010,7 +998,7 @@
   width: 11px;
 }
 .octicon-history {
-  width: 13px;
+  width: 12px;
 }
 .octicon-home {
   width: 14px;
@@ -1028,19 +1016,19 @@
   width: 11px;
 }
 .octicon-info {
-  width: 13px;
+  width: 12px;
 }
 .octicon-issue-closed {
   width: 14px;
 }
 .octicon-issue-opened {
-  width: 13px;
+  width: 12px;
 }
 .octicon-issue-reopened {
-  width: 13px;
+  width: 12px;
 }
 .octicon-jersey {
-  width: 13px;
+  width: 12px;
 }
 .octicon-jump-down {
   width: 11px;
@@ -1055,7 +1043,7 @@
   width: 11px;
 }
 .octicon-key {
-  width: 13px;
+  width: 12px;
 }
 .octicon-keyboard {
   width: 14px;
@@ -1081,26 +1069,20 @@
 .octicon-location {
   width: 9px;
 }
-.octicon-gist-private {
-  width: 11px;
-}
-.octicon-mirror-private {
-  width: 11px;
-}
-.octicon-git-fork-private {
-  width: 11px;
-}
+.octicon-gist-private,
+.octicon-mirror-private,
+.octicon-git-fork-private,
 .octicon-lock {
   width: 11px;
 }
 .octicon-logo-github {
-  width: 40px;
+  width: 39px;
 }
 .octicon-mail {
-  width: 13px;
+  width: 12px;
 }
 .octicon-mail-read {
-  width: 13px;
+  width: 12px;
 }
 .octicon-mail-reply {
   width: 11px;
@@ -1115,17 +1097,15 @@
   width: 14px;
 }
 .octicon-mention {
-  width: 12px;
+  width: 11px;
 }
 .octicon-microscope {
   width: 11px;
 }
 .octicon-milestone {
-  width: 12px;
+  width: 11px;
 }
-.octicon-mirror-public {
-  width: 14px;
-}
+.octicon-mirror-public,
 .octicon-mirror {
   width: 14px;
 }
@@ -1145,7 +1125,7 @@
   width: 9px;
 }
 .octicon-mute {
-  width: 13px;
+  width: 12px;
 }
 .octicon-no-newline {
   width: 14px;
@@ -1154,7 +1134,7 @@
   width: 14px;
 }
 .octicon-organization {
-  width: 13px;
+  width: 12px;
 }
 .octicon-package {
   width: 14px;
@@ -1163,19 +1143,15 @@
   width: 11px;
 }
 .octicon-pencil {
-  width: 13px;
+  width: 12px;
 }
-.octicon-person-add {
-  width: 7px;
-}
-.octicon-person-follow {
-  width: 7px;
-}
+.octicon-person-add,
+.octicon-person-follow,
 .octicon-person {
   width: 7px;
 }
 .octicon-pin {
-  width: 8px;
+  width: 7px;
 }
 .octicon-playback-fast-forward {
   width: 11px;
@@ -1192,18 +1168,10 @@
 .octicon-plug {
   width: 14px;
 }
-.octicon-repo-create {
-  width: 9px;
-}
-.octicon-gist-new {
-  width: 9px;
-}
-.octicon-file-directory-create {
-  width: 9px;
-}
-.octicon-file-add {
-  width: 9px;
-}
+.octicon-repo-create,
+.octicon-gist-new,
+.octicon-file-directory-create,
+.octicon-file-add,
 .octicon-plus {
   width: 9px;
 }
@@ -1217,7 +1185,7 @@
   width: 7px;
 }
 .octicon-pulse {
-  width: 13px;
+  width: 12px;
 }
 .octicon-puzzle {
   width: 14px;
@@ -1231,9 +1199,7 @@
 .octicon-radio-tower {
   width: 14px;
 }
-.octicon-repo-delete {
-  width: 11px;
-}
+.octicon-repo-delete,
 .octicon-repo {
   width: 11px;
 }
@@ -1241,11 +1207,9 @@
   width: 14px;
 }
 .octicon-repo-force-push {
-  width: 11px;
+  width: 10px;
 }
-.octicon-gist-fork {
-  width: 11px;
-}
+.octicon-gist-fork,
 .octicon-repo-forked {
   width: 11px;
 }
@@ -1265,32 +1229,26 @@
   width: 14px;
 }
 .octicon-screen-full {
-  width: 13px;
+  width: 12px;
 }
 .octicon-screen-normal {
-  width: 13px;
+  width: 12px;
 }
-.octicon-search-save {
-  width: 14px;
-}
+.octicon-search-save,
 .octicon-search {
-  width: 14px;
+  width: 13px;
 }
 .octicon-server {
   width: 11px;
 }
 .octicon-settings {
-  width: 13px;
+  width: 12px;
 }
-.octicon-log-in {
-  width: 13px;
-}
+.octicon-log-in,
 .octicon-sign-in {
-  width: 13px;
+  width: 12px;
 }
-.octicon-log-out {
-  width: 14px;
-}
+.octicon-log-out,
 .octicon-sign-out {
   width: 14px;
 }
@@ -1300,14 +1258,10 @@
 .octicon-squirrel {
   width: 14px;
 }
-.octicon-star-add {
-  width: 13px;
-}
-.octicon-star-delete {
-  width: 13px;
-}
+.octicon-star-add,
+.octicon-star-delete,
 .octicon-star {
-  width: 13px;
+  width: 12px;
 }
 .octicon-steps {
   width: 9px;
@@ -1315,26 +1269,20 @@
 .octicon-stop {
   width: 14px;
 }
-.octicon-repo-sync {
-  width: 11px;
-}
+.octicon-repo-sync,
 .octicon-sync {
   width: 11px;
 }
-.octicon-tag-remove {
-  width: 13px;
-}
-.octicon-tag-add {
-  width: 13px;
-}
+.octicon-tag-remove,
+.octicon-tag-add,
 .octicon-tag {
-  width: 13px;
+  width: 12px;
 }
 .octicon-telescope {
   width: 13px;
 }
 .octicon-terminal {
-  width: 13px;
+  width: 12px;
 }
 .octicon-three-bars {
   width: 11px;
@@ -1346,29 +1294,27 @@
   width: 11px;
 }
 .octicon-triangle-down {
-  width: 11px;
+  width: 10px;
 }
 .octicon-triangle-left {
-  width: 6px;
+  width: 5px;
 }
 .octicon-triangle-right {
-  width: 6px;
+  width: 5px;
 }
 .octicon-triangle-up {
-  width: 11px;
+  width: 10px;
 }
 .octicon-unfold {
-  width: 13px;
+  width: 12px;
 }
 .octicon-unmute {
-  width: 13px;
+  width: 12px;
 }
 .octicon-versions {
-  width: 13px;
+  width: 12px;
 }
-.octicon-remove-close {
-  width: 9px;
-}
+.octicon-remove-close,
 .octicon-x {
   width: 9px;
 }
@@ -1430,7 +1376,7 @@
   width: 18px;
 }
 .mega .octicon-bug {
-  width: 15px;
+  width: 14px;
 }
 .mega .octicon-calendar {
   width: 20px;
@@ -1477,9 +1423,7 @@
 .mega .octicon-color-mode {
   width: 15px;
 }
-.mega .octicon-comment-add {
-  width: 18px;
-}
+.mega .octicon-comment-add,
 .mega .octicon-comment {
   width: 18px;
 }
@@ -1493,7 +1437,7 @@
   width: 10px;
 }
 .mega .octicon-dashboard {
-  width: 17px;
+  width: 16px;
 }
 .mega .octicon-database {
   width: 15px;
@@ -1531,12 +1475,8 @@
 .mega .octicon-ellipsis {
   width: 15px;
 }
-.mega .octicon-eye-unwatch {
-  width: 20px;
-}
-.mega .octicon-eye-watch {
-  width: 20px;
-}
+.mega .octicon-eye-unwatch,
+.mega .octicon-eye-watch,
 .mega .octicon-eye {
   width: 20px;
 }
@@ -1588,12 +1528,8 @@
 .mega .octicon-gist-secret {
   width: 18px;
 }
-.mega .octicon-git-branch-create {
-  width: 13px;
-}
-.mega .octicon-git-branch-delete {
-  width: 13px;
-}
+.mega .octicon-git-branch-create,
+.mega .octicon-git-branch-delete,
 .mega .octicon-git-branch {
   width: 13px;
 }
@@ -1606,9 +1542,7 @@
 .mega .octicon-git-merge {
   width: 15px;
 }
-.mega .octicon-git-pull-request-abandoned {
-  width: 15px;
-}
+.mega .octicon-git-pull-request-abandoned,
 .mega .octicon-git-pull-request {
   width: 15px;
 }
@@ -1628,7 +1562,7 @@
   width: 20px;
 }
 .mega .octicon-horizontal-rule {
-  width: 13px;
+  width: 12px;
 }
 .mega .octicon-hourglass {
   width: 15px;
@@ -1693,15 +1627,9 @@
 .mega .octicon-location {
   width: 13px;
 }
-.mega .octicon-gist-private {
-  width: 15px;
-}
-.mega .octicon-mirror-private {
-  width: 15px;
-}
-.mega .octicon-git-fork-private {
-  width: 15px;
-}
+.mega .octicon-gist-private,
+.mega .octicon-mirror-private,
+.mega .octicon-git-fork-private,
 .mega .octicon-lock {
   width: 15px;
 }
@@ -1727,17 +1655,15 @@
   width: 20px;
 }
 .mega .octicon-mention {
-  width: 17px;
+  width: 16px;
 }
 .mega .octicon-microscope {
   width: 15px;
 }
 .mega .octicon-milestone {
-  width: 17px;
+  width: 16px;
 }
-.mega .octicon-mirror-public {
-  width: 20px;
-}
+.mega .octicon-mirror-public,
 .mega .octicon-mirror {
   width: 20px;
 }
@@ -1777,17 +1703,13 @@
 .mega .octicon-pencil {
   width: 18px;
 }
-.mega .octicon-person-add {
-  width: 10px;
-}
-.mega .octicon-person-follow {
-  width: 10px;
-}
+.mega .octicon-person-add,
+.mega .octicon-person-follow,
 .mega .octicon-person {
   width: 10px;
 }
 .mega .octicon-pin {
-  width: 11px;
+  width: 10px;
 }
 .mega .octicon-playback-fast-forward {
   width: 15px;
@@ -1804,18 +1726,10 @@
 .mega .octicon-plug {
   width: 20px;
 }
-.mega .octicon-repo-create {
-  width: 13px;
-}
-.mega .octicon-gist-new {
-  width: 13px;
-}
-.mega .octicon-file-directory-create {
-  width: 13px;
-}
-.mega .octicon-file-add {
-  width: 13px;
-}
+.mega .octicon-repo-create,
+.mega .octicon-gist-new,
+.mega .octicon-file-directory-create,
+.mega .octicon-file-add,
 .mega .octicon-plus {
   width: 13px;
 }
@@ -1843,9 +1757,7 @@
 .mega .octicon-radio-tower {
   width: 20px;
 }
-.mega .octicon-repo-delete {
-  width: 15px;
-}
+.mega .octicon-repo-delete,
 .mega .octicon-repo {
   width: 15px;
 }
@@ -1855,9 +1767,7 @@
 .mega .octicon-repo-force-push {
   width: 15px;
 }
-.mega .octicon-gist-fork {
-  width: 15px;
-}
+.mega .octicon-gist-fork,
 .mega .octicon-repo-forked {
   width: 15px;
 }
@@ -1877,16 +1787,14 @@
   width: 20px;
 }
 .mega .octicon-screen-full {
-  width: 18px;
+  width: 17px;
 }
 .mega .octicon-screen-normal {
   width: 18px;
 }
-.mega .octicon-search-save {
-  width: 20px;
-}
+.mega .octicon-search-save,
 .mega .octicon-search {
-  width: 20px;
+  width: 19px;
 }
 .mega .octicon-server {
   width: 15px;
@@ -1894,15 +1802,11 @@
 .mega .octicon-settings {
   width: 18px;
 }
-.mega .octicon-log-in {
-  width: 18px;
-}
+.mega .octicon-log-in,
 .mega .octicon-sign-in {
   width: 18px;
 }
-.mega .octicon-log-out {
-  width: 20px;
-}
+.mega .octicon-log-out,
 .mega .octicon-sign-out {
   width: 20px;
 }
@@ -1912,12 +1816,8 @@
 .mega .octicon-squirrel {
   width: 20px;
 }
-.mega .octicon-star-add {
-  width: 18px;
-}
-.mega .octicon-star-delete {
-  width: 18px;
-}
+.mega .octicon-star-add,
+.mega .octicon-star-delete,
 .mega .octicon-star {
   width: 18px;
 }
@@ -1927,23 +1827,17 @@
 .mega .octicon-stop {
   width: 20px;
 }
-.mega .octicon-repo-sync {
-  width: 15px;
-}
+.mega .octicon-repo-sync,
 .mega .octicon-sync {
   width: 15px;
 }
-.mega .octicon-tag-remove {
-  width: 18px;
-}
-.mega .octicon-tag-add {
-  width: 18px;
-}
+.mega .octicon-tag-remove,
+.mega .octicon-tag-add,
 .mega .octicon-tag {
   width: 18px;
 }
 .mega .octicon-telescope {
-  width: 19px;
+  width: 18px;
 }
 .mega .octicon-terminal {
   width: 18px;
@@ -1961,10 +1855,10 @@
   width: 15px;
 }
 .mega .octicon-triangle-left {
-  width: 8px;
+  width: 7px;
 }
 .mega .octicon-triangle-right {
-  width: 8px;
+  width: 7px;
 }
 .mega .octicon-triangle-up {
   width: 15px;
@@ -1978,9 +1872,7 @@
 .mega .octicon-versions {
   width: 18px;
 }
-.mega .octicon-remove-close {
-  width: 13px;
-}
+.mega .octicon-remove-close,
 .mega .octicon-x {
   width: 13px;
 }
