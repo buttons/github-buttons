@@ -8,7 +8,7 @@
 
   style.type = "text/css";
 
-  style.styleSheet.cssText = ":before,:after{content: none !important;}";
+  style.styleSheet.cssText = ":before, :after { content: none !important; }";
 
   head.appendChild(style);
 

@@ -5,18 +5,21 @@ Config =
   icon:        "octicon-mark-github"
   scriptId:    "github-bjs"
   styles:     ["default", "mega"]
-Config.url = Config.script.src.replace /buttons.js$/, "" if (Config.script = document.getElementById Config.scriptId)
+if (Config.script = document.getElementById Config.scriptId)
+  Config.url = Config.script.src.replace /buttons.js$/, ""
 
 class QueryString
   @stringify: (obj) ->
     results = []
     for key, value of obj
-      value = "" if !value?
+      value ?= ""
       results.push "#{encodeURIComponent key}=#{encodeURIComponent value}"
     results.join "&"
   @parse: (str) ->
     obj = {}
-    obj[decodeURIComponent pair.split("=")[0]] = decodeURIComponent pair.split("=").slice(1).join("=") for pair in str.split "&"
+    for pair in str.split "&"
+      [key, value...] = pair.split "="
+      obj[decodeURIComponent key] = decodeURIComponent value.join "="
     obj
 
 class Iframe
@@ -96,17 +99,17 @@ class Button
     """
     <!DOCTYPE html>
     <html>
-      <head>
-        <meta charset="utf-8">
-        <title></title>
-        <base target="_blank"><!--[if lte IE 6]></base><![endif]-->
-        <link rel="stylesheet" href="#{Config.url}assets/css/buttons.css">
-        <style>html{visibility:hidden;}</style>
-        <script>document.location.hash = "#{@hash @data}";</script>
-      </head>
-      <body>
-        <script src="#{Config.script.src}"></script>
-      </body>
+    <head>
+    <meta charset="utf-8">
+    <title></title>
+    <base target="_blank"><!--[if lte IE 6]></base><![endif]-->
+    <link rel="stylesheet" href="#{Config.url}assets/css/buttons.css">
+    <style>html{visibility:hidden;}</style>
+    <script>document.location.hash = "#{@hash @data}";</script>
+    </head>
+    <body>
+    <script src="#{Config.script.src}"></script>
+    </body>
     </html>
     """
 
@@ -149,7 +152,10 @@ class Button
 class ButtonElement
   constructor: (@data, callback) ->
     icon = document.createElement "i"
-    icon.className = "#{if Config.iconClass then "#{Config.iconClass} " else ""}#{data.icon}"
+    icon.className = do ->
+      classNames = [data.icon]
+      classNames.push Config.iconClass if Config.iconClass?
+      classNames.join " "
     text = document.createElement "span"
     text.appendChild document.createTextNode " #{data.text} " if data.text
 
@@ -209,7 +215,7 @@ if Config.script
     links = do ->
       links = []
       for link in document.getElementsByTagName "a"
-        links.push link if ~(" #{link.className} ").replace(/[\t\r\n]/g, " ").indexOf " #{Config.buttonClass} "
+        links.push link if ~(" #{link.className} ").replace(/[\t\r\n\f]/g, " ").indexOf " #{Config.buttonClass} "
       links
   for link in links
     new Button link
