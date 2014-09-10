@@ -4,7 +4,8 @@ fs     = require 'fs'
 callback = (callback) ->
   (err, stdout, stderr) ->
     throw err if err
-    console.log stdout + stderr
+    console.log stdout if stdout
+    console.error stderr if stderr
     callback() if callback
 
 task 'build', 'Build project', ->
@@ -14,7 +15,7 @@ task 'build', 'Build project', ->
 
 task 'build:coffee', 'Build scripts', ->
   exec "coffee --compile assets/js/", callback ->
-    exec "uglifyjs --output buttons.js assets/js/buttons.js", callback ->
+    exec "uglifyjs --mangle --output buttons.js assets/js/buttons.js", callback ->
 
 task 'build:less', 'Build stylesheets', ->
   for file in fs.readdirSync 'assets/css/' when file.match /\.less$/
