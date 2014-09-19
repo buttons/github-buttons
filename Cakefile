@@ -22,5 +22,5 @@ task 'build:less', 'Build stylesheets', ->
     exec "lessc assets/css/#{file} assets/css/#{file.replace /\.less$/, '.css'}", callback ->
 
 task 'build:octicons', 'Build octicons', ->
-  exec "phantomjs src/octicons.coffee assets/css/octicons.css", callback ->
-  exec "phantomjs src/octicons-lt-ie8.coffee assets/css/octicons-lt-ie8.css", callback ->
+  exec "phantomjs src/octicons/base.coffee assets/css/octicons/base.less", callback ->
+  exec "phantomjs src/octicons/lt-ie8.coffee assets/css/octicons/lt-ie8.css", callback ->
