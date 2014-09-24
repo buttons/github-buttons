@@ -558,14 +558,14 @@
 }
 html {
   margin: 0;
-  -webkit-touch-callout: none;
+  font-family: Helvetica, Arial, freesans, clean, sans-serif;
+  white-space: nowrap;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   -o-user-select: none;
   user-select: none;
-  font-family: Helvetica, Arial, freesans, clean, sans-serif;
-  white-space: nowrap;
+  -webkit-touch-callout: none;
 }
 body {
   margin: 0;
@@ -581,16 +581,16 @@ a:focus {
 .count {
   position: relative;
   display: inline-block;
+  height: 18px;
   font-weight: bold;
-  white-space: nowrap;
+  line-height: 18px;
   color: #333;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
   background: #fff;
   border: 1px solid #d5d5d5;
   border-radius: 3px;
-  vertical-align: middle;
-  cursor: pointer;
-  line-height: 18px;
-  height: 18px;
 }
 .button {
   padding: 0 5px;
@@ -607,14 +607,14 @@ a:focus {
   background-image: -webkit-linear-gradient(top, #eeeeee, #dddddd);
   background-image: -moz-linear-gradient(top, #eeeeee, #dddddd);
   background-image: linear-gradient(to bottom, #eeeeee, #dddddd);
-  -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#eeeeee', endColorstr='#dddddd')";
   border-color: #ccc;
+  -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#eeeeee', endColorstr='#dddddd')";
 }
 .button:active {
   background-color: #dcdcdc;
   background-image: none;
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15);
   border-color: #b5b5b5;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15);
 }
 .button:focus {
   border-color: #51a7e8;
@@ -643,14 +643,14 @@ a:focus {
 }
 .count b,
 .count i {
+  position: absolute;
+  top: 50%;
+  right: 100%;
   display: block;
   width: 0;
   height: 0;
-  border: 4px solid;
-  position: absolute;
-  right: 100%;
-  top: 50%;
   margin-top: -4px;
+  border: 4px solid;
 }
 .count b {
   margin-right: 0;
@@ -664,9 +664,9 @@ a:focus {
 .count i {
   _font-size: 0;
   _line-height: 0;
-  _border-left-color: pink;
-  _border-bottom-color: pink;
   _border-top-color: pink;
+  _border-bottom-color: pink;
+  _border-left-color: pink;
   _filter: chroma(color=#ffc0cb);
 }
 .count span {
@@ -675,8 +675,8 @@ a:focus {
 }
 .mega .button,
 .mega .count {
-  line-height: 26px;
   height: 26px;
+  line-height: 26px;
 }
 .mega .button {
   padding: 0 10px;
@@ -693,8 +693,8 @@ a:focus {
 }
 .mega .count b,
 .mega .count i {
-  border-width: 6px;
   margin-top: -6px;
+  border-width: 6px;
 }
 .mega .count span {
   font-size: 11px;
