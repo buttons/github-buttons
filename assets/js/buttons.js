@@ -139,7 +139,7 @@
     }
 
     filter_js = function(href) {
-      if (!href.match(/^\s*javascript:/i)) {
+      if (!/^\s*javascript:/i.test(href)) {
         return href;
       }
     };
@@ -185,7 +185,11 @@
           var contentDocument, script;
           contentDocument = _this.element.contentWindow.document;
           script = contentDocument.getElementsByTagName("script")[0];
-          if ("onreadystatechange" in script && !/loaded|complete/.test(script.readyState)) {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) {
+            setTimeout(function() {
+              return _this.reload();
+            }, 0);
+          } else {
             _this.on.call({
               element: script
             }, "readystatechange", function(_, aborted) {
@@ -193,8 +197,6 @@
                 _this.reload();
               }
             });
-          } else {
-            _this.reload();
           }
         };
       })(this));

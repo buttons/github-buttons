@@ -70,7 +70,7 @@ class Anchor
       text: element.getAttribute("data-text") or element.textContent or element.innerText
       icon: element.getAttribute("data-icon") or Config.icon
 
-  filter_js = (href) -> href unless href.match /^\s*javascript:/i
+  filter_js = (href) -> href unless /^\s*javascript:/i.test href
 
 
 
@@ -93,13 +93,15 @@ class Frame extends Element
     @once "load", =>
       contentDocument = @element.contentWindow.document
       script = contentDocument.getElementsByTagName("script")[0]
-      if "onreadystatechange" of script and not /loaded|complete/.test script.readyState
+      if !script.readyState or /loaded|complete/.test script.readyState
+        setTimeout =>
+          @reload()
+        , 0
+      else
         @on.call element: script, "readystatechange", (_, aborted) =>
           if aborted or !script.readyState or /loaded|complete/.test script.readyState
             @reload()
           return
-      else
-        @reload()
       return
 
     @element.contentWindow.document.open()
