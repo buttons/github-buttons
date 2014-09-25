@@ -1,3 +1,46 @@
+class FlatObject
+  @flatten: (obj) ->
+    flatten = (object, super_key) ->
+      switch __toString.call(object)
+        when "[object Object]"
+          for key, value of object
+            flatten value, if super_key then "#{super_key}.#{key}" else key
+        when "[object Array]"
+          for item, index in object
+            flatten item, if super_key then "#{super_key}[#{index}]" else "[#{index}]"
+        else
+          result[super_key] = object
+      return
+    result = {}
+    flatten obj
+    result
+
+  @expand: (obj) ->
+    namespace = {}
+    for flat_key, value of obj
+      keys = []
+      for key in flat_key.split "."
+        match = key.match /^(.*?)((?:\[[0-9]+\])*)$/
+        keys.push match[1] if match[1]
+        keys.push Number sub_key for sub_key in match[2].replace(/^\[|\]$/g, "").split("][") if match[2]
+      target = namespace
+      key = "result"
+      while keys.length
+        unless target[key]?
+          switch __toString.call(keys[0])
+            when "[object String]"
+              target[key] = {}
+            when "[object Number]"
+              target[key] = []
+        target = target[key]
+        key = keys.shift()
+      target[key] = value
+    namespace.result
+
+  __toString = Object.prototype.toString
+
+
+
 class QueryString
   @stringify: (obj) ->
     results = []
@@ -17,10 +60,10 @@ class QueryString
 
 class Hash
   @encode: (data) ->
-    "#" + encodeURIComponent QueryString.stringify data
+    "#" + encodeURIComponent QueryString.stringify FlatObject.flatten data
 
   @decode: (data = document.location.hash) ->
-    QueryString.parse decodeURIComponent data.replace /^#/, ""
+    FlatObject.expand QueryString.parse decodeURIComponent data.replace /^#/, ""
 
 
 
@@ -48,27 +91,42 @@ class Element
 
 
 
-class Anchor
-  constructor: (@element) ->
-    @data =
-      countApi: do ->
-        if api = element.getAttribute "data-count-api"
-          api = "/#{api}" if "/" isnt api.charAt 0
-          api
-      countHref: do ->
-        if (href = element.getAttribute "data-count-href") and (href = filter_js href)
-          href
-        else
-          filter_js element.href
-      href: filter_js element.href
+class Anchor extends Element
+  constructor: ({href, text, data}, callback) ->
+    super "a", (a) ->
+      a.className = Config.anchorClass
+      a.href = href
+      a.appendChild document.createTextNode "#{text}"
+      a.setAttribute "data-#{name}", value for name, value of data
+      callback a if callback
+      return
+
+  parse: ->
+    Anchor.parse @element
+
+  @parse: (element) ->
+    href: filter_js element.href
+    text: element.getAttribute("data-text") or element.textContent or element.innerText
+    data:
+      count:
+        api: do ->
+          if api = element.getAttribute "data-count-api"
+            api = "/#{api}" if "/" isnt api.charAt 0
+            api
+        href: do ->
+          if (href = element.getAttribute "data-count-href") and (href = filter_js href)
+            href
+          else
+            filter_js element.href
       style: do ->
         if style = element.getAttribute "data-style"
           for i in Config.styles
             if i is style
               return style
         Config.styles[0]
-      text: element.getAttribute("data-text") or element.textContent or element.innerText
-      icon: element.getAttribute("data-icon") or Config.icon
+      icon: do ->
+        if icon = element.getAttribute "data-icon"
+          icon
 
   filter_js = (href) -> href unless /^\s*javascript:/i.test href
 
@@ -96,6 +154,7 @@ class Frame extends Element
       if !script.readyState or /loaded|complete/.test script.readyState
         setTimeout =>
           @reload()
+          return
         , 0
       else
         @on.call element: script, "readystatechange", (_, aborted) =>
@@ -143,42 +202,42 @@ class Frame extends Element
 
 
 class FrameContent
-  constructor: (data) ->
-    document.body.className = data.style
-    document.getElementsByTagName("base")[0].href = data.href
-    new Button data, (buttonElement) ->
+  constructor: (options) ->
+    document.body.className = options.data.style
+    document.getElementsByTagName("base")[0].href = options.href
+    new Button options, (buttonElement) ->
       document.body.appendChild buttonElement
       return
-    new Count data, (countElement) ->
+    new Count options, (countElement) ->
       document.body.appendChild countElement
       return
 
   class Button extends Element
-    constructor: (data, callback) ->
+    constructor: (options, callback) ->
       super "a", (a) ->
         a.className = "button"
-        a.href = data.href if data.href
+        a.href = options.href if options.href
         new Element "i", (icon) ->
           icon = document.createElement "i"
           icon.className = do ->
-            classNames = [data.icon]
+            classNames = [options.data.icon or Config.icon]
             classNames.push Config.iconClass if Config.iconClass?
             classNames.join " "
           a.appendChild icon
           return
         new Element "span", (text) ->
-          text.appendChild document.createTextNode " #{data.text} " if data.text
+          text.appendChild document.createTextNode " #{options.text} " if options.text
           a.appendChild text
           return
         callback a if callback
         return
 
   class Count extends Element
-    constructor: (data, callback) ->
-      if data.countApi
+    constructor: (options, callback) ->
+      if options.data.count.api
         super "a", (a) ->
           a.className = "count"
-          a.href = data.countHref if data.countHref
+          a.href = options.data.count.href if options.data.count.href
           new Element "b", (b) ->
             a.appendChild b
             return
@@ -192,18 +251,17 @@ class FrameContent
               window.callback = null
 
               if json.meta.status is 200
-                for i in data.countApi.split("#").slice(1).join("#").split(".")
-                  json.data = json.data[i]
-                if !(isNaN parseFloat json.data) and (isFinite json.data)
-                  json.data = json.data.toString().replace /\B(?=(\d{3})+(?!\d))/g, ","
-                text.appendChild document.createTextNode " #{json.data} "
+                data = FlatObject.flatten(json.data)[options.data.count.api.split("#").slice(1).join("#")]
+                if Object.prototype.toString.call(data) is "[object Number]"
+                  data = data.toString().replace /\B(?=(\d{3})+(?!\d))/g, ","
+                text.appendChild document.createTextNode " #{data} "
                 callback a if callback
               return
             return
           return
 
         endpoint = do ->
-          url = data.countApi.split("#")[0]
+          url = options.data.count.api.split("#")[0]
           query = QueryString.parse url.split("?").slice(1).join("?")
           query.callback = "callback"
           "#{url.split("?")[0]}?#{QueryString.stringify query}"
@@ -219,7 +277,7 @@ class FrameContent
 
 Config =
   api:         "https://api.github.com"
-  buttonClass: "github-button"
+  anchorClass: "github-button"
   iconClass:   "octicon"
   icon:        "octicon-mark-github"
   scriptId:    "github-bjs"
@@ -229,14 +287,14 @@ if Config.script = document.getElementById Config.scriptId
   Config.url = Config.script.src.replace /buttons.js$/, ""
 
   if document.querySelectorAll
-    anchors = document.querySelectorAll "a.#{Config.buttonClass}"
+    anchors = document.querySelectorAll "a.#{Config.anchorClass}"
   else
     anchors =
-      anchor for anchor in document.getElementsByTagName "a" when " #{anchor.className} ".replace(/[\t\r\n\f]/g, " ").indexOf " #{Config.buttonClass} " >= 0
+      anchor for anchor in document.getElementsByTagName "a" when " #{anchor.className} ".replace(/[\t\r\n\f]/g, " ").indexOf " #{Config.anchorClass} " >= 0
 
   for anchor in anchors
     do (a = anchor) ->
-      new Frame Hash.encode(new Anchor(a).data), (iframe) ->
+      new Frame Hash.encode(Anchor.parse a), (iframe) ->
         a.parentNode.insertBefore iframe, a
         return
       , ->
