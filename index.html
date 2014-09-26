@@ -4,59 +4,159 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>github:buttons</title>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="components/octicons/octicons/octicons.css">
     <link rel="stylesheet" href="assets/css/main.css">
   </head>
   <body>
-    <header>
-      <h1><!-- The Unofficial --><span class="logo-github octicon octicon-logo-github"></span><span class="logo-colon">:</span><span class="logo-buttons">buttons</span></h1>
+    <header class="header">
+      <div class="container">
+        <h1 class="pull-left"><span class="octicon octicon-logo-github"><!-- The Unofficial GitHub --></span><span class="logo-colon">:</span><span class="logo-buttons">buttons</span></h1>
+        <nav class="pull-right">
+          <a href="https://github.com/ntkme/github-buttons"><span class="hidden-xs"> View on GitHub </span><span class="octicon octicon-mark-github"></span></a>
+        </nav>
+      </div>
     </header>
-    <main>
-      <div class="gh-buttons mega count">
-        <a href="https://github.com/ntkme" class="github-button" data-style="mega"
-          data-count-href="/ntkme/followers" data-count-api="/users/ntkme#followers">Follow @ntkme</a>
-        <a href="https://github.com/ntkme/github-buttons" class="github-button" data-style="mega" data-icon="octicon-eye"
-          data-count-href="/ntkme/github-buttons/watchers" data-count-api="/repos/ntkme/github-buttons#subscribers_count">Watch</a>
-        <a href="https://github.com/ntkme/github-buttons" class="github-button" data-style="mega" data-icon="octicon-star"
-          data-count-href="/ntkme/github-buttons/stargazers" data-count-api="/repos/ntkme/github-buttons#stargazers_count">Star</a>
-        <a href="https://github.com/ntkme/github-buttons" class="github-button" data-style="mega" data-icon="octicon-git-branch"
-          data-count-href="/ntkme/github-buttons/network" data-count-api="/repos/ntkme/github-buttons#forks_count">Fork</a>
-        <a href="https://github.com/ntkme/github-buttons/issues" class="github-button" data-style="mega" data-icon="octicon-issue-opened"
-          data-count-api="/repos/ntkme/github-buttons#open_issues_count">Issue</a>
-      </div>
-      <div class="gh-buttons mega">
-        <a href="https://github.com/ntkme" class="github-button" data-style="mega">Follow @ntkme</a>
-        <a href="https://github.com/ntkme/github-buttons" class="github-button" data-style="mega" data-icon="octicon-eye">Watch</a>
-        <a href="https://github.com/ntkme/github-buttons" class="github-button" data-style="mega" data-icon="octicon-star">Star</a>
-        <a href="https://github.com/ntkme/github-buttons" class="github-button" data-style="mega" data-icon="octicon-git-branch">Fork</a>
-        <a href="https://github.com/ntkme/github-buttons/issues" class="github-button" data-style="mega" data-icon="octicon-issue-opened">Issue</a>
-        <a href="https://github.com/ntkme/github-buttons/archive/master.zip" class="github-button" data-style="mega" data-icon="octicon-cloud-download">Download</a>
-        <a href="https://gist.github.com/schacon/1" class="github-button" data-style="mega" data-icon="octicon-gist">The Meaning of Gist</a>
-      </div>
-      <div class="gh-buttons count">
-        <a href="https://github.com/ntkme" class="github-button"
-          data-count-href="/ntkme/followers" data-count-api="/users/ntkme#followers">Follow @ntkme</a>
-        <a href="https://github.com/ntkme/github-buttons" class="github-button" data-icon="octicon-eye"
-          data-count-href="/ntkme/github-buttons/watchers" data-count-api="/repos/ntkme/github-buttons#subscribers_count">Watch</a>
-        <a href="https://github.com/ntkme/github-buttons" class="github-button" data-icon="octicon-star"
-          data-count-href="/ntkme/github-buttons/stargazers" data-count-api="/repos/ntkme/github-buttons#stargazers_count">Star</a>
-        <a href="https://github.com/ntkme/github-buttons" class="github-button" data-icon="octicon-git-branch"
-          data-count-href="/ntkme/github-buttons/network" data-count-api="/repos/ntkme/github-buttons#forks_count">Fork</a>
-        <a href="https://github.com/ntkme/github-buttons/issues" class="github-button" data-icon="octicon-issue-opened"
-          data-count-api="/repos/ntkme/github-buttons#open_issues_count">Issue</a>
-      </div>
-      <div class="gh-buttons">
-        <a href="https://github.com/ntkme" class="github-button" >Follow @ntkme</a>
-        <a href="https://github.com/ntkme/github-buttons" class="github-button" data-icon="octicon-eye">Watch</a>
-        <a href="https://github.com/ntkme/github-buttons" class="github-button" data-icon="octicon-star">Star</a>
-        <a href="https://github.com/ntkme/github-buttons" class="github-button" data-icon="octicon-git-branch">Fork</a>
-        <a href="https://github.com/ntkme/github-buttons/issues" class="github-button" data-icon="octicon-issue-opened">Issue</a>
-        <a href="https://github.com/ntkme/github-buttons/archive/master.zip" class="github-button" data-icon="octicon-cloud-download">Download</a>
-        <a href="https://gist.github.com/schacon/1" class="github-button" data-icon="octicon-gist">The Meaning of Gist</a>
-      </div>
+    <main class="main">
+      <form id="button-config">
+        <div id="button-type" class="container">
+          <div class="row">
+            <div class="col-xs-12">
+              <h3>Choose a button</h3>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-2">
+              <label class="radio-inline">
+                <input type="radio" name="type" value="follow">
+                <span> Follow </span><br>
+                <span class="hidden-lg">
+                  <a href="https://github.com/ntkme" class="github-button" data-style="mega"
+                    data-count-href="/ntkme/followers" data-count-api="/users/ntkme#followers" data-text="Follow @ntkme"></a>
+                </span>
+                <span class="visible-lg-inline">
+                  <a href="https://github.com/ntkme" class="github-button"
+                    data-count-href="/ntkme/followers" data-count-api="/users/ntkme#followers" data-text="Follow @ntkme"></a>
+                </span>
+              </label>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-2">
+              <label class="radio-inline">
+                <input type="radio" name="type" value="watch">
+                <span> Watch </span><br>
+                <span class="hidden-lg">
+                  <a href="https://github.com/ntkme/github-buttons" class="github-button" data-style="mega" data-icon="octicon-eye"
+                    data-count-href="/ntkme/github-buttons/watchers" data-count-api="/repos/ntkme/github-buttons#subscribers_count" data-text="Watch"></a>
+                </span>
+                <span class="visible-lg-inline">
+                  <a href="https://github.com/ntkme/github-buttons" class="github-button" data-icon="octicon-eye"
+                    data-count-href="/ntkme/github-buttons/watchers" data-count-api="/repos/ntkme/github-buttons#subscribers_count" data-text="Watch"></a>
+                </span>
+              </label>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-2">
+              <label class="radio-inline">
+                <input type="radio" name="type" value="star">
+                <span> Star </span><br>
+                <span class="hidden-lg">
+                  <a href="https://github.com/ntkme/github-buttons" class="github-button" data-style="mega" data-icon="octicon-star"
+                    data-count-href="/ntkme/github-buttons/stargazers" data-count-api="/repos/ntkme/github-buttons#stargazers_count" data-text="Star"></a>
+                </span>
+                <span class="visible-lg-inline">
+                  <a href="https://github.com/ntkme/github-buttons" class="github-button" data-icon="octicon-star"
+                    data-count-href="/ntkme/github-buttons/stargazers" data-count-api="/repos/ntkme/github-buttons#stargazers_count" data-text="Star"></a>
+                </span>
+              </label>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-2">
+              <label class="radio-inline">
+                <input type="radio" name="type" value="fork">
+                <span> Fork </span><br>
+                <span class="hidden-lg">
+                  <a href="https://github.com/ntkme/github-buttons" class="github-button" data-style="mega" data-icon="octicon-git-branch"
+                    data-count-href="/ntkme/github-buttons/network" data-count-api="/repos/ntkme/github-buttons#forks_count" data-text="Fork"></a>
+                </span>
+                <span class="visible-lg-inline">
+                  <a href="https://github.com/ntkme/github-buttons" class="github-button" data-icon="octicon-git-branch"
+                    data-count-href="/ntkme/github-buttons/network" data-count-api="/repos/ntkme/github-buttons#forks_count" data-text="Fork"></a>
+                </span>
+              </label>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-2">
+              <label class="radio-inline">
+                <input type="radio" name="type" value="issue">
+                <span> Issue </span><br>
+                <span class="hidden-lg">
+                  <a href="https://github.com/ntkme/github-buttons/issues" class="github-button" data-style="mega" data-icon="octicon-issue-opened"
+                    data-count-api="/repos/ntkme/github-buttons#open_issues_count" data-text="Issue"></a>
+                </span>
+                <span class="visible-lg-inline">
+                  <a href="https://github.com/ntkme/github-buttons/issues" class="github-button" data-icon="octicon-issue-opened"
+                    data-count-api="/repos/ntkme/github-buttons#open_issues_count" data-text="Issue"></a>
+                </span>
+              </label>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-2">
+              <label class="radio-inline">
+                <input type="radio" name="type" value="download">
+                <span> Download </span><br>
+                <span class="hidden-lg">
+                  <a href="https://github.com/ntkme/github-buttons/archive/master.zip" class="github-button" data-style="mega" data-icon="octicon-cloud-download" data-text="Download"></a>
+                </span>
+                <span class="visible-lg-inline">
+                  <a href="https://github.com/ntkme/github-buttons/archive/master.zip" class="github-button"
+                    data-icon="octicon-cloud-download" data-text="Download"></a>
+                </span>
+              </label>
+            </div>
+          </div>
+        </div>
+        <hr>
+        <div id="content" class="container hidden">
+          <div class="row">
+            <div class="col-xs-8 col-sm-6 col-md-4">
+              <h3>Button options</h3>
+              <div class="form-group">
+                <div id="user-repo" class="input-group">
+                  <input id="user" class="form-control" name="user" type="text" placeholder=":user" spellcheck="false" autocomplete="off">
+                  <div class="input-group-addon">/</div>
+                  <input id="repo" class="form-control" name="repo" type="text" placeholder=":repo" spellcheck="false" autocomplete="off">
+                </div>
+              </div>
+              <div class="checkbox">
+                <label>
+                  <input id="large-button" name="large-button" type="checkbox"> Large button
+                </label>
+              </div>
+              <div class="checkbox">
+                <label>
+                  <input name="show-count" type="checkbox"> Show count
+                </label>
+              </div>
+              <div class="checkbox">
+                <label>
+                  <input name="standard-icon" type="checkbox"> Standard icon
+                </label>
+              </div>
+              <button id="preview-button" class="btn btn-default hidden"> Preview </button>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-8">
+              <h3>Preview and code</h3>
+              <p>Try out your button, then copy and paste the code below into the HTML for your site.</p>
+              <p id="preview"><a class="github-button" href="https://github.com/">GitHub</a></p>
+              <div class="form-group">
+                <textarea id="code" class="code form-control" rows="2" readonly></textarea>
+              </div>
+              <div class="form-group">
+                <textarea id="snippet" class="code form-control" rows="2" readonly></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
     </main>
-    <footer>
-      <script async defer id="github-bjs" src="buttons.js"></script>
+    <footer class="footer">
+      <div class="container"></div>
     </footer>
+    <script id="github-bjs" src="buttons.js"></script>
+    <script src="assets/js/main.js"></script>
   </body>
 </html>
