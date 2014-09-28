@@ -29,7 +29,7 @@ class FlatObject
     result
 
   @expand: (obj) ->
-    namespace = {}
+    namespace = []
     for flat_key, value of obj
       keys = []
       for key in flat_key.split "."
@@ -37,7 +37,7 @@ class FlatObject
         keys.push match[1] if match[1]
         keys.push Number sub_key for sub_key in match[2].replace(/^\[|\]$/g, "").split("][") if match[2]
       target = namespace
-      key = "result"
+      key = 0
       while keys.length
         unless target[key]?
           switch __toString.call(keys[0])
@@ -48,7 +48,7 @@ class FlatObject
         target = target[key]
         key = keys.shift()
       target[key] = value
-    namespace.result
+    namespace[0]
 
   __toString = Object.prototype.toString
 
@@ -111,14 +111,14 @@ class Element
   addEventListener = (element, event, func) ->
     if element.addEventListener
       element.addEventListener "#{event}", func
-    else if element.attachEvent
+    else
       element.attachEvent "on#{event}", func
     return
 
   removeEventListener = (element, event, func) ->
     if element.removeEventListener
       element.removeEventListener "#{event}", func
-    else if element.detachEvent
+    else
       element.detachEvent "on#{event}", func
     return
 
@@ -187,16 +187,12 @@ class Frame extends Element
       return
 
     @once "load", =>
-      contentDocument = @element.contentWindow.document
-      script = contentDocument.getElementsByTagName("script")[0]
-      if !script.readyState or /loaded|complete/.test script.readyState
-        setTimeout =>
-          @reload()
-          return
-        , 0
+      script = @element.contentWindow.document.getElementsByTagName("script")[0]
+      if isReady script
+        @reload()
       else
         @on.call element: script, "readystatechange", (_, aborted) =>
-          if aborted or !script.readyState or /loaded|complete/.test script.readyState
+          if aborted or isReady script
             @reload()
           return
       return
@@ -236,6 +232,8 @@ class Frame extends Element
       return
     @element.src = "#{Config.url}buttons.html#{@hash}"
     return
+
+  isReady = (element) -> !element.readyState or /loaded|complete/.test element.readyState
 
 
 

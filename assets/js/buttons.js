@@ -51,7 +51,7 @@
 
     FlatObject.expand = function(obj) {
       var flat_key, key, keys, match, namespace, sub_key, target, value, _i, _j, _len, _len1, _ref, _ref1;
-      namespace = {};
+      namespace = [];
       for (flat_key in obj) {
         value = obj[flat_key];
         keys = [];
@@ -71,7 +71,7 @@
           }
         }
         target = namespace;
-        key = "result";
+        key = 0;
         while (keys.length) {
           if (target[key] == null) {
             switch (__toString.call(keys[0])) {
@@ -87,7 +87,7 @@
         }
         target[key] = value;
       }
-      return namespace.result;
+      return namespace[0];
     };
 
     __toString = Object.prototype.toString;
@@ -195,7 +195,7 @@
     addEventListener = function(element, event, func) {
       if (element.addEventListener) {
         element.addEventListener("" + event, func);
-      } else if (element.attachEvent) {
+      } else {
         element.attachEvent("on" + event, func);
       }
     };
@@ -203,7 +203,7 @@
     removeEventListener = function(element, event, func) {
       if (element.removeEventListener) {
         element.removeEventListener("" + event, func);
-      } else if (element.detachEvent) {
+      } else {
         element.detachEvent("on" + event, func);
       }
     };
@@ -291,6 +291,8 @@
   })();
 
   Frame = (function(_super) {
+    var isReady;
+
     __extends(Frame, _super);
 
     function Frame() {
@@ -324,18 +326,15 @@
       });
       this.once("load", (function(_this) {
         return function() {
-          var contentDocument, script;
-          contentDocument = _this.element.contentWindow.document;
-          script = contentDocument.getElementsByTagName("script")[0];
-          if (!script.readyState || /loaded|complete/.test(script.readyState)) {
-            setTimeout(function() {
-              _this.reload();
-            }, 0);
+          var script;
+          script = _this.element.contentWindow.document.getElementsByTagName("script")[0];
+          if (isReady(script)) {
+            _this.reload();
           } else {
             _this.on.call({
               element: script
             }, "readystatechange", function(_, aborted) {
-              if (aborted || !script.readyState || /loaded|complete/.test(script.readyState)) {
+              if (aborted || isReady(script)) {
                 _this.reload();
               }
             });
@@ -371,6 +370,10 @@
         };
       })(this));
       this.element.src = "" + Config.url + "buttons.html" + this.hash;
+    };
+
+    isReady = function(element) {
+      return !element.readyState || /loaded|complete/.test(element.readyState);
     };
 
     return Frame;
