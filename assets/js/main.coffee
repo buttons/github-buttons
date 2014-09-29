@@ -187,14 +187,19 @@ class Frame extends Element
       return
 
     @once "load", =>
-      script = @element.contentWindow.document.getElementsByTagName("script")[0]
-      if isReady script
-        @reload()
+      if @element.contentWindow.callback
+        script = @element.contentWindow.document.getElementsByTagName("script")[0]
+        if script.readyState
+          @on.call element: script, "readystatechange", =>
+            @reload() if /loaded|complete/.test script.readyState
+            return
+        else
+          for event in ["load", "error"]
+            @on.call element: script, event, =>
+              @reload()
+              return
       else
-        @on.call element: script, "readystatechange", (_, aborted) =>
-          if aborted or isReady script
-            @reload()
-          return
+        @reload()
       return
 
     @element.contentWindow.document.open()
@@ -232,8 +237,6 @@ class Frame extends Element
       return
     @element.src = "#{Config.url}buttons.html#{@hash}"
     return
-
-  isReady = (element) -> !element.readyState or /loaded|complete/.test element.readyState
 
 
 
@@ -283,30 +286,40 @@ class FrameContent
           new Element "span", (text) ->
             a.appendChild text
 
-            window.callback = (json) ->
-              window.callback = null
+            endpoint = do ->
+              url = options.data.count.api.split("#")[0]
+              query = QueryString.parse url.split("?").slice(1).join("?")
+              query.callback = "callback"
+              "#{url.split("?")[0]}?#{QueryString.stringify query}"
 
-              if json.meta.status is 200
-                data = FlatObject.flatten(json.data)[options.data.count.api.split("#").slice(1).join("#")]
-                if Object.prototype.toString.call(data) is "[object Number]"
-                  data = data.toString().replace /\B(?=(\d{3})+(?!\d))/g, ","
-                text.appendChild document.createTextNode " #{data} "
-                callback a if callback
+            new Element "script", (script) ->
+              script.async = true
+              script.src = "#{Config.api}#{endpoint}"
+
+              window.callback = (json) ->
+                window.callback = null
+
+                if json.meta.status is 200
+                  data = FlatObject.flatten(json.data)[options.data.count.api.split("#").slice(1).join("#")]
+                  if Object.prototype.toString.call(data) is "[object Number]"
+                    data = data.toString().replace /\B(?=(\d{3})+(?!\d))/g, ","
+                  text.appendChild document.createTextNode " #{data} "
+                  callback a if callback
+                return
+
+              Element.prototype.on.call element: script, "error", ->
+                window.callback = null
+                return
+
+              if script.readyState
+                Element.prototype.on.call element: script, "readystatechange", ->
+                  window.callback = null if script.readyState is "loaded" and script.children and script.readyState is "loading"
+                  return
+
+              head = document.getElementsByTagName("head")[0]
+              head.insertBefore script, head.firstChild
               return
             return
-          return
-
-        endpoint = do ->
-          url = options.data.count.api.split("#")[0]
-          query = QueryString.parse url.split("?").slice(1).join("?")
-          query.callback = "callback"
-          "#{url.split("?")[0]}?#{QueryString.stringify query}"
-
-        new Element "script", (script) ->
-          script.async = true
-          script.src = "#{Config.api}#{endpoint}"
-          head = document.getElementsByTagName("head")[0]
-          head.insertBefore script, head.firstChild
           return
 
 
@@ -439,15 +452,19 @@ class PreviewAnchor extends Element
 class PreviewFrame extends Element
   constructor: (@element) ->
     @on "load", =>
-      contentDocument = @element.contentWindow.document
-      html = contentDocument.documentElement
-      body = contentDocument.body
-      html.style.overflow = body.style.overflow = "visible"
-      style =
-        height: "#{body.scrollHeight}px"
-        width:  "#{body.scrollWidth}px"
-      html.style.overflow = body.style.overflow = ""
-      @element.style[key] = value for key, value of style
+      if @element.contentWindow.callback
+        script = @element.contentWindow.document.getElementsByTagName("script")[0]
+        if script.readyState
+          @on.call element: script, "readystatechange", =>
+            @resize() if /loaded|complete/.test script.readyState
+            return
+        else
+          for event in ["load", "error"]
+            @on.call element: script, event, =>
+              @resize()
+              return
+      else
+        @resize()
       return
 
   load: (config) ->
@@ -458,6 +475,18 @@ class PreviewFrame extends Element
     @element.style[key] = value for key, value of style
     @element.src = "buttons.html#{Hash.encode config}"
     @element.contentWindow.document.location.reload()
+    return
+
+  resize: ->
+    contentDocument = @element.contentWindow.document
+    html = contentDocument.documentElement
+    body = contentDocument.body
+    html.style.overflow = body.style.overflow = "visible"
+    style =
+      height: "#{body.scrollHeight}px"
+      width:  "#{body.scrollWidth}px"
+    html.style.overflow = body.style.overflow = ""
+    @element.style[key] = value for key, value of style
     return
 
 

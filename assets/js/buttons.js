@@ -291,8 +291,6 @@
   })();
 
   Frame = (function(_super) {
-    var isReady;
-
     __extends(Frame, _super);
 
     function Frame() {
@@ -326,18 +324,30 @@
       });
       this.once("load", (function(_this) {
         return function() {
-          var script;
-          script = _this.element.contentWindow.document.getElementsByTagName("script")[0];
-          if (isReady(script)) {
-            _this.reload();
-          } else {
-            _this.on.call({
-              element: script
-            }, "readystatechange", function(_, aborted) {
-              if (aborted || isReady(script)) {
-                _this.reload();
+          var event, script, _i, _len, _ref;
+          if (_this.element.contentWindow.callback) {
+            script = _this.element.contentWindow.document.getElementsByTagName("script")[0];
+            if (script.readyState) {
+              _this.on.call({
+                element: script
+              }, "readystatechange", function() {
+                if (/loaded|complete/.test(script.readyState)) {
+                  _this.reload();
+                }
+              });
+            } else {
+              _ref = ["load", "error"];
+              for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                event = _ref[_i];
+                _this.on.call({
+                  element: script
+                }, event, function() {
+                  _this.reload();
+                });
               }
-            });
+            }
+          } else {
+            _this.reload();
           }
         };
       })(this));
@@ -370,10 +380,6 @@
         };
       })(this));
       this.element.src = "" + Config.url + "buttons.html" + this.hash;
-    };
-
-    isReady = function(element) {
-      return !element.readyState || /loaded|complete/.test(element.readyState);
     };
 
     return Frame;
@@ -435,7 +441,6 @@
       __extends(Count, _super);
 
       function Count(options, callback) {
-        var endpoint;
         if (options.data.count.api) {
           Count.__super__.constructor.call(this, "a", function(a) {
             a.className = "count";
@@ -449,36 +454,51 @@
               a.appendChild(i);
             });
             new Element("span", function(text) {
+              var endpoint;
               a.appendChild(text);
-              window.callback = function(json) {
-                var data;
-                window.callback = null;
-                if (json.meta.status === 200) {
-                  data = FlatObject.flatten(json.data)[options.data.count.api.split("#").slice(1).join("#")];
-                  if (Object.prototype.toString.call(data) === "[object Number]") {
-                    data = data.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+              endpoint = (function() {
+                var query, url;
+                url = options.data.count.api.split("#")[0];
+                query = QueryString.parse(url.split("?").slice(1).join("?"));
+                query.callback = "callback";
+                return "" + (url.split("?")[0]) + "?" + (QueryString.stringify(query));
+              })();
+              new Element("script", function(script) {
+                var head;
+                script.async = true;
+                script.src = "" + Config.api + endpoint;
+                window.callback = function(json) {
+                  var data;
+                  window.callback = null;
+                  if (json.meta.status === 200) {
+                    data = FlatObject.flatten(json.data)[options.data.count.api.split("#").slice(1).join("#")];
+                    if (Object.prototype.toString.call(data) === "[object Number]") {
+                      data = data.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    }
+                    text.appendChild(document.createTextNode(" " + data + " "));
+                    if (callback) {
+                      callback(a);
+                    }
                   }
-                  text.appendChild(document.createTextNode(" " + data + " "));
-                  if (callback) {
-                    callback(a);
-                  }
+                };
+                Element.prototype.on.call({
+                  element: script
+                }, "error", function() {
+                  window.callback = null;
+                });
+                if (script.readyState) {
+                  Element.prototype.on.call({
+                    element: script
+                  }, "readystatechange", function() {
+                    if (script.readyState === "loaded" && script.children && script.readyState === "loading") {
+                      window.callback = null;
+                    }
+                  });
                 }
-              };
+                head = document.getElementsByTagName("head")[0];
+                head.insertBefore(script, head.firstChild);
+              });
             });
-          });
-          endpoint = (function() {
-            var query, url;
-            url = options.data.count.api.split("#")[0];
-            query = QueryString.parse(url.split("?").slice(1).join("?"));
-            query.callback = "callback";
-            return "" + (url.split("?")[0]) + "?" + (QueryString.stringify(query));
-          })();
-          new Element("script", function(script) {
-            var head;
-            script.async = true;
-            script.src = "" + Config.api + endpoint;
-            head = document.getElementsByTagName("head")[0];
-            head.insertBefore(script, head.firstChild);
           });
         }
       }
