@@ -619,14 +619,22 @@ a:focus {
 .button:focus {
   border-color: #51a7e8;
 }
-.button i {
+.button i,
+.button span {
   display: inline-block;
+  vertical-align: top;
+  line-height: 1;
+  white-space: pre;
+}
+.button i {
+  padding: 2px 0;
   font-size: 14px;
-  vertical-align: middle;
+  height: 14px;
 }
 .button span {
+  padding: 3px 0 4px;
   font-size: 11px;
-  vertical-align: middle;
+  height: 11px;
 }
 .count {
   padding: 0 5px;
@@ -683,9 +691,13 @@ a:focus {
 }
 .mega .button i {
   font-size: 20px;
+  height: 20px;
+  padding: 3px 0;
 }
 .mega .button span {
   font-size: 13px;
+  height: 13px;
+  padding: 6px 0 7px;
 }
 .mega .count {
   padding: 0 7px;
