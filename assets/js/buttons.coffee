@@ -265,7 +265,11 @@ class FrameContent
           a.appendChild icon
           return
         new Element "span", (text) ->
-          text.appendChild document.createTextNode " #{options.text} " if options.text
+          text.appendChild document.createTextNode " "
+          a.appendChild text
+          return
+        new Element "span", (text) ->
+          text.appendChild document.createTextNode options.text if options.text
           a.appendChild text
           return
         callback a if callback

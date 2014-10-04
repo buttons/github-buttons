@@ -422,8 +422,12 @@
             a.appendChild(icon);
           });
           new Element("span", function(text) {
+            text.appendChild(document.createTextNode(" "));
+            a.appendChild(text);
+          });
+          new Element("span", function(text) {
             if (options.text) {
-              text.appendChild(document.createTextNode(" " + options.text + " "));
+              text.appendChild(document.createTextNode(options.text));
             }
             a.appendChild(text);
           });
