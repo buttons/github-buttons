@@ -226,7 +226,7 @@ class Frame extends Element
     contentDocument = @element.contentWindow.document
     html = contentDocument.documentElement
     body = contentDocument.body
-    html.style.overflow = body.style.overflow = "visible"
+    html.style.overflow = body.style.overflow = if window.opera then "scroll" else "visible"
     style =
       height: "#{body.scrollHeight}px"
       width:  "#{body.scrollWidth}px"

@@ -361,7 +361,7 @@
       contentDocument = this.element.contentWindow.document;
       html = contentDocument.documentElement;
       body = contentDocument.body;
-      html.style.overflow = body.style.overflow = "visible";
+      html.style.overflow = body.style.overflow = window.opera ? "scroll" : "visible";
       style = {
         height: "" + body.scrollHeight + "px",
         width: "" + body.scrollWidth + "px"
