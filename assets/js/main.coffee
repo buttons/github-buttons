@@ -7,7 +7,7 @@ Config =
   styles:     ["default", "mega"]
 
 if Config.script = document.getElementById Config.scriptId
-  Config.url = Config.script.src.replace /buttons.js$/, ""
+  Config.url = Config.script.src.replace(/[?#].*$/, "").replace /buttons.js$/, ""
 
 
 
