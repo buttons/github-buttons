@@ -326,7 +326,7 @@
         return function() {
           var event, script, _i, _len, _ref;
           if (_this.element.contentWindow.callback) {
-            script = _this.element.contentWindow.document.getElementsByTagName("script")[0];
+            script = _this.element.contentWindow.callback.script;
             if (script.readyState) {
               _this.on.call({
                 element: script
@@ -485,6 +485,7 @@
                     }
                   }
                 };
+                window.callback.script = script;
                 Element.prototype.on.call({
                   element: script
                 }, "error", function() {

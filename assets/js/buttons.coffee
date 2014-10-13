@@ -188,7 +188,7 @@ class Frame extends Element
 
     @once "load", =>
       if @element.contentWindow.callback
-        script = @element.contentWindow.document.getElementsByTagName("script")[0]
+        script = @element.contentWindow.callback.script
         if script.readyState
           @on.call element: script, "readystatechange", =>
             @reload() if /loaded|complete/.test script.readyState
@@ -310,6 +310,7 @@ class FrameContent
                   text.appendChild document.createTextNode " #{data} "
                   callback a if callback
                 return
+              window.callback.script = script
 
               Element.prototype.on.call element: script, "error", ->
                 window.callback = null
