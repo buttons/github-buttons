@@ -9,7 +9,7 @@ if args.length > 1
 else
   puts = (content) -> console.log content
 
-page.onCallback = ->
+page.onLoadFinished = ->
   puts page.evaluate (option) ->
     octicon = document.body.appendChild document.createElement "span"
     octicon.style.fontSize = "32px"
@@ -28,13 +28,4 @@ page.onCallback = ->
     .join "\n"
   phantom.exit()
 
-page.open "https://octicons.github.com/", ->
-  page.includeJs "//ajax.googleapis.com/ajax/libs/webfont/1/webfont.js", ->
-    page.evaluate ->
-      WebFont.load
-        custom:
-          families: ["octicons"]
-          testStrings:
-            octicons: "\uf092"
-        active: ->
-          window.callPhantom()
+page.open "buttons.html#href%3D%26text%3D%26data.count.api%3D%26data.count.href%3D%26data.style%3D%26data.icon%3D"

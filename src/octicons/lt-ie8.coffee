@@ -9,7 +9,7 @@ if args.length > 1
 else
   puts = (content) -> console.log content
 
-page.open "https://octicons.github.com/", ->
+page.open "buttons.html", ->
   puts page.evaluate ->
     styleSheets = Array.prototype.filter.call document.styleSheets, (styleSheet) ->
       styleSheet.href?.match /\/octicons\.css$/

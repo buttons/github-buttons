@@ -675,7 +675,7 @@ a:focus {
   _border-top-color: pink;
   _border-bottom-color: pink;
   _border-left-color: pink;
-  _filter: chroma(color=#ffc0cb);
+  _filter: chroma(color=pink);
 }
 .count span {
   font-size: 9px;
