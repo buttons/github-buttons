@@ -242,14 +242,15 @@ class Frame extends Element
 
 class FrameContent
   constructor: (options) ->
-    document.body.className = options.data.style
-    document.getElementsByTagName("base")[0].href = options.href
-    new Button options, (buttonElement) ->
-      document.body.appendChild buttonElement
-      return
-    new Count options, (countElement) ->
-      document.body.appendChild countElement
-      return
+    if options
+      document.body.className = options.data.style
+      document.getElementsByTagName("base")[0].href = options.href
+      new Button options, (buttonElement) ->
+        document.body.appendChild buttonElement
+        return
+      new Count options, (countElement) ->
+        document.body.appendChild countElement
+        return
 
   class Button extends Element
     constructor: (options, callback) ->

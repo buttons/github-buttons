@@ -390,14 +390,16 @@
     var Button, Count;
 
     function FrameContent(options) {
-      document.body.className = options.data.style;
-      document.getElementsByTagName("base")[0].href = options.href;
-      new Button(options, function(buttonElement) {
-        document.body.appendChild(buttonElement);
-      });
-      new Count(options, function(countElement) {
-        document.body.appendChild(countElement);
-      });
+      if (options) {
+        document.body.className = options.data.style;
+        document.getElementsByTagName("base")[0].href = options.href;
+        new Button(options, function(buttonElement) {
+          document.body.appendChild(buttonElement);
+        });
+        new Count(options, function(countElement) {
+          document.body.appendChild(countElement);
+        });
+      }
     }
 
     Button = (function(_super) {
