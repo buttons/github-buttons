@@ -1,0 +1,28 @@
+{
+  "name": "github-buttons",
+  "version": "1.0.0",
+  "description": "GitHub Buttons",
+  "main": "README.md",
+  "scripts": {
+    "test": "./node_modules/.bin/cake test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ntkme/github-buttons.git"
+  },
+  "keywords": [
+    "GitHub",
+    "buttons"
+  ],
+  "author": "なつき <i@ntk.me>",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/ntkme/github-buttons/issues"
+  },
+  "homepage": "https://buttons.github.io",
+  "devDependencies": {
+    "coffee-script": "latest",
+    "less": "latest",
+    "uglify-js": "latest"
+  }
+}

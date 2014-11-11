@@ -24,3 +24,6 @@ task 'build:less', 'Build stylesheets', ->
 task 'build:octicons', 'Build octicons', ->
   exec "phantomjs src/octicons/base.coffee assets/css/octicons/base.less", callback ->
   exec "phantomjs src/octicons/lt-ie8.coffee assets/css/octicons/lt-ie8.css", callback ->
+
+task 'test', 'Run all tests', ->
+  exec "cake build", callback ->
