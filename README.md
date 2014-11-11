@@ -1,12 +1,11 @@
 github-buttons
 ==============
 
-[github:buttons](https://buttons.github.io)
+[![Circle CI](https://circleci.com/gh/ntkme/github-buttons.png?style=badge)](https://circleci.com/gh/ntkme/github-buttons)
 
+To get started, checkout [buttons.github.io](https://buttons.github.io).
 
-
-Get started!
-------------
+## Manual
 
 ### Example
 
