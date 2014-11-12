@@ -1,4 +1,5 @@
 fs = require 'fs'
+path = require 'path'
 {spawn, exec} = require 'child_process'
 
 system = (command, args..., callback) ->
@@ -11,7 +12,16 @@ system = (command, args..., callback) ->
     else
       process.exit(status)
 
-task 'build', 'Build project', ->
+find = (dir, pattern = /.*/) ->
+  fs.readdirSync dir
+    .filter (file) ->
+      file.match pattern
+    .map (file) ->
+      path.join dir, file
+
+
+
+task 'build', 'Build everything', ->
   system "cake", "build:octicons", ->
     invoke 'build:less'
   invoke 'build:coffee'
@@ -21,16 +31,20 @@ task 'build:coffee', 'Build scripts', ->
     system "uglifyjs", "--mangle", "--output", "buttons.js", "assets/js/buttons.js", ->
 
 task 'build:less', 'Build stylesheets', ->
-  for file in fs.readdirSync 'assets/css/' when file.match /\.less$/
-    system "lessc", "assets/css/#{file}", "assets/css/#{file.replace /\.less$/, '.css'}", ->
+  find("assets/css/", /\.less$/i).forEach (file) ->
+    system "lessc", file, "#{file.replace /\.less$/i, '.css'}", ->
 
 task 'build:octicons', 'Build octicons', ->
   system "phantomjs", "src/octicons/base.coffee", "assets/css/octicons/base.less", ->
   system "phantomjs", "src/octicons/lt-ie8.coffee", "assets/css/octicons/lt-ie8.css", ->
 
-task 'clean', 'Cleanup', ->
+task 'clean', 'Cleanup everything', ->
   exec "rm assets/css/octicons/* assets/css/*.css assets/js/*.js buttons.js"
 
-task 'test', 'Run all tests', ->
+task 'test', 'Test everything', ->
   system "cake", "clean", ->
-    invoke 'build'
+    system "cake", "build", ->
+      invoke 'test:recess'
+
+task 'test:recess', 'Test stylesheets', ->
+  system.apply @, ["recess"].concat(find "assets/css/", /\.css$/i).concat ->

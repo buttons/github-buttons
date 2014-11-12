@@ -23,6 +23,7 @@
   "devDependencies": {
     "coffee-script": "latest",
     "less": "latest",
+    "recess": "latest",
     "uglify-js": "latest"
   }
 }
