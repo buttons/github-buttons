@@ -4,7 +4,7 @@
   "description": "GitHub Buttons",
   "main": "README.md",
   "scripts": {
-    "test": "./node_modules/.bin/cake test"
+    "test": "cake test"
   },
   "repository": {
     "type": "git",

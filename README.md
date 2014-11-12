@@ -3,7 +3,7 @@ github-buttons
 
 [![Circle CI](https://circleci.com/gh/ntkme/github-buttons.png?style=badge)](https://circleci.com/gh/ntkme/github-buttons)
 
-To get started, checkout [buttons.github.io](https://buttons.github.io).
+To get started, checkout **[buttons.github.io](https://buttons.github.io)**.
 
 ## Manual
 
@@ -63,7 +63,8 @@ You must append a `#hash` to the endpoint to extract a value for the count from 
 e.g. `/users/octocat#followers` will extract `followers` from the JSON.  
 
 You can also access specific subnode in the JSON.  
-e.g. `/repos/octocat/Hello-World#owner.login` will extract `owner.login` from the JSON.  
+e.g. `/repos/octocat/hello-world#owner.login` will extract `owner.login`.  
+e.g. `/users/octocat/repos#[0].open_issues_count` will extract `open_issues_count` from the first enrty in the array.  
 
 See [GitHub Developer](https://developer.github.com) for API references.
 
@@ -75,22 +76,30 @@ Development
 ### Dependencies
 
 - nodejs
-  - coffee-script
-  - less
-  - uglify-js
 - phantomjs
 
 ### Clone
 
-```
+``` sh
 git clone --recursive https://github.com/ntkme/github-buttons.git
+```
+
+``` sh
+cd github-buttons && npm install
 ```
 
 ### Build
 
-```
+``` sh
 cake build
 ```
+
+### Test
+
+``` sh
+cake test
+```
+
 
 
 License
