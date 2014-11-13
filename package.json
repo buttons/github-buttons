@@ -21,8 +21,10 @@
   },
   "homepage": "https://buttons.github.io",
   "devDependencies": {
+    "chai": "latest",
     "coffee-script": "latest",
     "less": "latest",
+    "mocha": "latest",
     "recess": "latest",
     "uglify-js": "latest"
   }

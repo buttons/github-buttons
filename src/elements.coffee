@@ -1,85 +1,3 @@
-Config =
-  api:         "https://api.github.com"
-  anchorClass: "github-button"
-  iconClass:   "octicon"
-  icon:        "octicon-mark-github"
-  scriptId:    "github-bjs"
-  styles:     ["default", "mega"]
-
-if Config.script = document.getElementById Config.scriptId
-  Config.url = Config.script.src.replace(/[?#].*$/, "").replace /buttons.js$/, ""
-
-
-
-class FlatObject
-  @flatten: (obj) ->
-    flatten = (object, super_key) ->
-      switch __toString.call(object)
-        when "[object Object]"
-          for key, value of object
-            flatten value, if super_key then "#{super_key}.#{key}" else key
-        when "[object Array]"
-          for item, index in object
-            flatten item, if super_key then "#{super_key}[#{index}]" else "[#{index}]"
-        else
-          result[super_key] = object
-      return
-    result = {}
-    flatten obj
-    result
-
-  @expand: (obj) ->
-    namespace = []
-    for flat_key, value of obj
-      keys = []
-      for key in flat_key.split "."
-        match = key.match /^(.*?)((?:\[[0-9]+\])*)$/
-        keys.push match[1] if match[1]
-        keys.push Number sub_key for sub_key in match[2].replace(/^\[|\]$/g, "").split("][") if match[2]
-      target = namespace
-      key = 0
-      while keys.length
-        unless target[key]?
-          switch __toString.call(keys[0])
-            when "[object String]"
-              target[key] = {}
-            when "[object Number]"
-              target[key] = []
-        target = target[key]
-        key = keys.shift()
-      target[key] = value
-    namespace[0]
-
-  __toString = Object.prototype.toString
-
-
-
-class QueryString
-  @stringify: (obj) ->
-    results = []
-    for key, value of obj
-      value ?= ""
-      results.push "#{key}=#{value}"
-    results.join "&"
-
-  @parse: (str) ->
-    obj = {}
-    for pair in str.split "&" when pair isnt ""
-      [key, value...] = pair.split "="
-      obj[key] = value.join "=" if key isnt ""
-    obj
-
-
-
-class Hash
-  @encode: (data) ->
-    "#" + encodeURIComponent QueryString.stringify FlatObject.flatten data
-
-  @decode: (data = document.location.hash) ->
-    FlatObject.expand QueryString.parse decodeURIComponent data.replace /^#/, ""
-
-
-
 class Element
   constructor: (tagName, callback) ->
     @element = document.createElement tagName
@@ -140,7 +58,6 @@ class Element
     " #{element.className} ".replace(r_whitespace, " ").indexOf(" #{className} ") >= 0
 
 
-
 class Anchor
   @parse: (element) ->
     href: filter_js element.href
@@ -167,7 +84,6 @@ class Anchor
           icon
 
   filter_js = (href) -> href unless /^\s*javascript:/i.test href
-
 
 
 class Frame extends Element
@@ -239,10 +155,9 @@ class Frame extends Element
     return
 
 
-
 class FrameContent
   constructor: (options) ->
-    if options
+    if options and options.data
       document.body.className = options.data.style
       document.getElementsByTagName("base")[0].href = options.href
       new Button options, (buttonElement) ->
@@ -327,24 +242,3 @@ class FrameContent
               return
             return
           return
-
-
-
-if Config.script
-  if document.querySelectorAll
-    anchors = document.querySelectorAll "a.#{Config.anchorClass}"
-  else
-    anchors =
-      anchor for anchor in document.getElementsByTagName "a" when Element.prototype.hasClass.call element: anchor, Config.anchorClass
-
-  for anchor in anchors
-    do (a = anchor) ->
-      new Frame Hash.encode(Anchor.parse a), (iframe) ->
-        a.parentNode.insertBefore iframe, a
-        return
-      , ->
-        a.parentNode.removeChild a
-        return
-      return
-else
-  new FrameContent Hash.decode()

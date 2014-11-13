@@ -2,15 +2,16 @@ fs = require 'fs'
 path = require 'path'
 {spawn, exec} = require 'child_process'
 
+
 system = (command, args..., callback) ->
-  app = spawn command, args
-  app.stdout.pipe process.stdout
-  app.stderr.pipe process.stderr
-  app.on 'exit', (status) ->
+  proc = spawn command, args
+  proc.stdout.pipe process.stdout
+  proc.stderr.pipe process.stderr
+  proc.on 'exit', (status) ->
     if status is 0
       callback() if callback
     else
-      process.exit(status)
+      process.exit status
 
 find = (dir, pattern = /.*/) ->
   fs.readdirSync dir
@@ -19,7 +20,26 @@ find = (dir, pattern = /.*/) ->
     .map (file) ->
       path.join dir, file
 
-
+coffee =
+  compile: (coffeescripts..., javascript, callback) ->
+    stdout = fs.createWriteStream javascript
+    cat_proc = spawn "cat", coffeescripts
+    cat_proc.stdout.on 'data', (data) -> coffee_proc.stdin.write data
+    cat_proc.stderr.on 'data', (data) -> console.err data
+    cat_proc.on 'close', (status) ->
+      if status is 0
+        coffee_proc.stdin.end()
+      else
+        process.exit status
+    coffee_proc = spawn "coffee", ["--compile", "--stdio"]
+    coffee_proc.stdout.on 'data', (data) -> stdout.write data
+    coffee_proc.stderr.on 'data', (data) -> console.err data
+    coffee_proc.on 'close', (status) ->
+      if status is 0
+        stdout.end()
+        callback() if callback
+      else
+        process.exit status
 
 task 'build', 'Build everything', ->
   system "cake", "build:octicons", ->
@@ -27,24 +47,50 @@ task 'build', 'Build everything', ->
   invoke 'build:coffee'
 
 task 'build:coffee', 'Build scripts', ->
-  system "coffee", "--compile", "assets/js/", ->
-    system "uglifyjs", "--mangle", "--output", "buttons.js", "assets/js/buttons.js", ->
+  coffee.compile "src/config.coffee",
+                 "src/data.coffee",
+                 "src/elements.coffee",
+                 "src/buttons.coffee",
+                 "lib/buttons.js",
+                 -> system "uglifyjs",
+                           "--mangle",
+                           "--source-map", "buttons.js.map",
+                           "--output", "buttons.js",
+                           "lib/buttons.js", ->
+  coffee.compile "src/config.coffee",
+                 "src/data.coffee",
+                 "src/elements.coffee",
+                 "src/main.coffee",
+                 "lib/main.js",
+                 -> system "uglifyjs",
+                           "--mangle",
+                           "--source-map", "assets/js/main.js.map",
+                           "--source-map-root", "../../",
+                           "--source-map-url", "main.js.map",
+                           "--output", "assets/js/main.js",
+                           "lib/main.js", ->
+  system "coffee", "--compile", "--output", "lib/", "src/ie8.coffee", ->
+    system "uglifyjs", "--mangle", "--output", "assets/js/ie8.js", "lib/ie8.js", ->
 
 task 'build:less', 'Build stylesheets', ->
-  find("assets/css/", /\.less$/i).forEach (file) ->
-    system "lessc", file, "#{file.replace /\.less$/i, '.css'}", ->
+  find("assets/css/", /^(buttons|main)\.less$/i).forEach (file) ->
+    system "lessc", "--compress", "--source-map", file, "#{file.replace /\.less$/i, '.css'}", ->
 
 task 'build:octicons', 'Build octicons', ->
-  system "phantomjs", "src/octicons/base.coffee", "assets/css/octicons/base.less", ->
-  system "phantomjs", "src/octicons/lt-ie8.coffee", "assets/css/octicons/lt-ie8.css", ->
+  system "phantomjs", "src/octicons/octicons.coffee", "assets/css/octicons.less", ->
+  system "phantomjs", "src/octicons/lt-ie8.coffee", "assets/css/lt-ie8.css", ->
 
 task 'clean', 'Cleanup everything', ->
-  exec "rm assets/css/octicons/* assets/css/*.css assets/js/*.js buttons.js"
+  exec "rm assets/css/*.css{,.map} assets/css/octicons.less assets/js/*.js{,.map} lib/*.js buttons.js{,.map}"
 
 task 'test', 'Test everything', ->
   system "cake", "clean", ->
     system "cake", "build", ->
       invoke 'test:recess'
+      invoke 'test:mocha'
 
 task 'test:recess', 'Test stylesheets', ->
-  system.apply @, ["recess"].concat(find "assets/css/", /\.css$/i).concat ->
+  system.apply @, ["recess"].concat(find "assets/css/", /\.less$/i).concat ->
+
+task 'test:mocha', 'Test scripts', ->
+  system "mocha", "--compilers", "coffee:coffee-script/register", "test/*.coffee", ->
