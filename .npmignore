@@ -1,0 +1,6 @@
+.*
+*.coffee
+*.less
+Cakefile
+src/
+test/
