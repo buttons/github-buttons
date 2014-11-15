@@ -25,7 +25,7 @@ coffee =
     stdout = fs.createWriteStream javascript
     cat_proc = spawn "cat", coffeescripts
     cat_proc.stdout.on 'data', (data) -> coffee_proc.stdin.write data
-    cat_proc.stderr.on 'data', (data) -> console.err data
+    cat_proc.stderr.on 'data', (data) -> console.error data.toString "utf8"
     cat_proc.on 'close', (status) ->
       if status is 0
         coffee_proc.stdin.end()
@@ -33,7 +33,7 @@ coffee =
         process.exit status
     coffee_proc = spawn "coffee", ["--compile", "--stdio"]
     coffee_proc.stdout.on 'data', (data) -> stdout.write data
-    coffee_proc.stderr.on 'data', (data) -> console.err data
+    coffee_proc.stderr.on 'data', (data) -> console.error data.toString "utf8"
     coffee_proc.on 'close', (status) ->
       if status is 0
         stdout.end()
@@ -81,16 +81,23 @@ task 'build:octicons', 'Build octicons', ->
   system "phantomjs", "src/octicons/lt-ie8.coffee", "assets/css/lt-ie8.css", ->
 
 task 'clean', 'Cleanup everything', ->
-  exec "rm assets/css/*.css{,.map} assets/css/octicons.less assets/js/*.js{,.map} lib/*.js buttons.js{,.map}"
+  exec "rm assets/css/*.css{,.map} assets/css/octicons.less assets/js/*.js{,.map} lib/*.js test/browser/lib/*.js buttons.js{,.map}"
 
 task 'test', 'Test everything', ->
   system "cake", "clean", ->
     system "cake", "build", ->
       invoke 'test:recess'
       invoke 'test:mocha'
+      invoke 'test:mocha-phantomjs'
 
 task 'test:recess', 'Test stylesheets', ->
   system.apply @, ["recess"].concat(find "assets/css/", /\.less$/i).concat ->
 
 task 'test:mocha', 'Test scripts', ->
   system "mocha", "--compilers", "coffee:coffee-script/register", "test/*.coffee", ->
+
+task 'test:mocha-phantomjs', 'Test browser scripts', ->
+  coffee.compile "src/elements.coffee",
+                 "test/browser/src/elements.coffee",
+                 "test/browser/lib/elements.js",
+                 -> system "mocha-phantomjs", "test/browser/index.html", ->

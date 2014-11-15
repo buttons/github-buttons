@@ -1,6 +1,6 @@
 class Element
-  constructor: (tagName, callback) ->
-    @element = document.createElement tagName
+  constructor: (element, callback) ->
+    @element = if element and element.nodeType is 1 then element else document.createElement element
     callback @element if callback
 
   on: (event, func) ->

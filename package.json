@@ -25,7 +25,10 @@
     "coffee-script": "latest",
     "less": "latest",
     "mocha": "latest",
+    "mocha-phantomjs": "latest",
     "recess": "latest",
+    "sinon": "latest",
+    "sinon-chai": "latest",
     "uglify-js": "latest"
   }
 }
