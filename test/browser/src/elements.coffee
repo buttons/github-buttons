@@ -36,7 +36,6 @@ describe 'Element', ->
       expect spy
         .to.have.been.calledTwice
 
-
   describe '#once()', ->
     it 'should call the function on event only once', ->
       spy = sinon.spy()
@@ -83,3 +82,69 @@ describe 'Element', ->
         .to.be.false
       expect a.hasClass "world"
         .to.be.true
+
+
+describe 'Frame', ->
+  frame = null
+  html = \
+    """
+    <!DOCTYPE html>
+    <html lang="ja">
+    <head>
+      <meta charset="utf-8">
+      <title></title>
+    </head>
+    <body style="margin: 0;">
+      <div style="width: 200px; height: 100px;"></div>
+    </body>
+    </html>
+    """
+
+  beforeEach ->
+    frame = new Frame (iframe) -> document.body.appendChild iframe
+
+  afterEach ->
+    document.body.removeChild frame.element
+
+  describe '#constructor()', ->
+    it 'should callback with the new iframe', ->
+      expect frame.element.nodeType
+        .to.equal 1
+      expect frame.element.tagName
+        .to.equal "IFRAME"
+
+  describe '#html()', ->
+    it 'should write html when iframe is in same-origin', (done) ->
+      frame.on "load", ->
+        expect frame.element.contentWindow.document.documentElement.getAttribute "lang"
+          .to.equal "ja"
+        done()
+      frame.html html
+
+  describe '#load()', ->
+    it 'should load the src url', ->
+      frame.load "../../buttons.html"
+      expect frame.element.src
+        .to.match /buttons\.html$/
+
+  describe '#size()', ->
+    it 'should return the iframe content size', (done) ->
+      frame.on "load", ->
+        expect frame.size()
+          .to.deep.equal
+            width: "200px"
+            height: "100px"
+        done()
+      frame.html html
+
+  describe '#resize()', ->
+    it 'should resize the iframe', (done) ->
+      frame.resize
+        width: "20px"
+        height: "10px"
+      expect frame.element.style.width
+        .to.equal "20px"
+      expect frame.element.style.height
+        .to.equal "10px"
+      done()
+

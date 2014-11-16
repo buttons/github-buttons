@@ -58,7 +58,53 @@ class Element
     " #{element.className} ".replace(r_whitespace, " ").indexOf(" #{className} ") >= 0
 
 
-class Anchor
+class Frame extends Element
+  constructor: (callback) ->
+    super "iframe", (iframe) ->
+      iframe.setAttribute key, value for key, value of {
+        allowtransparency: true
+        scrolling: "no"
+        frameBorder: 0
+      }
+      iframe.style[key] = value for key, value of {
+        border: "none"
+        height: "0"
+        width: "1px"
+      }
+      callback iframe if callback
+      return
+
+  html: (html) ->
+    try
+      contentDocument = @element.contentWindow.document
+      contentDocument.open()
+      contentDocument.write html
+      contentDocument.close()
+    return
+
+  load: (src) ->
+    @element.src = src
+
+  size: ->
+    try
+      contentDocument = @element.contentWindow.document
+      html = contentDocument.documentElement
+      body = contentDocument.body
+      html.style.overflow = body.style.overflow = if window.opera then "scroll" else "visible"
+      size =
+        width:  "#{body.scrollWidth}px"
+        height: "#{body.scrollHeight}px"
+      html.style.overflow = body.style.overflow = ""
+      size
+    catch
+      {}
+
+  resize: ({width, height} = @size()) ->
+    @element.style.width = width if width
+    @element.style.height = height if height
+
+
+class ButtonAnchor
   @parse: (element) ->
     href: filter_js element.href
     text: element.getAttribute("data-text") or element.textContent or element.innerText
@@ -86,20 +132,17 @@ class Anchor
   filter_js = (href) -> href unless /^\s*javascript:/i.test href
 
 
-class Frame extends Element
-  constructor: (@hash, @callback...) ->
-    super "iframe", (iframe) ->
-      iframe.setAttribute key, value for key, value of {
-        allowtransparency: true
-        scrolling: "no"
-        frameBorder: 0
-      }
-      iframe.style[key] = value for key, value of {
-        border: "none"
-        height: "0"
-        width: "1px"
-      }
-      callback[0] iframe if callback[0]
+class ButtonFrame extends Frame
+  constructor: (hash, callback...) ->
+    super callback[0]
+
+    reload = =>
+      size = @size()
+      @once "load", =>
+        @resize size
+        callback[1] @element if callback[1]
+        return
+      @load "#{Config.url}buttons.html#{hash}"
       return
 
     @once "load", =>
@@ -107,19 +150,18 @@ class Frame extends Element
         script = @element.contentWindow.callback.script
         if script.readyState
           @on.call element: script, "readystatechange", =>
-            @reload() if /loaded|complete/.test script.readyState
+            reload() if /loaded|complete/.test script.readyState
             return
         else
           for event in ["load", "error"]
             @on.call element: script, event, =>
-              @reload()
+              reload()
               return
       else
-        @reload()
+        reload()
       return
 
-    @element.contentWindow.document.open()
-    @element.contentWindow.document.write \
+    @html \
       """
       <!DOCTYPE html>
       <html>
@@ -129,33 +171,16 @@ class Frame extends Element
       <base target="_blank"><!--[if lte IE 6]></base><![endif]-->
       <link rel="stylesheet" href="#{Config.url}assets/css/buttons.css">
       <style>html{visibility:hidden;}</style>
-      <script>document.location.hash = "#{@hash}";</script>
+      <script>document.location.hash = "#{hash}";</script>
       </head>
       <body>
       <script src="#{Config.script.src}"></script>
       </body>
       </html>
       """
-    @element.contentWindow.document.close()
-
-  reload: ->
-    contentDocument = @element.contentWindow.document
-    html = contentDocument.documentElement
-    body = contentDocument.body
-    html.style.overflow = body.style.overflow = if window.opera then "scroll" else "visible"
-    style =
-      height: "#{body.scrollHeight}px"
-      width:  "#{body.scrollWidth}px"
-    html.style.overflow = body.style.overflow = ""
-    @once "load", =>
-      @element.style[key] = value for key, value of style
-      @callback[1] @element if @callback[1]
-      return
-    @element.src = "#{Config.url}buttons.html#{@hash}"
-    return
 
 
-class FrameContent
+class ButtonFrameContent
   constructor: (options) ->
     if options and options.data
       document.body.className = options.data.style

@@ -1,7 +1,3 @@
-class UIElement extends Element
-  constructor: (@element) ->
-
-
 class Form extends Element
   constructor: (@element, callback) ->
     if callback
@@ -25,7 +21,7 @@ class Form extends Element
   parse: ->
     Form.parse @serialize()
 
-  @parse: (options)->
+  @parse: (options) ->
     {type, user, repo} = options
     config =
       className: "github-button"
@@ -85,7 +81,7 @@ class Form extends Element
     config
 
 
-class Frame extends Element
+class DisabledFrame extends Element
   constructor: (@element) ->
     @on "load", =>
       for a in @element.contentWindow.document.getElementsByTagName "a"
@@ -109,11 +105,11 @@ class PreviewAnchor extends Element
       return
 
 
-class PreviewFrame extends Element
+class PreviewFrame extends Frame
   constructor: (@element) ->
     @on "load", =>
       if @element.contentWindow.callback
-        script = @element.contentWindow.document.getElementsByTagName("script")[0]
+        script = @element.contentWindow.callback.script
         if script.readyState
           @on.call element: script, "readystatechange", =>
             @resize() if /loaded|complete/.test script.readyState
@@ -129,24 +125,10 @@ class PreviewFrame extends Element
 
   load: (config) ->
     @element.parentNode.style.height = "#{(if config.data.style is "mega" then 28 else 20) + 2}px"
-    style =
-      height: "0"
-      width: "1px"
-    @element.style[key] = value for key, value of style
+    @element.style.width = "1px"
+    @element.style.height = "0"
     @element.src = "buttons.html#{Hash.encode config}"
     @element.contentWindow.document.location.reload()
-    return
-
-  resize: ->
-    contentDocument = @element.contentWindow.document
-    html = contentDocument.documentElement
-    body = contentDocument.body
-    html.style.overflow = body.style.overflow = if window.opera then "scroll" else "visible"
-    style =
-      height: "#{body.scrollHeight}px"
-      width:  "#{body.scrollWidth}px"
-    html.style.overflow = body.style.overflow = ""
-    @element.style[key] = value for key, value of style
     return
 
 
@@ -165,7 +147,7 @@ class PreviewButton extends Element
         #{a.outerHTML}
         """
       a.removeAttribute("data-count-api") if no_count
-      @ui.preview_frame.load Anchor.parse a
+      @ui.preview_frame.load ButtonAnchor.parse a
       a = null
       return
     return
@@ -200,8 +182,8 @@ class UI
       if iframe.parentNode.id is "preview"
         @preview_frame = new PreviewFrame iframe
       else
-        new Frame iframe
-    @content = new UIElement document.getElementById "content"
+        new DisabledFrame iframe
+    @content = new Element document.getElementById "content"
     @form = new Form document.getElementById("button-config"), (options) =>
       if options.type
         for name in ["repo", "standard-icon"]
@@ -234,7 +216,7 @@ class UI
 
         @content.removeClass "hidden"
       return
-    @user_repo = new UIElement document.getElementById "user-repo"
+    @user_repo = new Element document.getElementById "user-repo"
     @preview_button = new PreviewButton document.getElementById("preview-button"), @
     @code = new Code document.getElementById "code"
     @snippet = new Snippet document.getElementById "snippet"

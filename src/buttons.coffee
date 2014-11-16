@@ -7,7 +7,7 @@ if Config.script
 
   for anchor in anchors
     do (a = anchor) ->
-      new Frame Hash.encode(Anchor.parse a), (iframe) ->
+      new ButtonFrame Hash.encode(ButtonAnchor.parse a), (iframe) ->
         a.parentNode.insertBefore iframe, a
         return
       , ->
@@ -15,4 +15,4 @@ if Config.script
         return
       return
 else
-  new FrameContent Hash.decode()
+  new ButtonFrameContent Hash.decode()
