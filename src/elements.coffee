@@ -1,18 +1,18 @@
 class Element
   constructor: (element, callback) ->
     @element = if element and element.nodeType is 1 then element else document.createElement element
-    callback @element if callback
+    callback.apply @, [@element] if callback
 
-  on: (event, func) ->
-    addEventListener @element, event, func
+  on: (events..., func) ->
+    addEventListener @element, event, func for event in events
     return
 
-  once: (event, func) ->
+  once: (events..., func) ->
     once = =>
-      removeEventListener @element, event, once
+      removeEventListener @element, event, once for event in events
       func()
       return
-    addEventListener @element, event, once
+    addEventListener @element, event, once for event in events
     return
 
   addClass: (className) ->
@@ -71,7 +71,7 @@ class Frame extends Element
         height: "0"
         width: "1px"
       }
-      callback iframe if callback
+      callback.apply @, [iframe] if callback
       return
 
   html: (html) ->
@@ -140,7 +140,7 @@ class ButtonFrame extends Frame
       size = @size()
       @once "load", =>
         @resize size
-        callback[1] @element if callback[1]
+        callback[1].apply @, [@element] if callback[1]
         return
       @load "#{Config.url}buttons.html#{hash}"
       return
@@ -149,14 +149,13 @@ class ButtonFrame extends Frame
       if @element.contentWindow.callback
         script = @element.contentWindow.callback.script
         if script.readyState
-          @on.call element: script, "readystatechange", =>
+          new Element(script).on "readystatechange", ->
             reload() if /loaded|complete/.test script.readyState
             return
         else
-          for event in ["load", "error"]
-            @on.call element: script, event, =>
-              reload()
-              return
+          new Element(script).on "load", "error", ->
+            reload()
+            return
       else
         reload()
       return
@@ -253,12 +252,12 @@ class ButtonFrameContent
                 return
               window.callback.script = script
 
-              Element.prototype.on.call element: script, "error", ->
+              @on "error", ->
                 window.callback = null
                 return
 
               if script.readyState
-                Element.prototype.on.call element: script, "readystatechange", ->
+                @on "readystatechange", ->
                   window.callback = null if script.readyState is "loaded" and script.children and script.readyState is "loading"
                   return
 

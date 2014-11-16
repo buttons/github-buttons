@@ -1,8 +1,8 @@
 if window._phantom
   HTMLElement.prototype.click or= ->
-    ev = document.createEvent 'MouseEvent'
-    ev.initMouseEvent 'click', true, true, window, null, 0, 0, 0, 0, false, false, false, false, 0, null
-    @dispatchEvent ev
+    event = document.createEvent 'MouseEvents'
+    event.initMouseEvent 'click', true, true, window, null, 0, 0, 0, 0, false, false, false, false, 0, null
+    @dispatchEvent event
     return
 
 
@@ -17,7 +17,13 @@ describe 'Element', ->
       expect new Element "i"
         .to.have.deep.property "element.nodeType", 1
 
-    it 'should callback with the element', (done) ->
+    it 'should callback with this', ->
+      _this = null
+      _ = new Element "em", (element) -> _this = @
+      expect _this
+        .to.equal _
+
+    it 'should callback with argument element', (done) ->
       b = document.createElement "b"
       new Element b, (element) ->
         expect element
@@ -25,27 +31,65 @@ describe 'Element', ->
         done()
 
   describe '#on()', ->
-    it 'should call the function on event', ->
+    input = null
+
+    beforeEach ->
+      input = new Element "input", (element) -> document.body.appendChild element
+
+    afterEach ->
+      document.body.removeChild input.element
+
+    it 'should call the function on single event type', ->
       spy = sinon.spy()
-      a = new Element "a"
-      a.on "click", spy
-      a.element.click()
+      input.on "click", spy
+      input.element.click()
       expect spy
         .to.have.been.calledOnce
-      a.element.click()
+      input.element.click()
       expect spy
         .to.have.been.calledTwice
 
-  describe '#once()', ->
-    it 'should call the function on event only once', ->
+    it 'should call the function on multiple event types', ->
       spy = sinon.spy()
-      a = new Element "a"
-      a.once "click", spy
-      a.element.click()
+      input.on "focus", "blur", "click", spy
+      input.element.focus()
       expect spy
         .to.have.been.calledOnce
-      a.element.click()
-      a.element.click()
+      input.element.blur()
+      expect spy
+        .to.have.been.calledTwice
+      input.element.click()
+      expect spy
+        .to.have.been.calledThrice
+
+  describe '#once()', ->
+    input = null
+
+    beforeEach ->
+      input = new Element "input", (element) -> document.body.appendChild element
+
+    afterEach ->
+      document.body.removeChild input.element
+
+    it 'should call the function on single event type only once', ->
+      spy = sinon.spy()
+      input.once "click", spy
+      input.element.click()
+      expect spy
+        .to.have.been.calledOnce
+      input.element.click()
+      input.element.click()
+      expect spy
+        .to.have.been.calledOnce
+
+    it 'should call the function on multiple event types only once', ->
+      spy = sinon.spy()
+      input.once "focus", "blur", spy
+      input.element.focus()
+      expect spy
+        .to.have.been.calledOnce
+      input.element.blur()
+      input.element.focus()
       expect spy
         .to.have.been.calledOnce
 
