@@ -16,30 +16,35 @@
     }
 
     Element.prototype.on = function() {
-      var event, events, func, _i, _j, _len;
+      var callback, event, events, func, _i, _j, _len;
       events = 2 <= arguments.length ? __slice.call(arguments, 0, _i = arguments.length - 1) : (_i = 0, []), func = arguments[_i++];
-      for (_j = 0, _len = events.length; _j < _len; _j++) {
-        event = events[_j];
-        addEventListener(this.element, event, func);
-      }
-    };
-
-    Element.prototype.once = function() {
-      var event, events, func, once, _i, _j, _len;
-      events = 2 <= arguments.length ? __slice.call(arguments, 0, _i = arguments.length - 1) : (_i = 0, []), func = arguments[_i++];
-      once = (function(_this) {
+      callback = (function(_this) {
         return function() {
-          var event, _j, _len;
-          for (_j = 0, _len = events.length; _j < _len; _j++) {
-            event = events[_j];
-            removeEventListener(_this.element, event, once);
-          }
-          func();
+          func.apply(_this, [_this.element]);
         };
       })(this);
       for (_j = 0, _len = events.length; _j < _len; _j++) {
         event = events[_j];
-        addEventListener(this.element, event, once);
+        addEventListener(this.element, event, callback);
+      }
+    };
+
+    Element.prototype.once = function() {
+      var callback, event, events, func, _i, _j, _len;
+      events = 2 <= arguments.length ? __slice.call(arguments, 0, _i = arguments.length - 1) : (_i = 0, []), func = arguments[_i++];
+      callback = (function(_this) {
+        return function() {
+          var event, _j, _len;
+          for (_j = 0, _len = events.length; _j < _len; _j++) {
+            event = events[_j];
+            removeEventListener(_this.element, event, callback);
+          }
+          func.apply(_this, [_this.element]);
+        };
+      })(this);
+      for (_j = 0, _len = events.length; _j < _len; _j++) {
+        event = events[_j];
+        addEventListener(this.element, event, callback);
       }
     };
 
@@ -245,36 +250,34 @@
         return function() {
           var size;
           size = _this.size();
-          _this.once("load", function() {
-            _this.resize(size);
+          _this.once("load", function(element) {
+            this.resize(size);
             if (callback[1]) {
-              callback[1].apply(_this, [_this.element]);
+              callback[1](element);
             }
           });
           _this.load("" + Config.url + "buttons.html" + hash);
         };
       })(this);
-      this.once("load", (function(_this) {
-        return function() {
-          var script;
-          if (_this.element.contentWindow.callback) {
-            script = _this.element.contentWindow.callback.script;
-            if (script.readyState) {
-              new Element(script).on("readystatechange", function() {
-                if (/loaded|complete/.test(script.readyState)) {
-                  reload();
-                }
-              });
-            } else {
-              new Element(script).on("load", "error", function() {
+      this.once("load", function(element) {
+        var script;
+        if (element.contentWindow.callback) {
+          script = element.contentWindow.callback.script;
+          if (script.readyState) {
+            new Element(script).on("readystatechange", function() {
+              if (/loaded|complete/.test(script.readyState)) {
                 reload();
-              });
-            }
+              }
+            });
           } else {
-            reload();
+            new Element(script).on("load", "error", function() {
+              reload();
+            });
           }
-        };
-      })(this));
+        } else {
+          reload();
+        }
+      });
       this.html("<!DOCTYPE html>\n<html>\n<head>\n<meta charset=\"utf-8\">\n<title></title>\n<base target=\"_blank\"><!--[if lte IE 6]></base><![endif]-->\n<link rel=\"stylesheet\" href=\"" + Config.url + "assets/css/buttons.css\">\n<style>html{visibility:hidden;}</style>\n<script>document.location.hash = \"" + hash + "\";</script>\n</head>\n<body>\n<script src=\"" + Config.script.src + "\"></script>\n</body>\n</html>");
     }
 
@@ -466,7 +469,7 @@
         input.element.click();
         return expect(spy).to.have.been.calledTwice;
       });
-      return it('should call the function on multiple event types', function() {
+      it('should call the function on multiple event types', function() {
         var spy;
         spy = sinon.spy();
         input.on("focus", "blur", "click", spy);
@@ -476,6 +479,25 @@
         expect(spy).to.have.been.calledTwice;
         input.element.click();
         return expect(spy).to.have.been.calledThrice;
+      });
+      it('should call the function with this', function(done) {
+        var a, _this;
+        a = document.createElement("a");
+        _this = new Element(a);
+        _this.on("click", function() {
+          expect(this).to.equal(_this);
+          return done();
+        });
+        return a.click();
+      });
+      return it('should call the function with argument element', function(done) {
+        var b;
+        b = document.createElement("b");
+        new Element(b).on("click", function(element) {
+          expect(element).to.equal(b);
+          return done();
+        });
+        return b.click();
       });
     });
     describe('#once()', function() {
@@ -499,7 +521,7 @@
         input.element.click();
         return expect(spy).to.have.been.calledOnce;
       });
-      return it('should call the function on multiple event types only once', function() {
+      it('should call the function on multiple event types only once', function() {
         var spy;
         spy = sinon.spy();
         input.once("focus", "blur", spy);
@@ -508,6 +530,25 @@
         input.element.blur();
         input.element.focus();
         return expect(spy).to.have.been.calledOnce;
+      });
+      it('should call the function with this', function(done) {
+        var a, _this;
+        a = document.createElement("a");
+        _this = new Element(a);
+        _this.once("click", function() {
+          expect(this).to.equal(_this);
+          return done();
+        });
+        return a.click();
+      });
+      return it('should call the function with argument element', function(done) {
+        var b;
+        b = document.createElement("b");
+        new Element(b).once("click", function(element) {
+          expect(element).to.equal(b);
+          return done();
+        });
+        return b.click();
       });
     });
     describe('#addClass()', function() {

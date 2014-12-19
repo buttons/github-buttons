@@ -4,15 +4,18 @@ class Element
     callback.apply @, [@element] if callback
 
   on: (events..., func) ->
-    addEventListener @element, event, func for event in events
+    callback = =>
+      func.apply @, [@element]
+      return
+    addEventListener @element, event, callback for event in events
     return
 
   once: (events..., func) ->
-    once = =>
-      removeEventListener @element, event, once for event in events
-      func()
+    callback = =>
+      removeEventListener @element, event, callback for event in events
+      func.apply @, [@element]
       return
-    addEventListener @element, event, once for event in events
+    addEventListener @element, event, callback for event in events
     return
 
   addClass: (className) ->
@@ -138,16 +141,16 @@ class ButtonFrame extends Frame
 
     reload = =>
       size = @size()
-      @once "load", =>
+      @once "load", (element) ->
         @resize size
-        callback[1].apply @, [@element] if callback[1]
+        callback[1] element if callback[1]
         return
       @load "#{Config.url}buttons.html#{hash}"
       return
 
-    @once "load", =>
-      if @element.contentWindow.callback
-        script = @element.contentWindow.callback.script
+    @once "load", (element) ->
+      if element.contentWindow.callback
+        script = element.contentWindow.callback.script
         if script.readyState
           new Element(script).on "readystatechange", ->
             reload() if /loaded|complete/.test script.readyState

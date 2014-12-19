@@ -62,6 +62,24 @@ describe 'Element', ->
       expect spy
         .to.have.been.calledThrice
 
+    it 'should call the function with this', (done) ->
+      a = document.createElement "a"
+      _this = new Element a
+      _this.on "click", ->
+        expect @
+          .to.equal _this
+        done()
+      a.click()
+
+    it 'should call the function with argument element', (done) ->
+      b = document.createElement "b"
+      new Element b
+        .on "click", (element) ->
+          expect element
+            .to.equal b
+          done()
+      b.click()
+
   describe '#once()', ->
     input = null
 
@@ -92,6 +110,24 @@ describe 'Element', ->
       input.element.focus()
       expect spy
         .to.have.been.calledOnce
+
+    it 'should call the function with this', (done) ->
+      a = document.createElement "a"
+      _this = new Element a
+      _this.once "click", ->
+        expect @
+          .to.equal _this
+        done()
+      a.click()
+
+    it 'should call the function with argument element', (done) ->
+      b = document.createElement "b"
+      new Element b
+        .once "click", (element) ->
+          expect element
+            .to.equal b
+          done()
+      b.click()
 
   describe '#addClass()', ->
     it 'should add class to element', ->
