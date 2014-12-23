@@ -15,36 +15,40 @@
       }
     }
 
+    Element.prototype.get = function() {
+      return this.element;
+    };
+
     Element.prototype.on = function() {
-      var callback, event, events, func, _i, _j, _len;
+      var callback, eventName, events, func, _i, _j, _len;
       events = 2 <= arguments.length ? __slice.call(arguments, 0, _i = arguments.length - 1) : (_i = 0, []), func = arguments[_i++];
       callback = (function(_this) {
-        return function() {
-          func.apply(_this, [_this.element]);
+        return function(event) {
+          return func.apply(_this, [event || window.event]);
         };
       })(this);
       for (_j = 0, _len = events.length; _j < _len; _j++) {
-        event = events[_j];
-        addEventListener(this.element, event, callback);
+        eventName = events[_j];
+        addEventListener(this.element, eventName, callback);
       }
     };
 
     Element.prototype.once = function() {
-      var callback, event, events, func, _i, _j, _len;
+      var callback, eventName, events, func, _i, _j, _len;
       events = 2 <= arguments.length ? __slice.call(arguments, 0, _i = arguments.length - 1) : (_i = 0, []), func = arguments[_i++];
       callback = (function(_this) {
-        return function() {
-          var event, _j, _len;
+        return function(event) {
+          var eventName, _j, _len;
           for (_j = 0, _len = events.length; _j < _len; _j++) {
-            event = events[_j];
-            removeEventListener(_this.element, event, callback);
+            eventName = events[_j];
+            removeEventListener(_this.element, eventName, callback);
           }
-          func.apply(_this, [_this.element]);
+          return func.apply(_this, [event || window.event]);
         };
       })(this);
       for (_j = 0, _len = events.length; _j < _len; _j++) {
-        event = events[_j];
-        addEventListener(this.element, event, callback);
+        eventName = events[_j];
+        addEventListener(this.element, eventName, callback);
       }
     };
 
@@ -250,19 +254,19 @@
         return function() {
           var size;
           size = _this.size();
-          _this.once("load", function(element) {
+          _this.once("load", function() {
             this.resize(size);
             if (callback[1]) {
-              callback[1](element);
+              callback[1](this.get());
             }
           });
           _this.load("" + Config.url + "buttons.html" + hash);
         };
       })(this);
-      this.once("load", function(element) {
-        var script;
-        if (element.contentWindow.callback) {
-          script = element.contentWindow.callback.script;
+      this.once("load", function() {
+        var script, script_callback;
+        if (script_callback = this.get().contentWindow.callback) {
+          script = script_callback.script;
           if (script.readyState) {
             new Element(script).on("readystatechange", function() {
               if (/loaded|complete/.test(script.readyState)) {
@@ -490,11 +494,11 @@
         });
         return a.click();
       });
-      return it('should call the function with argument element', function(done) {
+      return it('should call the function with event', function(done) {
         var b;
         b = document.createElement("b");
-        new Element(b).on("click", function(element) {
-          expect(element).to.equal(b);
+        new Element(b).on("click", function(event) {
+          expect(event.type).to.equal("click");
           return done();
         });
         return b.click();
@@ -541,11 +545,11 @@
         });
         return a.click();
       });
-      return it('should call the function with argument element', function(done) {
+      return it('should call the function with event', function(done) {
         var b;
         b = document.createElement("b");
-        new Element(b).once("click", function(element) {
-          expect(element).to.equal(b);
+        new Element(b).once("click", function(event) {
+          expect(event.type).to.equal("click");
           return done();
         });
         return b.click();

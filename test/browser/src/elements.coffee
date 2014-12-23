@@ -71,12 +71,12 @@ describe 'Element', ->
         done()
       a.click()
 
-    it 'should call the function with argument element', (done) ->
+    it 'should call the function with event', (done) ->
       b = document.createElement "b"
       new Element b
-        .on "click", (element) ->
-          expect element
-            .to.equal b
+        .on "click", (event) ->
+          expect event.type
+            .to.equal "click"
           done()
       b.click()
 
@@ -120,12 +120,12 @@ describe 'Element', ->
         done()
       a.click()
 
-    it 'should call the function with argument element', (done) ->
+    it 'should call the function with event', (done) ->
       b = document.createElement "b"
       new Element b
-        .once "click", (element) ->
-          expect element
-            .to.equal b
+        .once "click", (event) ->
+          expect event.type
+            .to.equal "click"
           done()
       b.click()
 

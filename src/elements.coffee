@@ -3,19 +3,19 @@ class Element
     @element = if element and element.nodeType is 1 then element else document.createElement element
     callback.apply @, [@element] if callback
 
+  get: -> @element
+
   on: (events..., func) ->
-    callback = =>
-      func.apply @, [@element]
-      return
-    addEventListener @element, event, callback for event in events
+    callback = (event) =>
+      func.apply @, [event || window.event]
+    addEventListener @element, eventName, callback for eventName in events
     return
 
   once: (events..., func) ->
-    callback = =>
-      removeEventListener @element, event, callback for event in events
-      func.apply @, [@element]
-      return
-    addEventListener @element, event, callback for event in events
+    callback = (event) =>
+      removeEventListener @element, eventName, callback for eventName in events
+      func.apply @, [event || window.event]
+    addEventListener @element, eventName, callback for eventName in events
     return
 
   addClass: (className) ->
@@ -141,16 +141,16 @@ class ButtonFrame extends Frame
 
     reload = =>
       size = @size()
-      @once "load", (element) ->
+      @once "load", ->
         @resize size
-        callback[1] element if callback[1]
+        callback[1] @get() if callback[1]
         return
       @load "#{Config.url}buttons.html#{hash}"
       return
 
-    @once "load", (element) ->
-      if element.contentWindow.callback
-        script = element.contentWindow.callback.script
+    @once "load", ->
+      if script_callback = @get().contentWindow.callback
+        script = script_callback.script
         if script.readyState
           new Element(script).on "readystatechange", ->
             reload() if /loaded|complete/.test script.readyState
