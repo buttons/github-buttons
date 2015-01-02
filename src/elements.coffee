@@ -1,33 +1,33 @@
 class Element
   constructor: (element, callback) ->
-    @element = if element and element.nodeType is 1 then element else document.createElement element
-    callback.apply @, [@element] if callback
+    @$ = if element and element.nodeType is 1 then element else document.createElement element
+    callback.apply @, [@$] if callback
 
-  get: -> @element
+  get: -> @$
 
   on: (events..., func) ->
     callback = (event) =>
       func.apply @, [event || window.event]
-    addEventListener @element, eventName, callback for eventName in events
+    addEventListener @$, eventName, callback for eventName in events
     return
 
   once: (events..., func) ->
     callback = (event) =>
-      removeEventListener @element, eventName, callback for eventName in events
+      removeEventListener @$, eventName, callback for eventName in events
       func.apply @, [event || window.event]
-    addEventListener @element, eventName, callback for eventName in events
+    addEventListener @$, eventName, callback for eventName in events
     return
 
   addClass: (className) ->
-    addClass @element, className unless hasClass @element, className
+    addClass @$, className unless hasClass @$, className
     return
 
   removeClass: (className) ->
-    removeClass @element, className if hasClass @element, className
+    removeClass @$, className if hasClass @$, className
     return
 
   hasClass: (className) ->
-    hasClass @element, className
+    hasClass @$, className
 
   addEventListener = (element, event, func) ->
     if element.addEventListener
@@ -79,18 +79,18 @@ class Frame extends Element
 
   html: (html) ->
     try
-      contentDocument = @element.contentWindow.document
+      contentDocument = @$.contentWindow.document
       contentDocument.open()
       contentDocument.write html
       contentDocument.close()
     return
 
   load: (src) ->
-    @element.src = src
+    @$.src = src
 
   size: ->
     try
-      contentDocument = @element.contentWindow.document
+      contentDocument = @$.contentWindow.document
       html = contentDocument.documentElement
       body = contentDocument.body
       html.style.overflow = body.style.overflow = if window.opera then "scroll" else "visible"
@@ -103,8 +103,8 @@ class Frame extends Element
       {}
 
   resize: ({width, height} = @size()) ->
-    @element.style.width = width if width
-    @element.style.height = height if height
+    @$.style.width = width if width
+    @$.style.height = height if height
 
 
 class ButtonAnchor
@@ -136,29 +136,31 @@ class ButtonAnchor
 
 
 class ButtonFrame extends Frame
-  constructor: (hash, callback...) ->
-    super callback[0]
+  constructor: (hash, callbacks...) ->
+    super callbacks.shift()
 
     reload = =>
       size = @size()
       @once "load", ->
         @resize size
-        callback[1] @get() if callback[1]
+        callbacks.shift() @$ if callbacks[0]
         return
       @load "#{Config.url}buttons.html#{hash}"
       return
 
     @once "load", ->
-      if script_callback = @get().contentWindow.callback
-        script = script_callback.script
+      if callback = @$.contentWindow.callback
+        script = callback.script
         if script.readyState
-          new Element(script).on "readystatechange", ->
-            reload() if /loaded|complete/.test script.readyState
-            return
+          new Element script
+            .on "readystatechange", ->
+              reload() if /loaded|complete/.test script.readyState
+              return
         else
-          new Element(script).on "load", "error", ->
-            reload()
-            return
+          new Element script
+            .on "load", "error", ->
+              reload()
+              return
       else
         reload()
       return

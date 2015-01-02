@@ -145,6 +145,9 @@
               <h3>Preview and code</h3>
               <p>Try out your button, then copy and paste the code below into the HTML for your site.</p>
               <p id="preview"><a class="github-button" href="https://github.com/">GitHub</a></p>
+              <div id="preview-warning" class="alert alert-warning hidden" role="alert">
+                <strong>Warning!</strong> Live Preview has been disabled due to low API rate limit remaining.
+              </div>
               <div class="form-group">
                 <textarea id="code" class="code form-control" rows="2" readonly></textarea>
               </div>
@@ -157,7 +160,8 @@
       </form>
     </main>
     <footer class="footer">
-      <div class="container"></div>
+      <div class="container">
+      </div>
     </footer>
     <script id="github-bjs" src="buttons.js"></script>
     <script src="assets/js/main.js"></script>

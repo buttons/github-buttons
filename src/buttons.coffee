@@ -3,7 +3,7 @@ if Config.script
     anchors = document.querySelectorAll "a.#{Config.anchorClass}"
   else
     anchors =
-      anchor for anchor in document.getElementsByTagName "a" when Element.prototype.hasClass.call element: anchor, Config.anchorClass
+      anchor for anchor in document.getElementsByTagName "a" when new Element(anchor).hasClass Config.anchorClass
 
   for anchor in anchors
     do (a = anchor) ->

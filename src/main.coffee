@@ -1,16 +1,43 @@
-class Form extends Element
-  constructor: (@element, callback) ->
-    if callback
-      onchange = =>
-        callback @serialize()
+class GitHubAPIStatus
+  @low_rate_limit = false
+
+  window.callback = (json) =>
+    @rate_limit = json.data
+    @low_rate_limit = @rate_limit.resources.core.remaining < 16
+    return
+
+  @update: ->
+    unless window.callback.script
+      new Element "script", (script) ->
+        script.async = true
+        script.src = "https://api.github.com/rate_limit?callback=callback"
+        window.callback.script = script
+        @on "readystatechange", "load", "error", ->
+          if !script.readyState or /loaded|complete/.test script.readyState
+            script.parentNode.removeChild script
+            window.callback.script = null
+          return
+        head = document.getElementsByTagName("head")[0]
+        head.insertBefore script, head.firstChild
         return
-      for element in @element.elements
-        @on.call element: element, "change", onchange
-        @on.call element: element, "input", onchange if element.type is "text"
+    return
+
+  @update()
+
+
+class Form extends Element
+  on: (events..., func) ->
+    if events.indexOf("change") >= 0
+      callback = (event) =>
+        func.apply @, [event || window.event]
+      for element in @get().elements
+        new Element element
+          .on "change", "input", callback
+    super
 
   serialize: ->
     data = {}
-    for node in @element.elements when node.name
+    for node in @get().elements when node.name
       switch node.type
         when "radio", "checkbox"
           data[node.name] = node.value if node.checked
@@ -18,10 +45,143 @@ class Form extends Element
           data[node.name] = node.value
     data
 
-  parse: ->
-    Form.parse @serialize()
 
-  @parse: (options) ->
+class DisabledFrame extends Element
+  constructor: ->
+    super
+    @on "load", ->
+      for a in @get().contentWindow.document.getElementsByTagName "a"
+        new Element a
+          .on "click", (event) ->
+            event.preventDefault()
+            false
+      new Element @get().contentWindow.document.body
+        .on "click", =>
+          @get().parentNode.click()
+          return
+      return
+
+
+class PreviewAnchor extends Element
+  constructor: ({href, text, data}, callback) ->
+    super "a", (a) ->
+      a.className = Config.anchorClass
+      a.href = href
+      a.appendChild document.createTextNode "#{text}"
+      a.setAttribute "data-#{name}", value for name, value of data
+      callback a if callback
+      return
+
+
+class PreviewFrame extends Frame
+  constructor: (@$) ->
+    @on "load", ->
+      if callback = @get().contentWindow.callback
+        script = callback.script
+        if script.readyState
+          new Element script
+            .on "readystatechange", ->
+              @resize() if /loaded|complete/.test script.readyState
+              return
+        else
+          new Element script
+            .on "load", "error", ->
+              @resize()
+              return
+      else
+        @resize()
+      return
+
+  load: (config) ->
+    @get().parentNode.style.height = "#{(if config.data.style is "mega" then 28 else 20) + 2}px"
+    @get().style.width = "1px"
+    @get().style.height = "0"
+    @get().src = "buttons.html#{Hash.encode config}"
+    @get().contentWindow.document.location.reload()
+    return
+
+
+class Code extends Element
+  constructor: ->
+    super
+    @on "focus", ->
+      @get().select()
+      return
+    @on "click", ->
+      @get().select()
+      return
+    @on "mouseup", (event) ->
+      event.preventDefault()
+      false
+
+
+class ButtonForm extends Form
+  constructor: (@$, {content, preview: {button, frame, code, warning}, snippet, user_repo}) ->
+    snippet.get().value = \
+      """
+      <!-- Place this tag right after the last button or just before your close body tag. -->
+      <script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+      """
+
+    callback = ({force}) =>
+      options = @serialize()
+
+      if options.type
+        content.removeClass "hidden"
+
+        for name in ["repo", "standard-icon"]
+          @get().elements[name].disabled = options.type is "follow"
+        for name in ["show-count"]
+          @get().elements[name].disabled = options.type is "download"
+
+        unless (!options.user or /^[a-z0-9][a-z0-9-]*$/i.test options.user) and (options.type is "follow" or !options.repo or (/^[\w.-]+$/.test(options.repo) and not /^\.\.?$/.test(options.repo)))
+          user_repo.addClass "has-error"
+        else
+          user_repo.removeClass "has-error"
+          if options.user is "" or (options.type isnt "follow" and options.repo is "")
+            user_repo.addClass "has-warning"
+          else
+            user_repo.removeClass "has-warning"
+
+        if (user_repo.hasClass "has-error") or (user_repo.hasClass "has-warning")
+          options.user = "ntkme"
+          options.repo = "github-buttons"
+
+        if @cache isnt (cache = Hash.encode options) or force
+          @cache = cache
+          new PreviewAnchor @parse(options), (a) =>
+            code.get().value = \
+              """
+              <!-- Place this tag where you want the button to render. -->
+              #{a.outerHTML}
+              """
+
+            button.addClass "hidden"
+            if options["show-count"]? and options.type isnt "download"
+              GitHubAPIStatus.update()
+              if GitHubAPIStatus.low_rate_limit
+                button.removeClass "hidden"
+                reset = new Date GitHubAPIStatus.rate_limit.resources.core.reset * 1000
+                if !@reset or reset > @reset
+                  @reset = reset
+                  warning.removeClass "hidden"
+                if force
+                  warning.addClass "hidden"
+                else
+                  a.removeAttribute "data-count-api"
+
+            frame.load ButtonAnchor.parse a
+            a = null
+            return
+      return
+
+    button.on "click", (event) ->
+      event.preventDefault()
+      callback force: true
+      false
+    @on "change", callback
+
+  parse: (options = @serialize()) ->
     {type, user, repo} = options
     config =
       className: "github-button"
@@ -81,147 +241,16 @@ class Form extends Element
     config
 
 
-class DisabledFrame extends Element
-  constructor: (@element) ->
-    @on "load", =>
-      for a in @element.contentWindow.document.getElementsByTagName "a"
-        @on.call element: a, "click", (event) ->
-          event.preventDefault()
-          false
-      @on.call element: @element.contentWindow.document.body, "click", =>
-        @element.parentNode.click()
-        return
-      return
+new DisabledFrame iframe for iframe in document.getElementsByTagName "iframe" when iframe.parentNode.id isnt "preview"
 
-
-class PreviewAnchor extends Element
-  constructor: ({href, text, data}, callback) ->
-    super "a", (a) ->
-      a.className = Config.anchorClass
-      a.href = href
-      a.appendChild document.createTextNode "#{text}"
-      a.setAttribute "data-#{name}", value for name, value of data
-      callback a if callback
-      return
-
-
-class PreviewFrame extends Frame
-  constructor: (@element) ->
-    @on "load", =>
-      if @element.contentWindow.callback
-        script = @element.contentWindow.callback.script
-        if script.readyState
-          @on.call element: script, "readystatechange", =>
-            @resize() if /loaded|complete/.test script.readyState
-            return
-        else
-          for event in ["load", "error"]
-            @on.call element: script, event, =>
-              @resize()
-              return
-      else
-        @resize()
-      return
-
-  load: (config) ->
-    @element.parentNode.style.height = "#{(if config.data.style is "mega" then 28 else 20) + 2}px"
-    @element.style.width = "1px"
-    @element.style.height = "0"
-    @element.src = "buttons.html#{Hash.encode config}"
-    @element.contentWindow.document.location.reload()
-    return
-
-
-class PreviewButton extends Element
-  constructor: (@element, @ui) ->
-    @on "click", =>
-      event.preventDefault()
-      @preview()
-      false
-
-  preview: (config = @ui.form.parse(), no_count = false) ->
-    new PreviewAnchor config, (a) =>
-      @ui.code.element.value = \
-        """
-        <!-- Place this tag where you want the button to render. -->
-        #{a.outerHTML}
-        """
-      a.removeAttribute("data-count-api") if no_count
-      @ui.preview_frame.load ButtonAnchor.parse a
-      a = null
-      return
-    return
-
-
-class Code extends Element
-  constructor: (@element) ->
-    @on "focus", =>
-      @element.select()
-      return
-    @on "click", =>
-      @element.select()
-      return
-    @on "mouseup", ->
-      event.preventDefault()
-      false
-
-
-class Snippet extends Code
-  constructor: ->
-    super
-    @element.value = \
-      """
-      <!-- Place this tag right after the last button or just before your close body tag. -->
-      <script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
-      """
-
-
-class UI
-  constructor: ->
-    for iframe in document.getElementsByTagName "iframe"
-      if iframe.parentNode.id is "preview"
-        @preview_frame = new PreviewFrame iframe
-      else
-        new DisabledFrame iframe
-    @content = new Element document.getElementById "content"
-    @form = new Form document.getElementById("button-config"), (options) =>
-      if options.type
-        for name in ["repo", "standard-icon"]
-          @form.element.elements[name].disabled = options.type is "follow"
-
-        for name in ["show-count"]
-          @form.element.elements[name].disabled = options.type is "download"
-
-        if options["show-count"]? and options.type isnt "download"
-          @preview_button.removeClass "hidden"
-        else
-          @preview_button.addClass "hidden"
-
-        unless (!options.user or /^[a-z0-9][a-z0-9-]*$/i.test options.user) and (options.type is "follow" or !options.repo or (/^[\w.-]+$/.test(options.repo) and not /^\.\.?$/.test(options.repo)))
-          @user_repo.addClass "has-error"
-        else
-          @user_repo.removeClass "has-error"
-          if options.user is "" or (options.type isnt "follow" and options.repo is "")
-            @user_repo.addClass "has-warning"
-          else
-            @user_repo.removeClass "has-warning"
-
-        if (@user_repo.hasClass "has-error") or (@user_repo.hasClass "has-warning")
-          options.user = "ntkme"
-          options.repo = "github-buttons"
-          @preview_button.addClass "hidden"
-          @preview_button.preview Form.parse(options)
-        else
-          @preview_button.preview Form.parse(options), true
-
-        @content.removeClass "hidden"
-      return
-    @user_repo = new Element document.getElementById "user-repo"
-    @preview_button = new PreviewButton document.getElementById("preview-button"), @
-    @code = new Code document.getElementById "code"
-    @snippet = new Snippet document.getElementById "snippet"
-
-
-new UI()
+new ButtonForm document.getElementById("button-config"),
+  content: new Element document.getElementById "content"
+  user_repo: new Element document.getElementById "user-repo"
+  preview:
+    button: new Element document.getElementById "preview-button"
+    frame: new PreviewFrame document.getElementById("preview").getElementsByTagName("iframe")[0]
+    code: new Code document.getElementById "code"
+    warning: new Element document.getElementById "preview-warning"
+  snippet: new Code document.getElementById "snippet"
 
 @onbeforeunload = ->

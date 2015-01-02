@@ -9,14 +9,14 @@
     var addClass, addEventListener, hasClass, r_leading_and_trailing_whitespace, r_whitespace, removeClass, removeEventListener;
 
     function Element(element, callback) {
-      this.element = element && element.nodeType === 1 ? element : document.createElement(element);
+      this.$ = element && element.nodeType === 1 ? element : document.createElement(element);
       if (callback) {
-        callback.apply(this, [this.element]);
+        callback.apply(this, [this.$]);
       }
     }
 
     Element.prototype.get = function() {
-      return this.element;
+      return this.$;
     };
 
     Element.prototype.on = function() {
@@ -29,7 +29,7 @@
       })(this);
       for (_j = 0, _len = events.length; _j < _len; _j++) {
         eventName = events[_j];
-        addEventListener(this.element, eventName, callback);
+        addEventListener(this.$, eventName, callback);
       }
     };
 
@@ -41,31 +41,31 @@
           var eventName, _j, _len;
           for (_j = 0, _len = events.length; _j < _len; _j++) {
             eventName = events[_j];
-            removeEventListener(_this.element, eventName, callback);
+            removeEventListener(_this.$, eventName, callback);
           }
           return func.apply(_this, [event || window.event]);
         };
       })(this);
       for (_j = 0, _len = events.length; _j < _len; _j++) {
         eventName = events[_j];
-        addEventListener(this.element, eventName, callback);
+        addEventListener(this.$, eventName, callback);
       }
     };
 
     Element.prototype.addClass = function(className) {
-      if (!hasClass(this.element, className)) {
-        addClass(this.element, className);
+      if (!hasClass(this.$, className)) {
+        addClass(this.$, className);
       }
     };
 
     Element.prototype.removeClass = function(className) {
-      if (hasClass(this.element, className)) {
-        removeClass(this.element, className);
+      if (hasClass(this.$, className)) {
+        removeClass(this.$, className);
       }
     };
 
     Element.prototype.hasClass = function(className) {
-      return hasClass(this.element, className);
+      return hasClass(this.$, className);
     };
 
     addEventListener = function(element, event, func) {
@@ -137,7 +137,7 @@
     Frame.prototype.html = function(html) {
       var contentDocument;
       try {
-        contentDocument = this.element.contentWindow.document;
+        contentDocument = this.$.contentWindow.document;
         contentDocument.open();
         contentDocument.write(html);
         contentDocument.close();
@@ -145,13 +145,13 @@
     };
 
     Frame.prototype.load = function(src) {
-      return this.element.src = src;
+      return this.$.src = src;
     };
 
     Frame.prototype.size = function() {
       var body, contentDocument, html, size;
       try {
-        contentDocument = this.element.contentWindow.document;
+        contentDocument = this.$.contentWindow.document;
         html = contentDocument.documentElement;
         body = contentDocument.body;
         html.style.overflow = body.style.overflow = window.opera ? "scroll" : "visible";
@@ -170,10 +170,10 @@
       var height, width, _ref;
       _ref = _arg != null ? _arg : this.size(), width = _ref.width, height = _ref.height;
       if (width) {
-        this.element.style.width = width;
+        this.$.style.width = width;
       }
       if (height) {
-        return this.element.style.height = height;
+        return this.$.style.height = height;
       }
     };
 
@@ -247,26 +247,26 @@
     __extends(ButtonFrame, _super);
 
     function ButtonFrame() {
-      var callback, hash, reload;
-      hash = arguments[0], callback = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
-      ButtonFrame.__super__.constructor.call(this, callback[0]);
+      var callbacks, hash, reload;
+      hash = arguments[0], callbacks = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
+      ButtonFrame.__super__.constructor.call(this, callbacks.shift());
       reload = (function(_this) {
         return function() {
           var size;
           size = _this.size();
           _this.once("load", function() {
             this.resize(size);
-            if (callback[1]) {
-              callback[1](this.get());
+            if (callbacks[0]) {
+              callbacks.shift()(this.$);
             }
           });
           _this.load("" + Config.url + "buttons.html" + hash);
         };
       })(this);
       this.once("load", function() {
-        var script, script_callback;
-        if (script_callback = this.get().contentWindow.callback) {
-          script = script_callback.script;
+        var callback, script;
+        if (callback = this.$.contentWindow.callback) {
+          script = callback.script;
           if (script.readyState) {
             new Element(script).on("readystatechange", function() {
               if (/loaded|complete/.test(script.readyState)) {
@@ -431,10 +431,10 @@
       it('should use element when element is given', function() {
         var element;
         element = document.createElement("a");
-        return expect(new Element(element)).to.have.property("element", element);
+        return expect(new Element(element).get()).to.equal(element);
       });
       it('should create new element when tag name is given', function() {
-        return expect(new Element("i")).to.have.deep.property("element.nodeType", 1);
+        return expect(new Element("i").get().nodeType).to.equal(1);
       });
       it('should callback with this', function() {
         var _, _this;
@@ -462,26 +462,26 @@
         });
       });
       afterEach(function() {
-        return document.body.removeChild(input.element);
+        return document.body.removeChild(input.get());
       });
       it('should call the function on single event type', function() {
         var spy;
         spy = sinon.spy();
         input.on("click", spy);
-        input.element.click();
+        input.get().click();
         expect(spy).to.have.been.calledOnce;
-        input.element.click();
+        input.get().click();
         return expect(spy).to.have.been.calledTwice;
       });
       it('should call the function on multiple event types', function() {
         var spy;
         spy = sinon.spy();
         input.on("focus", "blur", "click", spy);
-        input.element.focus();
+        input.get().focus();
         expect(spy).to.have.been.calledOnce;
-        input.element.blur();
+        input.get().blur();
         expect(spy).to.have.been.calledTwice;
-        input.element.click();
+        input.get().click();
         return expect(spy).to.have.been.calledThrice;
       });
       it('should call the function with this', function(done) {
@@ -513,26 +513,26 @@
         });
       });
       afterEach(function() {
-        return document.body.removeChild(input.element);
+        return document.body.removeChild(input.get());
       });
       it('should call the function on single event type only once', function() {
         var spy;
         spy = sinon.spy();
         input.once("click", spy);
-        input.element.click();
+        input.get().click();
         expect(spy).to.have.been.calledOnce;
-        input.element.click();
-        input.element.click();
+        input.get().click();
+        input.get().click();
         return expect(spy).to.have.been.calledOnce;
       });
       it('should call the function on multiple event types only once', function() {
         var spy;
         spy = sinon.spy();
         input.once("focus", "blur", spy);
-        input.element.focus();
+        input.get().focus();
         expect(spy).to.have.been.calledOnce;
-        input.element.blur();
-        input.element.focus();
+        input.get().blur();
+        input.get().focus();
         return expect(spy).to.have.been.calledOnce;
       });
       it('should call the function with this', function(done) {
@@ -562,9 +562,9 @@
         element.className = "hello";
         a = new Element(element);
         a.addClass("world");
-        expect(a.element.className).to.equal("hello world");
+        expect(a.get().className).to.equal("hello world");
         a.addClass("world");
-        return expect(a.element.className).to.equal("hello world");
+        return expect(a.get().className).to.equal("hello world");
       });
     });
     describe('#removeClass()', function() {
@@ -574,9 +574,9 @@
         element.className = "hello world";
         a = new Element(element);
         a.removeClass("hello");
-        expect(a.element.className).to.equal("world");
+        expect(a.get().className).to.equal("world");
         a.removeClass("hello");
-        return expect(a.element.className).to.equal("world");
+        return expect(a.get().className).to.equal("world");
       });
     });
     return describe('#hasClass()', function() {
@@ -601,18 +601,18 @@
       });
     });
     afterEach(function() {
-      return document.body.removeChild(frame.element);
+      return document.body.removeChild(frame.get());
     });
     describe('#constructor()', function() {
       return it('should callback with the new iframe', function() {
-        expect(frame.element.nodeType).to.equal(1);
-        return expect(frame.element.tagName).to.equal("IFRAME");
+        expect(frame.get().nodeType).to.equal(1);
+        return expect(frame.get().tagName).to.equal("IFRAME");
       });
     });
     describe('#html()', function() {
       return it('should write html when iframe is in same-origin', function(done) {
         frame.on("load", function() {
-          expect(frame.element.contentWindow.document.documentElement.getAttribute("lang")).to.equal("ja");
+          expect(frame.get().contentWindow.document.documentElement.getAttribute("lang")).to.equal("ja");
           return done();
         });
         return frame.html(html);
@@ -621,7 +621,7 @@
     describe('#load()', function() {
       return it('should load the src url', function() {
         frame.load("../../buttons.html");
-        return expect(frame.element.src).to.match(/buttons\.html$/);
+        return expect(frame.get().src).to.match(/buttons\.html$/);
       });
     });
     describe('#size()', function() {
@@ -642,8 +642,8 @@
           width: "20px",
           height: "10px"
         });
-        expect(frame.element.style.width).to.equal("20px");
-        expect(frame.element.style.height).to.equal("10px");
+        expect(frame.get().style.width).to.equal("20px");
+        expect(frame.get().style.height).to.equal("10px");
         return done();
       });
     });
