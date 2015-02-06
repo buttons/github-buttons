@@ -8,7 +8,7 @@ system = (command, args..., callback) ->
     args.push callback
     callback = null
   esc = String.fromCharCode 27
-  console.log "#{esc}[36;1m==>#{esc}[0;1m #{command} #{args.join " "}#{esc}[0m"
+  console.log "#{esc}[36;1m==>#{esc}[0;1m #{command} #{args.map((arg) -> arg.replace /([ \t\n])/g, "\\$1").join " "}#{esc}[0m"
   proc = spawn command, args
   proc.stdout.pipe process.stdout
   proc.stderr.pipe process.stderr
