@@ -24,6 +24,7 @@
     "chai": "latest",
     "coffee-script": "latest",
     "less": "latest",
+    "less-plugin-clean-css": "latest",
     "mocha": "latest",
     "mocha-phantomjs": "latest",
     "recess": "latest",
