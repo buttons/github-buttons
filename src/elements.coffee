@@ -117,20 +117,15 @@ class ButtonAnchor
           if api = element.getAttribute "data-count-api"
             api = "/#{api}" if "/" isnt api.charAt 0
             api
-        href: do ->
+        href:
           if (href = element.getAttribute "data-count-href") and (href = filter_js href)
             href
           else
             filter_js element.href
-      style: do ->
-        if style = element.getAttribute "data-style"
-          for i in Config.styles
-            if i is style
-              return style
-        Config.styles[0]
-      icon: do ->
-        if icon = element.getAttribute "data-icon"
-          icon
+      style:
+        style if style = element.getAttribute "data-style"
+      icon:
+        icon if icon = element.getAttribute "data-icon"
 
   filter_js = (href) -> href unless /^\s*javascript:/i.test href
 
@@ -187,7 +182,11 @@ class ButtonFrame extends Frame
 class ButtonFrameContent
   constructor: (options) ->
     if options and options.data
-      document.body.className = options.data.style
+      document.body.className = do ->
+        for i in Config.styles
+          if i is options.data.style
+            return i
+        Config.styles[0]
       document.getElementsByTagName("base")[0].href = options.href
       new Button options, (buttonElement) ->
         document.body.appendChild buttonElement

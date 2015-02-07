@@ -26,7 +26,7 @@ find = (dirs..., pattern = /.*/) ->
         file.match pattern
       .forEach (file) ->
         result.push path.join dir, file
-  return result
+  result
 
 coffee =
   compile: (coffeescripts..., javascript, callback) ->

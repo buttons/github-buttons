@@ -187,6 +187,7 @@
     function ButtonAnchor() {}
 
     ButtonAnchor.parse = function(element) {
+      var href, icon, style;
       return {
         href: filter_js(element.href),
         text: element.getAttribute("data-text") || element.textContent || element.innerText,
@@ -201,34 +202,10 @@
                 return api;
               }
             })(),
-            href: (function() {
-              var href;
-              if ((href = element.getAttribute("data-count-href")) && (href = filter_js(href))) {
-                return href;
-              } else {
-                return filter_js(element.href);
-              }
-            })()
+            href: (href = element.getAttribute("data-count-href")) && (href = filter_js(href)) ? href : filter_js(element.href)
           },
-          style: (function() {
-            var i, style, _i, _len, _ref;
-            if (style = element.getAttribute("data-style")) {
-              _ref = Config.styles;
-              for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-                i = _ref[_i];
-                if (i === style) {
-                  return style;
-                }
-              }
-            }
-            return Config.styles[0];
-          })(),
-          icon: (function() {
-            var icon;
-            if (icon = element.getAttribute("data-icon")) {
-              return icon;
-            }
-          })()
+          style: (style = element.getAttribute("data-style")) ? style : void 0,
+          icon: (icon = element.getAttribute("data-icon")) ? icon : void 0
         }
       };
     };
@@ -294,7 +271,17 @@
 
     function ButtonFrameContent(options) {
       if (options && options.data) {
-        document.body.className = options.data.style;
+        document.body.className = (function() {
+          var i, _i, _len, _ref;
+          _ref = Config.styles;
+          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+            i = _ref[_i];
+            if (i === options.data.style) {
+              return i;
+            }
+          }
+          return Config.styles[0];
+        })();
         document.getElementsByTagName("base")[0].href = options.href;
         new Button(options, function(buttonElement) {
           document.body.appendChild(buttonElement);
