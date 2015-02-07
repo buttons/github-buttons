@@ -3,7 +3,7 @@ github-buttons
 
 [![Circle CI](https://circleci.com/gh/ntkme/github-buttons.svg?style=svg)](https://circleci.com/gh/ntkme/github-buttons)
 
-To get started, checkout **[buttons.github.io](https://buttons.github.io)**.
+To get started, checkout **[buttons.github.io](https://buttons.github.io)**!
 
 ## Manual
 
