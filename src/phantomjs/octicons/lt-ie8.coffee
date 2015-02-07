@@ -1,5 +1,3 @@
-#!/usr/bin/env phantomjs
-
 args = require('system').args
 fs   = require('fs')
 page = require('webpage').create()
@@ -9,7 +7,7 @@ if args.length > 1
 else
   puts = (content) -> console.log content
 
-page.open "buttons.html", ->
+page.open "src/phantomjs/octicons/index.html", ->
   puts page.evaluate ->
     styleSheets = Array.prototype.filter.call document.styleSheets, (styleSheet) ->
       styleSheet.href?.match /\/octicons\.css$/

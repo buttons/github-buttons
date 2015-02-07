@@ -4,7 +4,7 @@ path = require 'path'
 
 
 system = (command, args..., callback) ->
-  if "[object Function]" isnt Object.prototype.toString.call callback
+  if callback and "[object Function]" isnt Object.prototype.toString.call callback
     args.push callback
     callback = null
   esc = String.fromCharCode 27
@@ -18,16 +18,19 @@ system = (command, args..., callback) ->
     else
       process.exit status
 
-find = (dir, pattern = /.*/) ->
-  fs.readdirSync dir
-    .filter (file) ->
-      file.match pattern
-    .map (file) ->
-      path.join dir, file
+find = (dirs..., pattern = /.*/) ->
+  result = []
+  for dir in dirs
+    fs.readdirSync dir
+      .filter (file) ->
+        file.match pattern
+      .forEach (file) ->
+        result.push path.join dir, file
+  return result
 
 coffee =
   compile: (coffeescripts..., javascript, callback) ->
-    if "[object Function]" isnt Object.prototype.toString.call callback
+    if callback and "[object Function]" isnt Object.prototype.toString.call callback
       coffeescripts.push javascript
       javascript = callback
       callback = null
@@ -89,11 +92,15 @@ task 'build:less', 'Build stylesheets', ->
     system "lessc", "--clean-css=--s1 --compatibility=ie7", "--source-map", file, "#{file.replace /\.less$/i, '.css'}"
 
 task 'build:octicons', 'Build octicons', ->
-  system "phantomjs", "src/octicons/octicons.coffee", "assets/css/octicons.less"
-  system "phantomjs", "src/octicons/lt-ie8.coffee", "assets/css/lt-ie8.css"
+  system "coffee", "--compile", "src/phantomjs/octicons/octicons.coffee", ->
+    system "env", "-i", "sh", "-c", "phantomjs src/phantomjs/octicons/octicons.js assets/css/octicons.less"
+  system "coffee", "--compile", "src/phantomjs/octicons/lt-ie8.coffee", ->
+    system "env", "-i", "sh", "-c", "phantomjs src/phantomjs/octicons/lt-ie8.js assets/css/lt-ie8.css"
 
 task 'clean', 'Cleanup everything', ->
-  exec "rm assets/css/*.css{,.map} assets/css/octicons.less assets/js/*.js{,.map} lib/*.js test/browser/lib/*.js buttons.js{,.map}"
+  targets = find "./", "assets/js/", "lib/", "test/browser/lib/", "src/phantomjs/octicons/", /\.js(\.map)?$/
+    .concat find "assets/css/", /\.css(\.map)?$|^octicons.less$/
+  system "rm", targets... if targets.length > 0
 
 task 'test', 'Test everything', ->
   system "cake", "clean", ->
@@ -103,7 +110,8 @@ task 'test', 'Test everything', ->
       invoke 'test:mocha-phantomjs'
 
 task 'test:recess', 'Test stylesheets', ->
-  system.apply @, ["recess"].concat(find "assets/css/", /\.less$/i)
+  targets = find "assets/css/", /\.less$/i
+  system "recess", targets... if targets.length > 0
 
 task 'test:mocha', 'Test scripts', ->
   system "mocha", "--compilers", "coffee:coffee-script/register", "test/*.coffee"

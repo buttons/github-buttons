@@ -75,8 +75,8 @@ Development
 
 ### Dependencies
 
-- nodejs
-- phantomjs
+- Node.js
+- PhantomJS
 
 ### Clone
 
