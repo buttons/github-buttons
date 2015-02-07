@@ -18,15 +18,12 @@ system = (command, args..., callback) ->
     else
       process.exit status
 
-find = (dirs..., pattern = /.*/) ->
-  result = []
-  for dir in dirs
-    fs.readdirSync dir
-      .filter (file) ->
-        file.match pattern
-      .forEach (file) ->
-        result.push path.join dir, file
-  result
+find = (dir, pattern = /.*/) ->
+  fs.readdirSync dir
+    .filter (file) ->
+      file.match pattern
+    .map (file) ->
+      path.join dir, file
 
 coffee =
   compile: (coffeescripts..., javascript, callback) ->
@@ -98,7 +95,11 @@ task 'build:octicons', 'Build octicons', ->
     system "env", "-i", "sh", "-c", "phantomjs src/phantomjs/octicons/lt-ie8.js assets/css/lt-ie8.css"
 
 task 'clean', 'Cleanup everything', ->
-  targets = find "./", "assets/js/", "lib/", "test/browser/lib/", "src/phantomjs/octicons/", /\.js(\.map)?$/
+  targets = find "./", /\.js(\.map)?$/
+    .concat find "assets/js/", /\.js(\.map)?$/
+    .concat find "lib/", /\.js(\.map)?$/
+    .concat find "src/phantomjs/octicons/", /\.js(\.map)?$/
+    .concat find "test/browser/lib/", /\.js(\.map)?$/
     .concat find "assets/css/", /\.css(\.map)?$|^octicons.less$/
   system "rm", targets... if targets.length > 0
 
