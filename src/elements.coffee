@@ -113,21 +113,22 @@ class ButtonAnchor
     text: element.getAttribute("data-text") or element.textContent or element.innerText
     data:
       count:
-        api: do ->
-          if api = element.getAttribute "data-count-api"
+        api:
+          if (api = element.getAttribute "data-count-api") and (~api.indexOf "#")
             api = "/#{api}" if "/" isnt api.charAt 0
             api
         href:
-          if (href = element.getAttribute "data-count-href") and (href = filter_js href)
-            href
-          else
-            filter_js element.href
+          (filter_js element.getAttribute "data-count-href") or (filter_js element.href)
       style:
         style if style = element.getAttribute "data-style"
       icon:
         icon if icon = element.getAttribute "data-icon"
 
-  filter_js = (href) -> href unless /^\s*javascript:/i.test href
+  filter_js = (href) ->
+    if /^\s*javascript:/i.test href
+      ""
+    else
+      href
 
 
 class ButtonFrame extends Frame

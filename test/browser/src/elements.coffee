@@ -228,3 +228,123 @@ describe 'Frame', ->
         .to.equal "10px"
       done()
 
+
+describe 'ButtonAnchor', ->
+  a = null
+  javascript_protocals = [
+    "javascript:"
+    "JAVASCRIPT:"
+    "JavaScript:"
+    " javascript:"
+    "   javascript:"
+    "\tjavascript:"
+    "\njavascript:"
+    "\rjavascript:"
+    "\fjavascript:"
+  ]
+
+  beforeEach ->
+    a = document.createElement "a"
+
+  describe '.parse()', ->
+    it 'should parse the anchor without attribute', ->
+      expect ButtonAnchor.parse a
+        .to.deep.equal
+          href: ""
+          text: ""
+          data:
+            count:
+              api: undefined
+              href: ""
+            style: undefined
+            icon: undefined
+
+    it 'should parse the attribute href', ->
+      a.href = "https://buttons.github.io/"
+      expect ButtonAnchor.parse(a).href
+        .to.equal a.href
+
+    it 'should filter javascript in the attribute href', ->
+      for href in javascript_protocals
+        a.href = href
+        expect ButtonAnchor.parse(a).href
+          .to.equal ""
+
+    it 'should parse the attribute data-text', ->
+      text = "test"
+      a.setAttribute "data-text", text
+      expect ButtonAnchor.parse(a).text
+        .to.equal text
+
+    it 'should parse the text content', ->
+      text = "something"
+      a.appendChild document.createTextNode text
+      expect ButtonAnchor.parse(a).text
+        .to.equal text
+
+    it 'should ignore the text content when the attribute data-text is given', ->
+      text = "something"
+      a.setAttribute "data-text", text
+      a.appendChild document.createTextNode "something else"
+      expect ButtonAnchor.parse(a).text
+        .to.equal text
+
+    it 'should parse the attribute data-count-api', ->
+      api = "/repos/:user/:repo#item"
+      a.setAttribute "data-count-api", api
+      expect ButtonAnchor.parse(a).data.count.api
+        .to.equal api
+
+    it 'should prepend / when the attribute data-count-api does not start with /', ->
+      api = "repos/:user/:repo#item"
+      a.setAttribute "data-count-api", api
+      expect ButtonAnchor.parse(a).data.count.api
+        .to.equal "/#{api}"
+
+    it 'should ignore the attribute data-count-api when missing #', ->
+      api = "/repos/:user/:repo"
+      a.setAttribute "data-count-api", api
+      expect ButtonAnchor.parse(a).data.count.api
+        .to.equal undefined
+
+    it 'should parse the attribute data-count-href', ->
+      href = "https://github.com/"
+      a.setAttribute "data-count-href", href
+      expect ButtonAnchor.parse(a).data.count.href
+        .to.equal href
+
+    it 'should fallback data.cout.href to the attribute href when the attribute data-count-href is not given', ->
+      a.href = "https://github.com/"
+      expect ButtonAnchor.parse(a).data.count.href
+        .to.equal a.href
+
+    it 'should filter javascript in the attribute data-count-href', ->
+      for href in javascript_protocals
+        a.setAttribute "data-count-href", href
+        expect ButtonAnchor.parse(a).data.count.href
+          .to.equal ""
+
+    it 'should fallback data.cout.href to the attribute href when the attribute data-count-href is filtered', ->
+      a.href = "https://github.com/"
+      for href in javascript_protocals
+        a.setAttribute "data-count-href", href
+        expect ButtonAnchor.parse(a).data.count.href
+          .to.equal a.href
+
+    it 'should filter javascript in the attribute href when the attribute data-count-href fallbacks to its value', ->
+      for href in javascript_protocals
+        a.href = href
+        expect ButtonAnchor.parse(a).data.count.href
+          .to.equal ""
+
+    it 'should parse the attribute data-style', ->
+      style = "mega"
+      a.setAttribute "data-style", style
+      expect ButtonAnchor.parse(a).data.style
+        .to.equal style
+
+    it 'should parse the attribute data-icon', ->
+      icon = "octicon"
+      a.setAttribute "data-icon", icon
+      expect ButtonAnchor.parse(a).data.icon
+        .to.equal icon

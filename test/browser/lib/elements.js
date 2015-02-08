@@ -187,22 +187,14 @@
     function ButtonAnchor() {}
 
     ButtonAnchor.parse = function(element) {
-      var href, icon, style;
+      var api, icon, style;
       return {
         href: filter_js(element.href),
         text: element.getAttribute("data-text") || element.textContent || element.innerText,
         data: {
           count: {
-            api: (function() {
-              var api;
-              if (api = element.getAttribute("data-count-api")) {
-                if ("/" !== api.charAt(0)) {
-                  api = "/" + api;
-                }
-                return api;
-              }
-            })(),
-            href: (href = element.getAttribute("data-count-href")) && (href = filter_js(href)) ? href : filter_js(element.href)
+            api: (api = element.getAttribute("data-count-api")) && (~api.indexOf("#")) ? ("/" !== api.charAt(0) ? api = "/" + api : void 0, api) : void 0,
+            href: (filter_js(element.getAttribute("data-count-href"))) || (filter_js(element.href))
           },
           style: (style = element.getAttribute("data-style")) ? style : void 0,
           icon: (icon = element.getAttribute("data-icon")) ? icon : void 0
@@ -211,7 +203,9 @@
     };
 
     filter_js = function(href) {
-      if (!/^\s*javascript:/i.test(href)) {
+      if (/^\s*javascript:/i.test(href)) {
+        return "";
+      } else {
         return href;
       }
     };
@@ -632,6 +626,135 @@
         expect(frame.get().style.width).to.equal("20px");
         expect(frame.get().style.height).to.equal("10px");
         return done();
+      });
+    });
+  });
+
+  describe('ButtonAnchor', function() {
+    var a, javascript_protocals;
+    a = null;
+    javascript_protocals = ["javascript:", "JAVASCRIPT:", "JavaScript:", " javascript:", "   javascript:", "\tjavascript:", "\njavascript:", "\rjavascript:", "\fjavascript:"];
+    beforeEach(function() {
+      return a = document.createElement("a");
+    });
+    return describe('.parse()', function() {
+      it('should parse the anchor without attribute', function() {
+        return expect(ButtonAnchor.parse(a)).to.deep.equal({
+          href: "",
+          text: "",
+          data: {
+            count: {
+              api: void 0,
+              href: ""
+            },
+            style: void 0,
+            icon: void 0
+          }
+        });
+      });
+      it('should parse the attribute href', function() {
+        a.href = "https://buttons.github.io/";
+        return expect(ButtonAnchor.parse(a).href).to.equal(a.href);
+      });
+      it('should filter javascript in the attribute href', function() {
+        var href, _i, _len, _results;
+        _results = [];
+        for (_i = 0, _len = javascript_protocals.length; _i < _len; _i++) {
+          href = javascript_protocals[_i];
+          a.href = href;
+          _results.push(expect(ButtonAnchor.parse(a).href).to.equal(""));
+        }
+        return _results;
+      });
+      it('should parse the attribute data-text', function() {
+        var text;
+        text = "test";
+        a.setAttribute("data-text", text);
+        return expect(ButtonAnchor.parse(a).text).to.equal(text);
+      });
+      it('should parse the text content', function() {
+        var text;
+        text = "something";
+        a.appendChild(document.createTextNode(text));
+        return expect(ButtonAnchor.parse(a).text).to.equal(text);
+      });
+      it('should ignore the text content when the attribute data-text is given', function() {
+        var text;
+        text = "something";
+        a.setAttribute("data-text", text);
+        a.appendChild(document.createTextNode("something else"));
+        return expect(ButtonAnchor.parse(a).text).to.equal(text);
+      });
+      it('should parse the attribute data-count-api', function() {
+        var api;
+        api = "/repos/:user/:repo#item";
+        a.setAttribute("data-count-api", api);
+        return expect(ButtonAnchor.parse(a).data.count.api).to.equal(api);
+      });
+      it('should prepend / when the attribute data-count-api does not start with /', function() {
+        var api;
+        api = "repos/:user/:repo#item";
+        a.setAttribute("data-count-api", api);
+        return expect(ButtonAnchor.parse(a).data.count.api).to.equal("/" + api);
+      });
+      it('should ignore the attribute data-count-api when missing #', function() {
+        var api;
+        api = "/repos/:user/:repo";
+        a.setAttribute("data-count-api", api);
+        return expect(ButtonAnchor.parse(a).data.count.api).to.equal(void 0);
+      });
+      it('should parse the attribute data-count-href', function() {
+        var href;
+        href = "https://github.com/";
+        a.setAttribute("data-count-href", href);
+        return expect(ButtonAnchor.parse(a).data.count.href).to.equal(href);
+      });
+      it('should fallback data.cout.href to the attribute href when the attribute data-count-href is not given', function() {
+        a.href = "https://github.com/";
+        return expect(ButtonAnchor.parse(a).data.count.href).to.equal(a.href);
+      });
+      it('should filter javascript in the attribute data-count-href', function() {
+        var href, _i, _len, _results;
+        _results = [];
+        for (_i = 0, _len = javascript_protocals.length; _i < _len; _i++) {
+          href = javascript_protocals[_i];
+          a.setAttribute("data-count-href", href);
+          _results.push(expect(ButtonAnchor.parse(a).data.count.href).to.equal(""));
+        }
+        return _results;
+      });
+      it('should fallback data.cout.href to the attribute href when the attribute data-count-href is filtered', function() {
+        var href, _i, _len, _results;
+        a.href = "https://github.com/";
+        _results = [];
+        for (_i = 0, _len = javascript_protocals.length; _i < _len; _i++) {
+          href = javascript_protocals[_i];
+          a.setAttribute("data-count-href", href);
+          _results.push(expect(ButtonAnchor.parse(a).data.count.href).to.equal(a.href));
+        }
+        return _results;
+      });
+      it('should filter javascript in the attribute href when the attribute data-count-href fallbacks to its value', function() {
+        var href, _i, _len, _results;
+        _results = [];
+        for (_i = 0, _len = javascript_protocals.length; _i < _len; _i++) {
+          href = javascript_protocals[_i];
+          a.href = href;
+          _results.push(expect(ButtonAnchor.parse(a).data.count.href).to.equal(""));
+        }
+        return _results;
+      });
+      it('should parse the attribute data-style', function() {
+        var style;
+        style = "mega";
+        a.setAttribute("data-style", style);
+        return expect(ButtonAnchor.parse(a).data.style).to.equal(style);
+      });
+      return it('should parse the attribute data-icon', function() {
+        var icon;
+        icon = "octicon";
+        a.setAttribute("data-icon", icon);
+        return expect(ButtonAnchor.parse(a).data.icon).to.equal(icon);
       });
     });
   });
