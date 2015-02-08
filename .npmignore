@@ -1,6 +1,4 @@
 .*
-*.coffee
-*.less
 Cakefile
 circle.yml
 src/
