@@ -994,11 +994,39 @@
           return done();
         });
       });
-      return it('should set document.location.href when load the second time by setting the src attribute', function(done) {
+      it('should set document.location.href when load the second time by setting the src attribute', function(done) {
         return new ButtonFrame(hash, function(iframe) {
           return document.body.appendChild(iframe);
         }, function(iframe) {
           expect(iframe.contentWindow.document.location.hash).to.equal(hash);
+          iframe.parentNode.removeChild(iframe);
+          return done();
+        });
+      });
+      return it('should resize the iframe after the second load', function(done) {
+        var spy_html, spy_load, spy_resize, spy_size;
+        spy_html = null;
+        spy_load = null;
+        spy_size = null;
+        spy_resize = null;
+        return new ButtonFrame(hash, function(iframe) {
+          document.body.appendChild(iframe);
+          spy_html = sinon.spy(this, "html");
+          spy_load = sinon.spy(this, "load");
+          spy_size = sinon.spy(this, "size");
+          return spy_resize = sinon.spy(this, "resize");
+        }, function(iframe) {
+          expect(spy_size).to.have.been.calledOnce;
+          expect(spy_size).to.have.been.calledAfter(spy_html);
+          expect(spy_resize).to.have.been.calledOnce;
+          expect(spy_resize).to.have.been.calledAfter(spy_load);
+          expect(spy_resize.args[0][0]).to.deep.equal(spy_size.returnValues[0]);
+          spy_html.restore();
+          spy_load.restore();
+          spy_size.restore();
+          spy_resize.restore();
+          expect(iframe.style.width).to.equal(spy_size.returnValues[0].width);
+          expect(iframe.style.height).to.equal(spy_size.returnValues[0].height);
           iframe.parentNode.removeChild(iframe);
           return done();
         });

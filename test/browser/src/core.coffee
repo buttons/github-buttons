@@ -445,6 +445,39 @@ describe 'ButtonFrame', ->
         iframe.parentNode.removeChild iframe
         done()
 
+    it 'should resize the iframe after the second load', (done) ->
+      spy_html = null
+      spy_load = null
+      spy_size = null
+      spy_resize = null
+      new ButtonFrame hash, (iframe) ->
+        document.body.appendChild iframe
+        spy_html = sinon.spy @, "html"
+        spy_load = sinon.spy @, "load"
+        spy_size = sinon.spy @, "size"
+        spy_resize = sinon.spy @, "resize"
+      , (iframe) ->
+        expect spy_size
+          .to.have.been.calledOnce
+        expect spy_size
+          .to.have.been.calledAfter spy_html
+        expect spy_resize
+          .to.have.been.calledOnce
+        expect spy_resize
+          .to.have.been.calledAfter spy_load
+        expect spy_resize.args[0][0]
+          .to.deep.equal spy_size.returnValues[0]
+        spy_html.restore()
+        spy_load.restore()
+        spy_size.restore()
+        spy_resize.restore()
+        expect iframe.style.width
+          .to.equal spy_size.returnValues[0].width
+        expect iframe.style.height
+          .to.equal spy_size.returnValues[0].height
+        iframe.parentNode.removeChild iframe
+        done()
+
 
 describe 'ButtonFrameContent', ->
   base = null
