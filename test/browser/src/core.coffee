@@ -1,11 +1,3 @@
-if window._phantom
-  HTMLElement.prototype.click or= ->
-    event = document.createEvent 'MouseEvents'
-    event.initMouseEvent 'click', true, true, window, null, 0, 0, 0, 0, false, false, false, false, 0, null
-    @dispatchEvent event
-    return
-
-
 describe 'Element', ->
   describe '#constructor()', ->
     it 'should use element when element is given', ->
@@ -210,7 +202,7 @@ describe 'Frame', ->
   describe '#size()', ->
     it 'should return the iframe content size', (done) ->
       frame.on "load", ->
-        expect frame.size()
+        expect @size()
           .to.deep.equal
             width: "200px"
             height: "100px"
@@ -261,13 +253,15 @@ describe 'ButtonAnchor', ->
 
     it 'should parse the attribute href', ->
       a.href = "https://buttons.github.io/"
-      expect ButtonAnchor.parse(a).href
-        .to.equal a.href
+      expect ButtonAnchor.parse a
+        .to.have.property "href"
+        .and.equal a.href
 
     it 'should filter javascript in the attribute href', ->
       for href in javascript_protocals
         a.href = href
-        expect ButtonAnchor.parse(a).href
+        expect ButtonAnchor.parse a
+          .to.have.property "href"
           .to.equal ""
 
     it 'should parse the attribute data-text', ->
@@ -279,72 +273,170 @@ describe 'ButtonAnchor', ->
     it 'should parse the text content', ->
       text = "something"
       a.appendChild document.createTextNode text
-      expect ButtonAnchor.parse(a).text
-        .to.equal text
+      expect ButtonAnchor.parse a
+        .to.have.property "text"
+        .and.equal text
 
     it 'should ignore the text content when the attribute data-text is given', ->
       text = "something"
       a.setAttribute "data-text", text
       a.appendChild document.createTextNode "something else"
-      expect ButtonAnchor.parse(a).text
-        .to.equal text
+      expect ButtonAnchor.parse a
+        .to.have.property "text"
+        .and.equal text
 
     it 'should parse the attribute data-count-api', ->
       api = "/repos/:user/:repo#item"
       a.setAttribute "data-count-api", api
-      expect ButtonAnchor.parse(a).data.count.api
-        .to.equal api
+      expect ButtonAnchor.parse a
+        .to.have.deep.property "data.count.api"
+        .and.equal api
 
     it 'should prepend / when the attribute data-count-api does not start with /', ->
       api = "repos/:user/:repo#item"
       a.setAttribute "data-count-api", api
-      expect ButtonAnchor.parse(a).data.count.api
-        .to.equal "/#{api}"
+      expect ButtonAnchor.parse a
+        .to.have.deep.property "data.count.api"
+        .and.equal "/#{api}"
 
     it 'should ignore the attribute data-count-api when missing #', ->
       api = "/repos/:user/:repo"
       a.setAttribute "data-count-api", api
-      expect ButtonAnchor.parse(a).data.count.api
-        .to.equal undefined
+      expect ButtonAnchor.parse a
+        .to.not.have.deep.property "data.count.api"
 
     it 'should parse the attribute data-count-href', ->
       href = "https://github.com/"
       a.setAttribute "data-count-href", href
-      expect ButtonAnchor.parse(a).data.count.href
-        .to.equal href
+      expect ButtonAnchor.parse a
+        .to.have.deep.property "data.count.href"
+        .and.equal href
 
     it 'should fallback data.cout.href to the attribute href when the attribute data-count-href is not given', ->
       a.href = "https://github.com/"
-      expect ButtonAnchor.parse(a).data.count.href
-        .to.equal a.href
+      expect ButtonAnchor.parse a
+        .to.have.deep.property "data.count.href"
+        .and.equal a.href
 
     it 'should filter javascript in the attribute data-count-href', ->
       for href in javascript_protocals
         a.setAttribute "data-count-href", href
-        expect ButtonAnchor.parse(a).data.count.href
-          .to.equal ""
+        expect ButtonAnchor.parse a
+          .to.have.deep.property "data.count.href"
+          .and.equal ""
 
     it 'should fallback data.cout.href to the attribute href when the attribute data-count-href is filtered', ->
       a.href = "https://github.com/"
       for href in javascript_protocals
-        a.setAttribute "data-count-href", href
-        expect ButtonAnchor.parse(a).data.count.href
-          .to.equal a.href
+        expect ButtonAnchor.parse a
+          .to.have.deep.property "data.count.href"
+          .and.equal a.href
 
     it 'should filter javascript in the attribute href when the attribute data-count-href fallbacks to its value', ->
       for href in javascript_protocals
         a.href = href
-        expect ButtonAnchor.parse(a).data.count.href
-          .to.equal ""
+        expect ButtonAnchor.parse a
+          .to.have.deep.property "data.count.href"
+          .and.equal ""
 
     it 'should parse the attribute data-style', ->
       style = "mega"
       a.setAttribute "data-style", style
-      expect ButtonAnchor.parse(a).data.style
-        .to.equal style
+      expect ButtonAnchor.parse a
+        .to.have.deep.property "data.style"
+        .and.equal style
 
     it 'should parse the attribute data-icon', ->
       icon = "octicon"
       a.setAttribute "data-icon", icon
-      expect ButtonAnchor.parse(a).data.icon
-        .to.equal icon
+      expect ButtonAnchor.parse a
+        .to.have.deep.property "data.icon"
+        .and.equal icon
+
+
+describe 'ButtonFrame', ->
+  describe '#constructor()', ->
+    hash = Hash.encode ButtonAnchor.parse document.createElement "a"
+
+    it 'should callback with this twice', (done) ->
+      _this = null
+      _ = new ButtonFrame hash, (iframe) ->
+        document.body.appendChild iframe
+        _this = @
+      , (iframe) ->
+        expect _this
+          .to.equal _
+        expect @
+          .to.equal _
+        iframe.parentNode.removeChild iframe
+        done()
+
+    it 'should callback with the iframe as argument twice', (done) ->
+      frame = null
+      new ButtonFrame hash, (iframe) ->
+        document.body.appendChild iframe
+        frame = iframe
+        expect iframe.tagName
+          .to.equal "IFRAME"
+      , (iframe) ->
+        expect iframe
+          .to.equal frame
+        iframe.parentNode.removeChild iframe
+        done()
+
+    it 'should load the iframe twice after insert it into DOM', (done) ->
+      spy = sinon.spy()
+      new ButtonFrame hash, (iframe) ->
+        document.body.appendChild iframe
+        @on "load", -> spy()
+      , (iframe) ->
+        expect spy
+          .to.have.been.calledTwice
+        iframe.parentNode.removeChild iframe
+        done()
+
+    it 'should load the iframe the first time by writing html', (done) ->
+      spy = null
+      new ButtonFrame hash, (iframe) ->
+        document.body.appendChild iframe
+        spy = sinon.spy @, "html"
+      , (iframe) ->
+        expect spy
+          .to.have.been.calledOnce
+        spy.restore()
+        iframe.parentNode.removeChild iframe
+        done()
+
+    it 'should set document.location.hash when load the first time by writing html', (done) ->
+      _hash = null
+      new ButtonFrame hash, (iframe) ->
+        document.body.appendChild iframe
+        @once "load", ->
+          _hash = iframe.contentWindow.document.location.hash
+      , (iframe) ->
+        expect _hash
+          .to.equal hash
+        iframe.parentNode.removeChild iframe
+        done()
+
+    it 'should load the iframe the second time by setting the src attribute', (done) ->
+      spy = null
+      new ButtonFrame hash, (iframe) ->
+        document.body.appendChild iframe
+        @once "load", ->
+          spy = sinon.spy @, "load"
+      , (iframe) ->
+        expect spy
+          .to.have.been.calledOnce
+        spy.restore()
+        iframe.parentNode.removeChild iframe
+        done()
+
+    it 'should set document.location.href when load the second time by setting the src attribute', (done) ->
+      new ButtonFrame hash, (iframe) ->
+        document.body.appendChild iframe
+      , (iframe) ->
+        expect iframe.contentWindow.document.location.hash
+          .to.equal hash
+        iframe.parentNode.removeChild iframe
+        done()

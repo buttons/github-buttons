@@ -139,7 +139,7 @@ class ButtonFrame extends Frame
       size = @size()
       @once "load", ->
         @resize size
-        callbacks.shift() @$ if callbacks[0]
+        callbacks.shift().apply @, [@$] if callbacks[0]
         return
       @load "#{Config.url}buttons.html#{hash}"
       return

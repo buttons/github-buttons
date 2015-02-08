@@ -61,7 +61,7 @@ task 'build', 'Build everything', ->
 task 'build:coffee', 'Build scripts', ->
   coffee.compile "src/config.coffee",
                  "src/data.coffee",
-                 "src/elements.coffee",
+                 "src/core.coffee",
                  "src/buttons.coffee",
                  "lib/buttons.js",
                  -> system "uglifyjs",
@@ -71,7 +71,7 @@ task 'build:coffee', 'Build scripts', ->
                            "lib/buttons.js"
   coffee.compile "src/config.coffee",
                  "src/data.coffee",
-                 "src/elements.coffee",
+                 "src/core.coffee",
                  "src/main.coffee",
                  "lib/main.js",
                  -> system "uglifyjs",
@@ -118,7 +118,9 @@ task 'test:mocha', 'Test scripts', ->
   system "mocha", "--compilers", "coffee:coffee-script/register", "test/*.coffee"
 
 task 'test:mocha-phantomjs', 'Test browser scripts', ->
-  coffee.compile "src/elements.coffee",
-                 "test/browser/src/elements.coffee",
-                 "test/browser/lib/elements.js",
+  coffee.compile "src/data.coffee",
+                 "src/core.coffee",
+                 "test/browser/src/helpers.coffee",
+                 "test/browser/src/core.coffee",
+                 "test/browser/lib/main.js",
                  -> system "mocha-phantomjs", "test/browser/index.html"
