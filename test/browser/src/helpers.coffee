@@ -7,5 +7,11 @@ if window._phantom
 
 
 Config =
-  url: "../../"
+  api:         "https://api.github.com"
+  anchorClass: "github-button"
+  iconClass:   "octicon"
+  icon:        "octicon-mark-github"
+  scriptId:    "github-bjs"
+  styles:     ["default", "mega"]
   script: src: "../../buttons.js"
+  url:         "../../"

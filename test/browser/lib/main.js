@@ -409,7 +409,9 @@
           }
           return Config.styles[0];
         })();
-        document.getElementsByTagName("base")[0].href = options.href;
+        if (options.href) {
+          document.getElementsByTagName("base")[0].href = options.href;
+        }
         new Button(options, function(buttonElement) {
           document.body.appendChild(buttonElement);
         });
@@ -464,7 +466,7 @@
       __extends(Count, _super);
 
       function Count(options, callback) {
-        if (options.data.count.api) {
+        if (options.data.count && options.data.count.api) {
           Count.__super__.constructor.call(this, "a", function(a) {
             a.className = "count";
             if (options.data.count.href) {
@@ -541,10 +543,16 @@
   }
 
   Config = {
-    url: "../../",
+    api: "https://api.github.com",
+    anchorClass: "github-button",
+    iconClass: "octicon",
+    icon: "octicon-mark-github",
+    scriptId: "github-bjs",
+    styles: ["default", "mega"],
     script: {
       src: "../../buttons.js"
-    }
+    },
+    url: "../../"
   };
 
   describe('Element', function() {
@@ -943,14 +951,14 @@
         });
       });
       it('should load the iframe the first time by writing html', function(done) {
-        var spy;
-        spy = null;
+        var spy_html;
+        spy_html = null;
         return new ButtonFrame(hash, function(iframe) {
           document.body.appendChild(iframe);
-          return spy = sinon.spy(this, "html");
+          return spy_html = sinon.spy(this, "html");
         }, function(iframe) {
-          expect(spy).to.have.been.calledOnce;
-          spy.restore();
+          expect(spy_html).to.have.been.calledOnce;
+          spy_html.restore();
           iframe.parentNode.removeChild(iframe);
           return done();
         });
@@ -970,16 +978,18 @@
         });
       });
       it('should load the iframe the second time by setting the src attribute', function(done) {
-        var spy;
-        spy = null;
+        var spy_html, spy_load;
+        spy_html = null;
+        spy_load = null;
         return new ButtonFrame(hash, function(iframe) {
           document.body.appendChild(iframe);
-          return this.once("load", function() {
-            return spy = sinon.spy(this, "load");
-          });
+          spy_html = sinon.spy(this, "html");
+          return spy_load = sinon.spy(this, "load");
         }, function(iframe) {
-          expect(spy).to.have.been.calledOnce;
-          spy.restore();
+          expect(spy_load).to.have.been.calledOnce;
+          expect(spy_load).to.have.been.calledAfter(spy_html);
+          spy_html.restore();
+          spy_load.restore();
           iframe.parentNode.removeChild(iframe);
           return done();
         });
@@ -992,6 +1002,274 @@
           iframe.parentNode.removeChild(iframe);
           return done();
         });
+      });
+    });
+  });
+
+  describe('ButtonFrameContent', function() {
+    var base, className, data, stub_body_appendChild;
+    base = null;
+    className = null;
+    stub_body_appendChild = null;
+    data = {
+      "meta": {
+        "X-RateLimit-Limit": "60",
+        "X-RateLimit-Remaining": "59",
+        "X-RateLimit-Reset": "1423391706",
+        "Cache-Control": "public, max-age=60, s-maxage=60",
+        "Last-Modified": "Sun, 08 Feb 2015 07:39:11 GMT",
+        "Vary": "Accept",
+        "X-GitHub-Media-Type": "github.v3",
+        "status": 200
+      },
+      "data": {
+        "login": "ntkme",
+        "id": 899645,
+        "avatar_url": "https://avatars.githubusercontent.com/u/899645?v=3",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/ntkme",
+        "html_url": "https://github.com/ntkme",
+        "followers_url": "https://api.github.com/users/ntkme/followers",
+        "following_url": "https://api.github.com/users/ntkme/following{/other_user}",
+        "gists_url": "https://api.github.com/users/ntkme/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/ntkme/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/ntkme/subscriptions",
+        "organizations_url": "https://api.github.com/users/ntkme/orgs",
+        "repos_url": "https://api.github.com/users/ntkme/repos",
+        "events_url": "https://api.github.com/users/ntkme/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/ntkme/received_events",
+        "type": "User",
+        "site_admin": false,
+        "name": "なつき",
+        "company": "",
+        "blog": "https://ntk.me",
+        "location": "California",
+        "email": "i@ntk.me",
+        "hireable": true,
+        "bio": null,
+        "public_repos": 10,
+        "public_gists": 0,
+        "followers": 26,
+        "following": 0,
+        "created_at": "2011-07-07T03:26:58Z",
+        "updated_at": "2015-02-08T07:39:11Z"
+      }
+    };
+    beforeEach(function() {
+      className = document.body.getAttribute("class");
+      base = document.getElementsByTagName("head")[0].appendChild(document.createElement("base"));
+      return stub_body_appendChild = sinon.stub(document.body, "appendChild");
+    });
+    afterEach(function() {
+      if (className) {
+        document.body.className = className;
+      } else {
+        document.body.removeAttribute("class");
+      }
+      base.parentNode.removeChild(base);
+      return stub_body_appendChild.restore();
+    });
+    return describe('#constructor()', function() {
+      it('should do nothing when options are missing', function() {
+        new ButtonFrameContent();
+        expect(base.getAttribute("href")).to.be["null"]();
+        return expect(stub_body_appendChild).to.have.not.been.called;
+      });
+      it('should set base.href when options.href is given', function() {
+        var options;
+        options = {
+          href: "https://github.com/",
+          data: {}
+        };
+        new ButtonFrameContent(options);
+        return expect(base.getAttribute("href")).to.equal(options.href);
+      });
+      it('should set document.body.className to default style', function() {
+        var options;
+        options = {
+          data: {}
+        };
+        new ButtonFrameContent(options);
+        return expect(document.body.className).to.equal(Config.styles[0]);
+      });
+      it('should set document.body.className when a valid style is given', function() {
+        var options;
+        options = {
+          data: {
+            style: Config.styles[1]
+          }
+        };
+        new ButtonFrameContent(options);
+        return expect(document.body.className).to.equal(Config.styles[1]);
+      });
+      it('should set document.body.className to default when an invalid style is given', function() {
+        var options;
+        options = {
+          data: {
+            style: "not valid"
+          }
+        };
+        new ButtonFrameContent(options);
+        return expect(document.body.className).to.equal(Config.styles[0]);
+      });
+      it('should append the button to document.body when the necessary options are given', function() {
+        var button, options;
+        options = {
+          data: {}
+        };
+        new ButtonFrameContent(options);
+        expect(stub_body_appendChild).to.be.calledOnce;
+        button = stub_body_appendChild.args[0][0];
+        return expect(button).to.have.property("className").and.equal("button");
+      });
+      it('should append the button with given href', function() {
+        var button, options;
+        options = {
+          href: "https://twitter.com/",
+          data: {}
+        };
+        new ButtonFrameContent(options);
+        button = stub_body_appendChild.args[0][0];
+        return expect(button.getAttribute("href")).to.equal(options.href);
+      });
+      it('should append the button with the default icon', function() {
+        var button, options;
+        options = {
+          data: {}
+        };
+        new ButtonFrameContent(options);
+        button = stub_body_appendChild.args[0][0];
+        return expect((" " + button.firstChild.className + " ").indexOf(" " + Config.icon + " ")).to.be.at.least(0);
+      });
+      it('should append the button with given icon', function() {
+        var button, options;
+        options = {
+          data: {
+            icon: "octicon-star"
+          }
+        };
+        new ButtonFrameContent(options);
+        button = stub_body_appendChild.args[0][0];
+        return expect((" " + button.firstChild.className + " ").indexOf(" " + options.data.icon + " ")).to.be.at.least(0);
+      });
+      it('should append the button with given text', function() {
+        var button, options;
+        options = {
+          text: "Follow",
+          data: {}
+        };
+        new ButtonFrameContent(options);
+        button = stub_body_appendChild.args[0][0];
+        return expect(button.lastChild.innerHTML).to.equal(options.text);
+      });
+      it('should append the count to document.body when the necessary options are given', function() {
+        var count, options, stub_head_insertBefore;
+        stub_head_insertBefore = sinon.stub(document.getElementsByTagName("head")[0], "insertBefore", function() {
+          return window.callback(data);
+        });
+        options = {
+          data: {
+            count: {
+              api: "/dummy/api#followers"
+            }
+          }
+        };
+        new ButtonFrameContent(options);
+        expect(stub_body_appendChild).to.be.calledTwice;
+        count = stub_body_appendChild.args[1][0];
+        expect(count).to.have.property("className").and.equal("count");
+        return stub_head_insertBefore.restore();
+      });
+      it('should append the count with given data.count.href', function() {
+        var count, options, stub_head_insertBefore;
+        stub_head_insertBefore = sinon.stub(document.getElementsByTagName("head")[0], "insertBefore", function() {
+          return window.callback(data);
+        });
+        options = {
+          data: {
+            count: {
+              api: "/dummy/api#followers",
+              href: "https://twitter.com/"
+            }
+          }
+        };
+        new ButtonFrameContent(options);
+        count = stub_body_appendChild.args[1][0];
+        expect(count.getAttribute("href")).to.equal(options.data.count.href);
+        return stub_head_insertBefore.restore();
+      });
+      it('should append the count with #entry from api response', function() {
+        var count, options, stub_head_insertBefore;
+        stub_head_insertBefore = sinon.stub(document.getElementsByTagName("head")[0], "insertBefore", function() {
+          return window.callback(data);
+        });
+        options = {
+          data: {
+            count: {
+              api: "/dummy/api#followers"
+            }
+          }
+        };
+        new ButtonFrameContent(options);
+        count = stub_body_appendChild.args[1][0];
+        expect(count.lastChild.innerHTML).to.equal(" 26 ");
+        return stub_head_insertBefore.restore();
+      });
+      it('should append the count with large number split by comma', function() {
+        var count, options, stub_head_insertBefore;
+        stub_head_insertBefore = sinon.stub(document.getElementsByTagName("head")[0], "insertBefore", function() {
+          return window.callback(data);
+        });
+        options = {
+          data: {
+            count: {
+              api: "/dummy/api#id"
+            }
+          }
+        };
+        new ButtonFrameContent(options);
+        count = stub_body_appendChild.args[1][0];
+        expect(count.lastChild.innerHTML).to.equal(" 899,645 ");
+        return stub_head_insertBefore.restore();
+      });
+      it('should append the count with text undefined when api #entry does not exist', function() {
+        var count, options, stub_head_insertBefore;
+        stub_head_insertBefore = sinon.stub(document.getElementsByTagName("head")[0], "insertBefore", function() {
+          return window.callback(data);
+        });
+        options = {
+          data: {
+            count: {
+              api: "/dummy/api#fail"
+            }
+          }
+        };
+        new ButtonFrameContent(options);
+        count = stub_body_appendChild.args[1][0];
+        expect(count.lastChild.innerHTML).to.equal(" undefined ");
+        return stub_head_insertBefore.restore();
+      });
+      return it('should not append the count when it fails to pull api data', function() {
+        var button, options, stub_head_insertBefore;
+        stub_head_insertBefore = sinon.stub(document.getElementsByTagName("head")[0], "insertBefore", function() {
+          return window.callback({
+            meta: {
+              status: 404
+            }
+          });
+        });
+        options = {
+          data: {
+            count: {
+              api: "/dummy/api#followers"
+            }
+          }
+        };
+        new ButtonFrameContent(options);
+        expect(stub_body_appendChild).to.be.calledOnce;
+        button = stub_body_appendChild.args[0][0];
+        expect(button).to.have.property("className").and.equal("button");
+        return stub_head_insertBefore.restore();
       });
     });
   });

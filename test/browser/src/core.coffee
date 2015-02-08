@@ -396,14 +396,14 @@ describe 'ButtonFrame', ->
         done()
 
     it 'should load the iframe the first time by writing html', (done) ->
-      spy = null
+      spy_html = null
       new ButtonFrame hash, (iframe) ->
         document.body.appendChild iframe
-        spy = sinon.spy @, "html"
+        spy_html = sinon.spy @, "html"
       , (iframe) ->
-        expect spy
+        expect spy_html
           .to.have.been.calledOnce
-        spy.restore()
+        spy_html.restore()
         iframe.parentNode.removeChild iframe
         done()
 
@@ -420,15 +420,19 @@ describe 'ButtonFrame', ->
         done()
 
     it 'should load the iframe the second time by setting the src attribute', (done) ->
-      spy = null
+      spy_html = null
+      spy_load = null
       new ButtonFrame hash, (iframe) ->
         document.body.appendChild iframe
-        @once "load", ->
-          spy = sinon.spy @, "load"
+        spy_html = sinon.spy @, "html"
+        spy_load = sinon.spy @, "load"
       , (iframe) ->
-        expect spy
+        expect spy_load
           .to.have.been.calledOnce
-        spy.restore()
+        expect spy_load
+          .to.have.been.calledAfter spy_html
+        spy_html.restore()
+        spy_load.restore()
         iframe.parentNode.removeChild iframe
         done()
 
@@ -440,3 +444,197 @@ describe 'ButtonFrame', ->
           .to.equal hash
         iframe.parentNode.removeChild iframe
         done()
+
+
+describe 'ButtonFrameContent', ->
+  base = null
+  className = null
+  stub_body_appendChild = null
+  data =
+    "meta":
+      "X-RateLimit-Limit": "60",
+      "X-RateLimit-Remaining": "59",
+      "X-RateLimit-Reset": "1423391706",
+      "Cache-Control": "public, max-age=60, s-maxage=60",
+      "Last-Modified": "Sun, 08 Feb 2015 07:39:11 GMT",
+      "Vary": "Accept",
+      "X-GitHub-Media-Type": "github.v3",
+      "status": 200
+    "data":
+      "login": "ntkme",
+      "id": 899645,
+      "avatar_url": "https://avatars.githubusercontent.com/u/899645?v=3",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ntkme",
+      "html_url": "https://github.com/ntkme",
+      "followers_url": "https://api.github.com/users/ntkme/followers",
+      "following_url": "https://api.github.com/users/ntkme/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ntkme/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ntkme/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ntkme/subscriptions",
+      "organizations_url": "https://api.github.com/users/ntkme/orgs",
+      "repos_url": "https://api.github.com/users/ntkme/repos",
+      "events_url": "https://api.github.com/users/ntkme/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ntkme/received_events",
+      "type": "User",
+      "site_admin": false,
+      "name": "なつき",
+      "company": "",
+      "blog": "https://ntk.me",
+      "location": "California",
+      "email": "i@ntk.me",
+      "hireable": true,
+      "bio": null,
+      "public_repos": 10,
+      "public_gists": 0,
+      "followers": 26,
+      "following": 0,
+      "created_at": "2011-07-07T03:26:58Z",
+      "updated_at": "2015-02-08T07:39:11Z"
+
+  beforeEach ->
+    className = document.body.getAttribute "class"
+    base = document.getElementsByTagName("head")[0].appendChild document.createElement "base"
+    stub_body_appendChild = sinon.stub document.body, "appendChild"
+
+  afterEach ->
+    if className
+      document.body.className = className
+    else
+      document.body.removeAttribute "class"
+    base.parentNode.removeChild base
+    stub_body_appendChild.restore()
+
+  describe '#constructor()', ->
+    it 'should do nothing when options are missing', ->
+      new ButtonFrameContent()
+      expect base.getAttribute "href"
+        .to.be.null()
+      expect stub_body_appendChild
+        .to.have.not.been.called
+
+    it 'should set base.href when options.href is given', ->
+      options =
+        href: "https://github.com/"
+        data: {}
+      new ButtonFrameContent options
+      expect base.getAttribute "href"
+        .to.equal options.href
+
+    it 'should set document.body.className to default style', ->
+      options = data: {}
+      new ButtonFrameContent options
+      expect document.body.className
+        .to.equal Config.styles[0]
+
+    it 'should set document.body.className when a valid style is given', ->
+      options = data: style: Config.styles[1]
+      new ButtonFrameContent options
+      expect document.body.className
+        .to.equal Config.styles[1]
+
+    it 'should set document.body.className to default when an invalid style is given', ->
+      options = data: style: "not valid"
+      new ButtonFrameContent options
+      expect document.body.className
+        .to.equal Config.styles[0]
+
+    it 'should append the button to document.body when the necessary options are given', ->
+      options = data: {}
+      new ButtonFrameContent options
+      expect stub_body_appendChild
+        .to.be.calledOnce
+      button = stub_body_appendChild.args[0][0]
+      expect button
+        .to.have.property "className"
+        .and.equal "button"
+
+    it 'should append the button with given href', ->
+      options = href: "https://twitter.com/", data: {}
+      new ButtonFrameContent options
+      button = stub_body_appendChild.args[0][0]
+      expect button.getAttribute "href"
+        .to.equal options.href
+
+    it 'should append the button with the default icon', ->
+      options = data: {}
+      new ButtonFrameContent options
+      button = stub_body_appendChild.args[0][0]
+      expect " #{button.firstChild.className} ".indexOf " #{Config.icon} "
+        .to.be.at.least 0
+
+    it 'should append the button with given icon', ->
+      options = data: icon: "octicon-star"
+      new ButtonFrameContent options
+      button = stub_body_appendChild.args[0][0]
+      expect " #{button.firstChild.className} ".indexOf " #{options.data.icon} "
+        .to.be.at.least 0
+
+    it 'should append the button with given text', ->
+      options = text: "Follow", data: {}
+      new ButtonFrameContent options
+      button = stub_body_appendChild.args[0][0]
+      expect button.lastChild.innerHTML
+        .to.equal options.text
+
+    it 'should append the count to document.body when the necessary options are given', ->
+      stub_head_insertBefore = sinon.stub document.getElementsByTagName("head")[0], "insertBefore", -> window.callback data
+      options = data: count: api: "/dummy/api#followers"
+      new ButtonFrameContent options
+      expect stub_body_appendChild
+        .to.be.calledTwice
+      count = stub_body_appendChild.args[1][0]
+      expect count
+        .to.have.property "className"
+        .and.equal "count"
+      stub_head_insertBefore.restore()
+
+    it 'should append the count with given data.count.href', ->
+      stub_head_insertBefore = sinon.stub document.getElementsByTagName("head")[0], "insertBefore", -> window.callback data
+      options = data: count:
+        api: "/dummy/api#followers"
+        href: "https://twitter.com/"
+      new ButtonFrameContent options
+      count = stub_body_appendChild.args[1][0]
+      expect count.getAttribute "href"
+        .to.equal options.data.count.href
+      stub_head_insertBefore.restore()
+
+    it 'should append the count with #entry from api response', ->
+      stub_head_insertBefore = sinon.stub document.getElementsByTagName("head")[0], "insertBefore", -> window.callback data
+      options = data: count: api: "/dummy/api#followers"
+      new ButtonFrameContent options
+      count = stub_body_appendChild.args[1][0]
+      expect count.lastChild.innerHTML
+        .to.equal " 26 "
+      stub_head_insertBefore.restore()
+
+    it 'should append the count with large number split by comma', ->
+      stub_head_insertBefore = sinon.stub document.getElementsByTagName("head")[0], "insertBefore", -> window.callback data
+      options = data: count: api: "/dummy/api#id"
+      new ButtonFrameContent options
+      count = stub_body_appendChild.args[1][0]
+      expect count.lastChild.innerHTML
+        .to.equal " 899,645 "
+      stub_head_insertBefore.restore()
+
+    it 'should append the count with text undefined when api #entry does not exist', ->
+      stub_head_insertBefore = sinon.stub document.getElementsByTagName("head")[0], "insertBefore", -> window.callback data
+      options = data: count: api: "/dummy/api#fail"
+      new ButtonFrameContent options
+      count = stub_body_appendChild.args[1][0]
+      expect count.lastChild.innerHTML
+        .to.equal " undefined "
+      stub_head_insertBefore.restore()
+
+    it 'should not append the count when it fails to pull api data', ->
+      stub_head_insertBefore = sinon.stub document.getElementsByTagName("head")[0], "insertBefore", -> window.callback meta: status: 404
+      options = data: count: api: "/dummy/api#followers"
+      new ButtonFrameContent options
+      expect stub_body_appendChild
+        .to.be.calledOnce
+      button = stub_body_appendChild.args[0][0]
+      expect button
+        .to.have.property "className"
+        .and.equal "button"
+      stub_head_insertBefore.restore()

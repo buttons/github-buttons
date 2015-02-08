@@ -188,7 +188,7 @@ class ButtonFrameContent
           if i is options.data.style
             return i
         Config.styles[0]
-      document.getElementsByTagName("base")[0].href = options.href
+      document.getElementsByTagName("base")[0].href = options.href if options.href
       new Button options, (buttonElement) ->
         document.body.appendChild buttonElement
         return
@@ -222,7 +222,7 @@ class ButtonFrameContent
 
   class Count extends Element
     constructor: (options, callback) ->
-      if options.data.count.api
+      if options.data.count and options.data.count.api
         super "a", (a) ->
           a.className = "count"
           a.href = options.data.count.href if options.data.count.href
