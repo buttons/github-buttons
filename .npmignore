@@ -2,5 +2,6 @@
 *.coffee
 *.less
 Cakefile
+circle.yml
 src/
 test/
