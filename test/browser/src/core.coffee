@@ -267,8 +267,9 @@ describe 'ButtonAnchor', ->
     it 'should parse the attribute data-text', ->
       text = "test"
       a.setAttribute "data-text", text
-      expect ButtonAnchor.parse(a).text
-        .to.equal text
+      expect ButtonAnchor.parse a
+        .to.have.property "text"
+        .and.equal text
 
     it 'should parse the text content', ->
       text = "something"
@@ -396,14 +397,13 @@ describe 'ButtonFrame', ->
         done()
 
     it 'should load the iframe the first time by writing html', (done) ->
-      spy_html = null
       new ButtonFrame hash, (iframe) ->
         document.body.appendChild iframe
-        spy_html = sinon.spy @, "html"
+        sinon.spy @, "html"
       , (iframe) ->
-        expect spy_html
+        expect @html
           .to.have.been.calledOnce
-        spy_html.restore()
+        @html.restore()
         iframe.parentNode.removeChild iframe
         done()
 
@@ -420,19 +420,17 @@ describe 'ButtonFrame', ->
         done()
 
     it 'should load the iframe the second time by setting the src attribute', (done) ->
-      spy_html = null
-      spy_load = null
       new ButtonFrame hash, (iframe) ->
         document.body.appendChild iframe
-        spy_html = sinon.spy @, "html"
-        spy_load = sinon.spy @, "load"
+        sinon.spy @, "html"
+        sinon.spy @, "load"
       , (iframe) ->
-        expect spy_load
+        expect @load
           .to.have.been.calledOnce
-        expect spy_load
-          .to.have.been.calledAfter spy_html
-        spy_html.restore()
-        spy_load.restore()
+        expect @load
+          .to.have.been.calledAfter @html
+        @html.restore()
+        @load.restore()
         iframe.parentNode.removeChild iframe
         done()
 
@@ -446,43 +444,39 @@ describe 'ButtonFrame', ->
         done()
 
     it 'should resize the iframe after the second load', (done) ->
-      spy_html = null
-      spy_load = null
-      spy_size = null
-      spy_resize = null
       new ButtonFrame hash, (iframe) ->
         document.body.appendChild iframe
-        spy_html = sinon.spy @, "html"
-        spy_load = sinon.spy @, "load"
-        spy_size = sinon.spy @, "size"
-        spy_resize = sinon.spy @, "resize"
+        sinon.spy @, "html"
+        sinon.spy @, "load"
+        sinon.spy @, "size"
+        sinon.spy @, "resize"
       , (iframe) ->
-        expect spy_size
+        expect @size
           .to.have.been.calledOnce
-        expect spy_size
-          .to.have.been.calledAfter spy_html
-        expect spy_resize
+        expect @size
+          .to.have.been.calledAfter @html
+        expect @resize
           .to.have.been.calledOnce
-        expect spy_resize
-          .to.have.been.calledAfter spy_load
-        expect spy_resize.args[0][0]
-          .to.deep.equal spy_size.returnValues[0]
-        spy_html.restore()
-        spy_load.restore()
-        spy_size.restore()
-        spy_resize.restore()
+        expect @resize
+          .to.have.been.calledAfter @load
+        expect @resize.args[0][0]
+          .to.deep.equal @size.returnValues[0]
         expect iframe.style.width
-          .to.equal spy_size.returnValues[0].width
+          .to.equal @size.returnValues[0].width
         expect iframe.style.height
-          .to.equal spy_size.returnValues[0].height
+          .to.equal @size.returnValues[0].height
+        @html.restore()
+        @load.restore()
+        @size.restore()
+        @resize.restore()
         iframe.parentNode.removeChild iframe
         done()
 
 
 describe 'ButtonFrameContent', ->
+  head = document.getElementsByTagName("head")[0]
   base = null
-  className = null
-  stub_body_appendChild = null
+  bodyClassName = null
   data =
     "meta":
       "X-RateLimit-Limit": "60",
@@ -526,24 +520,24 @@ describe 'ButtonFrameContent', ->
       "updated_at": "2015-02-08T07:39:11Z"
 
   beforeEach ->
-    className = document.body.getAttribute "class"
-    base = document.getElementsByTagName("head")[0].appendChild document.createElement "base"
-    stub_body_appendChild = sinon.stub document.body, "appendChild"
+    bodyClassName= document.body.getAttribute "class"
+    base = head.insertBefore document.createElement "base", head.firstChild
+    sinon.stub document.body, "appendChild"
 
   afterEach ->
-    if className
-      document.body.className = className
+    if bodyClassName
+      document.body.className = bodyClassName
     else
       document.body.removeAttribute "class"
     base.parentNode.removeChild base
-    stub_body_appendChild.restore()
+    document.body.appendChild.restore()
 
   describe '#constructor()', ->
     it 'should do nothing when options are missing', ->
       new ButtonFrameContent()
       expect base.getAttribute "href"
         .to.be.null()
-      expect stub_body_appendChild
+      expect document.body.appendChild
         .to.have.not.been.called
 
     it 'should set base.href when options.href is given', ->
@@ -575,9 +569,9 @@ describe 'ButtonFrameContent', ->
     it 'should append the button to document.body when the necessary options are given', ->
       options = data: {}
       new ButtonFrameContent options
-      expect stub_body_appendChild
+      expect document.body.appendChild
         .to.be.calledOnce
-      button = stub_body_appendChild.args[0][0]
+      button = document.body.appendChild.args[0][0]
       expect button
         .to.have.property "className"
         .and.equal "button"
@@ -585,89 +579,89 @@ describe 'ButtonFrameContent', ->
     it 'should append the button with given href', ->
       options = href: "https://twitter.com/", data: {}
       new ButtonFrameContent options
-      button = stub_body_appendChild.args[0][0]
+      button = document.body.appendChild.args[0][0]
       expect button.getAttribute "href"
         .to.equal options.href
 
     it 'should append the button with the default icon', ->
       options = data: {}
       new ButtonFrameContent options
-      button = stub_body_appendChild.args[0][0]
+      button = document.body.appendChild.args[0][0]
       expect " #{button.firstChild.className} ".indexOf " #{Config.icon} "
         .to.be.at.least 0
 
     it 'should append the button with given icon', ->
       options = data: icon: "octicon-star"
       new ButtonFrameContent options
-      button = stub_body_appendChild.args[0][0]
+      button = document.body.appendChild.args[0][0]
       expect " #{button.firstChild.className} ".indexOf " #{options.data.icon} "
         .to.be.at.least 0
 
     it 'should append the button with given text', ->
       options = text: "Follow", data: {}
       new ButtonFrameContent options
-      button = stub_body_appendChild.args[0][0]
+      button = document.body.appendChild.args[0][0]
       expect button.lastChild.innerHTML
         .to.equal options.text
 
     it 'should append the count to document.body when the necessary options are given', ->
-      stub_head_insertBefore = sinon.stub document.getElementsByTagName("head")[0], "insertBefore", -> window.callback data
+      sinon.stub head, "insertBefore", -> window.callback data
       options = data: count: api: "/dummy/api#followers"
       new ButtonFrameContent options
-      expect stub_body_appendChild
+      expect document.body.appendChild
         .to.be.calledTwice
-      count = stub_body_appendChild.args[1][0]
+      count = document.body.appendChild.args[1][0]
       expect count
         .to.have.property "className"
         .and.equal "count"
-      stub_head_insertBefore.restore()
+      head.insertBefore.restore()
 
     it 'should append the count with given data.count.href', ->
-      stub_head_insertBefore = sinon.stub document.getElementsByTagName("head")[0], "insertBefore", -> window.callback data
+      sinon.stub head, "insertBefore", -> window.callback data
       options = data: count:
         api: "/dummy/api#followers"
         href: "https://twitter.com/"
       new ButtonFrameContent options
-      count = stub_body_appendChild.args[1][0]
+      count = document.body.appendChild.args[1][0]
       expect count.getAttribute "href"
         .to.equal options.data.count.href
-      stub_head_insertBefore.restore()
+      head.insertBefore.restore()
 
     it 'should append the count with #entry from api response', ->
-      stub_head_insertBefore = sinon.stub document.getElementsByTagName("head")[0], "insertBefore", -> window.callback data
+      sinon.stub head, "insertBefore", -> window.callback data
       options = data: count: api: "/dummy/api#followers"
       new ButtonFrameContent options
-      count = stub_body_appendChild.args[1][0]
+      count = document.body.appendChild.args[1][0]
       expect count.lastChild.innerHTML
         .to.equal " 26 "
-      stub_head_insertBefore.restore()
+      head.insertBefore.restore()
 
     it 'should append the count with large number split by comma', ->
-      stub_head_insertBefore = sinon.stub document.getElementsByTagName("head")[0], "insertBefore", -> window.callback data
+      sinon.stub head, "insertBefore", -> window.callback data
       options = data: count: api: "/dummy/api#id"
       new ButtonFrameContent options
-      count = stub_body_appendChild.args[1][0]
+      count = document.body.appendChild.args[1][0]
       expect count.lastChild.innerHTML
         .to.equal " 899,645 "
-      stub_head_insertBefore.restore()
+      head.insertBefore.restore()
 
     it 'should append the count with text undefined when api #entry does not exist', ->
-      stub_head_insertBefore = sinon.stub document.getElementsByTagName("head")[0], "insertBefore", -> window.callback data
+      sinon.stub head, "insertBefore", -> window.callback data
       options = data: count: api: "/dummy/api#fail"
       new ButtonFrameContent options
-      count = stub_body_appendChild.args[1][0]
+      count = document.body.appendChild.args[1][0]
       expect count.lastChild.innerHTML
         .to.equal " undefined "
-      stub_head_insertBefore.restore()
+      head.insertBefore.restore()
 
     it 'should not append the count when it fails to pull api data', ->
-      stub_head_insertBefore = sinon.stub document.getElementsByTagName("head")[0], "insertBefore", -> window.callback meta: status: 404
+      sinon.stub head, "insertBefore", -> meta: status: 404
       options = data: count: api: "/dummy/api#followers"
       new ButtonFrameContent options
-      expect stub_body_appendChild
+      expect document.body.appendChild
         .to.be.calledOnce
-      button = stub_body_appendChild.args[0][0]
+      button = document.body.appendChild.args[0][0]
       expect button
         .to.have.property "className"
         .and.equal "button"
-      stub_head_insertBefore.restore()
+      head.insertBefore.restore()

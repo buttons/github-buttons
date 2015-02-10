@@ -818,7 +818,7 @@
         var text;
         text = "test";
         a.setAttribute("data-text", text);
-        return expect(ButtonAnchor.parse(a).text).to.equal(text);
+        return expect(ButtonAnchor.parse(a)).to.have.property("text").and.equal(text);
       });
       it('should parse the text content', function() {
         var text;
@@ -951,14 +951,12 @@
         });
       });
       it('should load the iframe the first time by writing html', function(done) {
-        var spy_html;
-        spy_html = null;
         return new ButtonFrame(hash, function(iframe) {
           document.body.appendChild(iframe);
-          return spy_html = sinon.spy(this, "html");
+          return sinon.spy(this, "html");
         }, function(iframe) {
-          expect(spy_html).to.have.been.calledOnce;
-          spy_html.restore();
+          expect(this.html).to.have.been.calledOnce;
+          this.html.restore();
           iframe.parentNode.removeChild(iframe);
           return done();
         });
@@ -978,18 +976,15 @@
         });
       });
       it('should load the iframe the second time by setting the src attribute', function(done) {
-        var spy_html, spy_load;
-        spy_html = null;
-        spy_load = null;
         return new ButtonFrame(hash, function(iframe) {
           document.body.appendChild(iframe);
-          spy_html = sinon.spy(this, "html");
-          return spy_load = sinon.spy(this, "load");
+          sinon.spy(this, "html");
+          return sinon.spy(this, "load");
         }, function(iframe) {
-          expect(spy_load).to.have.been.calledOnce;
-          expect(spy_load).to.have.been.calledAfter(spy_html);
-          spy_html.restore();
-          spy_load.restore();
+          expect(this.load).to.have.been.calledOnce;
+          expect(this.load).to.have.been.calledAfter(this.html);
+          this.html.restore();
+          this.load.restore();
           iframe.parentNode.removeChild(iframe);
           return done();
         });
@@ -1004,29 +999,24 @@
         });
       });
       return it('should resize the iframe after the second load', function(done) {
-        var spy_html, spy_load, spy_resize, spy_size;
-        spy_html = null;
-        spy_load = null;
-        spy_size = null;
-        spy_resize = null;
         return new ButtonFrame(hash, function(iframe) {
           document.body.appendChild(iframe);
-          spy_html = sinon.spy(this, "html");
-          spy_load = sinon.spy(this, "load");
-          spy_size = sinon.spy(this, "size");
-          return spy_resize = sinon.spy(this, "resize");
+          sinon.spy(this, "html");
+          sinon.spy(this, "load");
+          sinon.spy(this, "size");
+          return sinon.spy(this, "resize");
         }, function(iframe) {
-          expect(spy_size).to.have.been.calledOnce;
-          expect(spy_size).to.have.been.calledAfter(spy_html);
-          expect(spy_resize).to.have.been.calledOnce;
-          expect(spy_resize).to.have.been.calledAfter(spy_load);
-          expect(spy_resize.args[0][0]).to.deep.equal(spy_size.returnValues[0]);
-          spy_html.restore();
-          spy_load.restore();
-          spy_size.restore();
-          spy_resize.restore();
-          expect(iframe.style.width).to.equal(spy_size.returnValues[0].width);
-          expect(iframe.style.height).to.equal(spy_size.returnValues[0].height);
+          expect(this.size).to.have.been.calledOnce;
+          expect(this.size).to.have.been.calledAfter(this.html);
+          expect(this.resize).to.have.been.calledOnce;
+          expect(this.resize).to.have.been.calledAfter(this.load);
+          expect(this.resize.args[0][0]).to.deep.equal(this.size.returnValues[0]);
+          expect(iframe.style.width).to.equal(this.size.returnValues[0].width);
+          expect(iframe.style.height).to.equal(this.size.returnValues[0].height);
+          this.html.restore();
+          this.load.restore();
+          this.size.restore();
+          this.resize.restore();
           iframe.parentNode.removeChild(iframe);
           return done();
         });
@@ -1035,10 +1025,10 @@
   });
 
   describe('ButtonFrameContent', function() {
-    var base, className, data, stub_body_appendChild;
+    var base, bodyClassName, data, head;
+    head = document.getElementsByTagName("head")[0];
     base = null;
-    className = null;
-    stub_body_appendChild = null;
+    bodyClassName = null;
     data = {
       "meta": {
         "X-RateLimit-Limit": "60",
@@ -1084,24 +1074,24 @@
       }
     };
     beforeEach(function() {
-      className = document.body.getAttribute("class");
-      base = document.getElementsByTagName("head")[0].appendChild(document.createElement("base"));
-      return stub_body_appendChild = sinon.stub(document.body, "appendChild");
+      bodyClassName = document.body.getAttribute("class");
+      base = head.insertBefore(document.createElement("base", head.firstChild));
+      return sinon.stub(document.body, "appendChild");
     });
     afterEach(function() {
-      if (className) {
-        document.body.className = className;
+      if (bodyClassName) {
+        document.body.className = bodyClassName;
       } else {
         document.body.removeAttribute("class");
       }
       base.parentNode.removeChild(base);
-      return stub_body_appendChild.restore();
+      return document.body.appendChild.restore();
     });
     return describe('#constructor()', function() {
       it('should do nothing when options are missing', function() {
         new ButtonFrameContent();
         expect(base.getAttribute("href")).to.be["null"]();
-        return expect(stub_body_appendChild).to.have.not.been.called;
+        return expect(document.body.appendChild).to.have.not.been.called;
       });
       it('should set base.href when options.href is given', function() {
         var options;
@@ -1146,8 +1136,8 @@
           data: {}
         };
         new ButtonFrameContent(options);
-        expect(stub_body_appendChild).to.be.calledOnce;
-        button = stub_body_appendChild.args[0][0];
+        expect(document.body.appendChild).to.be.calledOnce;
+        button = document.body.appendChild.args[0][0];
         return expect(button).to.have.property("className").and.equal("button");
       });
       it('should append the button with given href', function() {
@@ -1157,7 +1147,7 @@
           data: {}
         };
         new ButtonFrameContent(options);
-        button = stub_body_appendChild.args[0][0];
+        button = document.body.appendChild.args[0][0];
         return expect(button.getAttribute("href")).to.equal(options.href);
       });
       it('should append the button with the default icon', function() {
@@ -1166,7 +1156,7 @@
           data: {}
         };
         new ButtonFrameContent(options);
-        button = stub_body_appendChild.args[0][0];
+        button = document.body.appendChild.args[0][0];
         return expect((" " + button.firstChild.className + " ").indexOf(" " + Config.icon + " ")).to.be.at.least(0);
       });
       it('should append the button with given icon', function() {
@@ -1177,7 +1167,7 @@
           }
         };
         new ButtonFrameContent(options);
-        button = stub_body_appendChild.args[0][0];
+        button = document.body.appendChild.args[0][0];
         return expect((" " + button.firstChild.className + " ").indexOf(" " + options.data.icon + " ")).to.be.at.least(0);
       });
       it('should append the button with given text', function() {
@@ -1187,12 +1177,12 @@
           data: {}
         };
         new ButtonFrameContent(options);
-        button = stub_body_appendChild.args[0][0];
+        button = document.body.appendChild.args[0][0];
         return expect(button.lastChild.innerHTML).to.equal(options.text);
       });
       it('should append the count to document.body when the necessary options are given', function() {
-        var count, options, stub_head_insertBefore;
-        stub_head_insertBefore = sinon.stub(document.getElementsByTagName("head")[0], "insertBefore", function() {
+        var count, options;
+        sinon.stub(head, "insertBefore", function() {
           return window.callback(data);
         });
         options = {
@@ -1203,14 +1193,14 @@
           }
         };
         new ButtonFrameContent(options);
-        expect(stub_body_appendChild).to.be.calledTwice;
-        count = stub_body_appendChild.args[1][0];
+        expect(document.body.appendChild).to.be.calledTwice;
+        count = document.body.appendChild.args[1][0];
         expect(count).to.have.property("className").and.equal("count");
-        return stub_head_insertBefore.restore();
+        return head.insertBefore.restore();
       });
       it('should append the count with given data.count.href', function() {
-        var count, options, stub_head_insertBefore;
-        stub_head_insertBefore = sinon.stub(document.getElementsByTagName("head")[0], "insertBefore", function() {
+        var count, options;
+        sinon.stub(head, "insertBefore", function() {
           return window.callback(data);
         });
         options = {
@@ -1222,13 +1212,13 @@
           }
         };
         new ButtonFrameContent(options);
-        count = stub_body_appendChild.args[1][0];
+        count = document.body.appendChild.args[1][0];
         expect(count.getAttribute("href")).to.equal(options.data.count.href);
-        return stub_head_insertBefore.restore();
+        return head.insertBefore.restore();
       });
       it('should append the count with #entry from api response', function() {
-        var count, options, stub_head_insertBefore;
-        stub_head_insertBefore = sinon.stub(document.getElementsByTagName("head")[0], "insertBefore", function() {
+        var count, options;
+        sinon.stub(head, "insertBefore", function() {
           return window.callback(data);
         });
         options = {
@@ -1239,13 +1229,13 @@
           }
         };
         new ButtonFrameContent(options);
-        count = stub_body_appendChild.args[1][0];
+        count = document.body.appendChild.args[1][0];
         expect(count.lastChild.innerHTML).to.equal(" 26 ");
-        return stub_head_insertBefore.restore();
+        return head.insertBefore.restore();
       });
       it('should append the count with large number split by comma', function() {
-        var count, options, stub_head_insertBefore;
-        stub_head_insertBefore = sinon.stub(document.getElementsByTagName("head")[0], "insertBefore", function() {
+        var count, options;
+        sinon.stub(head, "insertBefore", function() {
           return window.callback(data);
         });
         options = {
@@ -1256,13 +1246,13 @@
           }
         };
         new ButtonFrameContent(options);
-        count = stub_body_appendChild.args[1][0];
+        count = document.body.appendChild.args[1][0];
         expect(count.lastChild.innerHTML).to.equal(" 899,645 ");
-        return stub_head_insertBefore.restore();
+        return head.insertBefore.restore();
       });
       it('should append the count with text undefined when api #entry does not exist', function() {
-        var count, options, stub_head_insertBefore;
-        stub_head_insertBefore = sinon.stub(document.getElementsByTagName("head")[0], "insertBefore", function() {
+        var count, options;
+        sinon.stub(head, "insertBefore", function() {
           return window.callback(data);
         });
         options = {
@@ -1273,18 +1263,18 @@
           }
         };
         new ButtonFrameContent(options);
-        count = stub_body_appendChild.args[1][0];
+        count = document.body.appendChild.args[1][0];
         expect(count.lastChild.innerHTML).to.equal(" undefined ");
-        return stub_head_insertBefore.restore();
+        return head.insertBefore.restore();
       });
       return it('should not append the count when it fails to pull api data', function() {
-        var button, options, stub_head_insertBefore;
-        stub_head_insertBefore = sinon.stub(document.getElementsByTagName("head")[0], "insertBefore", function() {
-          return window.callback({
+        var button, options;
+        sinon.stub(head, "insertBefore", function() {
+          return {
             meta: {
               status: 404
             }
-          });
+          };
         });
         options = {
           data: {
@@ -1294,10 +1284,10 @@
           }
         };
         new ButtonFrameContent(options);
-        expect(stub_body_appendChild).to.be.calledOnce;
-        button = stub_body_appendChild.args[0][0];
+        expect(document.body.appendChild).to.be.calledOnce;
+        button = document.body.appendChild.args[0][0];
         expect(button).to.have.property("className").and.equal("button");
-        return stub_head_insertBefore.restore();
+        return head.insertBefore.restore();
       });
     });
   });
