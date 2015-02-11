@@ -6,29 +6,29 @@
     __hasProp = {}.hasOwnProperty;
 
   FlatObject = (function() {
-    var __toString;
+    var index;
 
     function FlatObject() {}
 
     FlatObject.flatten = function(obj) {
       var flatten, result;
-      flatten = function(object, super_key) {
+      flatten = function(object, flat_key) {
         var index, item, key, value, _i, _len;
-        switch (__toString.call(object)) {
+        switch (Object.prototype.toString.call(object)) {
           case "[object Object]":
             for (key in object) {
               value = object[key];
-              flatten(value, super_key ? super_key + "." + key : key);
+              flatten(value, flat_key ? flat_key + "." + key : key);
             }
             break;
           case "[object Array]":
             for (index = _i = 0, _len = object.length; _i < _len; index = ++_i) {
               item = object[index];
-              flatten(item, super_key ? super_key + "[" + index + "]" : "[" + index + "]");
+              flatten(item, flat_key ? flat_key + "[" + index + "]" : "[" + index + "]");
             }
             break;
           default:
-            result[super_key] = object;
+            result[flat_key] = object;
         }
       };
       result = {};
@@ -37,47 +37,33 @@
     };
 
     FlatObject.expand = function(obj) {
-      var flat_key, key, keys, match, namespace, sub_key, target, value, _i, _j, _len, _len1, _ref, _ref1;
+      var flat_key, key, keys, namespace, target, value;
       namespace = [];
       for (flat_key in obj) {
         value = obj[flat_key];
-        keys = [];
-        _ref = flat_key.split(".");
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          key = _ref[_i];
-          match = key.match(/^(.*?)((?:\[[0-9]+\])*)$/);
-          if (match[1]) {
-            keys.push(match[1]);
-          }
-          if (match[2]) {
-            _ref1 = match[2].replace(/^\[|\]$/g, "").split("][");
-            for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-              sub_key = _ref1[_j];
-              keys.push(Number(sub_key));
-            }
-          }
-        }
+        keys = flat_key.match(/((?!\[\d+\])[^.])+|\[\d+\]/g);
         target = namespace;
         key = 0;
         while (keys.length) {
           if (target[key] == null) {
-            switch (__toString.call(keys[0])) {
-              case "[object String]":
-                target[key] = {};
-                break;
-              case "[object Number]":
-                target[key] = [];
-            }
+            target[key] = keys[0] === index(keys[0]) ? {} : [];
           }
           target = target[key];
-          key = keys.shift();
+          key = index(keys.shift());
         }
         target[key] = value;
       }
       return namespace[0];
     };
 
-    __toString = Object.prototype.toString;
+    index = function(str) {
+      var match;
+      if (match = str.match(/^\[(\d+)\]$/)) {
+        return Number(match[1]);
+      } else {
+        return str;
+      }
+    };
 
     return FlatObject;
 
@@ -849,7 +835,7 @@
         var api;
         api = "/repos/:user/:repo";
         a.setAttribute("data-count-api", api);
-        return expect(ButtonAnchor.parse(a)).to.not.have.deep.property("data.count.api");
+        return expect(ButtonAnchor.parse(a)).to.have.deep.property("data.count.api").and.be.undefined;
       });
       it('should parse the attribute data-count-href', function() {
         var href;
@@ -1090,7 +1076,7 @@
     return describe('#constructor()', function() {
       it('should do nothing when options are missing', function() {
         new ButtonFrameContent();
-        expect(base.getAttribute("href")).to.be["null"]();
+        expect(base.getAttribute("href")).to.be["null"];
         return expect(document.body.appendChild).to.have.not.been.called;
       });
       it('should set base.href when options.href is given', function() {

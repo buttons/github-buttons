@@ -1,15 +1,15 @@
 class FlatObject
   @flatten: (obj) ->
-    flatten = (object, super_key) ->
-      switch __toString.call(object)
+    flatten = (object, flat_key) ->
+      switch Object.prototype.toString.call object
         when "[object Object]"
           for key, value of object
-            flatten value, if super_key then "#{super_key}.#{key}" else key
+            flatten value, if flat_key then "#{flat_key}.#{key}" else key
         when "[object Array]"
           for item, index in object
-            flatten item, if super_key then "#{super_key}[#{index}]" else "[#{index}]"
+            flatten item, if flat_key then "#{flat_key}[#{index}]" else "[#{index}]"
         else
-          result[super_key] = object
+          result[flat_key] = object
       return
     result = {}
     flatten obj
@@ -18,26 +18,22 @@ class FlatObject
   @expand: (obj) ->
     namespace = []
     for flat_key, value of obj
-      keys = []
-      for key in flat_key.split "."
-        match = key.match /^(.*?)((?:\[[0-9]+\])*)$/
-        keys.push match[1] if match[1]
-        keys.push Number sub_key for sub_key in match[2].replace(/^\[|\]$/g, "").split("][") if match[2]
+      keys = flat_key.match /((?!\[\d+\])[^.])+|\[\d+\]/g
       target = namespace
       key = 0
       while keys.length
         unless target[key]?
-          switch __toString.call(keys[0])
-            when "[object String]"
-              target[key] = {}
-            when "[object Number]"
-              target[key] = []
+          target[key] = if keys[0] is index keys[0] then {} else []
         target = target[key]
-        key = keys.shift()
+        key = index keys.shift()
       target[key] = value
     namespace[0]
 
-  __toString = Object.prototype.toString
+  index = (str) ->
+    if match = str.match /^\[(\d+)\]$/
+      Number match[1]
+    else
+      str
 
 
 class QueryString

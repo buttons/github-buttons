@@ -304,7 +304,8 @@ describe 'ButtonAnchor', ->
       api = "/repos/:user/:repo"
       a.setAttribute "data-count-api", api
       expect ButtonAnchor.parse a
-        .to.not.have.deep.property "data.count.api"
+        .to.have.deep.property "data.count.api"
+        .and.be.undefined
 
     it 'should parse the attribute data-count-href', ->
       href = "https://github.com/"
@@ -536,7 +537,7 @@ describe 'ButtonFrameContent', ->
     it 'should do nothing when options are missing', ->
       new ButtonFrameContent()
       expect base.getAttribute "href"
-        .to.be.null()
+        .to.be.null
       expect document.body.appendChild
         .to.have.not.been.called
 
