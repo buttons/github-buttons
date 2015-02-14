@@ -224,6 +224,8 @@
   })();
 
   Frame = (function(_super) {
+    var devicePixelRatio, roundPixel;
+
     __extends(Frame, _super);
 
     function Frame(callback) {
@@ -268,18 +270,26 @@
     };
 
     Frame.prototype.size = function() {
-      var body, contentDocument, html, size;
+      var body, boundingClientRect, contentDocument, height, html, width;
       try {
         contentDocument = this.$.contentWindow.document;
         html = contentDocument.documentElement;
         body = contentDocument.body;
         html.style.overflow = body.style.overflow = window.opera ? "scroll" : "visible";
-        size = {
-          width: body.scrollWidth + "px",
-          height: body.scrollHeight + "px"
-        };
+        width = body.scrollWidth;
+        height = body.scrollHeight;
+        if (devicePixelRatio !== 1) {
+          body.style.display = "inline-block";
+          boundingClientRect = body.getBoundingClientRect();
+          width = Math.max(width, roundPixel(boundingClientRect.width));
+          height = Math.max(height, roundPixel(boundingClientRect.height));
+          body.style.display = "";
+        }
         html.style.overflow = body.style.overflow = "";
-        return size;
+        return {
+          width: width + "px",
+          height: height + "px"
+        };
       } catch (_error) {
         return {};
       }
@@ -294,6 +304,12 @@
       if (height) {
         return this.$.style.height = height;
       }
+    };
+
+    devicePixelRatio = window.devicePixelRatio || 1;
+
+    roundPixel = function(px) {
+      return Math.round(px * devicePixelRatio) / devicePixelRatio || 0;
     };
 
     return Frame;
@@ -709,7 +725,7 @@
   describe('Frame', function() {
     var frame, html;
     frame = null;
-    html = "<!DOCTYPE html>\n<html lang=\"ja\">\n<head>\n  <meta charset=\"utf-8\">\n  <title></title>\n</head>\n<body style=\"margin: 0;\">\n  <div style=\"width: 200px; height: 100px;\"></div>\n</body>\n</html>";
+    html = "<!DOCTYPE html>\n<html lang=\"ja\">\n<head>\n  <meta charset=\"utf-8\">\n  <title></title>\n</head>\n<body style=\"margin: 0;\">\n  <div style=\"width: 200.49px; height: 100px;\"></div>\n</body>\n</html>";
     beforeEach(function() {
       return frame = new Frame(function(iframe) {
         return document.body.appendChild(iframe);
@@ -742,10 +758,19 @@
     describe('#size()', function() {
       return it('should return the iframe content size', function(done) {
         frame.on("load", function() {
-          expect(this.size()).to.deep.equal({
-            width: "200px",
-            height: "100px"
-          });
+          switch (window.devicePixelRatio) {
+            case 2:
+              expect(this.size()).to.deep.equal({
+                width: "200.5px",
+                height: "100px"
+              });
+              break;
+            default:
+              expect(this.size()).to.deep.equal({
+                width: "200px",
+                height: "100px"
+              });
+          }
           return done();
         });
         return frame.html(html);

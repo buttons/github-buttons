@@ -167,7 +167,7 @@ describe 'Frame', ->
       <title></title>
     </head>
     <body style="margin: 0;">
-      <div style="width: 200px; height: 100px;"></div>
+      <div style="width: 200.49px; height: 100px;"></div>
     </body>
     </html>
     """
@@ -202,10 +202,17 @@ describe 'Frame', ->
   describe '#size()', ->
     it 'should return the iframe content size', (done) ->
       frame.on "load", ->
-        expect @size()
-          .to.deep.equal
-            width: "200px"
-            height: "100px"
+        switch window.devicePixelRatio
+          when 2
+            expect @size()
+              .to.deep.equal
+                width: "200.5px"
+                height: "100px"
+          else
+            expect @size()
+              .to.deep.equal
+                width: "200px"
+                height: "100px"
         done()
       frame.html html
 

@@ -94,17 +94,29 @@ class Frame extends Element
       html = contentDocument.documentElement
       body = contentDocument.body
       html.style.overflow = body.style.overflow = if window.opera then "scroll" else "visible"
-      size =
-        width:  "#{body.scrollWidth}px"
-        height: "#{body.scrollHeight}px"
+      width = body.scrollWidth
+      height = body.scrollHeight
+      if devicePixelRatio isnt 1
+        body.style.display = "inline-block"
+        boundingClientRect = body.getBoundingClientRect()
+        width = Math.max width, roundPixel boundingClientRect.width
+        height = Math.max height, roundPixel boundingClientRect.height
+        body.style.display = ""
       html.style.overflow = body.style.overflow = ""
-      size
+
+      width: "#{width}px"
+      height: "#{height}px"
     catch
       {}
 
   resize: ({width, height} = @size()) ->
     @$.style.width = width if width
     @$.style.height = height if height
+
+  devicePixelRatio = window.devicePixelRatio or 1
+
+  roundPixel = (px) ->
+    Math.round(px * devicePixelRatio) / devicePixelRatio or 0
 
 
 class ButtonAnchor
