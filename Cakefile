@@ -92,7 +92,7 @@ task 'build:octicons', 'Build octicons', ->
   system "coffee", "--compile", "src/phantomjs/octicons/octicons.coffee", ->
     system "env", "-i", "sh", "-c", "phantomjs src/phantomjs/octicons/octicons.js assets/css/octicons.less"
   system "coffee", "--compile", "src/phantomjs/octicons/lt-ie8.coffee", ->
-    system "env", "-i", "sh", "-c", "phantomjs src/phantomjs/octicons/lt-ie8.js assets/css/lt-ie8.css"
+    system "phantomjs", "src/phantomjs/octicons/lt-ie8.js", "assets/css/lt-ie8.css"
 
 task 'clean', 'Cleanup everything', ->
   targets = find "./", /\.js(\.map)?$/

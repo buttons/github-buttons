@@ -2,6 +2,12 @@
 (function() {
   var args, fs, page, puts;
 
+  if (!(phantom.version.major >= 2)) {
+    console.warn("Warning:", "Not compatible with your version of phantomjs:");
+    console.warn("\t", "Required: >=2.0.0");
+    console.warn("\t", "Actual:   " + phantom.version.major + "." + phantom.version.minor + "." + phantom.version.patch);
+  }
+
   args = require('system').args;
 
   fs = require('fs');
