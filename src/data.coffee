@@ -7,12 +7,12 @@ class FlatObject
             flatten value, if flat_key then "#{flat_key}.#{key}" else key
         when "[object Array]"
           for item, index in object
-            flatten item, if flat_key then "#{flat_key}[#{index}]" else "[#{index}]"
+            flatten item, "#{flat_key}[#{index}]"
         else
           result[flat_key] = object
       return
     result = {}
-    flatten obj
+    flatten obj, ""
     result
 
   @expand: (obj) ->
@@ -40,8 +40,7 @@ class QueryString
   @stringify: (obj) ->
     results = []
     for key, value of obj
-      value ?= ""
-      results.push "#{key}=#{value}"
+      results.push "#{key}=#{if value? then value else ""}"
     results.join "&"
 
   @parse: (str) ->

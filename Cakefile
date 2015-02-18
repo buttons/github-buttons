@@ -59,7 +59,8 @@ task 'build', 'Build everything', ->
   invoke 'build:coffee'
 
 task 'build:coffee', 'Build scripts', ->
-  coffee.compile "src/config.coffee",
+  coffee.compile "src/global.coffee",
+                 "src/config.coffee",
                  "src/data.coffee",
                  "src/core.coffee",
                  "src/buttons.coffee",
@@ -69,7 +70,8 @@ task 'build:coffee', 'Build scripts', ->
                            "--source-map", "buttons.js.map",
                            "--output", "buttons.js",
                            "lib/buttons.js"
-  coffee.compile "src/config.coffee",
+  coffee.compile "src/global.coffee",
+                 "src/config.coffee",
                  "src/data.coffee",
                  "src/core.coffee",
                  "src/main.coffee",

@@ -1,20 +1,20 @@
 class Element
   constructor: (element, callback) ->
     @$ = if element and element.nodeType is 1 then element else document.createElement element
-    callback.apply @, [@$] if callback
+    callback.call @, @$ if callback
 
   get: -> @$
 
   on: (events..., func) ->
     callback = (event) =>
-      func.apply @, [event || window.event]
+      func.call @, event || window.event
     addEventListener @$, eventName, callback for eventName in events
     return
 
   once: (events..., func) ->
     callback = (event) =>
       removeEventListener @$, eventName, callback for eventName in events
-      func.apply @, [event || window.event]
+      func.call @, event || window.event
     addEventListener @$, eventName, callback for eventName in events
     return
 
@@ -44,7 +44,6 @@ class Element
     return
 
   r_whitespace = /[ \t\n\f\r]+/g
-  r_leading_and_trailing_whitespace = /^[ \t\n\f\r]+|[ \t\n\f\r]+$/g
 
   addClass = (element, className) ->
     element.className += " #{className}"
@@ -54,7 +53,7 @@ class Element
     element.className = " #{element.className} "
       .replace r_whitespace, " "
       .replace " #{className} ", ""
-      .replace r_leading_and_trailing_whitespace, ""
+      .replace /^ | $/, ""
     return
 
   hasClass = (element, className) ->
@@ -74,7 +73,7 @@ class Frame extends Element
         height: "0"
         width: "1px"
       }
-      callback.apply @, [iframe] if callback
+      callback.call @, iframe if callback
       return
 
   html: (html) ->
@@ -127,8 +126,7 @@ class ButtonAnchor
       count:
         api:
           if (api = element.getAttribute "data-count-api") and (~api.indexOf "#")
-            api = "/#{api}" if "/" isnt api.charAt 0
-            api
+            api.replace /^(?!\/)/, "/"
         href:
           (filter_js element.getAttribute "data-count-href") or (filter_js element.href)
       style:
@@ -144,14 +142,14 @@ class ButtonAnchor
 
 
 class ButtonFrame extends Frame
-  constructor: (hash, callbacks...) ->
-    super callbacks.shift()
+  constructor: (hash, callback, onload) ->
+    super callback
 
     reload = =>
       size = @size()
       @once "load", ->
         @resize size
-        callbacks.shift().apply @, [@$] if callbacks[0]
+        onload.call @, @$ if onload
         return
       @load "#{Config.url}buttons.html#{hash}"
       return
@@ -182,7 +180,6 @@ class ButtonFrame extends Frame
       <title></title>
       <base target="_blank"><!--[if lte IE 6]></base><![endif]-->
       <link rel="stylesheet" href="#{Config.url}assets/css/buttons.css">
-      <style>html{visibility:hidden;}</style>
       <script>document.location.hash = "#{hash}";</script>
       </head>
       <body>
@@ -195,11 +192,7 @@ class ButtonFrame extends Frame
 class ButtonFrameContent
   constructor: (options) ->
     if options and options.data
-      document.body.className = do ->
-        for i in Config.styles
-          if i is options.data.style
-            return i
-        Config.styles[0]
+      document.body.className = (do -> return style for style in Config.styles when style is options.data.style) or Config.styles[0]
       document.getElementsByTagName("base")[0].href = options.href if options.href
       new Button options, (buttonElement) ->
         document.body.appendChild buttonElement
@@ -215,10 +208,7 @@ class ButtonFrameContent
         a.href = options.href if options.href
         new Element "i", (icon) ->
           icon = document.createElement "i"
-          icon.className = do ->
-            classNames = [options.data.icon or Config.icon]
-            classNames.push Config.iconClass if Config.iconClass
-            classNames.join " "
+          icon.className = (options.data.icon or Config.icon) + if Config.iconClass then " #{Config.iconClass}" else ""
           a.appendChild icon
           return
         new Element "span", (text) ->
@@ -244,12 +234,12 @@ class ButtonFrameContent
           new Element "i", (i) ->
             a.appendChild i
             return
-          new Element "span", (text) ->
-            a.appendChild text
+          new Element "span", (span) ->
+            a.appendChild span
 
             endpoint = do ->
               url = options.data.count.api.split("#")[0]
-              query = QueryString.parse url.split("?").slice(1).join("?")
+              query = QueryString.parse url.split("?")[1..].join("?")
               query.callback = "callback"
               "#{url.split("?")[0]}?#{QueryString.stringify query}"
 
@@ -261,10 +251,10 @@ class ButtonFrameContent
                 window.callback = null
 
                 if json.meta.status is 200
-                  data = FlatObject.flatten(json.data)[options.data.count.api.split("#").slice(1).join("#")]
-                  if Object.prototype.toString.call(data) is "[object Number]"
-                    data = data.toString().replace /\B(?=(\d{3})+(?!\d))/g, ","
-                  text.appendChild document.createTextNode " #{data} "
+                  data = FlatObject.flatten(json.data)[options.data.count.api.split("#")[1..].join("#")]
+                  if "[object Number]" is Object.prototype.toString.call data
+                    data = "#{data}".replace /\B(?=(\d{3})+(?!\d))/g, ","
+                  span.appendChild document.createTextNode " #{data} "
                   callback a if callback
                 return
               window.callback.script = script

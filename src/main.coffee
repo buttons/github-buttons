@@ -29,7 +29,7 @@ class Form extends Element
   on: (events..., func) ->
     if events.indexOf("change") >= 0
       callback = (event) =>
-        func.apply @, [event || window.event]
+        func.call @, event || window.event
       for element in @get().elements
         new Element element
           .on "change", "input", callback
@@ -202,7 +202,7 @@ class ButtonForm extends Form
           when "follow"
             "Follow @#{user}"
           else
-            type.charAt(0).toUpperCase() + type.slice(1).toLowerCase()
+            type.charAt(0).toUpperCase() + type[1..].toLowerCase()
       data:
         icon:
           switch type
