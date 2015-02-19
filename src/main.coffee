@@ -189,8 +189,10 @@ class ButtonForm extends Form
         switch type
           when "follow"
             "https://github.com/#{user}"
-          when "watch", "star", "fork"
+          when "watch", "star"
             "https://github.com/#{user}/#{repo}"
+          when "fork"
+            "https://github.com/#{user}/#{repo}/fork"
           when "issue"
             "https://github.com/#{user}/#{repo}/issues"
           when "download"

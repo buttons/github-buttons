@@ -14,7 +14,7 @@ To get started, checkout **[buttons.github.io](https://buttons.github.io)**!
   data-count-href="/ntkme/followers" data-count-api="/users/ntkme#followers">Follow @ntkme</a>
 <a href="https://github.com/ntkme/github-buttons" class="github-button" data-icon="octicon-star"
   data-count-href="/ntkme/github-buttons/stargazers" data-count-api="/repos/ntkme/github-buttons#stargazers_count">Star</a>
-<a href="https://github.com/ntkme/github-buttons" class="github-button" data-icon="octicon-git-branch"
+<a href="https://github.com/ntkme/github-buttons/fork" class="github-button" data-icon="octicon-git-branch"
   data-count-href="/ntkme/github-buttons/network" data-count-api="/repos/ntkme/github-buttons#forks_count">Fork</a>
 <a href="https://github.com/ntkme/github-buttons/issues" class="github-button" data-icon="octicon-issue-opened"
   data-count-api="/repos/ntkme/github-buttons#open_issues_count">Issue</a>
