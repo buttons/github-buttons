@@ -1,2 +1,2 @@
 window = @
-document = @document
+document = window.document
