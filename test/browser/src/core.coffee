@@ -663,7 +663,7 @@ describe 'ButtonFrameContent', ->
       head.insertBefore.restore()
 
     it 'should not append the count when it fails to pull api data', ->
-      sinon.stub head, "insertBefore", -> meta: status: 404
+      sinon.stub head, "insertBefore", -> window.callback meta: status: 404
       options = data: count: api: "/dummy/api#followers"
       new ButtonFrameContent options
       expect document.body.appendChild

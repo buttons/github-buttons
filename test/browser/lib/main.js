@@ -1267,11 +1267,11 @@
       return it('should not append the count when it fails to pull api data', function() {
         var button, options;
         sinon.stub(head, "insertBefore", function() {
-          return {
+          return window.callback({
             meta: {
               status: 404
             }
-          };
+          });
         });
         options = {
           data: {
