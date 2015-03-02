@@ -164,6 +164,8 @@
 .octicon-telescope { zoom: expression( this.innerHTML = '&#xf088;' ); } /*  */
 .octicon-terminal { zoom: expression( this.innerHTML = '&#xf0c8;' ); } /*  */
 .octicon-three-bars { zoom: expression( this.innerHTML = '&#xf05e;' ); } /*  */
+.octicon-thumbsdown { zoom: expression( this.innerHTML = '&#xf0db;' ); } /*  */
+.octicon-thumbsup { zoom: expression( this.innerHTML = '&#xf0da;' ); } /*  */
 .octicon-tools { zoom: expression( this.innerHTML = '&#xf031;' ); } /*  */
 .octicon-trashcan { zoom: expression( this.innerHTML = '&#xf0d0;' ); } /*  */
 .octicon-triangle-down { zoom: expression( this.innerHTML = '&#xf05b;' ); } /*  */
