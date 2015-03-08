@@ -115,7 +115,7 @@ class Frame extends Element
   devicePixelRatio = window.devicePixelRatio or 1
 
   roundPixel = (px) ->
-    Math.round(px * devicePixelRatio) / devicePixelRatio or 0
+    Math.ceil(Math.round(px * devicePixelRatio) / devicePixelRatio * 2) / 2 or 0
 
 
 class ButtonAnchor
