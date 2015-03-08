@@ -7,16 +7,13 @@ system = (command, args..., callback) ->
   if callback and "[object Function]" isnt Object.prototype.toString.call callback
     args.push callback
     callback = null
-  esc = String.fromCharCode 27
-  console.log "#{esc}[36;1m==>#{esc}[0;1m #{command} #{args.map((arg) -> arg.replace /([ \t\n])/g, "\\$1").join " "}#{esc}[0m"
-  proc = spawn command, args
-  proc.stdout.pipe process.stdout
-  proc.stderr.pipe process.stderr
-  proc.on 'exit', (status) ->
-    if status is 0
+
+  console.log "\u001B[36;1m==>\u001B[0;1m #{command} #{args.map((arg) -> arg.replace /([ \t\n])/g, "\\$1").join " "}\u001B[0m"
+
+  spawn command, args, stdio: ['ignore', 'ignore', process.stderr]
+    .on 'exit', (status) ->
+      process.exit status unless status is 0
       callback() if callback
-    else
-      process.exit status
 
 find = (dir, pattern = /.*/) ->
   fs.readdirSync dir
@@ -31,26 +28,17 @@ coffee =
       coffeescripts.push javascript
       javascript = callback
       callback = null
-    esc = String.fromCharCode 27
-    console.log "#{esc}[32;1m==>#{esc}[0;1m Compiling:#{esc}[0m #{coffeescripts.join " "} #{esc}[1m-->#{esc}[0m #{javascript}"
-    stdout = fs.createWriteStream javascript
-    cat_proc = spawn "cat", coffeescripts
+
+    console.log "\u001B[36;1m==>\u001B[0;1m cat #{coffeescripts.join " "} | coffee --compile --stdio > #{javascript}\u001B[0;1m"
+
+    cat_proc = spawn "cat", coffeescripts, stdio: ['ignore', 'pipe', process.stderr]
     cat_proc.stdout.on 'data', (data) -> coffee_proc.stdin.write data
-    cat_proc.stderr.on 'data', (data) -> console.error data.toString "utf8"
-    cat_proc.on 'close', (status) ->
-      if status is 0
-        coffee_proc.stdin.end()
-      else
-        process.exit status
-    coffee_proc = spawn "coffee", ["--compile", "--stdio"]
-    coffee_proc.stdout.on 'data', (data) -> stdout.write data
-    coffee_proc.stderr.on 'data', (data) -> console.error data.toString "utf8"
-    coffee_proc.on 'close', (status) ->
-      if status is 0
-        stdout.end()
-        callback() if callback
-      else
-        process.exit status
+    cat_proc.on 'close', -> coffee_proc.stdin.end()
+    cat_proc.on 'exit', (status) -> process.exit status unless status is 0
+    coffee_proc = spawn "coffee", ["--compile", "--stdio"], stdio: ['pipe', fs.openSync(javascript, 'w'), process.stderr]
+    coffee_proc.on 'exit', (status) ->
+      process.exit status unless status is 0
+      callback() if callback
 
 
 task 'build', 'Build everything', ->
@@ -97,12 +85,14 @@ task 'build:octicons', 'Build octicons', ->
     system "phantomjs", "src/phantomjs/octicons/lt-ie8.js", "assets/css/lt-ie8.css"
 
 task 'clean', 'Cleanup everything', ->
-  targets = find "./", /\.js(\.map)?$/
-    .concat find "assets/js/", /\.js(\.map)?$/
-    .concat find "lib/", /\.js(\.map)?$/
-    .concat find "src/phantomjs/octicons/", /\.js(\.map)?$/
-    .concat find "test/browser/lib/", /\.js(\.map)?$/
-    .concat find "assets/css/", /\.css(\.map)?$|^octicons.less$/
+  js = /\.js(\.map)?$/
+  css = /\.css(\.map)?$|^octicons.less$/
+  targets = find "./", js
+    .concat find "assets/js/", js
+    .concat find "lib/", js
+    .concat find "src/phantomjs/octicons/", js
+    .concat find "test/browser/lib/", js
+    .concat find "assets/css/", css
   system "rm", targets... if targets.length > 0
 
 task 'test', 'Test everything', ->
