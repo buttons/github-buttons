@@ -252,7 +252,7 @@ class ButtonFrameContent
 
                 if json.meta.status is 200
                   data = FlatObject.flatten(json.data)[options.data.count.api.split("#")[1..].join("#")]
-                  if "[object Number]" is Object.prototype.toString.call data
+                  if "[object Number]" is Object::toString.call data
                     data = "#{data}".replace /\B(?=(\d{3})+(?!\d))/g, ","
                   span.appendChild document.createTextNode " #{data} "
                   callback a if callback

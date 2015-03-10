@@ -1,7 +1,7 @@
 class FlatObject
   @flatten: (obj) ->
     flatten = (object, flat_key) ->
-      switch Object.prototype.toString.call object
+      switch Object::toString.call object
         when "[object Object]"
           for key, value of object
             flatten value, if flat_key then "#{flat_key}.#{key}" else key

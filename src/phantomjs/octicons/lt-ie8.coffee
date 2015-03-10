@@ -9,9 +9,9 @@ else
 
 page.open "src/phantomjs/octicons/index.html", ->
   puts page.evaluate ->
-    styleSheets = Array.prototype.filter.call document.styleSheets, (styleSheet) ->
+    styleSheets = Array::filter.call document.styleSheets, (styleSheet) ->
       styleSheet.href?.match /\/octicons\.css$/
-    Array.prototype.filter.call styleSheets[0].cssRules, (cssRule) ->
+    Array::filter.call styleSheets[0].cssRules, (cssRule) ->
       cssRule.selectorText?.match /^\.octicon-[\w-]+?::before(?:\s*,\s*\.octicon-[\w-]+?::before)*$/
     .map (cssRule) ->
       selectorText = cssRule.selectorText.replace /::before/g, ""

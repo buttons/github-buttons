@@ -4,7 +4,7 @@ path = require 'path'
 
 
 system = (command, args..., callback) ->
-  if callback and "[object Function]" isnt Object.prototype.toString.call callback
+  if callback and "[object Function]" isnt Object::toString.call callback
     args.push callback
     callback = null
 
@@ -24,7 +24,7 @@ find = (dir, pattern = /.*/) ->
 
 coffee =
   compile: (coffeescripts..., javascript, callback) ->
-    if callback and "[object Function]" isnt Object.prototype.toString.call callback
+    if callback and "[object Function]" isnt Object::toString.call callback
       coffeescripts.push javascript
       javascript = callback
       callback = null
