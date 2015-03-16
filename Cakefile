@@ -10,7 +10,7 @@ system = (command, args..., callback) ->
 
   console.log "\u001B[36;1m==>\u001B[0;1m #{command} #{args.map((arg) -> arg.replace /([ \t\n])/g, "\\$1").join " "}\u001B[0m"
 
-  spawn command, args, stdio: ['ignore', 'ignore', process.stderr]
+  spawn command, args, stdio: ['ignore', process.stdout, process.stderr]
     .on 'exit', (status) ->
       process.exit status unless status is 0
       callback() if callback
@@ -29,7 +29,7 @@ coffee =
       javascript = callback
       callback = null
 
-    console.log "\u001B[36;1m==>\u001B[0;1m cat #{coffeescripts.join " "} | coffee --compile --stdio > #{javascript}\u001B[0;1m"
+    console.log "\u001B[36;1m==>\u001B[0;1m cat #{coffeescripts.join " "} | coffee --compile --stdio > #{javascript}\u001B[0m"
 
     cat_proc = spawn "cat", coffeescripts, stdio: ['ignore', 'pipe', process.stderr]
     cat_proc.stdout.on 'data', (data) -> coffee_proc.stdin.write data
