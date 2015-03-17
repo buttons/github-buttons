@@ -27,6 +27,7 @@
     "less-plugin-clean-css": "latest",
     "mocha": "latest",
     "mocha-phantomjs": "latest",
+    "phantomjs": "*",
     "recess": "latest",
     "sinon": "latest",
     "sinon-chai": "latest",
