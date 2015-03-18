@@ -3,6 +3,27 @@ path = require 'path'
 {spawn, exec} = require 'child_process'
 
 
+class Indent extends require('stream').Transform
+  constructor: ->
+    @_indentatoin = new Buffer "  "
+    @_newline = true
+    super
+
+  push: (chunk) ->
+    super @_indentatoin if chunk? and @_newline
+    super
+
+  _transform: (chunk, encoding, callback) ->
+    begin = 0
+    for charCode, end in chunk when charCode is 10 or charCode is 13
+      @push chunk.slice begin, begin = ++end
+      @_newline = true
+    if begin < chunk.length
+      @push chunk.slice begin
+      @_newline = false
+    callback()
+
+
 system = (command, args..., callback) ->
   if callback and "[object Function]" isnt Object::toString.call callback
     args.push callback
@@ -10,10 +31,11 @@ system = (command, args..., callback) ->
 
   console.log "\u001B[36;1m==>\u001B[0;1m #{command} #{args.map((arg) -> arg.replace /([ \t\n])/g, "\\$1").join " "}\u001B[0m"
 
-  spawn command, args, stdio: ['ignore', process.stdout, process.stderr]
+  spawn command, args, stdio: ['ignore', 'pipe', process.stderr]
     .on 'exit', (status) ->
       process.exit status unless status is 0
       callback() if callback
+    .stdout.pipe(new Indent()).pipe process.stdout
 
 find = (dir, pattern = /.*/) ->
   fs.readdirSync dir
@@ -31,14 +53,16 @@ coffee =
 
     console.log "\u001B[36;1m==>\u001B[0;1m cat #{coffeescripts.join " "} | coffee --compile --stdio > #{javascript}\u001B[0m"
 
-    cat_proc = spawn "cat", coffeescripts, stdio: ['ignore', 'pipe', process.stderr]
-    cat_proc.stdout.on 'data', (data) -> coffee_proc.stdin.write data
-    cat_proc.on 'close', -> coffee_proc.stdin.end()
-    cat_proc.on 'exit', (status) -> process.exit status unless status is 0
-    coffee_proc = spawn "coffee", ["--compile", "--stdio"], stdio: ['pipe', fs.openSync(javascript, 'w'), process.stderr]
-    coffee_proc.on 'exit', (status) ->
-      process.exit status unless status is 0
-      callback() if callback
+    spawn "cat", coffeescripts, stdio: ['ignore', 'pipe', process.stderr]
+      .on 'exit', (status) -> process.exit status unless status is 0
+      .on 'close', -> stdin.end()
+      .stdout.on 'data', (data) -> stdin.write data
+
+    stdin = spawn "coffee", ["--compile", "--stdio"], stdio: ['pipe', fs.openSync(javascript, 'w'), process.stderr]
+      .on 'exit', (status) ->
+        process.exit status unless status is 0
+        callback() if callback
+      .stdin
 
 
 task 'build', 'Build everything', ->
@@ -115,4 +139,4 @@ task 'test:mocha-phantomjs', 'Test browser scripts', ->
                  "test/browser/src/helpers.coffee",
                  "test/browser/src/core.coffee",
                  "test/browser/lib/main.js",
-                 -> system "mocha-phantomjs", "test/browser/index.html"
+                 -> system "mocha-phantomjs", "--file", "/dev/null", "test/browser/index.html"
