@@ -1,6 +1,5 @@
 expect = require('chai').expect
-helpers = require './helpers'
-{FlatObject, QueryString, Hash} = helpers.require '../src/data'
+{FlatObject, QueryString, Hash} = require('./sandbox').require '../src/data'
 
 
 describe 'FlatObject', ->
