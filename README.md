@@ -3,28 +3,26 @@ github-buttons
 
 [![Circle CI](https://circleci.com/gh/ntkme/github-buttons.svg?style=svg)](https://circleci.com/gh/ntkme/github-buttons)
 
-To get started, checkout **[buttons.github.io](https://buttons.github.io)**!
+To get started, checkout **[buttons.github.io](https://buttons.github.io)**!  
 
-## Manual
+## Features
 
-### Example
+- **Unlimited Button Types**  
+  Our [github:button generator](https://buttons.github.io) provides 6 basic button types including follow, watch, star, fork, issue and download, each at normal or large size, with or without a dynamic count.  In addition, almost everything including the API for dynamic count is customizable via simple HTML markup.
+- **Pixel Perfect**  
+  [Octicons](https://octicons.github.com) based vector icons always look sharp on every display.  The automatically sized iframe solves the big headache of iframe sizing.  Plus, its high precision sizing algorithm works the best for HiDPI displays.
+- **Fast**  
+  Hosted on [GitHub Pages](https://pages.github.com), this service delivers high performance and availability, using asynchronous code that never blocks the page loading.
+- **Stable**  
+  High test coverage for the [main library](buttons.js) and automated tests on [Circle CI](https://circleci.com/gh/ntkme/github-buttons) assure the service quality.
+- **Backward Compatible**  
+  As you may still need this, outdated browsers like IE 6 is supported.
 
-``` html
-<a href="https://github.com/ntkme" class="github-button"
-  data-count-href="/ntkme/followers" data-count-api="/users/ntkme#followers">Follow @ntkme</a>
-<a href="https://github.com/ntkme/github-buttons" class="github-button" data-icon="octicon-star"
-  data-count-href="/ntkme/github-buttons/stargazers" data-count-api="/repos/ntkme/github-buttons#stargazers_count">Star</a>
-<a href="https://github.com/ntkme/github-buttons/fork" class="github-button" data-icon="octicon-git-branch"
-  data-count-href="/ntkme/github-buttons/network" data-count-api="/repos/ntkme/github-buttons#forks_count">Fork</a>
-<a href="https://github.com/ntkme/github-buttons/issues" class="github-button" data-icon="octicon-issue-opened"
-  data-count-api="/repos/ntkme/github-buttons#open_issues_count">Issue</a>
-
-<script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
-```
+## Documentation
 
 ### Usage
 
-Add as many `<a class="github-button">` as you like, then put the `<script>` after the last one.
+Add as many `<a class="github-button">` as you like, then put the `<script>` after the last button.
 
 ### Syntax
 
@@ -75,8 +73,8 @@ Development
 
 ### Dependencies
 
-- Node.js
-- PhantomJS
+- **Node.js**
+- **PhantomJS** 2.0.0 or later
 
 ### Clone
 
@@ -99,6 +97,13 @@ cake build
 ``` sh
 cake test
 ```
+
+
+
+See also
+--------
+
+- [mdo/github-buttons](https://ghbtns.com)
 
 
 
