@@ -129,10 +129,17 @@ class ButtonAnchor
             api.replace /^(?!\/)/, "/"
         href:
           (filter_js element.getAttribute "data-count-href") or (filter_js element.href)
+        aria:
+          label:
+            label if label = element.getAttribute "data-count-aria-label"
       style:
         style if style = element.getAttribute "data-style"
       icon:
         icon if icon = element.getAttribute "data-icon"
+    aria:
+      label:
+        label if label = element.getAttribute "aria-label"
+
 
   filter_js = (href) ->
     if /^\s*javascript:/i.test href
@@ -197,7 +204,7 @@ class ButtonFrameContent
       new Button options, (buttonElement) ->
         document.body.appendChild buttonElement
         return
-      new Count options, (countElement) ->
+      new Count options.data.count, (countElement) ->
         document.body.appendChild countElement
         return
 
@@ -206,9 +213,11 @@ class ButtonFrameContent
       super "a", (a) ->
         a.className = "button"
         a.href = options.href if options.href
+        a.setAttribute "aria-label", options.aria.label if options.aria.label
         new Element "i", (icon) ->
           icon = document.createElement "i"
           icon.className = (options.data.icon or Config.icon) + if Config.iconClass then " #{Config.iconClass}" else ""
+          icon.setAttribute "aria-hidden", "true"
           a.appendChild icon
           return
         new Element "span", (text) ->
@@ -224,10 +233,10 @@ class ButtonFrameContent
 
   class Count extends Element
     constructor: (options, callback) ->
-      if options.data.count and options.data.count.api
+      if options and options.api
         super "a", (a) ->
           a.className = "count"
-          a.href = options.data.count.href if options.data.count.href
+          a.href = options.href if options.href
           new Element "b", (b) ->
             a.appendChild b
             return
@@ -238,7 +247,7 @@ class ButtonFrameContent
             a.appendChild span
 
             endpoint = do ->
-              url = options.data.count.api.split("#")[0]
+              url = options.api.split("#")[0]
               query = QueryString.parse url.split("?")[1..].join("?")
               query.callback = "callback"
               "#{url.split("?")[0]}?#{QueryString.stringify query}"
@@ -251,10 +260,11 @@ class ButtonFrameContent
                 window.callback = null
 
                 if json.meta.status is 200
-                  data = FlatObject.flatten(json.data)[options.data.count.api.split("#")[1..].join("#")]
+                  data = FlatObject.flatten(json.data)[options.api.split("#")[1..].join("#")]
                   if "[object Number]" is Object::toString.call data
                     data = "#{data}".replace /\B(?=(\d{3})+(?!\d))/g, ","
                   span.appendChild document.createTextNode " #{data} "
+                  a.setAttribute "aria-label", options.aria.label.replace "#", data if options.aria.label
                   callback a if callback
                 return
               window.callback.script = script

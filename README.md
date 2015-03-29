@@ -17,6 +17,8 @@ To get started, checkout **[buttons.github.io](https://buttons.github.io)**!
   High test coverage for the [main library](buttons.js) and automated tests on [Circle CI](https://circleci.com/gh/ntkme/github-buttons) assure the service quality.
 - **Backward Compatible**  
   As you may still need this, outdated browsers like IE 6 is supported.
+- **Accessibility**  
+  ARIA label support enables accessibility for screen reader users.
 
 ## Documentation
 
@@ -32,8 +34,10 @@ Add as many `<a class="github-button">` as you like, then put the `<script>` aft
    data-icon="{{ octicon }}"
    data-count-href="{{ count_link }}"
    data-count-api="{{ count_api }}"
+   data-count-aria-label="{{ count_aria_label }}"
    data-style="{{ style }}"
    data-text="{{ button_text }}"
+   aria-label="{{ button_aria_label }}"
    >{{ text }}</a>
 ```
 
@@ -43,15 +47,17 @@ Add as many `<a class="github-button">` as you like, then put the `<script>` aft
 
 #### Attributes
 
-| Attribute         | Description                                                                                                                                     |
-| ---------         | -----------                                                                                                                                     |
-| `href`            | GitHub link for the button.                                                                                                                     |
-| `data-icon`       | Octicon for the button. It defaults to `octicon-mark-github`. <br> All available icons can be found at [Octicons](https://octicons.github.com). |
-| `data-count-href` | GitHub link for the count. It defaults to `href` value. <br> Relative url will be relative to `href` value.                                     |
-| `data-count-api`  | GitHub API endpoint for the count.                                                                                                              |
-| `data-style`      | `default` or `mega`.                                                                                                                            |
-| `data-text`       | Text displayed on the button. This option will override `link_text`.                                                                            |
-| `text`            | Text displayed on the button and the fallback link.                                                                                             |
+| Attribute               | Description                                                                                                                                     |
+| ---------               | -----------                                                                                                                                     |
+| `href`                  | GitHub link for the button.                                                                                                                     |
+| `data-icon`             | Octicon for the button. It defaults to `octicon-mark-github`. <br> All available icons can be found at [Octicons](https://octicons.github.com). |
+| `data-count-href`       | GitHub link for the count. It defaults to `href` value. <br> Relative url will be relative to `href` value.                                     |
+| `data-count-api`        | GitHub API endpoint for the count.                                                                                                              |
+| `data-count-aria-label` | Aria label for the count link. <br> `#` in this attribute will be replaced with a real count.                                                   |
+| `data-style`            | `default` or `mega`.                                                                                                                            |
+| `data-text`             | Text displayed on the button. This option will override `link_text`.                                                                            |
+| `text`                  | Text displayed on the button and the fallback link.                                                                                             |
+| `aria-label`            | Aira label for the button link.                                                                                                                 |
 
 #### API Endpoint
 

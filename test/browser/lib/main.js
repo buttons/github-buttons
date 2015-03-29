@@ -317,17 +317,23 @@
     function ButtonAnchor() {}
 
     ButtonAnchor.parse = function(element) {
-      var api, icon, style;
+      var api, icon, label, style;
       return {
         href: filter_js(element.href),
         text: element.getAttribute("data-text") || element.textContent || element.innerText,
         data: {
           count: {
             api: (api = element.getAttribute("data-count-api")) && (~api.indexOf("#")) ? api.replace(/^(?!\/)/, "/") : void 0,
-            href: (filter_js(element.getAttribute("data-count-href"))) || (filter_js(element.href))
+            href: (filter_js(element.getAttribute("data-count-href"))) || (filter_js(element.href)),
+            aria: {
+              label: (label = element.getAttribute("data-count-aria-label")) ? label : void 0
+            }
           },
           style: (style = element.getAttribute("data-style")) ? style : void 0,
           icon: (icon = element.getAttribute("data-icon")) ? icon : void 0
+        },
+        aria: {
+          label: (label = element.getAttribute("aria-label")) ? label : void 0
         }
       };
     };
@@ -410,7 +416,7 @@
         new Button(options, function(buttonElement) {
           document.body.appendChild(buttonElement);
         });
-        new Count(options, function(countElement) {
+        new Count(options.data.count, function(countElement) {
           document.body.appendChild(countElement);
         });
       }
@@ -425,9 +431,13 @@
           if (options.href) {
             a.href = options.href;
           }
+          if (options.aria.label) {
+            a.setAttribute("aria-label", options.aria.label);
+          }
           new Element("i", function(icon) {
             icon = document.createElement("i");
             icon.className = (options.data.icon || Config.icon) + (Config.iconClass ? " " + Config.iconClass : "");
+            icon.setAttribute("aria-hidden", "true");
             a.appendChild(icon);
           });
           new Element("span", function(text) {
@@ -454,11 +464,11 @@
       extend(Count, superClass);
 
       function Count(options, callback) {
-        if (options.data.count && options.data.count.api) {
+        if (options && options.api) {
           Count.__super__.constructor.call(this, "a", function(a) {
             a.className = "count";
-            if (options.data.count.href) {
-              a.href = options.data.count.href;
+            if (options.href) {
+              a.href = options.href;
             }
             new Element("b", function(b) {
               a.appendChild(b);
@@ -471,7 +481,7 @@
               a.appendChild(span);
               endpoint = (function() {
                 var query, url;
-                url = options.data.count.api.split("#")[0];
+                url = options.api.split("#")[0];
                 query = QueryString.parse(url.split("?").slice(1).join("?"));
                 query.callback = "callback";
                 return (url.split("?")[0]) + "?" + (QueryString.stringify(query));
@@ -484,11 +494,14 @@
                   var data;
                   window.callback = null;
                   if (json.meta.status === 200) {
-                    data = FlatObject.flatten(json.data)[options.data.count.api.split("#").slice(1).join("#")];
+                    data = FlatObject.flatten(json.data)[options.api.split("#").slice(1).join("#")];
                     if ("[object Number]" === Object.prototype.toString.call(data)) {
                       data = ("" + data).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                     }
                     span.appendChild(document.createTextNode(" " + data + " "));
+                    if (options.aria.label) {
+                      a.setAttribute("aria-label", options.aria.label.replace("#", data));
+                    }
                     if (callback) {
                       callback(a);
                     }
@@ -790,10 +803,16 @@
           data: {
             count: {
               api: void 0,
-              href: ""
+              href: "",
+              aria: {
+                label: void 0
+              }
             },
             style: void 0,
             icon: void 0
+          },
+          aria: {
+            label: void 0
           }
         });
       });
@@ -1094,7 +1113,8 @@
         var options;
         options = {
           href: "https://github.com/",
-          data: {}
+          data: {},
+          aria: {}
         };
         new ButtonFrameContent(options);
         return expect(base.getAttribute("href")).to.equal(options.href);
@@ -1102,7 +1122,8 @@
       it('should set document.body.className to default style', function() {
         var options;
         options = {
-          data: {}
+          data: {},
+          aria: {}
         };
         new ButtonFrameContent(options);
         return expect(document.body.className).to.equal(Config.styles[0]);
@@ -1112,7 +1133,8 @@
         options = {
           data: {
             style: Config.styles[1]
-          }
+          },
+          aria: {}
         };
         new ButtonFrameContent(options);
         return expect(document.body.className).to.equal(Config.styles[1]);
@@ -1122,7 +1144,8 @@
         options = {
           data: {
             style: "not valid"
-          }
+          },
+          aria: {}
         };
         new ButtonFrameContent(options);
         return expect(document.body.className).to.equal(Config.styles[0]);
@@ -1130,7 +1153,8 @@
       it('should append the button to document.body when the necessary options are given', function() {
         var button, options;
         options = {
-          data: {}
+          data: {},
+          aria: {}
         };
         new ButtonFrameContent(options);
         expect(document.body.appendChild).to.be.calledOnce;
@@ -1141,7 +1165,8 @@
         var button, options;
         options = {
           href: "https://twitter.com/",
-          data: {}
+          data: {},
+          aria: {}
         };
         new ButtonFrameContent(options);
         button = document.body.appendChild.args[0][0];
@@ -1150,7 +1175,8 @@
       it('should append the button with the default icon', function() {
         var button, options;
         options = {
-          data: {}
+          data: {},
+          aria: {}
         };
         new ButtonFrameContent(options);
         button = document.body.appendChild.args[0][0];
@@ -1161,7 +1187,8 @@
         options = {
           data: {
             icon: "octicon-star"
-          }
+          },
+          aria: {}
         };
         new ButtonFrameContent(options);
         button = document.body.appendChild.args[0][0];
@@ -1171,11 +1198,24 @@
         var button, options;
         options = {
           text: "Follow",
-          data: {}
+          data: {},
+          aria: {}
         };
         new ButtonFrameContent(options);
         button = document.body.appendChild.args[0][0];
         return expect(button.lastChild.innerHTML).to.equal(options.text);
+      });
+      it('should append the button with given aria label', function() {
+        var button, options;
+        options = {
+          data: {},
+          aria: {
+            label: "GitHub"
+          }
+        };
+        new ButtonFrameContent(options);
+        button = document.body.appendChild.args[0][0];
+        return expect(button.getAttribute("aria-label")).to.equal(options.aria.label);
       });
       it('should append the count to document.body when the necessary options are given', function() {
         var count, options;
@@ -1185,9 +1225,11 @@
         options = {
           data: {
             count: {
-              api: "/dummy/api#followers"
+              api: "/dummy/api#followers",
+              aria: {}
             }
-          }
+          },
+          aria: {}
         };
         new ButtonFrameContent(options);
         expect(document.body.appendChild).to.be.calledTwice;
@@ -1204,9 +1246,11 @@
           data: {
             count: {
               api: "/dummy/api#followers",
-              href: "https://twitter.com/"
+              href: "https://twitter.com/",
+              aria: {}
             }
-          }
+          },
+          aria: {}
         };
         new ButtonFrameContent(options);
         count = document.body.appendChild.args[1][0];
@@ -1221,9 +1265,11 @@
         options = {
           data: {
             count: {
-              api: "/dummy/api#followers"
+              api: "/dummy/api#followers",
+              aria: {}
             }
-          }
+          },
+          aria: {}
         };
         new ButtonFrameContent(options);
         count = document.body.appendChild.args[1][0];
@@ -1238,13 +1284,36 @@
         options = {
           data: {
             count: {
-              api: "/dummy/api#id"
+              api: "/dummy/api#id",
+              aria: {}
             }
-          }
+          },
+          aria: {}
         };
         new ButtonFrameContent(options);
         count = document.body.appendChild.args[1][0];
         expect(count.lastChild.innerHTML).to.equal(" 899,645 ");
+        return head.insertBefore.restore();
+      });
+      it('should append the count with given aria label', function() {
+        var count, options;
+        sinon.stub(head, "insertBefore", function() {
+          return window.callback(data);
+        });
+        options = {
+          data: {
+            count: {
+              api: "/dummy/api#followers",
+              aria: {
+                label: "# followers on GitHub"
+              }
+            }
+          },
+          aria: {}
+        };
+        new ButtonFrameContent(options);
+        count = document.body.appendChild.args[1][0];
+        expect(count.getAttribute("aria-label")).to.equal("26 followers on GitHub");
         return head.insertBefore.restore();
       });
       it('should append the count with text undefined when api #entry does not exist', function() {
@@ -1255,9 +1324,11 @@
         options = {
           data: {
             count: {
-              api: "/dummy/api#fail"
+              api: "/dummy/api#fail",
+              aria: {}
             }
-          }
+          },
+          aria: {}
         };
         new ButtonFrameContent(options);
         count = document.body.appendChild.args[1][0];
@@ -1276,9 +1347,11 @@
         options = {
           data: {
             count: {
-              api: "/dummy/api#followers"
+              api: "/dummy/api#followers",
+              aria: {}
             }
-          }
+          },
+          aria: {}
         };
         new ButtonFrameContent(options);
         expect(document.body.appendChild).to.be.calledOnce;

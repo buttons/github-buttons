@@ -255,8 +255,12 @@ describe 'ButtonAnchor', ->
             count:
               api: undefined
               href: ""
+              aria:
+                label: undefined
             style: undefined
             icon: undefined
+          aria:
+            label: undefined
 
     it 'should parse the attribute href', ->
       a.href = "https://buttons.github.io/"
@@ -552,30 +556,39 @@ describe 'ButtonFrameContent', ->
       options =
         href: "https://github.com/"
         data: {}
+        aria: {}
       new ButtonFrameContent options
       expect base.getAttribute "href"
         .to.equal options.href
 
     it 'should set document.body.className to default style', ->
-      options = data: {}
+      options =
+        data: {}
+        aria: {}
       new ButtonFrameContent options
       expect document.body.className
         .to.equal Config.styles[0]
 
     it 'should set document.body.className when a valid style is given', ->
-      options = data: style: Config.styles[1]
+      options =
+        data: style: Config.styles[1]
+        aria: {}
       new ButtonFrameContent options
       expect document.body.className
         .to.equal Config.styles[1]
 
     it 'should set document.body.className to default when an invalid style is given', ->
-      options = data: style: "not valid"
+      options =
+        data: style: "not valid"
+        aria: {}
       new ButtonFrameContent options
       expect document.body.className
         .to.equal Config.styles[0]
 
     it 'should append the button to document.body when the necessary options are given', ->
-      options = data: {}
+      options =
+        data: {}
+        aria: {}
       new ButtonFrameContent options
       expect document.body.appendChild
         .to.be.calledOnce
@@ -585,36 +598,59 @@ describe 'ButtonFrameContent', ->
         .and.equal "button"
 
     it 'should append the button with given href', ->
-      options = href: "https://twitter.com/", data: {}
+      options =
+        href: "https://twitter.com/"
+        data: {}
+        aria: {}
       new ButtonFrameContent options
       button = document.body.appendChild.args[0][0]
       expect button.getAttribute "href"
         .to.equal options.href
 
     it 'should append the button with the default icon', ->
-      options = data: {}
+      options =
+        data: {}
+        aria: {}
       new ButtonFrameContent options
       button = document.body.appendChild.args[0][0]
       expect " #{button.firstChild.className} ".indexOf " #{Config.icon} "
         .to.be.at.least 0
 
     it 'should append the button with given icon', ->
-      options = data: icon: "octicon-star"
+      options =
+        data: icon: "octicon-star"
+        aria: {}
       new ButtonFrameContent options
       button = document.body.appendChild.args[0][0]
       expect " #{button.firstChild.className} ".indexOf " #{options.data.icon} "
         .to.be.at.least 0
 
     it 'should append the button with given text', ->
-      options = text: "Follow", data: {}
+      options =
+        text: "Follow"
+        data: {}
+        aria: {}
       new ButtonFrameContent options
       button = document.body.appendChild.args[0][0]
       expect button.lastChild.innerHTML
         .to.equal options.text
 
+    it 'should append the button with given aria label', ->
+      options =
+        data: {}
+        aria: label: "GitHub"
+      new ButtonFrameContent options
+      button = document.body.appendChild.args[0][0]
+      expect button.getAttribute "aria-label"
+        .to.equal options.aria.label
+
     it 'should append the count to document.body when the necessary options are given', ->
       sinon.stub head, "insertBefore", -> window.callback data
-      options = data: count: api: "/dummy/api#followers"
+      options =
+        data: count:
+          api: "/dummy/api#followers"
+          aria: {}
+        aria: {}
       new ButtonFrameContent options
       expect document.body.appendChild
         .to.be.calledTwice
@@ -626,9 +662,12 @@ describe 'ButtonFrameContent', ->
 
     it 'should append the count with given data.count.href', ->
       sinon.stub head, "insertBefore", -> window.callback data
-      options = data: count:
-        api: "/dummy/api#followers"
-        href: "https://twitter.com/"
+      options =
+        data: count:
+          api: "/dummy/api#followers"
+          href: "https://twitter.com/"
+          aria: {}
+        aria: {}
       new ButtonFrameContent options
       count = document.body.appendChild.args[1][0]
       expect count.getAttribute "href"
@@ -637,7 +676,11 @@ describe 'ButtonFrameContent', ->
 
     it 'should append the count with #entry from api response', ->
       sinon.stub head, "insertBefore", -> window.callback data
-      options = data: count: api: "/dummy/api#followers"
+      options =
+        data: count:
+          api: "/dummy/api#followers"
+          aria: {}
+        aria: {}
       new ButtonFrameContent options
       count = document.body.appendChild.args[1][0]
       expect count.lastChild.innerHTML
@@ -646,16 +689,37 @@ describe 'ButtonFrameContent', ->
 
     it 'should append the count with large number split by comma', ->
       sinon.stub head, "insertBefore", -> window.callback data
-      options = data: count: api: "/dummy/api#id"
+      options =
+        data: count:
+          api: "/dummy/api#id"
+          aria: {}
+        aria: {}
       new ButtonFrameContent options
       count = document.body.appendChild.args[1][0]
       expect count.lastChild.innerHTML
         .to.equal " 899,645 "
       head.insertBefore.restore()
 
+    it 'should append the count with given aria label', ->
+      sinon.stub head, "insertBefore", -> window.callback data
+      options =
+        data: count:
+          api: "/dummy/api#followers"
+          aria: label: "# followers on GitHub"
+        aria: {}
+      new ButtonFrameContent options
+      count = document.body.appendChild.args[1][0]
+      expect count.getAttribute "aria-label"
+        .to.equal "26 followers on GitHub"
+      head.insertBefore.restore()
+
     it 'should append the count with text undefined when api #entry does not exist', ->
       sinon.stub head, "insertBefore", -> window.callback data
-      options = data: count: api: "/dummy/api#fail"
+      options =
+        data: count:
+          api: "/dummy/api#fail"
+          aria: {}
+        aria: {}
       new ButtonFrameContent options
       count = document.body.appendChild.args[1][0]
       expect count.lastChild.innerHTML
@@ -664,7 +728,11 @@ describe 'ButtonFrameContent', ->
 
     it 'should not append the count when it fails to pull api data', ->
       sinon.stub head, "insertBefore", -> window.callback meta: status: 404
-      options = data: count: api: "/dummy/api#followers"
+      options =
+        data: count:
+          api: "/dummy/api#followers"
+          aria: {}
+        aria: {}
       new ButtonFrameContent options
       expect document.body.appendChild
         .to.be.calledOnce

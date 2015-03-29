@@ -63,12 +63,13 @@ class DisabledFrame extends Element
 
 
 class PreviewAnchor extends Element
-  constructor: ({href, text, data}, callback) ->
+  constructor: ({href, text, data, aria}, callback) ->
     super "a", (a) ->
       a.className = Config.anchorClass
       a.href = href
       a.appendChild document.createTextNode "#{text}"
       a.setAttribute "data-#{name}", value for name, value of data
+      a.setAttribute "aria-#{name}", value for name, value of aria
       callback a if callback
       return
 
@@ -220,6 +221,15 @@ class ButtonForm extends Form
               "octicon-cloud-download"
             else
               "octicon-mark-github"
+      aria:
+        label:
+          switch type
+            when "follow"
+              "Follow @#{user} on GitHub"
+            when "watch", "star", "fork", "issue", "download"
+              "#{type.charAt(0).toUpperCase() + type[1..].toLowerCase()} #{user}/#{repo} on GitHub"
+            else
+              "GitHub"
     if options["large-button"]?
       config.data.style = "mega"
     if options["show-count"]?
@@ -227,17 +237,22 @@ class ButtonForm extends Form
         when "follow"
           config.data["count-href"] = "/#{user}/followers"
           config.data["count-api"] = "/users/#{user}#followers"
+          config.data["count-aria-label"] = "# followers on GitHub"
         when "watch"
           config.data["count-href"] = "/#{user}/#{repo}/watchers"
           config.data["count-api"] = "/repos/#{user}/#{repo}#subscribers_count"
+          config.data["count-aria-label"] = "# watchers on GitHub"
         when "star"
           config.data["count-href"] = "/#{user}/#{repo}/stargazers"
           config.data["count-api"] = "/repos/#{user}/#{repo}#stargazers_count"
+          config.data["count-aria-label"] = "# stargazers on GitHub"
         when "fork"
           config.data["count-href"] = "/#{user}/#{repo}/network"
           config.data["count-api"] = "/repos/#{user}/#{repo}#forks_count"
+          config.data["count-aria-label"] = "# forks on GitHub"
         when "issue"
           config.data["count-api"] = "/repos/#{user}/#{repo}#open_issues_count"
+          config.data["count-aria-label"] = "# issues on GitHub"
     if options["standard-icon"]? or config.data.icon is "octicon-mark-github"
       delete config.data.icon
     config
