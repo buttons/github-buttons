@@ -1,3 +1,8 @@
+dependencies:
+  cache_directories:
+    - phantomjs-2.0.0-ubuntu-12.04
+  pre:
+    - if test ! -x phantomjs-2.0.0-ubuntu-12.04/phantomjs; then mkdir -p phantomjs-2.0.0-ubuntu-12.04 && wget https://s3.amazonaws.com/travis-phantomjs/phantomjs-2.0.0-ubuntu-12.04.tar.bz2 && tar jxvf phantomjs-2.0.0-ubuntu-12.04.tar.bz2 -C phantomjs-2.0.0-ubuntu-12.04; fi; sudo cp phantomjs-2.0.0-ubuntu-12.04/phantomjs /usr/local/bin/phantomjs
 checkout:
   post:
     - git submodule sync

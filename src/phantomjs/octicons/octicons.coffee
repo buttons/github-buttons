@@ -1,8 +1,13 @@
 unless phantom.version.major >= 2
-  console.warn = (messages...) -> require("system").stderr.write "#{messages.join " "}\n"
-  console.warn "Warning:", "Not compatible with your version of phantomjs:"
-  console.warn "\t", "Required: >=2.0.0"
-  console.warn "\t", "Actual:   #{phantom.version.major}.#{phantom.version.minor}.#{phantom.version.patch}"
+  require("system").stderr.write \
+    """
+    Error: Not compatible with your version of phantomjs:
+           Required: >=2.0.0
+           Actual:   #{phantom.version.major}.#{phantom.version.minor}.#{phantom.version.patch}
+
+
+    """
+  phantom.exit 2
 
 args = require('system').args
 fs   = require('fs')
