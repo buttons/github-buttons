@@ -78,6 +78,7 @@ task 'build:coffee', 'Build scripts', ->
                  "src/buttons.coffee",
                  "lib/buttons.js",
                  -> system "uglifyjs",
+                           "--compress",
                            "--mangle",
                            "--source-map", "buttons.js.map",
                            "--output", "buttons.js",
@@ -89,6 +90,7 @@ task 'build:coffee', 'Build scripts', ->
                  "src/main.coffee",
                  "lib/main.js",
                  -> system "uglifyjs",
+                           "--compress",
                            "--mangle",
                            "--source-map", "assets/js/main.js.map",
                            "--source-map-root", "../../",
@@ -96,7 +98,7 @@ task 'build:coffee', 'Build scripts', ->
                            "--output", "assets/js/main.js",
                            "lib/main.js"
   system "coffee", "--compile", "--output", "lib/", "src/ie8.coffee", ->
-    system "uglifyjs", "--mangle", "--output", "assets/js/ie8.js", "lib/ie8.js"
+    system "uglifyjs", "--compress", "--mangle", "--output", "assets/js/ie8.js", "lib/ie8.js"
 
 task 'build:less', 'Build stylesheets', ->
   find("assets/css/", /^(buttons|main)\.less$/i).forEach (file) ->
