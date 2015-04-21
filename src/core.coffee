@@ -86,6 +86,7 @@ class Frame extends Element
 
   load: (src) ->
     @$.src = src
+    return
 
   size: ->
     try
