@@ -16,7 +16,7 @@ To get started, checkout **[buttons.github.io](https://buttons.github.io)**!
 - **Stable**  
   High test coverage for the [main library](buttons.js) and automated tests on [Circle CI](https://circleci.com/gh/ntkme/github-buttons) assure the service quality.
 - **Backward Compatible**  
-  As you may still need this, outdated browsers like IE 6 is supported.
+  As you may still need this, outdated browsers like IE 6 are supported.
 - **Accessibility**  
   ARIA label support enables accessibility for screen reader users.
 

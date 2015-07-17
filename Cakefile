@@ -5,12 +5,12 @@ path = require 'path'
 
 class Indent extends require('stream').Transform
   constructor: ->
-    @_indentatoin = new Buffer "  "
+    @_indentation = new Buffer "  "
     @_newline = true
     super
 
   push: (chunk) ->
-    super @_indentatoin if chunk? and @_newline
+    super @_indentation if chunk? and @_newline
     super
 
   _transform: (chunk, encoding, callback) ->
