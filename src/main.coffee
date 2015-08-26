@@ -214,7 +214,7 @@ class ButtonForm extends Form
             when "star"
               "octicon-star"
             when "fork"
-              "octicon-git-branch"
+              "octicon-repo-forked"
             when "issue"
               "octicon-issue-opened"
             when "download"
