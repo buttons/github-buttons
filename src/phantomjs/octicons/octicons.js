@@ -2,11 +2,6 @@
 (function() {
   var args, fs, page, puts;
 
-  if (!(phantom.version.major >= 2)) {
-    require("system").stderr.write("Error: Not compatible with your version of phantomjs:\n       Required: >=2.0.0\n       Actual:   " + phantom.version.major + "." + phantom.version.minor + "." + phantom.version.patch + "\n\n");
-    phantom.exit(2);
-  }
-
   args = require('system').args;
 
   fs = require('fs');
@@ -24,9 +19,8 @@
   }
 
   page.open("src/phantomjs/octicons/index.html", function() {
-    puts(page.evaluate(function() {
-      var octicon, styleSheets;
-      octicon = document.body.appendChild(document.createElement("span"));
+    puts(page.evaluate(function(svgs) {
+      var styleSheets;
       styleSheets = Array.prototype.filter.call(document.styleSheets, function(styleSheet) {
         var ref;
         return (ref = styleSheet.href) != null ? ref.match(/\/octicons\.css$/) : void 0;
@@ -35,13 +29,32 @@
         var ref;
         return (ref = cssRule.selectorText) != null ? ref.match(/^\.octicon-[\w-]+?::before(?:\s*,\s*\.octicon-[\w-]+?::before)*$/) : void 0;
       }).map(function(cssRule) {
-        var selector, selectorText;
-        selector = cssRule.selectorText.match(/^\.(octicon-[\w-]+?)::before/)[1];
-        octicon.className = "mega-octicon " + selector;
+        var className, document, height, i, len, ref, selectorText, width;
         selectorText = cssRule.selectorText.replace(/::before/g, "");
-        return selectorText + " { width: unit((" + octicon.offsetWidth + "/32), em); }";
+        ref = selectorText.split(", ");
+        for (i = 0, len = ref.length; i < len; i++) {
+          className = ref[i];
+          if (className in svgs) {
+            document = new DOMParser().parseFromString(svgs[className], "text/xml");
+          }
+        }
+        height = Math.round(document.documentElement.getAttribute("height"));
+        width = Math.round(document.documentElement.getAttribute("width"));
+        return selectorText + " { width: unit(( " + width + " / " + height + " ), em); }";
       }).join("\n");
-    }));
+    }, (function() {
+      var i, len, octicons, ref, svg, svgs;
+      octicons = "components/octicons/svg";
+      svgs = {};
+      ref = fs.list(octicons);
+      for (i = 0, len = ref.length; i < len; i++) {
+        svg = ref[i];
+        if (svg.match(/\.svg$/i)) {
+          svgs[".octicon-" + (svg.replace(/\.svg$/i, ""))] = fs.read(octicons + "/" + svg);
+        }
+      }
+      return svgs;
+    })()));
     return phantom.exit();
   });
 

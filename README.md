@@ -77,11 +77,6 @@ See [GitHub Developer](https://developer.github.com) for API references.
 Development
 -----------
 
-### Dependencies
-
-- **Node.js**
-- **PhantomJS** 2.0.0 or later
-
 ### Clone
 
 ``` sh
