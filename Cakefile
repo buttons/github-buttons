@@ -102,7 +102,7 @@ task 'build:coffee', 'Build scripts', ->
 
 task 'build:less', 'Build stylesheets', ->
   find("assets/css/", /^(buttons|main)\.less$/i).forEach (file) ->
-    system "lessc", "--clean-css=--s1 --compatibility=ie7", "--source-map", file, "#{file.replace /\.less$/i, '.css'}"
+    system "lessc", "--clean-css=--s1 --advanced --compatibility=ie7", "--source-map", file, "#{file.replace /\.less$/i, '.css'}"
 
 task 'build:octicons', 'Build octicons', ->
   system "coffee", "--compile", "src/phantomjs/octicons/octicons.coffee", ->
