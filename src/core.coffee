@@ -96,7 +96,7 @@ class Frame extends Element
       html.style.overflow = body.style.overflow = if window.opera then "scroll" else "visible"
       width = body.scrollWidth
       height = body.scrollHeight
-      if devicePixelRatio isnt 1
+      if body.getBoundingClientRect
         body.style.display = "inline-block"
         boundingClientRect = body.getBoundingClientRect()
         width = Math.max width, roundPixel boundingClientRect.width
@@ -116,13 +116,16 @@ class Frame extends Element
   devicePixelRatio = window.devicePixelRatio or 1
 
   roundPixel = (px) ->
-    Math.ceil(Math.round(px * devicePixelRatio) / devicePixelRatio * 2) / 2 or 0
+    if devicePixelRatio > 1
+      Math.ceil(Math.round(px * devicePixelRatio) / devicePixelRatio * 2) / 2 or 0
+    else
+      Math.ceil px
 
 
 class ButtonAnchor
   @parse: (element) ->
     href: filter_js element.href
-    text: element.getAttribute("data-text") or element.textContent or element.innerText
+    text: element.getAttribute("data-text") or element.textContent or element.innerText or ""
     data:
       count:
         api:

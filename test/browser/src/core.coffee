@@ -167,7 +167,7 @@ describe 'Frame', ->
       <title></title>
     </head>
     <body style="margin: 0;">
-      <div style="width: 200.49px; height: 100px;"></div>
+      <div style="width: 200.5px; height: 100px;"></div>
     </body>
     </html>
     """
@@ -208,10 +208,10 @@ describe 'Frame', ->
               .to.deep.equal
                 width: "200.5px"
                 height: "100px"
-          else
+          when 3
             expect @size()
               .to.deep.equal
-                width: "200px"
+                width: "201px"
                 height: "100px"
         done()
       frame.html html
@@ -273,7 +273,7 @@ describe 'ButtonAnchor', ->
         a.href = href
         expect ButtonAnchor.parse a
           .to.have.property "href"
-          .to.equal ""
+          .to.not.match /^\s*javascript:/i
 
     it 'should parse the attribute data-text', ->
       text = "test"
@@ -336,7 +336,7 @@ describe 'ButtonAnchor', ->
         a.setAttribute "data-count-href", href
         expect ButtonAnchor.parse a
           .to.have.deep.property "data.count.href"
-          .and.equal ""
+          .and.not.match /^\s*javascript:/i
 
     it 'should fallback data.cout.href to the attribute href when the attribute data-count-href is filtered', ->
       a.href = "https://github.com/"
@@ -350,7 +350,7 @@ describe 'ButtonAnchor', ->
         a.href = href
         expect ButtonAnchor.parse a
           .to.have.deep.property "data.count.href"
-          .and.equal ""
+          .and.not.match /^\s*javascript:/i
 
     it 'should parse the attribute data-style', ->
       style = "mega"
@@ -533,7 +533,7 @@ describe 'ButtonFrameContent', ->
 
   beforeEach ->
     bodyClassName= document.body.getAttribute "class"
-    base = head.insertBefore document.createElement "base", head.firstChild
+    base = head.insertBefore document.createElement("base"), head.firstChild
     sinon.stub document.body, "appendChild"
 
   afterEach ->
