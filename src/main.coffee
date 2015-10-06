@@ -75,7 +75,11 @@ class PreviewAnchor extends Element
 
 
 class PreviewFrame extends Frame
-  constructor: (@$) ->
+  constructor: (preview) ->
+    super (iframe) ->
+      preview.appendChild iframe
+      iframe.src = "buttons.html"
+      return
     @on "load", ->
       if callback = @get().contentWindow.callback
         script = callback.script
@@ -258,14 +262,14 @@ class ButtonForm extends Form
     config
 
 
-new DisabledFrame iframe for iframe in document.getElementsByTagName "iframe" when iframe.parentNode.id isnt "preview"
+new DisabledFrame iframe for iframe in document.getElementsByTagName "iframe"
 
 new ButtonForm document.getElementById("button-config"),
   content: new Element document.getElementById "content"
   user_repo: new Element document.getElementById "user-repo"
   preview:
     button: new Element document.getElementById "preview-button"
-    frame: new PreviewFrame document.getElementById("preview").getElementsByTagName("iframe")[0]
+    frame: new PreviewFrame document.getElementById "preview"
     code: new Code document.getElementById "code"
     warning: new Element document.getElementById "preview-warning"
   snippet: new Code document.getElementById "snippet"

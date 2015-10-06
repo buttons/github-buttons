@@ -8,9 +8,10 @@ if Config.script
   for anchor in anchors
     do (a = anchor) ->
       new ButtonFrame Hash.encode(ButtonAnchor.parse a), (iframe) ->
-        a.parentNode.insertBefore iframe, a
+        document.body.appendChild iframe
         return
-      , ->
+      , (iframe) ->
+        a.parentNode.insertBefore iframe, a
         a.parentNode.removeChild a
         return
       return
