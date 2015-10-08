@@ -46,16 +46,35 @@ class Form extends Element
     data
 
 
-class DisabledFrame extends Element
+class StaticFrame extends Element
   constructor: ->
     super
     @on "load", ->
-      for a in @get().contentWindow.document.getElementsByTagName "a"
-        new Element a
-          .on "click", (event) ->
-            event.preventDefault()
-            false
-      new Element @get().contentWindow.document.body
+      contentDocument = @get().contentWindow.document
+
+      base = contentDocument.head.getElementsByTagName("base")[0]
+      base.parentNode.removeChild base
+
+      for a in contentDocument.getElementsByTagName "a"
+        a.href = "#"
+        a.style["pointer-events"] = "none"
+
+      new Element "div", (div) ->
+        div.style[key] = value for key, value of {
+          position: "fixed"
+          top: 0
+          right: 0
+          bottom: 0
+          left: 0
+          cursor: "pointer"
+          background: "transparent"
+          opacity: 0
+          filter: "alpha(opacity=0)"
+        }
+        contentDocument.body.appendChild div
+        return
+
+      new Element contentDocument.body
         .on "click", =>
           @get().parentNode.click()
           return
@@ -262,7 +281,7 @@ class ButtonForm extends Form
     config
 
 
-new DisabledFrame iframe for iframe in document.getElementsByTagName "iframe"
+new StaticFrame iframe for iframe in document.getElementsByTagName "iframe"
 
 new ButtonForm document.getElementById("button-config"),
   content: new Element document.getElementById "content"
