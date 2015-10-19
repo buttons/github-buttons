@@ -265,7 +265,7 @@
     };
 
     Frame.prototype.size = function() {
-      var body, boundingClientRect, contentDocument, error, height, html, width;
+      var body, boundingClientRect, contentDocument, height, html, width;
       try {
         contentDocument = this.$.contentWindow.document;
         html = contentDocument.documentElement;
@@ -285,19 +285,17 @@
           width: width + "px",
           height: height + "px"
         };
-      } catch (error) {
-        return {};
-      }
+      } catch (undefined) {}
     };
 
     Frame.prototype.resize = function(arg) {
       var height, ref, width;
-      ref = arg != null ? arg : this.size(), width = ref.width, height = ref.height;
+      ref = arg != null ? arg : this.size() || {}, width = ref.width, height = ref.height;
       if (width) {
         this.$.style.width = width;
       }
       if (height) {
-        return this.$.style.height = height;
+        this.$.style.height = height;
       }
     };
 

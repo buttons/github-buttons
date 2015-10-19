@@ -106,12 +106,11 @@ class Frame extends Element
 
       width: "#{width}px"
       height: "#{height}px"
-    catch
-      {}
 
-  resize: ({width, height} = @size()) ->
+  resize: ({width, height} = @size() or {}) ->
     @$.style.width = width if width
     @$.style.height = height if height
+    return
 
   devicePixelRatio = window.devicePixelRatio or 1
 
