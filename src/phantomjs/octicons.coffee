@@ -7,7 +7,7 @@ if args.length > 1
 else
   puts = (content) -> console.log content
 
-page.open "src/phantomjs/octicons/index.html", ->
+page.open "buttons.html", ->
   puts page.evaluate (svgs) ->
     styleSheets = Array::filter.call document.styleSheets, (styleSheet) ->
       styleSheet.href?.match /\/octicons\.css$/

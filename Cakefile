@@ -105,10 +105,10 @@ task 'build:less', 'Build stylesheets', ->
     system "lessc", "--clean-css=--s1 --advanced --compatibility=ie7", "--source-map", file, "#{file.replace /\.less$/i, '.css'}"
 
 task 'build:octicons', 'Build octicons', ->
-  system "coffee", "--compile", "src/phantomjs/octicons/octicons.coffee", ->
-    system "phantomjs", "src/phantomjs/octicons/octicons.js", "assets/css/octicons.less"
-  system "coffee", "--compile", "src/phantomjs/octicons/lt-ie8.coffee", ->
-    system "phantomjs", "src/phantomjs/octicons/lt-ie8.js", "assets/css/lt-ie8.css"
+  system "coffee", "--compile", "src/phantomjs/octicons.coffee", ->
+    system "phantomjs", "src/phantomjs/octicons.js", "assets/css/octicons.less"
+  system "coffee", "--compile", "src/phantomjs/octicons-lt-ie8.coffee", ->
+    system "phantomjs", "src/phantomjs/octicons-lt-ie8.js", "assets/css/lt-ie8.css"
 
 task 'clean', 'Cleanup everything', ->
   js = /\.js(\.map)?$/
@@ -116,7 +116,7 @@ task 'clean', 'Cleanup everything', ->
   targets = find "./", js
     .concat find "assets/js/", js
     .concat find "lib/", js
-    .concat find "src/phantomjs/octicons/", js
+    .concat find "src/phantomjs/", js
     .concat find "test/browser/lib/", js
     .concat find "assets/css/", css
   system "rm", targets... if targets.length > 0

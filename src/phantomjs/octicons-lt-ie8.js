@@ -18,7 +18,7 @@
     };
   }
 
-  page.open("src/phantomjs/octicons/index.html", function() {
+  page.open("buttons.html", function() {
     puts(page.evaluate(function() {
       var styleSheets;
       styleSheets = Array.prototype.filter.call(document.styleSheets, function(styleSheet) {
