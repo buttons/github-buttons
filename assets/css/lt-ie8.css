@@ -9,6 +9,7 @@
 .octicon-arrow-up { zoom: expression( this.innerHTML = '&#xf03d;' ); } /*  */
 .octicon-microscope, .octicon-beaker { zoom: expression( this.innerHTML = '&#xf0dd;' ); } /*  */
 .octicon-bell { zoom: expression( this.innerHTML = '&#xf0de;' ); } /*  */
+.octicon-bold { zoom: expression( this.innerHTML = '&#xf0e2;' ); } /*  */
 .octicon-book { zoom: expression( this.innerHTML = '&#xf007;' ); } /*  */
 .octicon-bookmark { zoom: expression( this.innerHTML = '&#xf07b;' ); } /*  */
 .octicon-briefcase { zoom: expression( this.innerHTML = '&#xf0d3;' ); } /*  */
@@ -82,6 +83,7 @@
 .octicon-issue-closed { zoom: expression( this.innerHTML = '&#xf028;' ); } /*  */
 .octicon-issue-opened { zoom: expression( this.innerHTML = '&#xf026;' ); } /*  */
 .octicon-issue-reopened { zoom: expression( this.innerHTML = '&#xf027;' ); } /*  */
+.octicon-italic { zoom: expression( this.innerHTML = '&#xf0e4;' ); } /*  */
 .octicon-jersey { zoom: expression( this.innerHTML = '&#xf019;' ); } /*  */
 .octicon-key { zoom: expression( this.innerHTML = '&#xf049;' ); } /*  */
 .octicon-keyboard { zoom: expression( this.innerHTML = '&#xf00d;' ); } /*  */
@@ -130,8 +132,6 @@
 .octicon-rocket { zoom: expression( this.innerHTML = '&#xf033;' ); } /*  */
 .octicon-rss { zoom: expression( this.innerHTML = '&#xf034;' ); } /*  */
 .octicon-ruby { zoom: expression( this.innerHTML = '&#xf047;' ); } /*  */
-.octicon-screen-full { zoom: expression( this.innerHTML = '&#xf066;' ); } /*  */
-.octicon-screen-normal { zoom: expression( this.innerHTML = '&#xf067;' ); } /*  */
 .octicon-search-save, .octicon-search { zoom: expression( this.innerHTML = '&#xf02e;' ); } /*  */
 .octicon-server { zoom: expression( this.innerHTML = '&#xf097;' ); } /*  */
 .octicon-settings { zoom: expression( this.innerHTML = '&#xf07c;' ); } /*  */
@@ -143,8 +143,10 @@
 .octicon-stop { zoom: expression( this.innerHTML = '&#xf08f;' ); } /*  */
 .octicon-repo-sync, .octicon-sync { zoom: expression( this.innerHTML = '&#xf087;' ); } /*  */
 .octicon-tag-remove, .octicon-tag-add, .octicon-tag { zoom: expression( this.innerHTML = '&#xf015;' ); } /*  */
+.octicon-tasklist { zoom: expression( this.innerHTML = '&#xf0e5;' ); } /*  */
 .octicon-telescope { zoom: expression( this.innerHTML = '&#xf088;' ); } /*  */
 .octicon-terminal { zoom: expression( this.innerHTML = '&#xf0c8;' ); } /*  */
+.octicon-text-size { zoom: expression( this.innerHTML = '&#xf0e3;' ); } /*  */
 .octicon-three-bars { zoom: expression( this.innerHTML = '&#xf05e;' ); } /*  */
 .octicon-thumbsdown { zoom: expression( this.innerHTML = '&#xf0db;' ); } /*  */
 .octicon-thumbsup { zoom: expression( this.innerHTML = '&#xf0da;' ); } /*  */
