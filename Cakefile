@@ -97,8 +97,6 @@ task 'build:coffee', 'Build scripts', ->
                            "--source-map-url", "main.js.map",
                            "--output", "assets/js/main.js",
                            "lib/main.js"
-  system "coffee", "--compile", "--output", "lib/", "src/ie8.coffee", ->
-    system "uglifyjs", "--compress", "--mangle", "--output", "assets/js/ie8.js", "lib/ie8.js"
 
 task 'build:less', 'Build stylesheets', ->
   find("assets/css/", /^(buttons|main)\.less$/i).forEach (file) ->
@@ -108,7 +106,7 @@ task 'build:octicons', 'Build octicons', ->
   system "coffee", "--compile", "src/phantomjs/octicons.coffee", ->
     system "phantomjs", "src/phantomjs/octicons.js", "assets/css/octicons.less"
   system "coffee", "--compile", "src/phantomjs/octicons-lt-ie8.coffee", ->
-    system "phantomjs", "src/phantomjs/octicons-lt-ie8.js", "assets/css/lt-ie8.css"
+    system "phantomjs", "src/phantomjs/octicons-lt-ie8.js", "assets/css/octicons-lt-ie8.css"
 
 task 'clean', 'Cleanup everything', ->
   js = /\.js(\.map)?$/
