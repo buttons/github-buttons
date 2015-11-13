@@ -16,8 +16,15 @@ page.open "buttons.html", ->
     .map (cssRule) ->
       selectorText = cssRule.selectorText.replace /::before/g, ""
       document = new DOMParser().parseFromString svgs[className], "text/xml" for className in selectorText.split ", " when className of svgs
-      height = Math.round document.documentElement.getAttribute "height"
-      width = Math.round document.documentElement.getAttribute "width"
+
+      round = (length) ->
+        if Math.abs(length - Math.round length) < 0.01
+          Math.round length
+        else
+          length
+
+      height = round document.documentElement.getAttribute "height"
+      width = round document.documentElement.getAttribute "width"
 
       "#{selectorText} { width: unit(( #{width} / #{height} ), em); }"
     .join "\n"

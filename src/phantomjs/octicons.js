@@ -29,7 +29,7 @@
         var ref;
         return (ref = cssRule.selectorText) != null ? ref.match(/^\.octicon-[\w-]+?::before(?:\s*,\s*\.octicon-[\w-]+?::before)*$/) : void 0;
       }).map(function(cssRule) {
-        var className, document, height, i, len, ref, selectorText, width;
+        var className, document, height, i, len, ref, round, selectorText, width;
         selectorText = cssRule.selectorText.replace(/::before/g, "");
         ref = selectorText.split(", ");
         for (i = 0, len = ref.length; i < len; i++) {
@@ -38,8 +38,15 @@
             document = new DOMParser().parseFromString(svgs[className], "text/xml");
           }
         }
-        height = Math.round(document.documentElement.getAttribute("height"));
-        width = Math.round(document.documentElement.getAttribute("width"));
+        round = function(length) {
+          if (Math.abs(length - Math.round(length)) < 0.01) {
+            return Math.round(length);
+          } else {
+            return length;
+          }
+        };
+        height = round(document.documentElement.getAttribute("height"));
+        width = round(document.documentElement.getAttribute("width"));
         return selectorText + " { width: unit(( " + width + " / " + height + " ), em); }";
       }).join("\n");
     }, (function() {
