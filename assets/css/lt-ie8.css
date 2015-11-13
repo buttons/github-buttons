@@ -95,6 +95,7 @@
 .octicon-list-unordered { zoom: expression( this.innerHTML = '&#xf061;' ); } /*  */
 .octicon-location { zoom: expression( this.innerHTML = '&#xf060;' ); } /*  */
 .octicon-gist-private, .octicon-mirror-private, .octicon-git-fork-private, .octicon-lock { zoom: expression( this.innerHTML = '&#xf06a;' ); } /*  */
+.octicon-logo-gist { zoom: expression( this.innerHTML = '&#xf0ad;' ); } /*  */
 .octicon-logo-github { zoom: expression( this.innerHTML = '&#xf092;' ); } /*  */
 .octicon-mail { zoom: expression( this.innerHTML = '&#xf03b;' ); } /*  */
 .octicon-mail-read { zoom: expression( this.innerHTML = '&#xf03c;' ); } /*  */
