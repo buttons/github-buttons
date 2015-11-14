@@ -372,20 +372,17 @@
         };
       })(this);
       this.once("load", function() {
-        var script;
         if (callback = this.$.contentWindow.callback) {
-          script = callback.script;
-          if (script.readyState) {
-            new Element(script).on("readystatechange", function() {
-              if (/loaded|complete/.test(script.readyState)) {
-                reload();
-              }
-            });
-          } else {
-            new Element(script).on("load", "error", function() {
-              reload();
-            });
-          }
+          new Element(callback.script, function(script) {
+            this.on("load", "error", reload);
+            if (script.readyState) {
+              this.on("readystatechange", function() {
+                if (!/i/.test(script.readyState)) {
+                  reload();
+                }
+              });
+            }
+          });
         } else {
           reload();
         }

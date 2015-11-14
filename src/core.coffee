@@ -143,7 +143,6 @@ class ButtonAnchor
       label:
         label if label = element.getAttribute "aria-label"
 
-
   filter_js = (href) ->
     if /^\s*javascript:/i.test href
       ""
@@ -166,17 +165,14 @@ class ButtonFrame extends Frame
 
     @once "load", ->
       if callback = @$.contentWindow.callback
-        script = callback.script
-        if script.readyState
-          new Element script
-            .on "readystatechange", ->
-              reload() if /loaded|complete/.test script.readyState
+        new Element callback.script, (script) ->
+          @on "load", "error", reload
+
+          if script.readyState
+            @on "readystatechange", ->
+              reload() if !/i/.test script.readyState
               return
-        else
-          new Element script
-            .on "load", "error", ->
-              reload()
-              return
+          return
       else
         reload()
       return
