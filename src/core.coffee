@@ -198,7 +198,7 @@ class ButtonFrame extends Frame
 class ButtonFrameContent
   constructor: (options) ->
     if options and options.data
-      document.body.className = (do -> return style for style in Config.styles when style is options.data.style) or Config.styles[0]
+      document.body.className = options.data.style or ""
       document.getElementsByTagName("base")[0].href = options.href if options.href
       new Button options, (buttonElement) ->
         document.body.appendChild buttonElement

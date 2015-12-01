@@ -399,16 +399,7 @@
 
     function ButtonFrameContent(options) {
       if (options && options.data) {
-        document.body.className = ((function() {
-          var j, len, ref, style;
-          ref = Config.styles;
-          for (j = 0, len = ref.length; j < len; j++) {
-            style = ref[j];
-            if (style === options.data.style) {
-              return style;
-            }
-          }
-        })()) || Config.styles[0];
+        document.body.className = options.data.style || "";
         if (options.href) {
           document.getElementsByTagName("base")[0].href = options.href;
         }
@@ -548,7 +539,6 @@
     iconClass: "octicon",
     icon: "octicon-mark-github",
     scriptId: "github-bjs",
-    styles: ["default", "mega"],
     script: {
       src: "../../buttons.js"
     },
@@ -1118,36 +1108,16 @@
         new ButtonFrameContent(options);
         return expect(base.getAttribute("href")).to.equal(options.href);
       });
-      it('should set document.body.className to default style', function() {
-        var options;
-        options = {
-          data: {},
-          aria: {}
-        };
-        new ButtonFrameContent(options);
-        return expect(document.body.className).to.equal(Config.styles[0]);
-      });
-      it('should set document.body.className when a valid style is given', function() {
+      it('should set document.body.className when a style is given', function() {
         var options;
         options = {
           data: {
-            style: Config.styles[1]
+            style: "mega"
           },
           aria: {}
         };
         new ButtonFrameContent(options);
-        return expect(document.body.className).to.equal(Config.styles[1]);
-      });
-      it('should set document.body.className to default when an invalid style is given', function() {
-        var options;
-        options = {
-          data: {
-            style: "not valid"
-          },
-          aria: {}
-        };
-        new ButtonFrameContent(options);
-        return expect(document.body.className).to.equal(Config.styles[0]);
+        return expect(document.body.className).to.equal(options.data.style);
       });
       it('should append the button to document.body when the necessary options are given', function() {
         var button, options;

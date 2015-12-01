@@ -4,7 +4,6 @@ Config =
   iconClass:   "octicon"
   icon:        "octicon-mark-github"
   scriptId:    "github-bjs"
-  styles:     ["default", "mega"]
 
 if Config.script = document.getElementById Config.scriptId
   Config.url = Config.script.src.replace /[^/]*([?#].*)?$/, ""

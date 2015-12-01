@@ -561,29 +561,13 @@ describe 'ButtonFrameContent', ->
       expect base.getAttribute "href"
         .to.equal options.href
 
-    it 'should set document.body.className to default style', ->
+    it 'should set document.body.className when a style is given', ->
       options =
-        data: {}
+        data: style: "mega"
         aria: {}
       new ButtonFrameContent options
       expect document.body.className
-        .to.equal Config.styles[0]
-
-    it 'should set document.body.className when a valid style is given', ->
-      options =
-        data: style: Config.styles[1]
-        aria: {}
-      new ButtonFrameContent options
-      expect document.body.className
-        .to.equal Config.styles[1]
-
-    it 'should set document.body.className to default when an invalid style is given', ->
-      options =
-        data: style: "not valid"
-        aria: {}
-      new ButtonFrameContent options
-      expect document.body.className
-        .to.equal Config.styles[0]
+        .to.equal options.data.style
 
     it 'should append the button to document.body when the necessary options are given', ->
       options =

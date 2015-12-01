@@ -12,6 +12,5 @@ Config =
   iconClass:   "octicon"
   icon:        "octicon-mark-github"
   scriptId:    "github-bjs"
-  styles:     ["default", "mega"]
   script: src: "../../buttons.js"
   url:         "../../"
