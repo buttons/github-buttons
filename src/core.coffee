@@ -1,7 +1,5 @@
-class Element
-  constructor: (element, callback) ->
-    @$ = if element and element.nodeType is 1 then element else document.createElement element
-    callback.call @, @$ if callback
+class EventTarget
+  constructor: (@$) ->
 
   get: -> @$
 
@@ -18,17 +16,6 @@ class Element
     addEventListener @$, eventName, callback for eventName in events
     return
 
-  addClass: (className) ->
-    addClass @$, className unless hasClass @$, className
-    return
-
-  removeClass: (className) ->
-    removeClass @$, className if hasClass @$, className
-    return
-
-  hasClass: (className) ->
-    hasClass @$, className
-
   addEventListener = (element, event, func) ->
     if element.addEventListener
       element.addEventListener "#{event}", func
@@ -43,7 +30,22 @@ class Element
       element.detachEvent "on#{event}", func
     return
 
-  r_whitespace = /[ \t\n\f\r]+/g
+
+class Element extends EventTarget
+  constructor: (element, callback) ->
+    @$ = if element and element.nodeType is 1 then element else document.createElement element
+    callback.call @, @$ if callback
+
+  addClass: (className) ->
+    addClass @$, className unless hasClass @$, className
+    return
+
+  removeClass: (className) ->
+    removeClass @$, className if hasClass @$, className
+    return
+
+  hasClass: (className) ->
+    hasClass @$, className
 
   addClass = (element, className) ->
     element.className += " #{className}"
@@ -58,6 +60,8 @@ class Element
 
   hasClass = (element, className) ->
     " #{element.className} ".replace(r_whitespace, " ").indexOf(" #{className} ") >= 0
+
+  r_whitespace = /[ \t\n\f\r]+/g
 
 
 class Frame extends Element

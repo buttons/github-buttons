@@ -49,10 +49,11 @@ class Form extends Element
 class StaticFrame extends Element
   constructor: ->
     super
-    @on "load", ->
+
+    onload = =>
       contentDocument = @get().contentWindow.document
 
-      base = contentDocument.head.getElementsByTagName("base")[0]
+      base = contentDocument.getElementsByTagName("base")[0]
       base.parentNode.removeChild base
 
       for a in contentDocument.getElementsByTagName "a"
@@ -79,6 +80,13 @@ class StaticFrame extends Element
           @get().parentNode.click()
           return
       return
+
+    @on "load", ->
+      try
+        onload()
+      catch
+        new EventTarget @get().contentWindow
+          .on "load", onload
 
 
 class PreviewAnchor extends Element
