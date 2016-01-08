@@ -327,19 +327,17 @@
   })(Element);
 
   ButtonAnchor = (function() {
-    var filter_js;
-
     function ButtonAnchor() {}
 
     ButtonAnchor.parse = function(element) {
       var api, icon, label, style;
       return {
-        href: filter_js(element.href),
+        href: element.href,
         text: element.getAttribute("data-text") || element.textContent || element.innerText || "",
         data: {
           count: {
             api: (api = element.getAttribute("data-count-api")) && (~api.indexOf("#")) ? api.replace(/^(?!\/)/, "/") : void 0,
-            href: (filter_js(element.getAttribute("data-count-href"))) || (filter_js(element.href)),
+            href: element.getAttribute("data-count-href") || element.href,
             aria: {
               label: (label = element.getAttribute("data-count-aria-label")) ? label : void 0
             }
@@ -351,14 +349,6 @@
           label: (label = element.getAttribute("aria-label")) ? label : void 0
         }
       };
-    };
-
-    filter_js = function(href) {
-      if (/^\s*javascript:/i.test(href)) {
-        return "";
-      } else {
-        return href;
-      }
     };
 
     return ButtonAnchor;
@@ -408,13 +398,18 @@
   })(Frame);
 
   ButtonFrameContent = (function() {
-    var Button, Count;
+    var Button, Count, r_javascript;
 
     function ButtonFrameContent(options) {
+      var base;
       if (options && options.data) {
         document.body.className = options.data.style || "";
+        base = document.getElementsByTagName("base")[0];
         if (options.href) {
-          document.getElementsByTagName("base")[0].href = options.href;
+          base.href = options.href;
+        }
+        if (r_javascript.test(base.href)) {
+          base.href = options.href = options.data.count.href = "#";
         }
         new Button(options, function(buttonElement) {
           document.body.appendChild(buttonElement);
@@ -422,6 +417,7 @@
         new Count(options.data.count, function(countElement) {
           document.body.appendChild(countElement);
         });
+        base.removeAttribute("href");
       }
     }
 
@@ -433,6 +429,12 @@
           a.className = "button";
           if (options.href) {
             a.href = options.href;
+          }
+          if (r_javascript.test(a.href)) {
+            a.href = "#";
+          }
+          if ("#" === a.getAttribute("href")) {
+            a.target = "_self";
           }
           if (options.aria.label) {
             a.setAttribute("aria-label", options.aria.label);
@@ -473,6 +475,13 @@
             if (options.href) {
               a.href = options.href;
             }
+            if (r_javascript.test(a.href)) {
+              a.href = "#";
+            }
+            if ("#" === a.getAttribute("href")) {
+              a.target = "_self";
+            }
+            a.href = a.cloneNode().href;
             new Element("b", function(b) {
               a.appendChild(b);
             });
@@ -532,6 +541,8 @@
       return Count;
 
     })(Element);
+
+    r_javascript = /^javascript:/i;
 
     return ButtonFrameContent;
 
@@ -791,9 +802,8 @@
   });
 
   describe('ButtonAnchor', function() {
-    var a, javascript_protocals;
+    var a;
     a = null;
-    javascript_protocals = ["javascript:", "JAVASCRIPT:", "JavaScript:", " javascript:", "   javascript:", "\tjavascript:", "\njavascript:", "\rjavascript:", "\fjavascript:"];
     beforeEach(function() {
       return a = document.createElement("a");
     });
@@ -821,16 +831,6 @@
       it('should parse the attribute href', function() {
         a.href = "https://buttons.github.io/";
         return expect(ButtonAnchor.parse(a)).to.have.property("href").and.equal(a.href);
-      });
-      it('should filter javascript in the attribute href', function() {
-        var href, j, len, results1;
-        results1 = [];
-        for (j = 0, len = javascript_protocals.length; j < len; j++) {
-          href = javascript_protocals[j];
-          a.href = href;
-          results1.push(expect(ButtonAnchor.parse(a)).to.have.property("href").to.not.match(/^\s*javascript:/i));
-        }
-        return results1;
       });
       it('should parse the attribute data-text', function() {
         var text;
@@ -878,36 +878,6 @@
       it('should fallback data.cout.href to the attribute href when the attribute data-count-href is not given', function() {
         a.href = "https://github.com/";
         return expect(ButtonAnchor.parse(a)).to.have.deep.property("data.count.href").and.equal(a.href);
-      });
-      it('should filter javascript in the attribute data-count-href', function() {
-        var href, j, len, results1;
-        results1 = [];
-        for (j = 0, len = javascript_protocals.length; j < len; j++) {
-          href = javascript_protocals[j];
-          a.setAttribute("data-count-href", href);
-          results1.push(expect(ButtonAnchor.parse(a)).to.have.deep.property("data.count.href").and.not.match(/^\s*javascript:/i));
-        }
-        return results1;
-      });
-      it('should fallback data.cout.href to the attribute href when the attribute data-count-href is filtered', function() {
-        var href, j, len, results1;
-        a.href = "https://github.com/";
-        results1 = [];
-        for (j = 0, len = javascript_protocals.length; j < len; j++) {
-          href = javascript_protocals[j];
-          results1.push(expect(ButtonAnchor.parse(a)).to.have.deep.property("data.count.href").and.equal(a.href));
-        }
-        return results1;
-      });
-      it('should filter javascript in the attribute href when the attribute data-count-href fallbacks to its value', function() {
-        var href, j, len, results1;
-        results1 = [];
-        for (j = 0, len = javascript_protocals.length; j < len; j++) {
-          href = javascript_protocals[j];
-          a.href = href;
-          results1.push(expect(ButtonAnchor.parse(a)).to.have.deep.property("data.count.href").and.not.match(/^\s*javascript:/i));
-        }
-        return results1;
       });
       it('should parse the attribute data-style', function() {
         var style;
@@ -1043,7 +1013,7 @@
   });
 
   describe('ButtonFrameContent', function() {
-    var base, bodyClassName, data, head;
+    var base, bodyClassName, data, head, javascript_protocals;
     head = document.getElementsByTagName("head")[0];
     base = null;
     bodyClassName = null;
@@ -1091,6 +1061,7 @@
         "updated_at": "2015-02-08T07:39:11Z"
       }
     };
+    javascript_protocals = ["javascript:", "JAVASCRIPT:", "JavaScript:", " javascript:", "   javascript:", "\tjavascript:", "\njavascript:", "\rjavascript:", "\fjavascript:"];
     beforeEach(function() {
       bodyClassName = document.body.getAttribute("class");
       base = head.insertBefore(document.createElement("base"), head.firstChild);
@@ -1111,7 +1082,7 @@
         expect(base.getAttribute("href")).to.be["null"];
         return expect(document.body.appendChild).to.have.not.been.called;
       });
-      it('should set base.href when options.href is given', function() {
+      it('should not set base.href', function() {
         var options;
         options = {
           href: "https://github.com/",
@@ -1119,7 +1090,7 @@
           aria: {}
         };
         new ButtonFrameContent(options);
-        return expect(base.getAttribute("href")).to.equal(options.href);
+        return expect(base.getAttribute("href")).to.be["null"];
       });
       it('should set document.body.className when a style is given', function() {
         var options;
@@ -1153,6 +1124,26 @@
         new ButtonFrameContent(options);
         button = document.body.appendChild.args[0][0];
         return expect(button.getAttribute("href")).to.equal(options.href);
+      });
+      it('should filter javascript in the href', function() {
+        var button, href, i, j, len, options, results1;
+        results1 = [];
+        for (i = j = 0, len = javascript_protocals.length; j < len; i = ++j) {
+          href = javascript_protocals[i];
+          options = {
+            href: href,
+            data: {
+              count: {
+                href: href
+              }
+            },
+            aria: {}
+          };
+          new ButtonFrameContent(options);
+          button = document.body.appendChild.args[i][0];
+          results1.push(expect(button.getAttribute("href")).to.equal("#"));
+        }
+        return results1;
       });
       it('should append the button with the default icon', function() {
         var button, options;

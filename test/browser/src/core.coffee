@@ -230,17 +230,6 @@ describe 'Frame', ->
 
 describe 'ButtonAnchor', ->
   a = null
-  javascript_protocals = [
-    "javascript:"
-    "JAVASCRIPT:"
-    "JavaScript:"
-    " javascript:"
-    "   javascript:"
-    "\tjavascript:"
-    "\njavascript:"
-    "\rjavascript:"
-    "\fjavascript:"
-  ]
 
   beforeEach ->
     a = document.createElement "a"
@@ -267,13 +256,6 @@ describe 'ButtonAnchor', ->
       expect ButtonAnchor.parse a
         .to.have.property "href"
         .and.equal a.href
-
-    it 'should filter javascript in the attribute href', ->
-      for href in javascript_protocals
-        a.href = href
-        expect ButtonAnchor.parse a
-          .to.have.property "href"
-          .to.not.match /^\s*javascript:/i
 
     it 'should parse the attribute data-text', ->
       text = "test"
@@ -330,27 +312,6 @@ describe 'ButtonAnchor', ->
       expect ButtonAnchor.parse a
         .to.have.deep.property "data.count.href"
         .and.equal a.href
-
-    it 'should filter javascript in the attribute data-count-href', ->
-      for href in javascript_protocals
-        a.setAttribute "data-count-href", href
-        expect ButtonAnchor.parse a
-          .to.have.deep.property "data.count.href"
-          .and.not.match /^\s*javascript:/i
-
-    it 'should fallback data.cout.href to the attribute href when the attribute data-count-href is filtered', ->
-      a.href = "https://github.com/"
-      for href in javascript_protocals
-        expect ButtonAnchor.parse a
-          .to.have.deep.property "data.count.href"
-          .and.equal a.href
-
-    it 'should filter javascript in the attribute href when the attribute data-count-href fallbacks to its value', ->
-      for href in javascript_protocals
-        a.href = href
-        expect ButtonAnchor.parse a
-          .to.have.deep.property "data.count.href"
-          .and.not.match /^\s*javascript:/i
 
     it 'should parse the attribute data-style', ->
       style = "mega"
@@ -531,6 +492,18 @@ describe 'ButtonFrameContent', ->
       "created_at": "2011-07-07T03:26:58Z",
       "updated_at": "2015-02-08T07:39:11Z"
 
+  javascript_protocals = [
+    "javascript:"
+    "JAVASCRIPT:"
+    "JavaScript:"
+    " javascript:"
+    "   javascript:"
+    "\tjavascript:"
+    "\njavascript:"
+    "\rjavascript:"
+    "\fjavascript:"
+  ]
+
   beforeEach ->
     bodyClassName= document.body.getAttribute "class"
     base = head.insertBefore document.createElement("base"), head.firstChild
@@ -552,14 +525,14 @@ describe 'ButtonFrameContent', ->
       expect document.body.appendChild
         .to.have.not.been.called
 
-    it 'should set base.href when options.href is given', ->
+    it 'should not set base.href', ->
       options =
         href: "https://github.com/"
         data: {}
         aria: {}
       new ButtonFrameContent options
       expect base.getAttribute "href"
-        .to.equal options.href
+        .to.be.null
 
     it 'should set document.body.className when a style is given', ->
       options =
@@ -590,6 +563,17 @@ describe 'ButtonFrameContent', ->
       button = document.body.appendChild.args[0][0]
       expect button.getAttribute "href"
         .to.equal options.href
+
+    it 'should filter javascript in the href', ->
+      for href, i in javascript_protocals
+        options =
+          href: href
+          data: count: href: href
+          aria: {}
+        new ButtonFrameContent options
+        button = document.body.appendChild.args[i][0]
+        expect button.getAttribute "href"
+          .to.equal "#"
 
     it 'should append the button with the default icon', ->
       options =
