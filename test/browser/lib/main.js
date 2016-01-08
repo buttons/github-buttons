@@ -436,6 +436,7 @@
           if ("#" === a.getAttribute("href")) {
             a.target = "_self";
           }
+          a.href = a.cloneNode().href;
           if (options.aria.label) {
             a.setAttribute("aria-label", options.aria.label);
           }
@@ -1141,7 +1142,7 @@
           };
           new ButtonFrameContent(options);
           button = document.body.appendChild.args[i][0];
-          results1.push(expect(button.getAttribute("href")).to.equal("#"));
+          results1.push(expect(button.getAttribute("href")).to.not.match(/javascript:/i));
         }
         return results1;
       });

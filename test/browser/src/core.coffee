@@ -573,7 +573,7 @@ describe 'ButtonFrameContent', ->
         new ButtonFrameContent options
         button = document.body.appendChild.args[i][0]
         expect button.getAttribute "href"
-          .to.equal "#"
+          .to.not.match /javascript:/i
 
     it 'should append the button with the default icon', ->
       options =
