@@ -30,7 +30,6 @@
 .octicon-cloud-download { zoom: expression( this.innerHTML = '&#xf00b;' ); } /*  */
 .octicon-cloud-upload { zoom: expression( this.innerHTML = '&#xf00c;' ); } /*  */
 .octicon-code { zoom: expression( this.innerHTML = '&#xf05f;' ); } /*  */
-.octicon-color-mode { zoom: expression( this.innerHTML = '&#xf065;' ); } /*  */
 .octicon-comment-add, .octicon-comment { zoom: expression( this.innerHTML = '&#xf02b;' ); } /*  */
 .octicon-comment-discussion { zoom: expression( this.innerHTML = '&#xf04f;' ); } /*  */
 .octicon-credit-card { zoom: expression( this.innerHTML = '&#xf045;' ); } /*  */
@@ -139,6 +138,7 @@
 .octicon-shield { zoom: expression( this.innerHTML = '&#xf0e1;' ); } /*  */
 .octicon-log-in, .octicon-sign-in { zoom: expression( this.innerHTML = '&#xf036;' ); } /*  */
 .octicon-log-out, .octicon-sign-out { zoom: expression( this.innerHTML = '&#xf032;' ); } /*  */
+.octicon-smiley { zoom: expression( this.innerHTML = '&#xf0e7;' ); } /*  */
 .octicon-squirrel { zoom: expression( this.innerHTML = '&#xf0b2;' ); } /*  */
 .octicon-star-add, .octicon-star-delete, .octicon-star { zoom: expression( this.innerHTML = '&#xf02a;' ); } /*  */
 .octicon-stop { zoom: expression( this.innerHTML = '&#xf08f;' ); } /*  */
@@ -159,6 +159,7 @@
 .octicon-triangle-up { zoom: expression( this.innerHTML = '&#xf0aa;' ); } /*  */
 .octicon-unfold { zoom: expression( this.innerHTML = '&#xf039;' ); } /*  */
 .octicon-unmute { zoom: expression( this.innerHTML = '&#xf0ba;' ); } /*  */
+.octicon-verified { zoom: expression( this.innerHTML = '&#xf0e6;' ); } /*  */
 .octicon-versions { zoom: expression( this.innerHTML = '&#xf064;' ); } /*  */
 .octicon-watch { zoom: expression( this.innerHTML = '&#xf0e0;' ); } /*  */
 .octicon-remove-close, .octicon-x { zoom: expression( this.innerHTML = '&#xf081;' ); } /*  */
