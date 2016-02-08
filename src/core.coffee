@@ -1,8 +1,6 @@
 class EventTarget
   constructor: (@$) ->
 
-  get: -> @$
-
   on: (events..., func) ->
     callback = (event) =>
       func.call @, event || window.event
@@ -182,7 +180,6 @@ class ButtonFrame extends Frame
       <head>
       <meta charset="utf-8">
       <title></title>
-      <base target="_blank"><!--[if lte IE 6]></base><![endif]-->
       <link rel="stylesheet" href="#{Config.url}assets/css/buttons.css">
       <script>document.location.hash = "#{hash}";</script>
       </head>
@@ -198,9 +195,9 @@ class ButtonFrameContent
     if options and options.data
       document.body.className = options.data.style or ""
 
-      base = document.getElementsByTagName("base")[0]
-      base.href = options.href if options.href
-      base.href = options.href = options.data.count.href = "#" if r_javascript.test base.href
+      if base
+        base.href = options.href if options.href
+        base.href = options.href = options.data.count.href = "#" if r_javascript.test base.href
 
       new Button options, (buttonElement) ->
         document.body.appendChild buttonElement
@@ -209,16 +206,12 @@ class ButtonFrameContent
         document.body.appendChild countElement
         return
 
-      base.removeAttribute "href"
+      base.removeAttribute "href" if base
 
   class Button extends Element
     constructor: (options, callback) ->
-      super "a", (a) ->
+      new SafeAnchor options.href, (a) ->
         a.className = "button"
-        a.href = options.href if options.href
-        a.href = "#" if r_javascript.test a.href
-        a.target = "_self" if "#" is a.getAttribute "href"
-        a.href = a.cloneNode().href
         a.setAttribute "aria-label", options.aria.label if options.aria.label
         new Element "i", (icon) ->
           icon = document.createElement "i"
@@ -240,12 +233,8 @@ class ButtonFrameContent
   class Count extends Element
     constructor: (options, callback) ->
       if options and options.api
-        super "a", (a) ->
+        new SafeAnchor options.href, (a) ->
           a.className = "count"
-          a.href = options.href if options.href
-          a.href = "#" if r_javascript.test a.href
-          a.target = "_self" if "#" is a.getAttribute "href"
-          a.href = a.cloneNode().href
           new Element "b", (b) ->
             a.appendChild b
             return
@@ -293,4 +282,14 @@ class ButtonFrameContent
             return
           return
 
+  class SafeAnchor extends Element
+    constructor: (href, callback) ->
+      super "a", (a) ->
+        a.href = href or "" if base
+        a.href = "#" if r_javascript.test a.href
+        a.target = "_self" if /^#/.test a.getAttribute "href"
+        a.href = a.cloneNode().href
+        callback a if callback
+
+  base = document.getElementsByTagName("base")[0]
   r_javascript = /^javascript:/i

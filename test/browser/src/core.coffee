@@ -2,11 +2,11 @@ describe 'Element', ->
   describe '#constructor()', ->
     it 'should use element when element is given', ->
       element = document.createElement "a"
-      expect new Element(element).get()
+      expect new Element(element).$
         .to.equal element
 
     it 'should create new element when tag name is given', ->
-      expect new Element("i").get().nodeType
+      expect new Element("i").$.nodeType
         .to.equal 1
 
     it 'should callback with this', ->
@@ -29,28 +29,28 @@ describe 'Element', ->
       input = new Element "input", (element) -> document.body.appendChild element
 
     afterEach ->
-      document.body.removeChild input.get()
+      document.body.removeChild input.$
 
     it 'should call the function on single event type', ->
       spy = sinon.spy()
       input.on "click", spy
-      input.get().click()
+      input.$.click()
       expect spy
         .to.have.been.calledOnce
-      input.get().click()
+      input.$.click()
       expect spy
         .to.have.been.calledTwice
 
     it 'should call the function on multiple event types', ->
       spy = sinon.spy()
       input.on "focus", "blur", "click", spy
-      input.get().focus()
+      input.$.focus()
       expect spy
         .to.have.been.calledOnce
-      input.get().blur()
+      input.$.blur()
       expect spy
         .to.have.been.calledTwice
-      input.get().click()
+      input.$.click()
       expect spy
         .to.have.been.calledThrice
 
@@ -79,27 +79,27 @@ describe 'Element', ->
       input = new Element "input", (element) -> document.body.appendChild element
 
     afterEach ->
-      document.body.removeChild input.get()
+      document.body.removeChild input.$
 
     it 'should call the function on single event type only once', ->
       spy = sinon.spy()
       input.once "click", spy
-      input.get().click()
+      input.$.click()
       expect spy
         .to.have.been.calledOnce
-      input.get().click()
-      input.get().click()
+      input.$.click()
+      input.$.click()
       expect spy
         .to.have.been.calledOnce
 
     it 'should call the function on multiple event types only once', ->
       spy = sinon.spy()
       input.once "focus", "blur", spy
-      input.get().focus()
+      input.$.focus()
       expect spy
         .to.have.been.calledOnce
-      input.get().blur()
-      input.get().focus()
+      input.$.blur()
+      input.$.focus()
       expect spy
         .to.have.been.calledOnce
 
@@ -127,10 +127,10 @@ describe 'Element', ->
       element.className = "hello"
       a = new Element element
       a.addClass "world"
-      expect a.get().className
+      expect a.$.className
         .to.equal "hello world"
       a.addClass "world"
-      expect a.get().className
+      expect a.$.className
         .to.equal "hello world"
 
   describe '#removeClass()', ->
@@ -139,10 +139,10 @@ describe 'Element', ->
       element.className = "hello world"
       a = new Element element
       a.removeClass "hello"
-      expect a.get().className
+      expect a.$.className
         .to.equal "world"
       a.removeClass "hello"
-      expect a.get().className
+      expect a.$.className
         .to.equal "world"
 
   describe '#hasClass()', ->
@@ -176,19 +176,19 @@ describe 'Frame', ->
     frame = new Frame (iframe) -> document.body.appendChild iframe
 
   afterEach ->
-    document.body.removeChild frame.get()
+    document.body.removeChild frame.$
 
   describe '#constructor()', ->
     it 'should callback with the new iframe', ->
-      expect frame.get().nodeType
+      expect frame.$.nodeType
         .to.equal 1
-      expect frame.get().tagName
+      expect frame.$.tagName
         .to.equal "IFRAME"
 
   describe '#html()', ->
     it 'should write html when iframe is in same-origin', (done) ->
       frame.on "load", ->
-        expect frame.get().contentWindow.document.documentElement.getAttribute "lang"
+        expect frame.$.contentWindow.document.documentElement.getAttribute "lang"
           .to.equal "ja"
         done()
       frame.html html
@@ -196,7 +196,7 @@ describe 'Frame', ->
   describe '#load()', ->
     it 'should load the src url', ->
       frame.load "../../buttons.html"
-      expect frame.get().src
+      expect frame.$.src
         .to.match /buttons\.html$/
 
   describe '#size()', ->
@@ -221,9 +221,9 @@ describe 'Frame', ->
       frame.resize
         width: "20px"
         height: "10px"
-      expect frame.get().style.width
+      expect frame.$.style.width
         .to.equal "20px"
-      expect frame.get().style.height
+      expect frame.$.style.height
         .to.equal "10px"
       done()
 
@@ -506,7 +506,7 @@ describe 'ButtonFrameContent', ->
 
   beforeEach ->
     bodyClassName= document.body.getAttribute "class"
-    base = head.insertBefore document.createElement("base"), head.firstChild
+    base = document.getElementsByTagName("base")[0]
     sinon.stub document.body, "appendChild"
 
   afterEach ->
@@ -514,7 +514,6 @@ describe 'ButtonFrameContent', ->
       document.body.className = bodyClassName
     else
       document.body.removeAttribute "class"
-    base.parentNode.removeChild base
     document.body.appendChild.restore()
 
   describe '#constructor()', ->

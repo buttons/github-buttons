@@ -30,14 +30,14 @@ class Form extends Element
     if events.indexOf("change") >= 0
       callback = (event) =>
         func.call @, event || window.event
-      for element in @get().elements
+      for element in @$.elements
         new Element element
           .on "change", "input", callback
     super
 
   serialize: ->
     data = {}
-    for node in @get().elements when node.name
+    for node in @$.elements when node.name
       switch node.type
         when "radio", "checkbox"
           data[node.name] = node.value if node.checked
@@ -51,7 +51,7 @@ class StaticFrame extends Element
     super
 
     onload = =>
-      contentDocument = @get().contentWindow.document
+      contentDocument = @$.contentWindow.document
 
       base = contentDocument.getElementsByTagName("base")[0]
       base.parentNode.removeChild base
@@ -77,7 +77,7 @@ class StaticFrame extends Element
 
       new Element contentDocument.body
         .on "click", =>
-          @get().parentNode.click()
+          @$.parentNode.click()
           return
       return
 
@@ -85,7 +85,7 @@ class StaticFrame extends Element
       try
         onload()
       catch
-        new EventTarget @get().contentWindow
+        new EventTarget @$.contentWindow
           .on "load", onload
 
 
@@ -108,7 +108,7 @@ class PreviewFrame extends Frame
       iframe.src = "buttons.html"
       return
     @on "load", ->
-      if callback = @get().contentWindow.callback
+      if callback = @$.contentWindow.callback
         script = callback.script
         if script.readyState
           new Element script
@@ -125,11 +125,11 @@ class PreviewFrame extends Frame
       return
 
   load: (config) ->
-    @get().parentNode.style.height = "#{(if config.data.style is "mega" then 28 else 20) + 2}px"
-    @get().style.width = "1px"
-    @get().style.height = "0"
-    @get().src = "buttons.html#{Hash.encode config}"
-    @get().contentWindow.document.location.reload()
+    @$.parentNode.style.height = "#{(if config.data.style is "mega" then 28 else 20) + 2}px"
+    @$.style.width = "1px"
+    @$.style.height = "0"
+    @$.src = "buttons.html#{Hash.encode config}"
+    @$.contentWindow.document.location.reload()
     return
 
 
@@ -137,10 +137,10 @@ class Code extends Element
   constructor: ->
     super
     @on "focus", ->
-      @get().select()
+      @$.select()
       return
     @on "click", ->
-      @get().select()
+      @$.select()
       return
     @on "mouseup", (event) ->
       event.preventDefault()
@@ -149,7 +149,7 @@ class Code extends Element
 
 class ButtonForm extends Form
   constructor: (@$, {content, preview: {button, frame, code, warning}, snippet, user_repo}) ->
-    snippet.get().value = \
+    snippet.$.value = \
       """
       <!-- Place this tag right after the last button or just before your close body tag. -->
       <script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
@@ -162,9 +162,9 @@ class ButtonForm extends Form
         content.removeClass "hidden"
 
         for name in ["repo", "standard-icon"]
-          @get().elements[name].disabled = options.type is "follow"
+          @$.elements[name].disabled = options.type is "follow"
         for name in ["show-count"]
-          @get().elements[name].disabled = options.type is "download"
+          @$.elements[name].disabled = options.type is "download"
 
         unless (!options.user or /^[a-z0-9][a-z0-9-]*$/i.test options.user) and (options.type is "follow" or !options.repo or (/^[\w.-]+$/.test(options.repo) and not /^\.\.?$/.test(options.repo)))
           user_repo.addClass "has-error"
@@ -182,7 +182,7 @@ class ButtonForm extends Form
         if @cache isnt (cache = Hash.encode options) or force
           @cache = cache
           new PreviewAnchor @parse(options), (a) =>
-            code.get().value = \
+            code.$.value = \
               """
               <!-- Place this tag where you want the button to render. -->
               #{a.outerHTML}

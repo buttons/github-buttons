@@ -5,7 +5,6 @@ if window._phantom
     @dispatchEvent event
     return
 
-
 Config =
   api:         "https://api.github.com"
   anchorClass: "github-button"
@@ -14,3 +13,5 @@ Config =
   scriptId:    "github-bjs"
   script: src: "../../buttons.js"
   url:         "../../"
+
+document.head.appendChild document.createElement "base"

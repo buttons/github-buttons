@@ -5,6 +5,29 @@
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
 
+  if (window._phantom) {
+    (base1 = HTMLElement.prototype).click || (base1.click = function() {
+      var event;
+      event = document.createEvent('MouseEvents');
+      event.initMouseEvent('click', true, true, window, null, 0, 0, 0, 0, false, false, false, false, 0, null);
+      this.dispatchEvent(event);
+    });
+  }
+
+  Config = {
+    api: "https://api.github.com",
+    anchorClass: "github-button",
+    iconClass: "octicon",
+    icon: "octicon-mark-github",
+    scriptId: "github-bjs",
+    script: {
+      src: "../../buttons.js"
+    },
+    url: "../../"
+  };
+
+  document.head.appendChild(document.createElement("base"));
+
   FlatObject = (function() {
     var index;
 
@@ -127,10 +150,6 @@
     function EventTarget($) {
       this.$ = $;
     }
-
-    EventTarget.prototype.get = function() {
-      return this.$;
-    };
 
     EventTarget.prototype.on = function() {
       var callback, eventName, events, func, j, k, len;
@@ -390,7 +409,7 @@
           reload();
         }
       });
-      this.html("<!DOCTYPE html>\n<html>\n<head>\n<meta charset=\"utf-8\">\n<title></title>\n<base target=\"_blank\"><!--[if lte IE 6]></base><![endif]-->\n<link rel=\"stylesheet\" href=\"" + Config.url + "assets/css/buttons.css\">\n<script>document.location.hash = \"" + hash + "\";</script>\n</head>\n<body>\n<script src=\"" + Config.script.src + "\"></script>\n</body>\n</html>");
+      this.html("<!DOCTYPE html>\n<html>\n<head>\n<meta charset=\"utf-8\">\n<title></title>\n<link rel=\"stylesheet\" href=\"" + Config.url + "assets/css/buttons.css\">\n<script>document.location.hash = \"" + hash + "\";</script>\n</head>\n<body>\n<script src=\"" + Config.script.src + "\"></script>\n</body>\n</html>");
     }
 
     return ButtonFrame;
@@ -398,18 +417,18 @@
   })(Frame);
 
   ButtonFrameContent = (function() {
-    var Button, Count, r_javascript;
+    var Button, Count, SafeAnchor, base, r_javascript;
 
     function ButtonFrameContent(options) {
-      var base;
       if (options && options.data) {
         document.body.className = options.data.style || "";
-        base = document.getElementsByTagName("base")[0];
-        if (options.href) {
-          base.href = options.href;
-        }
-        if (r_javascript.test(base.href)) {
-          base.href = options.href = options.data.count.href = "#";
+        if (base) {
+          if (options.href) {
+            base.href = options.href;
+          }
+          if (r_javascript.test(base.href)) {
+            base.href = options.href = options.data.count.href = "#";
+          }
         }
         new Button(options, function(buttonElement) {
           document.body.appendChild(buttonElement);
@@ -417,7 +436,9 @@
         new Count(options.data.count, function(countElement) {
           document.body.appendChild(countElement);
         });
-        base.removeAttribute("href");
+        if (base) {
+          base.removeAttribute("href");
+        }
       }
     }
 
@@ -425,18 +446,8 @@
       extend(Button, superClass);
 
       function Button(options, callback) {
-        Button.__super__.constructor.call(this, "a", function(a) {
+        new SafeAnchor(options.href, function(a) {
           a.className = "button";
-          if (options.href) {
-            a.href = options.href;
-          }
-          if (r_javascript.test(a.href)) {
-            a.href = "#";
-          }
-          if ("#" === a.getAttribute("href")) {
-            a.target = "_self";
-          }
-          a.href = a.cloneNode().href;
           if (options.aria.label) {
             a.setAttribute("aria-label", options.aria.label);
           }
@@ -471,18 +482,8 @@
 
       function Count(options, callback) {
         if (options && options.api) {
-          Count.__super__.constructor.call(this, "a", function(a) {
+          new SafeAnchor(options.href, function(a) {
             a.className = "count";
-            if (options.href) {
-              a.href = options.href;
-            }
-            if (r_javascript.test(a.href)) {
-              a.href = "#";
-            }
-            if ("#" === a.getAttribute("href")) {
-              a.target = "_self";
-            }
-            a.href = a.cloneNode().href;
             new Element("b", function(b) {
               a.appendChild(b);
             });
@@ -543,42 +544,48 @@
 
     })(Element);
 
+    SafeAnchor = (function(superClass) {
+      extend(SafeAnchor, superClass);
+
+      function SafeAnchor(href, callback) {
+        SafeAnchor.__super__.constructor.call(this, "a", function(a) {
+          if (base) {
+            a.href = href || "";
+          }
+          if (r_javascript.test(a.href)) {
+            a.href = "#";
+          }
+          if (/^#/.test(a.getAttribute("href"))) {
+            a.target = "_self";
+          }
+          a.href = a.cloneNode().href;
+          if (callback) {
+            return callback(a);
+          }
+        });
+      }
+
+      return SafeAnchor;
+
+    })(Element);
+
+    base = document.getElementsByTagName("base")[0];
+
     r_javascript = /^javascript:/i;
 
     return ButtonFrameContent;
 
   })();
 
-  if (window._phantom) {
-    (base1 = HTMLElement.prototype).click || (base1.click = function() {
-      var event;
-      event = document.createEvent('MouseEvents');
-      event.initMouseEvent('click', true, true, window, null, 0, 0, 0, 0, false, false, false, false, 0, null);
-      this.dispatchEvent(event);
-    });
-  }
-
-  Config = {
-    api: "https://api.github.com",
-    anchorClass: "github-button",
-    iconClass: "octicon",
-    icon: "octicon-mark-github",
-    scriptId: "github-bjs",
-    script: {
-      src: "../../buttons.js"
-    },
-    url: "../../"
-  };
-
   describe('Element', function() {
     describe('#constructor()', function() {
       it('should use element when element is given', function() {
         var element;
         element = document.createElement("a");
-        return expect(new Element(element).get()).to.equal(element);
+        return expect(new Element(element).$).to.equal(element);
       });
       it('should create new element when tag name is given', function() {
-        return expect(new Element("i").get().nodeType).to.equal(1);
+        return expect(new Element("i").$.nodeType).to.equal(1);
       });
       it('should callback with this', function() {
         var _, _this;
@@ -606,26 +613,26 @@
         });
       });
       afterEach(function() {
-        return document.body.removeChild(input.get());
+        return document.body.removeChild(input.$);
       });
       it('should call the function on single event type', function() {
         var spy;
         spy = sinon.spy();
         input.on("click", spy);
-        input.get().click();
+        input.$.click();
         expect(spy).to.have.been.calledOnce;
-        input.get().click();
+        input.$.click();
         return expect(spy).to.have.been.calledTwice;
       });
       it('should call the function on multiple event types', function() {
         var spy;
         spy = sinon.spy();
         input.on("focus", "blur", "click", spy);
-        input.get().focus();
+        input.$.focus();
         expect(spy).to.have.been.calledOnce;
-        input.get().blur();
+        input.$.blur();
         expect(spy).to.have.been.calledTwice;
-        input.get().click();
+        input.$.click();
         return expect(spy).to.have.been.calledThrice;
       });
       it('should call the function with this', function(done) {
@@ -657,26 +664,26 @@
         });
       });
       afterEach(function() {
-        return document.body.removeChild(input.get());
+        return document.body.removeChild(input.$);
       });
       it('should call the function on single event type only once', function() {
         var spy;
         spy = sinon.spy();
         input.once("click", spy);
-        input.get().click();
+        input.$.click();
         expect(spy).to.have.been.calledOnce;
-        input.get().click();
-        input.get().click();
+        input.$.click();
+        input.$.click();
         return expect(spy).to.have.been.calledOnce;
       });
       it('should call the function on multiple event types only once', function() {
         var spy;
         spy = sinon.spy();
         input.once("focus", "blur", spy);
-        input.get().focus();
+        input.$.focus();
         expect(spy).to.have.been.calledOnce;
-        input.get().blur();
-        input.get().focus();
+        input.$.blur();
+        input.$.focus();
         return expect(spy).to.have.been.calledOnce;
       });
       it('should call the function with this', function(done) {
@@ -706,9 +713,9 @@
         element.className = "hello";
         a = new Element(element);
         a.addClass("world");
-        expect(a.get().className).to.equal("hello world");
+        expect(a.$.className).to.equal("hello world");
         a.addClass("world");
-        return expect(a.get().className).to.equal("hello world");
+        return expect(a.$.className).to.equal("hello world");
       });
     });
     describe('#removeClass()', function() {
@@ -718,9 +725,9 @@
         element.className = "hello world";
         a = new Element(element);
         a.removeClass("hello");
-        expect(a.get().className).to.equal("world");
+        expect(a.$.className).to.equal("world");
         a.removeClass("hello");
-        return expect(a.get().className).to.equal("world");
+        return expect(a.$.className).to.equal("world");
       });
     });
     return describe('#hasClass()', function() {
@@ -745,18 +752,18 @@
       });
     });
     afterEach(function() {
-      return document.body.removeChild(frame.get());
+      return document.body.removeChild(frame.$);
     });
     describe('#constructor()', function() {
       return it('should callback with the new iframe', function() {
-        expect(frame.get().nodeType).to.equal(1);
-        return expect(frame.get().tagName).to.equal("IFRAME");
+        expect(frame.$.nodeType).to.equal(1);
+        return expect(frame.$.tagName).to.equal("IFRAME");
       });
     });
     describe('#html()', function() {
       return it('should write html when iframe is in same-origin', function(done) {
         frame.on("load", function() {
-          expect(frame.get().contentWindow.document.documentElement.getAttribute("lang")).to.equal("ja");
+          expect(frame.$.contentWindow.document.documentElement.getAttribute("lang")).to.equal("ja");
           return done();
         });
         return frame.html(html);
@@ -765,7 +772,7 @@
     describe('#load()', function() {
       return it('should load the src url', function() {
         frame.load("../../buttons.html");
-        return expect(frame.get().src).to.match(/buttons\.html$/);
+        return expect(frame.$.src).to.match(/buttons\.html$/);
       });
     });
     describe('#size()', function() {
@@ -795,8 +802,8 @@
           width: "20px",
           height: "10px"
         });
-        expect(frame.get().style.width).to.equal("20px");
-        expect(frame.get().style.height).to.equal("10px");
+        expect(frame.$.style.width).to.equal("20px");
+        expect(frame.$.style.height).to.equal("10px");
         return done();
       });
     });
@@ -1065,7 +1072,7 @@
     javascript_protocals = ["javascript:", "JAVASCRIPT:", "JavaScript:", " javascript:", "   javascript:", "\tjavascript:", "\njavascript:", "\rjavascript:", "\fjavascript:"];
     beforeEach(function() {
       bodyClassName = document.body.getAttribute("class");
-      base = head.insertBefore(document.createElement("base"), head.firstChild);
+      base = document.getElementsByTagName("base")[0];
       return sinon.stub(document.body, "appendChild");
     });
     afterEach(function() {
@@ -1074,7 +1081,6 @@
       } else {
         document.body.removeAttribute("class");
       }
-      base.parentNode.removeChild(base);
       return document.body.appendChild.restore();
     });
     return describe('#constructor()', function() {
