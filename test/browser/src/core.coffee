@@ -242,14 +242,14 @@ describe 'ButtonAnchor', ->
           text: ""
           data:
             count:
-              api: undefined
+              api: ""
               href: ""
               aria:
-                label: undefined
-            style: undefined
-            icon: undefined
+                label: ""
+            style: ""
+            icon: ""
           aria:
-            label: undefined
+            label: ""
 
     it 'should parse the attribute href', ->
       a.href = "https://buttons.github.io/"
@@ -298,7 +298,7 @@ describe 'ButtonAnchor', ->
       a.setAttribute "data-count-api", api
       expect ButtonAnchor.parse a
         .to.have.deep.property "data.count.api"
-        .and.be.undefined
+        .and.to.equal ""
 
     it 'should parse the attribute data-count-href', ->
       href = "https://github.com/"

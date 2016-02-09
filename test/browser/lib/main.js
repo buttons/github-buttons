@@ -355,17 +355,17 @@
         text: element.getAttribute("data-text") || element.textContent || element.innerText || "",
         data: {
           count: {
-            api: (api = element.getAttribute("data-count-api")) && (~api.indexOf("#")) ? api.replace(/^(?!\/)/, "/") : void 0,
+            api: (api = element.getAttribute("data-count-api")) && (/#/.test(api)) ? api.replace(/^(?!\/)/, "/") : "",
             href: element.getAttribute("data-count-href") || element.href,
             aria: {
-              label: (label = element.getAttribute("data-count-aria-label")) ? label : void 0
+              label: (label = element.getAttribute("data-count-aria-label")) ? label : ""
             }
           },
-          style: (style = element.getAttribute("data-style")) ? style : void 0,
-          icon: (icon = element.getAttribute("data-icon")) ? icon : void 0
+          style: (style = element.getAttribute("data-style")) ? style : "",
+          icon: (icon = element.getAttribute("data-icon")) ? icon : ""
         },
         aria: {
-          label: (label = element.getAttribute("aria-label")) ? label : void 0
+          label: (label = element.getAttribute("aria-label")) ? label : ""
         }
       };
     };
@@ -422,12 +422,10 @@
     function ButtonFrameContent(options) {
       if (options && options.data) {
         document.body.className = options.data.style || "";
-        if (base) {
-          if (options.href) {
-            base.href = options.href;
-          }
+        if (base && options.href) {
+          base.href = options.href;
           if (r_javascript.test(base.href)) {
-            base.href = options.href = options.data.count.href = "#";
+            base.href = "#";
           }
         }
         new Button(options, function(buttonElement) {
@@ -442,9 +440,30 @@
       }
     }
 
-    Button = (function(superClass) {
-      extend(Button, superClass);
+    SafeAnchor = (function(superClass) {
+      extend(SafeAnchor, superClass);
 
+      function SafeAnchor(href, callback) {
+        SafeAnchor.__super__.constructor.call(this, "a", function(a) {
+          if (base) {
+            a.href = href;
+            if (r_javascript.test(a.href)) {
+              a.href = "#";
+            }
+            if ("#" === a.getAttribute("href")) {
+              a.target = "_self";
+            }
+            a.href = a.cloneNode().href;
+          }
+          callback(a);
+        });
+      }
+
+      return SafeAnchor;
+
+    })(Element);
+
+    Button = (function() {
       function Button(options, callback) {
         new SafeAnchor(options.href, function(a) {
           a.className = "button";
@@ -467,19 +486,15 @@
             }
             a.appendChild(text);
           });
-          if (callback) {
-            callback(a);
-          }
+          callback(a);
         });
       }
 
       return Button;
 
-    })(Element);
+    })();
 
-    Count = (function(superClass) {
-      extend(Count, superClass);
-
+    Count = (function() {
       function Count(options, callback) {
         if (options && options.api) {
           new SafeAnchor(options.href, function(a) {
@@ -516,9 +531,7 @@
                     if (options.aria.label) {
                       a.setAttribute("aria-label", options.aria.label.replace("#", data));
                     }
-                    if (callback) {
-                      callback(a);
-                    }
+                    callback(a);
                   }
                 };
                 window.callback.script = script;
@@ -542,32 +555,7 @@
 
       return Count;
 
-    })(Element);
-
-    SafeAnchor = (function(superClass) {
-      extend(SafeAnchor, superClass);
-
-      function SafeAnchor(href, callback) {
-        SafeAnchor.__super__.constructor.call(this, "a", function(a) {
-          if (base) {
-            a.href = href || "";
-          }
-          if (r_javascript.test(a.href)) {
-            a.href = "#";
-          }
-          if (/^#/.test(a.getAttribute("href"))) {
-            a.target = "_self";
-          }
-          a.href = a.cloneNode().href;
-          if (callback) {
-            return callback(a);
-          }
-        });
-      }
-
-      return SafeAnchor;
-
-    })(Element);
+    })();
 
     base = document.getElementsByTagName("base")[0];
 
@@ -822,17 +810,17 @@
           text: "",
           data: {
             count: {
-              api: void 0,
+              api: "",
               href: "",
               aria: {
-                label: void 0
+                label: ""
               }
             },
-            style: void 0,
-            icon: void 0
+            style: "",
+            icon: ""
           },
           aria: {
-            label: void 0
+            label: ""
           }
         });
       });
@@ -875,7 +863,7 @@
         var api;
         api = "/repos/:user/:repo";
         a.setAttribute("data-count-api", api);
-        return expect(ButtonAnchor.parse(a)).to.have.deep.property("data.count.api").and.be.undefined;
+        return expect(ButtonAnchor.parse(a)).to.have.deep.property("data.count.api").and.to.equal("");
       });
       it('should parse the attribute data-count-href', function() {
         var href;

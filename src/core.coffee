@@ -129,21 +129,14 @@ class ButtonAnchor
     text: element.getAttribute("data-text") or element.textContent or element.innerText or ""
     data:
       count:
-        api:
-          if (api = element.getAttribute "data-count-api") and (~api.indexOf "#")
-            api.replace /^(?!\/)/, "/"
-        href:
-          element.getAttribute("data-count-href") or element.href
+        api: if (api = element.getAttribute "data-count-api") and (/#/.test api) then api.replace /^(?!\/)/, "/" else ""
+        href: element.getAttribute("data-count-href") or element.href
         aria:
-          label:
-            label if label = element.getAttribute "data-count-aria-label"
-      style:
-        style if style = element.getAttribute "data-style"
-      icon:
-        icon if icon = element.getAttribute "data-icon"
+          label: if label = element.getAttribute "data-count-aria-label" then label else ""
+      style: if style = element.getAttribute "data-style" then style else ""
+      icon: if icon = element.getAttribute "data-icon" then icon else ""
     aria:
-      label:
-        label if label = element.getAttribute "aria-label"
+      label: if label = element.getAttribute "aria-label" then label else ""
 
 
 class ButtonFrame extends Frame
@@ -166,7 +159,7 @@ class ButtonFrame extends Frame
 
           if script.readyState
             @on "readystatechange", ->
-              reload() if !/i/.test script.readyState
+              reload() unless /i/.test script.readyState
               return
           return
       else
@@ -195,9 +188,9 @@ class ButtonFrameContent
     if options and options.data
       document.body.className = options.data.style or ""
 
-      if base
-        base.href = options.href if options.href
-        base.href = options.href = options.data.count.href = "#" if r_javascript.test base.href
+      if base and options.href
+        base.href = options.href
+        base.href = "#" if r_javascript.test base.href
 
       new Button options, (buttonElement) ->
         document.body.appendChild buttonElement
@@ -208,7 +201,18 @@ class ButtonFrameContent
 
       base.removeAttribute "href" if base
 
-  class Button extends Element
+  class SafeAnchor extends Element
+    constructor: (href, callback) ->
+      super "a", (a) ->
+        if base
+          a.href = href
+          a.href = "#" if r_javascript.test a.href
+          a.target = "_self" if "#" is a.getAttribute "href"
+          a.href = a.cloneNode().href
+        callback a
+        return
+
+  class Button
     constructor: (options, callback) ->
       new SafeAnchor options.href, (a) ->
         a.className = "button"
@@ -227,10 +231,10 @@ class ButtonFrameContent
           text.appendChild document.createTextNode options.text if options.text
           a.appendChild text
           return
-        callback a if callback
+        callback a
         return
 
-  class Count extends Element
+  class Count
     constructor: (options, callback) ->
       if options and options.api
         new SafeAnchor options.href, (a) ->
@@ -263,7 +267,7 @@ class ButtonFrameContent
                     data = "#{data}".replace /\B(?=(\d{3})+(?!\d))/g, ","
                   span.appendChild document.createTextNode " #{data} "
                   a.setAttribute "aria-label", options.aria.label.replace "#", data if options.aria.label
-                  callback a if callback
+                  callback a
                 return
               window.callback.script = script
 
@@ -281,15 +285,6 @@ class ButtonFrameContent
               return
             return
           return
-
-  class SafeAnchor extends Element
-    constructor: (href, callback) ->
-      super "a", (a) ->
-        a.href = href or "" if base
-        a.href = "#" if r_javascript.test a.href
-        a.target = "_self" if /^#/.test a.getAttribute "href"
-        a.href = a.cloneNode().href
-        callback a if callback
 
   base = document.getElementsByTagName("base")[0]
   r_javascript = /^javascript:/i
