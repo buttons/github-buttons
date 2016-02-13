@@ -192,29 +192,7 @@ class ButtonFrameContent
         base.href = options.href
         base.href = "#" if r_javascript.test base.href
 
-      new Button options, (buttonElement) ->
-        document.body.appendChild buttonElement
-        return
-      new Count options.data.count, (countElement) ->
-        document.body.appendChild countElement
-        return
-
-      base.removeAttribute "href" if base
-
-  class SafeAnchor extends Element
-    constructor: (href, callback) ->
-      super "a", (a) ->
-        if base
-          a.href = href
-          a.href = "#" if r_javascript.test a.href
-          a.target = "_self" if "#" is a.getAttribute "href"
-          a.href = a.cloneNode().href
-        callback a
-        return
-
-  class Button
-    constructor: (options, callback) ->
-      new SafeAnchor options.href, (a) ->
+      new Anchor options.href, (a) ->
         a.className = "button"
         a.setAttribute "aria-label", options.aria.label if options.aria.label
         new Element "i", (icon) ->
@@ -231,60 +209,73 @@ class ButtonFrameContent
           text.appendChild document.createTextNode options.text if options.text
           a.appendChild text
           return
-        callback a
+        document.body.appendChild a
         return
 
-  class Count
-    constructor: (options, callback) ->
-      if options and options.api
-        new SafeAnchor options.href, (a) ->
-          a.className = "count"
-          new Element "b", (b) ->
-            a.appendChild b
-            return
-          new Element "i", (i) ->
-            a.appendChild i
-            return
-          new Element "span", (span) ->
-            a.appendChild span
+      do (options = options.data.count) ->
+        if options and options.api
+          new Anchor options.href, (a) ->
+            a.className = "count"
+            new Element "b", (b) ->
+              a.appendChild b
+              return
+            new Element "i", (i) ->
+              a.appendChild i
+              return
+            new Element "span", (span) ->
+              a.appendChild span
 
-            endpoint = do ->
-              url = options.api.split("#")[0]
-              query = QueryString.parse url.split("?")[1..].join("?")
-              query.callback = "callback"
-              "#{url.split("?")[0]}?#{QueryString.stringify query}"
+              endpoint = do ->
+                url = options.api.split("#")[0]
+                query = QueryString.parse url.split("?")[1..].join("?")
+                query.callback = "callback"
+                "#{url.split("?")[0]}?#{QueryString.stringify query}"
 
-            new Element "script", (script) ->
-              script.async = true
-              script.src = "#{Config.api}#{endpoint}"
+              new Element "script", (script) ->
+                script.async = true
+                script.src = "#{Config.api}#{endpoint}"
 
-              window.callback = (json) ->
-                window.callback = null
+                window.callback = (json) ->
+                  window.callback = null
 
-                if json.meta.status is 200
-                  data = FlatObject.flatten(json.data)[options.api.split("#")[1..].join("#")]
-                  if "[object Number]" is Object::toString.call data
-                    data = "#{data}".replace /\B(?=(\d{3})+(?!\d))/g, ","
-                  span.appendChild document.createTextNode " #{data} "
-                  a.setAttribute "aria-label", options.aria.label.replace "#", data if options.aria.label
-                  callback a
-                return
-              window.callback.script = script
+                  if json.meta.status is 200
+                    data = FlatObject.flatten(json.data)[options.api.split("#")[1..].join("#")]
+                    if "[object Number]" is Object::toString.call data
+                      data = "#{data}".replace /\B(?=(\d{3})+(?!\d))/g, ","
+                    span.appendChild document.createTextNode " #{data} "
+                    a.setAttribute "aria-label", options.aria.label.replace "#", data if options.aria.label
+                    document.body.appendChild a
+                  return
+                window.callback.script = script
 
-              @on "error", ->
-                window.callback = null
-                return
-
-              if script.readyState
-                @on "readystatechange", ->
-                  window.callback = null if script.readyState is "loaded" and script.children and script.readyState is "loading"
+                @on "error", ->
+                  window.callback = null
                   return
 
-              head = document.getElementsByTagName("head")[0]
-              head.insertBefore script, head.firstChild
+                if script.readyState
+                  @on "readystatechange", ->
+                    window.callback = null if script.readyState is "loaded" and script.children and script.readyState is "loading"
+                    return
+
+                head = document.getElementsByTagName("head")[0]
+                head.insertBefore script, head.firstChild
+                return
               return
             return
-          return
+        return
+
+      base.removeAttribute "href" if base
+
+  class Anchor extends Element
+    constructor: (href, callback) ->
+      super "a", (a) ->
+        if base
+          a.href = href
+          a.href = "#" if r_javascript.test a.href
+          a.target = "_self" if "#" is a.getAttribute "href"
+          a.href = a.cloneNode().href
+        callback a
+        return
 
   base = document.getElementsByTagName("base")[0]
   r_javascript = /^javascript:/i

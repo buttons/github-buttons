@@ -417,7 +417,7 @@
   })(Frame);
 
   ButtonFrameContent = (function() {
-    var Button, Count, SafeAnchor, base, r_javascript;
+    var Anchor, base, r_javascript;
 
     function ButtonFrameContent(options) {
       if (options && options.data) {
@@ -428,44 +428,7 @@
             base.href = "#";
           }
         }
-        new Button(options, function(buttonElement) {
-          document.body.appendChild(buttonElement);
-        });
-        new Count(options.data.count, function(countElement) {
-          document.body.appendChild(countElement);
-        });
-        if (base) {
-          base.removeAttribute("href");
-        }
-      }
-    }
-
-    SafeAnchor = (function(superClass) {
-      extend(SafeAnchor, superClass);
-
-      function SafeAnchor(href, callback) {
-        SafeAnchor.__super__.constructor.call(this, "a", function(a) {
-          if (base) {
-            a.href = href;
-            if (r_javascript.test(a.href)) {
-              a.href = "#";
-            }
-            if ("#" === a.getAttribute("href")) {
-              a.target = "_self";
-            }
-            a.href = a.cloneNode().href;
-          }
-          callback(a);
-        });
-      }
-
-      return SafeAnchor;
-
-    })(Element);
-
-    Button = (function() {
-      function Button(options, callback) {
-        new SafeAnchor(options.href, function(a) {
+        new Anchor(options.href, function(a) {
           a.className = "button";
           if (options.aria.label) {
             a.setAttribute("aria-label", options.aria.label);
@@ -486,76 +449,93 @@
             }
             a.appendChild(text);
           });
+          document.body.appendChild(a);
+        });
+        (function(options) {
+          if (options && options.api) {
+            new Anchor(options.href, function(a) {
+              a.className = "count";
+              new Element("b", function(b) {
+                a.appendChild(b);
+              });
+              new Element("i", function(i) {
+                a.appendChild(i);
+              });
+              new Element("span", function(span) {
+                var endpoint;
+                a.appendChild(span);
+                endpoint = (function() {
+                  var query, url;
+                  url = options.api.split("#")[0];
+                  query = QueryString.parse(url.split("?").slice(1).join("?"));
+                  query.callback = "callback";
+                  return (url.split("?")[0]) + "?" + (QueryString.stringify(query));
+                })();
+                new Element("script", function(script) {
+                  var head;
+                  script.async = true;
+                  script.src = "" + Config.api + endpoint;
+                  window.callback = function(json) {
+                    var data;
+                    window.callback = null;
+                    if (json.meta.status === 200) {
+                      data = FlatObject.flatten(json.data)[options.api.split("#").slice(1).join("#")];
+                      if ("[object Number]" === Object.prototype.toString.call(data)) {
+                        data = ("" + data).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                      }
+                      span.appendChild(document.createTextNode(" " + data + " "));
+                      if (options.aria.label) {
+                        a.setAttribute("aria-label", options.aria.label.replace("#", data));
+                      }
+                      document.body.appendChild(a);
+                    }
+                  };
+                  window.callback.script = script;
+                  this.on("error", function() {
+                    window.callback = null;
+                  });
+                  if (script.readyState) {
+                    this.on("readystatechange", function() {
+                      if (script.readyState === "loaded" && script.children && script.readyState === "loading") {
+                        window.callback = null;
+                      }
+                    });
+                  }
+                  head = document.getElementsByTagName("head")[0];
+                  head.insertBefore(script, head.firstChild);
+                });
+              });
+            });
+          }
+        })(options.data.count);
+        if (base) {
+          base.removeAttribute("href");
+        }
+      }
+    }
+
+    Anchor = (function(superClass) {
+      extend(Anchor, superClass);
+
+      function Anchor(href, callback) {
+        Anchor.__super__.constructor.call(this, "a", function(a) {
+          if (base) {
+            a.href = href;
+            if (r_javascript.test(a.href)) {
+              a.href = "#";
+            }
+            if ("#" === a.getAttribute("href")) {
+              a.target = "_self";
+            }
+            a.href = a.cloneNode().href;
+          }
           callback(a);
         });
       }
 
-      return Button;
+      return Anchor;
 
-    })();
-
-    Count = (function() {
-      function Count(options, callback) {
-        if (options && options.api) {
-          new SafeAnchor(options.href, function(a) {
-            a.className = "count";
-            new Element("b", function(b) {
-              a.appendChild(b);
-            });
-            new Element("i", function(i) {
-              a.appendChild(i);
-            });
-            new Element("span", function(span) {
-              var endpoint;
-              a.appendChild(span);
-              endpoint = (function() {
-                var query, url;
-                url = options.api.split("#")[0];
-                query = QueryString.parse(url.split("?").slice(1).join("?"));
-                query.callback = "callback";
-                return (url.split("?")[0]) + "?" + (QueryString.stringify(query));
-              })();
-              new Element("script", function(script) {
-                var head;
-                script.async = true;
-                script.src = "" + Config.api + endpoint;
-                window.callback = function(json) {
-                  var data;
-                  window.callback = null;
-                  if (json.meta.status === 200) {
-                    data = FlatObject.flatten(json.data)[options.api.split("#").slice(1).join("#")];
-                    if ("[object Number]" === Object.prototype.toString.call(data)) {
-                      data = ("" + data).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                    }
-                    span.appendChild(document.createTextNode(" " + data + " "));
-                    if (options.aria.label) {
-                      a.setAttribute("aria-label", options.aria.label.replace("#", data));
-                    }
-                    callback(a);
-                  }
-                };
-                window.callback.script = script;
-                this.on("error", function() {
-                  window.callback = null;
-                });
-                if (script.readyState) {
-                  this.on("readystatechange", function() {
-                    if (script.readyState === "loaded" && script.children && script.readyState === "loading") {
-                      window.callback = null;
-                    }
-                  });
-                }
-                head = document.getElementsByTagName("head")[0];
-                head.insertBefore(script, head.firstChild);
-              });
-            });
-          });
-        }
-      }
-
-      return Count;
-
-    })();
+    })(Element);
 
     base = document.getElementsByTagName("base")[0];
 
