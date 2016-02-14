@@ -21,8 +21,8 @@
   },
   "homepage": "https://buttons.github.io",
   "devDependencies": {
-    "css": "latest",
     "chai": "latest",
+    "css": "latest",
     "coffee-script": "latest",
     "jsdom": "latest",
     "less": "latest",

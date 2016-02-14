@@ -103,17 +103,18 @@ task 'build:less', 'Build stylesheets', ->
     system "lessc", "--clean-css=--s1 --advanced --compatibility=ie7", "--source-map", file, "#{file.replace /\.less$/i, '.css'}"
 
 task 'build:octicons', 'Build octicons', ->
-  system "coffee", "src/octicons/octicons.coffee", "assets/css/octicons.less"
-  system "coffee", "src/octicons/octicons-lt-ie8.coffee", "assets/css/octicons-lt-ie8.css"
+  system "coffee", "src/octicons/sizes.coffee", "assets/css/octicons/sizes.css"
+  system "coffee", "src/octicons/lt-ie8.coffee", "assets/css/octicons/lt-ie8.css"
 
 task 'clean', 'Cleanup everything', ->
   js = /\.js(\.map)?$/
-  css = /\.css(\.map)?$|^octicons.less$/
+  css = /\.css(\.map)?$/
   targets = find "./", js
     .concat find "assets/js/", js
     .concat find "lib/", js
     .concat find "test/browser/lib/", js
     .concat find "assets/css/", css
+    .concat find "assets/css/octicons/", css
   system "rm", targets... if targets.length > 0
 
 task 'test', 'Test everything', ->
@@ -124,7 +125,7 @@ task 'test', 'Test everything', ->
       invoke 'test:mocha-phantomjs'
 
 task 'test:recess', 'Test stylesheets', ->
-  targets = find "assets/css/", /\.less$/i
+  targets = find "assets/css/", /\.css$/i
   system "recess", targets... if targets.length > 0
 
 task 'test:mocha', 'Test scripts', ->
