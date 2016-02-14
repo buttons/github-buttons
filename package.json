@@ -21,8 +21,10 @@
   },
   "homepage": "https://buttons.github.io",
   "devDependencies": {
+    "css": "latest",
     "chai": "latest",
     "coffee-script": "latest",
+    "jsdom": "latest",
     "less": "latest",
     "less-plugin-clean-css": "latest",
     "mocha": "latest",
