@@ -159,6 +159,7 @@
 .octicon-triangle-up { zoom: expression( this.innerHTML = '&#xf0aa;' ); } /*  */
 .octicon-unfold { zoom: expression( this.innerHTML = '&#xf039;' ); } /*  */
 .octicon-unmute { zoom: expression( this.innerHTML = '&#xf0ba;' ); } /*  */
+.octicon-unverified { zoom: expression( this.innerHTML = '&#xf0e8;' ); } /*  */
 .octicon-verified { zoom: expression( this.innerHTML = '&#xf0e6;' ); } /*  */
 .octicon-versions { zoom: expression( this.innerHTML = '&#xf064;' ); } /*  */
 .octicon-watch { zoom: expression( this.innerHTML = '&#xf0e0;' ); } /*  */
