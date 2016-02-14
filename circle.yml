@@ -1,3 +1,6 @@
+machine:
+  node:
+    version: 4.0.0
 checkout:
   post:
     - git submodule sync
