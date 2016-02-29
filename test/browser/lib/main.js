@@ -417,18 +417,12 @@
   })(Frame);
 
   ButtonFrameContent = (function() {
-    var Anchor, base, r_javascript;
+    var Anchor;
 
     function ButtonFrameContent(options) {
       if (options && options.data) {
         document.body.className = options.data.style || "";
-        if (base && options.href) {
-          base.href = options.href;
-          if (r_javascript.test(base.href)) {
-            base.href = "#";
-          }
-        }
-        new Anchor(options.href, function(a) {
+        new Anchor(options.href, null, function(a) {
           a.className = "button";
           if (options.aria.label) {
             a.setAttribute("aria-label", options.aria.label);
@@ -451,9 +445,9 @@
           });
           document.body.appendChild(a);
         });
-        (function(options) {
+        (function(options, baseUrl) {
           if (options && options.api) {
-            new Anchor(options.href, function(a) {
+            new Anchor(options.href, baseUrl, function(a) {
               a.className = "count";
               new Element("b", function(b) {
                 a.appendChild(b);
@@ -507,39 +501,48 @@
               });
             });
           }
-        })(options.data.count);
-        if (base) {
-          base.removeAttribute("href");
-        }
+        })(options.data.count, options.href);
       }
     }
 
     Anchor = (function(superClass) {
+      var base, r_javascript;
+
       extend(Anchor, superClass);
 
-      function Anchor(href, callback) {
+      function Anchor(urlString, baseURLstring, callback) {
         Anchor.__super__.constructor.call(this, "a", function(a) {
+          var error;
           if (base) {
-            a.href = href;
+            if ((a.href = baseURLstring) && !r_javascript.test(a.href)) {
+              try {
+                a.href = new URL(urlString, baseURLstring).href;
+              } catch (error) {
+                base.href = baseURLstring;
+                a.href = urlString;
+                a.href = a.cloneNode().href;
+                base.href = document.location.href;
+                base.removeAttribute("href");
+              }
+            } else {
+              a.href = urlString;
+            }
             if (r_javascript.test(a.href)) {
               a.href = "#";
-            }
-            if ("#" === a.getAttribute("href")) {
               a.target = "_self";
             }
-            a.href = a.cloneNode().href;
           }
           callback(a);
         });
       }
 
+      base = document.getElementsByTagName("base")[0];
+
+      r_javascript = /^javascript:/i;
+
       return Anchor;
 
     })(Element);
-
-    base = document.getElementsByTagName("base")[0];
-
-    r_javascript = /^javascript:/i;
 
     return ButtonFrameContent;
 

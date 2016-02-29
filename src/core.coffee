@@ -188,11 +188,7 @@ class ButtonFrameContent
     if options and options.data
       document.body.className = options.data.style or ""
 
-      if base and options.href
-        base.href = options.href
-        base.href = "#" if r_javascript.test base.href
-
-      new Anchor options.href, (a) ->
+      new Anchor options.href, null, (a) ->
         a.className = "button"
         a.setAttribute "aria-label", options.aria.label if options.aria.label
         new Element "i", (icon) ->
@@ -212,9 +208,9 @@ class ButtonFrameContent
         document.body.appendChild a
         return
 
-      do (options = options.data.count) ->
+      do (options = options.data.count, baseUrl = options.href) ->
         if options and options.api
-          new Anchor options.href, (a) ->
+          new Anchor options.href, baseUrl, (a) ->
             a.className = "count"
             new Element "b", (b) ->
               a.appendChild b
@@ -264,18 +260,27 @@ class ButtonFrameContent
             return
         return
 
-      base.removeAttribute "href" if base
 
   class Anchor extends Element
-    constructor: (href, callback) ->
+    constructor: (urlString, baseURLstring, callback) ->
       super "a", (a) ->
         if base
-          a.href = href
-          a.href = "#" if r_javascript.test a.href
-          a.target = "_self" if "#" is a.getAttribute "href"
-          a.href = a.cloneNode().href
+          if (a.href = baseURLstring) and !r_javascript.test a.href
+            try
+              a.href = new URL(urlString, baseURLstring).href
+            catch
+              base.href = baseURLstring
+              a.href = urlString
+              a.href = a.cloneNode().href
+              base.href = document.location.href
+              base.removeAttribute "href"
+          else
+            a.href = urlString
+          if r_javascript.test a.href
+            a.href = "#"
+            a.target = "_self"
         callback a
         return
 
-  base = document.getElementsByTagName("base")[0]
-  r_javascript = /^javascript:/i
+    base = document.getElementsByTagName("base")[0]
+    r_javascript = /^javascript:/i
