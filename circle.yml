@@ -5,3 +5,6 @@ checkout:
   post:
     - git submodule sync
     - git submodule update --init
+test:
+  post:
+    - git diff --exit-code

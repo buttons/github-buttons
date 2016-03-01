@@ -4,7 +4,7 @@
   "description": "GitHub Buttons",
   "main": "README.md",
   "scripts": {
-    "test": "cake test && ( git diff --quiet || echo Warning: uncommitted modifications. >&2 )"
+    "test": "cake test"
   },
   "repository": {
     "type": "git",
