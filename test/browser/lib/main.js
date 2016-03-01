@@ -1119,7 +1119,11 @@
           };
           new ButtonFrameContent(options);
           button = document.body.appendChild.args[i][0];
-          results1.push(expect(button.getAttribute("href")).to.not.match(/javascript:/i));
+          if (button.protocol) {
+            results1.push(expect(button.protocol).to.not.equal("javascript:"));
+          } else {
+            results1.push(expect(button.href).to.not.match(/^javascript:/i));
+          }
         }
         return results1;
       });

@@ -571,8 +571,12 @@ describe 'ButtonFrameContent', ->
           aria: {}
         new ButtonFrameContent options
         button = document.body.appendChild.args[i][0]
-        expect button.getAttribute "href"
-          .to.not.match /javascript:/i
+        if button.protocol
+          expect button.protocol
+            .to.not.equal "javascript:"
+        else
+          expect button.href
+            .to.not.match /^javascript:/i
 
     it 'should append the button with the default icon', ->
       options =
