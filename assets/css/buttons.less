@@ -3,6 +3,9 @@
   background-image: -webkit-linear-gradient(top, @color-start, @color-stop);
   background-image: -moz-linear-gradient(top, @color-start, @color-stop);
   background-image: linear-gradient(to bottom, @color-start, @color-stop);
+}
+
+.-ms-linear-gradient(@color-start, @color-stop) {
   -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='@{color-start}', endColorstr='@{color-stop}')";
   *filter: ~"progid:DXImageTransform.Microsoft.gradient(startColorstr='@{color-start}', endColorstr='@{color-stop}')";
 }
@@ -54,6 +57,7 @@ a {
   font-size: 11px;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
   .linear-gradient(#fcfcfc, #eeeeee);
+  .-ms-linear-gradient(#fcfcfc, #eeeeee);
 
   i {
     font-size: 14px;
@@ -66,6 +70,7 @@ a {
   &:hover {
     .linear-gradient(#eeeeee, #dddddd);
     border-color: #cccccc;
+    .-ms-linear-gradient(#eeeeee, #dddddd);
   }
 
   &:active {
