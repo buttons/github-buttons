@@ -506,7 +506,7 @@
 
       function Anchor(urlString, baseURLstring, callback) {
         Anchor.__super__.constructor.call(this, "a", function(a) {
-          var error;
+          var container, error;
           if (base) {
             if ((a.href = baseURLstring) && !r_javascript.test(a.href)) {
               try {
@@ -514,7 +514,10 @@
               } catch (error) {
                 base.href = baseURLstring;
                 a.href = urlString;
-                a.href = a.cloneNode().href;
+                container = document.createElement("div");
+                container.innerHTML = a.outerHTML;
+                a.href = container.firstChild.href;
+                container = null;
                 base.href = document.location.href;
                 base.removeAttribute("href");
               }

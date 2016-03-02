@@ -267,7 +267,10 @@ class ButtonFrameContent
             catch
               base.href = baseURLstring
               a.href = urlString
-              a.href = a.cloneNode().href
+              container = document.createElement "div"
+              container.innerHTML = a.outerHTML
+              a.href = container.firstChild.href
+              container = null
               base.href = document.location.href
               base.removeAttribute "href"
           else
