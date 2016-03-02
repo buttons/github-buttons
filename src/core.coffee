@@ -120,7 +120,7 @@ class Frame extends Element
     if devicePixelRatio > 1
       Math.ceil(Math.round(px * devicePixelRatio) / devicePixelRatio * 2) / 2 or 0
     else
-      Math.ceil px
+      Math.ceil(px) or 0
 
 
 class ButtonAnchor
