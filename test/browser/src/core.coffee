@@ -655,7 +655,7 @@ describe 'ButtonFrameContent', ->
       new ButtonFrameContent options
       count = document.body.appendChild.args[1][0]
       expect count.lastChild.innerHTML
-        .to.equal " 26 "
+        .to.equal "26"
       head.insertBefore.restore()
 
     it 'should append the count with large number split by comma', ->
@@ -668,7 +668,7 @@ describe 'ButtonFrameContent', ->
       new ButtonFrameContent options
       count = document.body.appendChild.args[1][0]
       expect count.lastChild.innerHTML
-        .to.equal " 899,645 "
+        .to.equal "899,645"
       head.insertBefore.restore()
 
     it 'should append the count with given aria label', ->
@@ -694,7 +694,7 @@ describe 'ButtonFrameContent', ->
       new ButtonFrameContent options
       count = document.body.appendChild.args[1][0]
       expect count.lastChild.innerHTML
-        .to.equal " undefined "
+        .to.equal "undefined"
       head.insertBefore.restore()
 
     it 'should not append the count when it fails to pull api data', ->

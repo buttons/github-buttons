@@ -95,16 +95,14 @@ class Frame extends Element
       contentDocument = @$.contentWindow.document
       html = contentDocument.documentElement
       body = contentDocument.body
-      html.style.overflow = body.style.overflow = if window.opera then "scroll" else "visible"
-      width = body.scrollWidth
-      height = body.scrollHeight
+      width = Math.max html.scrollWidth, body.scrollWidth
+      height = Math.max html.scrollHeight, body.scrollHeight
       if body.getBoundingClientRect
         body.style.display = "inline-block"
         boundingClientRect = body.getBoundingClientRect()
         width = Math.max width, roundPixel boundingClientRect.width or boundingClientRect.right - boundingClientRect.left
         height = Math.max height, roundPixel boundingClientRect.height or boundingClientRect.bottom - boundingClientRect.top
         body.style.display = ""
-      html.style.overflow = body.style.overflow = ""
 
       width: "#{width}px"
       height: "#{height}px"
@@ -192,15 +190,13 @@ class ButtonFrameContent
         a.className = "button"
         a.setAttribute "aria-label", options.aria.label if options.aria.label
         new Element "i", (icon) ->
-          icon = document.createElement "i"
           icon.className = (options.data.icon or Config.icon) + if Config.iconClass then " #{Config.iconClass}" else ""
           icon.setAttribute "aria-hidden", "true"
           a.appendChild icon
           return
-        new Element "span", (text) ->
-          text.appendChild document.createTextNode " "
-          a.appendChild text
-          return
+
+        a.appendChild document.createTextNode " "
+
         new Element "span", (text) ->
           text.appendChild document.createTextNode options.text if options.text
           a.appendChild text
@@ -238,7 +234,7 @@ class ButtonFrameContent
                     data = FlatObject.flatten(json.data)[options.api.split("#")[1..].join("#")]
                     if "[object Number]" is Object::toString.call data
                       data = "#{data}".replace /\B(?=(\d{3})+(?!\d))/g, ","
-                    span.appendChild document.createTextNode " #{data} "
+                    span.appendChild document.createTextNode data
                     a.setAttribute "aria-label", options.aria.label.replace "#", data if options.aria.label
                     document.body.appendChild a
                   return

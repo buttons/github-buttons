@@ -302,9 +302,8 @@
         contentDocument = this.$.contentWindow.document;
         html = contentDocument.documentElement;
         body = contentDocument.body;
-        html.style.overflow = body.style.overflow = window.opera ? "scroll" : "visible";
-        width = body.scrollWidth;
-        height = body.scrollHeight;
+        width = Math.max(html.scrollWidth, body.scrollWidth);
+        height = Math.max(html.scrollHeight, body.scrollHeight);
         if (body.getBoundingClientRect) {
           body.style.display = "inline-block";
           boundingClientRect = body.getBoundingClientRect();
@@ -312,7 +311,6 @@
           height = Math.max(height, roundPixel(boundingClientRect.height || boundingClientRect.bottom - boundingClientRect.top));
           body.style.display = "";
         }
-        html.style.overflow = body.style.overflow = "";
         return {
           width: width + "px",
           height: height + "px"
@@ -428,15 +426,11 @@
             a.setAttribute("aria-label", options.aria.label);
           }
           new Element("i", function(icon) {
-            icon = document.createElement("i");
             icon.className = (options.data.icon || Config.icon) + (Config.iconClass ? " " + Config.iconClass : "");
             icon.setAttribute("aria-hidden", "true");
             a.appendChild(icon);
           });
-          new Element("span", function(text) {
-            text.appendChild(document.createTextNode(" "));
-            a.appendChild(text);
-          });
+          a.appendChild(document.createTextNode(" "));
           new Element("span", function(text) {
             if (options.text) {
               text.appendChild(document.createTextNode(options.text));
@@ -477,7 +471,7 @@
                       if ("[object Number]" === Object.prototype.toString.call(data)) {
                         data = ("" + data).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                       }
-                      span.appendChild(document.createTextNode(" " + data + " "));
+                      span.appendChild(document.createTextNode(data));
                       if (options.aria.label) {
                         a.setAttribute("aria-label", options.aria.label.replace("#", data));
                       }
@@ -1228,7 +1222,7 @@
         };
         new ButtonFrameContent(options);
         count = document.body.appendChild.args[1][0];
-        expect(count.lastChild.innerHTML).to.equal(" 26 ");
+        expect(count.lastChild.innerHTML).to.equal("26");
         return head.insertBefore.restore();
       });
       it('should append the count with large number split by comma', function() {
@@ -1247,7 +1241,7 @@
         };
         new ButtonFrameContent(options);
         count = document.body.appendChild.args[1][0];
-        expect(count.lastChild.innerHTML).to.equal(" 899,645 ");
+        expect(count.lastChild.innerHTML).to.equal("899,645");
         return head.insertBefore.restore();
       });
       it('should append the count with given aria label', function() {
@@ -1287,7 +1281,7 @@
         };
         new ButtonFrameContent(options);
         count = document.body.appendChild.args[1][0];
-        expect(count.lastChild.innerHTML).to.equal(" undefined ");
+        expect(count.lastChild.innerHTML).to.equal("undefined");
         return head.insertBefore.restore();
       });
       return it('should not append the count when it fails to pull api data', function() {
