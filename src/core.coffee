@@ -130,11 +130,11 @@ class ButtonAnchor
         api: element.getAttribute("data-count-api") or ""
         href: element.getAttribute("data-count-href") or element.href
         aria:
-          label: if label = element.getAttribute "data-count-aria-label" then label else ""
-      style: if style = element.getAttribute "data-style" then style else ""
-      icon: if icon = element.getAttribute "data-icon" then icon else ""
+          label: element.getAttribute("data-count-aria-label") or ""
+      style: element.getAttribute("data-style") or ""
+      icon: element.getAttribute("data-icon") or ""
     aria:
-      label: if label = element.getAttribute "aria-label" then label else ""
+      label: element.getAttribute("aria-label") or ""
 
 
 class ButtonFrame extends Frame
