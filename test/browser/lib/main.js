@@ -308,8 +308,8 @@
         if (body.getBoundingClientRect) {
           body.style.display = "inline-block";
           boundingClientRect = body.getBoundingClientRect();
-          width = Math.max(width, roundPixel(boundingClientRect.width));
-          height = Math.max(height, roundPixel(boundingClientRect.height));
+          width = Math.max(width, roundPixel(boundingClientRect.width || boundingClientRect.right - boundingClientRect.left));
+          height = Math.max(height, roundPixel(boundingClientRect.height || boundingClientRect.bottom - boundingClientRect.top));
           body.style.display = "";
         }
         html.style.overflow = body.style.overflow = "";
