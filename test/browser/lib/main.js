@@ -347,13 +347,13 @@
     function ButtonAnchor() {}
 
     ButtonAnchor.parse = function(element) {
-      var api, icon, label, style;
+      var icon, label, style;
       return {
         href: element.href,
         text: element.getAttribute("data-text") || element.textContent || element.innerText || "",
         data: {
           count: {
-            api: (api = element.getAttribute("data-count-api")) && (/#/.test(api)) ? api.replace(/^(?!\/)/, "/") : "",
+            api: element.getAttribute("data-count-api") || "",
             href: element.getAttribute("data-count-href") || element.href,
             aria: {
               label: (label = element.getAttribute("data-count-aria-label")) ? label : ""
@@ -454,7 +454,7 @@
                 a.appendChild(span);
                 endpoint = (function() {
                   var query, url;
-                  url = options.api.split("#")[0];
+                  url = options.api.replace(/^(?!\/)/, "/").split("#")[0];
                   query = QueryString.parse(url.split("?").slice(1).join("?"));
                   query.callback = "callback";
                   return (url.split("?")[0]) + "?" + (QueryString.stringify(query));
@@ -832,18 +832,6 @@
         api = "/repos/:user/:repo#item";
         a.setAttribute("data-count-api", api);
         return expect(ButtonAnchor.parse(a)).to.have.deep.property("data.count.api").and.equal(api);
-      });
-      it('should prepend / when the attribute data-count-api does not start with /', function() {
-        var api;
-        api = "repos/:user/:repo#item";
-        a.setAttribute("data-count-api", api);
-        return expect(ButtonAnchor.parse(a)).to.have.deep.property("data.count.api").and.equal("/" + api);
-      });
-      it('should ignore the attribute data-count-api when missing #', function() {
-        var api;
-        api = "/repos/:user/:repo";
-        a.setAttribute("data-count-api", api);
-        return expect(ButtonAnchor.parse(a)).to.have.deep.property("data.count.api").and.to.equal("");
       });
       it('should parse the attribute data-count-href', function() {
         var href;
@@ -1228,6 +1216,25 @@
         expect(count.lastChild.innerHTML).to.equal("26");
         return head.insertBefore.restore();
       });
+      it('should append the count with #entry from api response by prepending missing / to api', function() {
+        var count, options;
+        sinon.stub(head, "insertBefore", function() {
+          return window.callback(data);
+        });
+        options = {
+          data: {
+            count: {
+              api: "dummy/api#followers",
+              aria: {}
+            }
+          },
+          aria: {}
+        };
+        new ButtonFrameContent(options);
+        count = document.body.appendChild.args[1][0];
+        expect(count.lastChild.innerHTML).to.equal("26");
+        return head.insertBefore.restore();
+      });
       it('should append the count with large number split by comma', function() {
         var count, options;
         sinon.stub(head, "insertBefore", function() {
@@ -1266,6 +1273,25 @@
         new ButtonFrameContent(options);
         count = document.body.appendChild.args[1][0];
         expect(count.getAttribute("aria-label")).to.equal("26 followers on GitHub");
+        return head.insertBefore.restore();
+      });
+      it('should append the count with text undefined when missing # in api', function() {
+        var count, options;
+        sinon.stub(head, "insertBefore", function() {
+          return window.callback(data);
+        });
+        options = {
+          data: {
+            count: {
+              api: "/dummy/api",
+              aria: {}
+            }
+          },
+          aria: {}
+        };
+        new ButtonFrameContent(options);
+        count = document.body.appendChild.args[1][0];
+        expect(count.lastChild.innerHTML).to.equal("undefined");
         return head.insertBefore.restore();
       });
       it('should append the count with text undefined when api #entry does not exist', function() {

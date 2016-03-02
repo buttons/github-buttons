@@ -286,20 +286,6 @@ describe 'ButtonAnchor', ->
         .to.have.deep.property "data.count.api"
         .and.equal api
 
-    it 'should prepend / when the attribute data-count-api does not start with /', ->
-      api = "repos/:user/:repo#item"
-      a.setAttribute "data-count-api", api
-      expect ButtonAnchor.parse a
-        .to.have.deep.property "data.count.api"
-        .and.equal "/#{api}"
-
-    it 'should ignore the attribute data-count-api when missing #', ->
-      api = "/repos/:user/:repo"
-      a.setAttribute "data-count-api", api
-      expect ButtonAnchor.parse a
-        .to.have.deep.property "data.count.api"
-        .and.to.equal ""
-
     it 'should parse the attribute data-count-href', ->
       href = "https://github.com/"
       a.setAttribute "data-count-href", href
@@ -658,6 +644,19 @@ describe 'ButtonFrameContent', ->
         .to.equal "26"
       head.insertBefore.restore()
 
+    it 'should append the count with #entry from api response by prepending missing / to api', ->
+      sinon.stub head, "insertBefore", -> window.callback data
+      options =
+        data: count:
+          api: "dummy/api#followers"
+          aria: {}
+        aria: {}
+      new ButtonFrameContent options
+      count = document.body.appendChild.args[1][0]
+      expect count.lastChild.innerHTML
+        .to.equal "26"
+      head.insertBefore.restore()
+
     it 'should append the count with large number split by comma', ->
       sinon.stub head, "insertBefore", -> window.callback data
       options =
@@ -682,6 +681,19 @@ describe 'ButtonFrameContent', ->
       count = document.body.appendChild.args[1][0]
       expect count.getAttribute "aria-label"
         .to.equal "26 followers on GitHub"
+      head.insertBefore.restore()
+
+    it 'should append the count with text undefined when missing # in api', ->
+      sinon.stub head, "insertBefore", -> window.callback data
+      options =
+        data: count:
+          api: "/dummy/api"
+          aria: {}
+        aria: {}
+      new ButtonFrameContent options
+      count = document.body.appendChild.args[1][0]
+      expect count.lastChild.innerHTML
+        .to.equal "undefined"
       head.insertBefore.restore()
 
     it 'should append the count with text undefined when api #entry does not exist', ->

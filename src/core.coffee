@@ -127,7 +127,7 @@ class ButtonAnchor
     text: element.getAttribute("data-text") or element.textContent or element.innerText or ""
     data:
       count:
-        api: if (api = element.getAttribute "data-count-api") and (/#/.test api) then api.replace /^(?!\/)/, "/" else ""
+        api: element.getAttribute("data-count-api") or ""
         href: element.getAttribute("data-count-href") or element.href
         aria:
           label: if label = element.getAttribute "data-count-aria-label" then label else ""
@@ -218,7 +218,7 @@ class ButtonFrameContent
               a.appendChild span
 
               endpoint = do ->
-                url = options.api.split("#")[0]
+                url = options.api.replace(/^(?!\/)/, "/").split("#")[0]
                 query = QueryString.parse url.split("?")[1..].join("?")
                 query.callback = "callback"
                 "#{url.split("?")[0]}?#{QueryString.stringify query}"
