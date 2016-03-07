@@ -381,13 +381,14 @@
         return function() {
           var size;
           size = _this.size();
+          _this.$.parentNode.removeChild(_this.$);
           _this.once("load", function() {
             this.resize(size);
-            if (onload) {
-              onload.call(this, this.$);
-            }
           });
           _this.load(Config.url + "buttons.html" + hash);
+          if (onload) {
+            onload.call(_this, _this.$);
+          }
         };
       })(this);
       this.once("load", function() {
@@ -870,7 +871,6 @@
         }, function(iframe) {
           expect(_this).to.equal(_);
           expect(this).to.equal(_);
-          iframe.parentNode.removeChild(iframe);
           return done();
         });
       });
@@ -883,7 +883,6 @@
           return expect(iframe.tagName).to.equal("IFRAME");
         }, function(iframe) {
           expect(iframe).to.equal(frame);
-          iframe.parentNode.removeChild(iframe);
           return done();
         });
       });
@@ -896,9 +895,12 @@
             return spy();
           });
         }, function(iframe) {
-          expect(spy).to.have.been.calledTwice;
-          iframe.parentNode.removeChild(iframe);
-          return done();
+          this.once("load", function() {
+            expect(spy).to.have.been.calledTwice;
+            iframe.parentNode.removeChild(iframe);
+            return done();
+          });
+          return document.body.appendChild(iframe);
         });
       });
       it('should load the iframe the first time by writing html', function(done) {
@@ -908,7 +910,6 @@
         }, function(iframe) {
           expect(this.html).to.have.been.calledOnce;
           this.html.restore();
-          iframe.parentNode.removeChild(iframe);
           return done();
         });
       });
@@ -922,7 +923,6 @@
           });
         }, function(iframe) {
           expect(_hash).to.equal(hash);
-          iframe.parentNode.removeChild(iframe);
           return done();
         });
       });
@@ -936,7 +936,6 @@
           expect(this.load).to.have.been.calledAfter(this.html);
           this.html.restore();
           this.load.restore();
-          iframe.parentNode.removeChild(iframe);
           return done();
         });
       });
@@ -944,9 +943,12 @@
         return new ButtonFrame(hash, function(iframe) {
           return document.body.appendChild(iframe);
         }, function(iframe) {
-          expect(iframe.contentWindow.document.location.hash).to.equal(hash);
-          iframe.parentNode.removeChild(iframe);
-          return done();
+          this.once("load", function() {
+            expect(iframe.contentWindow.document.location.hash).to.equal(hash);
+            iframe.parentNode.removeChild(iframe);
+            return done();
+          });
+          return document.body.appendChild(iframe);
         });
       });
       return it('should resize the iframe after the second load', function(done) {
@@ -959,17 +961,20 @@
         }, function(iframe) {
           expect(this.size).to.have.been.calledOnce;
           expect(this.size).to.have.been.calledAfter(this.html);
-          expect(this.resize).to.have.been.calledOnce;
-          expect(this.resize).to.have.been.calledAfter(this.load);
-          expect(this.resize.args[0][0]).to.deep.equal(this.size.returnValues[0]);
-          expect(iframe.style.width).to.equal(this.size.returnValues[0].width);
-          expect(iframe.style.height).to.equal(this.size.returnValues[0].height);
-          this.html.restore();
-          this.load.restore();
-          this.size.restore();
-          this.resize.restore();
-          iframe.parentNode.removeChild(iframe);
-          return done();
+          this.once("load", function() {
+            expect(this.resize).to.have.been.calledOnce;
+            expect(this.resize).to.have.been.calledAfter(this.load);
+            expect(this.resize.args[0][0]).to.deep.equal(this.size.returnValues[0]);
+            expect(iframe.style.width).to.equal(this.size.returnValues[0].width);
+            expect(iframe.style.height).to.equal(this.size.returnValues[0].height);
+            this.html.restore();
+            this.load.restore();
+            this.size.restore();
+            this.resize.restore();
+            iframe.parentNode.removeChild(iframe);
+            return done();
+          });
+          return document.body.appendChild(iframe);
         });
       });
     });

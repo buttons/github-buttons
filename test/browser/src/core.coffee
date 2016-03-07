@@ -328,7 +328,6 @@ describe 'ButtonFrame', ->
           .to.equal _
         expect @
           .to.equal _
-        iframe.parentNode.removeChild iframe
         done()
 
     it 'should callback with the iframe as argument twice', (done) ->
@@ -341,7 +340,6 @@ describe 'ButtonFrame', ->
       , (iframe) ->
         expect iframe
           .to.equal frame
-        iframe.parentNode.removeChild iframe
         done()
 
     it 'should load the iframe twice after insert it into DOM', (done) ->
@@ -350,10 +348,12 @@ describe 'ButtonFrame', ->
         document.body.appendChild iframe
         @on "load", -> spy()
       , (iframe) ->
-        expect spy
-          .to.have.been.calledTwice
-        iframe.parentNode.removeChild iframe
-        done()
+        @once "load", ->
+          expect spy
+            .to.have.been.calledTwice
+          iframe.parentNode.removeChild iframe
+          done()
+        document.body.appendChild iframe
 
     it 'should load the iframe the first time by writing html', (done) ->
       new ButtonFrame hash, (iframe) ->
@@ -363,7 +363,6 @@ describe 'ButtonFrame', ->
         expect @html
           .to.have.been.calledOnce
         @html.restore()
-        iframe.parentNode.removeChild iframe
         done()
 
     it 'should set document.location.hash when load the first time by writing html', (done) ->
@@ -375,7 +374,6 @@ describe 'ButtonFrame', ->
       , (iframe) ->
         expect _hash
           .to.equal hash
-        iframe.parentNode.removeChild iframe
         done()
 
     it 'should load the iframe the second time by setting the src attribute', (done) ->
@@ -390,17 +388,18 @@ describe 'ButtonFrame', ->
           .to.have.been.calledAfter @html
         @html.restore()
         @load.restore()
-        iframe.parentNode.removeChild iframe
         done()
 
     it 'should set document.location.href when load the second time by setting the src attribute', (done) ->
       new ButtonFrame hash, (iframe) ->
         document.body.appendChild iframe
       , (iframe) ->
-        expect iframe.contentWindow.document.location.hash
-          .to.equal hash
-        iframe.parentNode.removeChild iframe
-        done()
+        @once "load", ->
+          expect iframe.contentWindow.document.location.hash
+            .to.equal hash
+          iframe.parentNode.removeChild iframe
+          done()
+        document.body.appendChild iframe
 
     it 'should resize the iframe after the second load', (done) ->
       new ButtonFrame hash, (iframe) ->
@@ -414,22 +413,26 @@ describe 'ButtonFrame', ->
           .to.have.been.calledOnce
         expect @size
           .to.have.been.calledAfter @html
-        expect @resize
-          .to.have.been.calledOnce
-        expect @resize
-          .to.have.been.calledAfter @load
-        expect @resize.args[0][0]
-          .to.deep.equal @size.returnValues[0]
-        expect iframe.style.width
-          .to.equal @size.returnValues[0].width
-        expect iframe.style.height
-          .to.equal @size.returnValues[0].height
-        @html.restore()
-        @load.restore()
-        @size.restore()
-        @resize.restore()
-        iframe.parentNode.removeChild iframe
-        done()
+
+        @once "load", ->
+          expect @resize
+            .to.have.been.calledOnce
+          expect @resize
+            .to.have.been.calledAfter @load
+          expect @resize.args[0][0]
+            .to.deep.equal @size.returnValues[0]
+          expect iframe.style.width
+            .to.equal @size.returnValues[0].width
+          expect iframe.style.height
+            .to.equal @size.returnValues[0].height
+          @html.restore()
+          @load.restore()
+          @size.restore()
+          @resize.restore()
+          iframe.parentNode.removeChild iframe
+          done()
+
+        document.body.appendChild iframe
 
 
 describe 'ButtonFrameContent', ->

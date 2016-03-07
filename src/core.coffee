@@ -143,11 +143,12 @@ class ButtonFrame extends Frame
 
     reload = =>
       size = @size()
+      @$.parentNode.removeChild @$
       @once "load", ->
         @resize size
-        onload.call @, @$ if onload
         return
       @load "#{Config.url}buttons.html#{hash}"
+      onload.call @, @$ if onload
       return
 
     @once "load", ->
