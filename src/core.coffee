@@ -138,8 +138,8 @@ class ButtonAnchor
 
 
 class ButtonFrame extends Frame
-  constructor: (hash, callback, onload) ->
-    super callback
+  constructor: (hash, beforeload, callback) ->
+    super beforeload
 
     reload = =>
       reload = null
@@ -149,12 +149,12 @@ class ButtonFrame extends Frame
         @resize size
         return
       @load "#{Config.url}buttons.html#{hash}"
-      onload.call @, @$ if onload
+      callback.call @, @$ if callback
       return
 
     @once "load", ->
-      if callback = @$.contentWindow.callback
-        new Element callback.script, (script) ->
+      if jsonp_callback = @$.contentWindow.callback
+        new Element jsonp_callback.script, (script) ->
           @on "load", "error", ->
             reload() if reload
             return
