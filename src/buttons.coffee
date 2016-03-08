@@ -11,8 +11,7 @@ if Config.script
         document.body.appendChild iframe
         return
       , (iframe) ->
-        a.parentNode.insertBefore iframe, a
-        a.parentNode.removeChild a
+        a.parentNode.replaceChild iframe, a
         return
       return
 else
