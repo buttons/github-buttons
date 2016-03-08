@@ -605,7 +605,7 @@ describe 'ButtonFrameContent', ->
         .to.equal options.aria.label
 
     it 'should append the count to document.body when the necessary options are given', ->
-      sinon.stub head, "insertBefore", -> window.callback data
+      sinon.stub head, "appendChild", -> window.callback data
       options =
         data: count:
           api: "/dummy/api#followers"
@@ -618,10 +618,10 @@ describe 'ButtonFrameContent', ->
       expect count
         .to.have.property "className"
         .and.equal "count"
-      head.insertBefore.restore()
+      head.appendChild.restore()
 
     it 'should append the count with given data.count.href', ->
-      sinon.stub head, "insertBefore", -> window.callback data
+      sinon.stub head, "appendChild", -> window.callback data
       options =
         data: count:
           api: "/dummy/api#followers"
@@ -632,10 +632,10 @@ describe 'ButtonFrameContent', ->
       count = document.body.appendChild.args[1][0]
       expect count.getAttribute "href"
         .to.equal options.data.count.href
-      head.insertBefore.restore()
+      head.appendChild.restore()
 
     it 'should append the count with #entry from api response', ->
-      sinon.stub head, "insertBefore", -> window.callback data
+      sinon.stub head, "appendChild", -> window.callback data
       options =
         data: count:
           api: "/dummy/api#followers"
@@ -645,10 +645,10 @@ describe 'ButtonFrameContent', ->
       count = document.body.appendChild.args[1][0]
       expect count.lastChild.innerHTML
         .to.equal "26"
-      head.insertBefore.restore()
+      head.appendChild.restore()
 
     it 'should append the count with #entry from api response by prepending missing / to api', ->
-      sinon.stub head, "insertBefore", -> window.callback data
+      sinon.stub head, "appendChild", -> window.callback data
       options =
         data: count:
           api: "dummy/api#followers"
@@ -658,10 +658,10 @@ describe 'ButtonFrameContent', ->
       count = document.body.appendChild.args[1][0]
       expect count.lastChild.innerHTML
         .to.equal "26"
-      head.insertBefore.restore()
+      head.appendChild.restore()
 
     it 'should append the count with large number split by comma', ->
-      sinon.stub head, "insertBefore", -> window.callback data
+      sinon.stub head, "appendChild", -> window.callback data
       options =
         data: count:
           api: "/dummy/api#id"
@@ -671,10 +671,10 @@ describe 'ButtonFrameContent', ->
       count = document.body.appendChild.args[1][0]
       expect count.lastChild.innerHTML
         .to.equal "899,645"
-      head.insertBefore.restore()
+      head.appendChild.restore()
 
     it 'should append the count with given aria label', ->
-      sinon.stub head, "insertBefore", -> window.callback data
+      sinon.stub head, "appendChild", -> window.callback data
       options =
         data: count:
           api: "/dummy/api#followers"
@@ -684,10 +684,10 @@ describe 'ButtonFrameContent', ->
       count = document.body.appendChild.args[1][0]
       expect count.getAttribute "aria-label"
         .to.equal "26 followers on GitHub"
-      head.insertBefore.restore()
+      head.appendChild.restore()
 
     it 'should append the count with text undefined when missing # in api', ->
-      sinon.stub head, "insertBefore", -> window.callback data
+      sinon.stub head, "appendChild", -> window.callback data
       options =
         data: count:
           api: "/dummy/api"
@@ -697,10 +697,10 @@ describe 'ButtonFrameContent', ->
       count = document.body.appendChild.args[1][0]
       expect count.lastChild.innerHTML
         .to.equal "undefined"
-      head.insertBefore.restore()
+      head.appendChild.restore()
 
     it 'should append the count with text undefined when api #entry does not exist', ->
-      sinon.stub head, "insertBefore", -> window.callback data
+      sinon.stub head, "appendChild", -> window.callback data
       options =
         data: count:
           api: "/dummy/api#fail"
@@ -710,10 +710,10 @@ describe 'ButtonFrameContent', ->
       count = document.body.appendChild.args[1][0]
       expect count.lastChild.innerHTML
         .to.equal "undefined"
-      head.insertBefore.restore()
+      head.appendChild.restore()
 
     it 'should not append the count when it fails to pull api data', ->
-      sinon.stub head, "insertBefore", -> window.callback meta: status: 404
+      sinon.stub head, "appendChild", -> window.callback meta: status: 404
       options =
         data: count:
           api: "/dummy/api#followers"
@@ -726,4 +726,4 @@ describe 'ButtonFrameContent', ->
       expect button
         .to.have.property "className"
         .and.equal "button"
-      head.insertBefore.restore()
+      head.appendChild.restore()

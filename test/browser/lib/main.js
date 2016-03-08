@@ -495,7 +495,13 @@
                     });
                   }
                   head = document.getElementsByTagName("head")[0];
-                  head.insertBefore(script, head.firstChild);
+                  if (window.opera) {
+                    new EventTarget(document).on("DOMContentLoaded", function() {
+                      head.appendChild(script);
+                    });
+                  } else {
+                    head.appendChild(script);
+                  }
                 });
               });
             });
@@ -1168,7 +1174,7 @@
       });
       it('should append the count to document.body when the necessary options are given', function() {
         var count, options;
-        sinon.stub(head, "insertBefore", function() {
+        sinon.stub(head, "appendChild", function() {
           return window.callback(data);
         });
         options = {
@@ -1184,11 +1190,11 @@
         expect(document.body.appendChild).to.be.calledTwice;
         count = document.body.appendChild.args[1][0];
         expect(count).to.have.property("className").and.equal("count");
-        return head.insertBefore.restore();
+        return head.appendChild.restore();
       });
       it('should append the count with given data.count.href', function() {
         var count, options;
-        sinon.stub(head, "insertBefore", function() {
+        sinon.stub(head, "appendChild", function() {
           return window.callback(data);
         });
         options = {
@@ -1204,11 +1210,11 @@
         new ButtonFrameContent(options);
         count = document.body.appendChild.args[1][0];
         expect(count.getAttribute("href")).to.equal(options.data.count.href);
-        return head.insertBefore.restore();
+        return head.appendChild.restore();
       });
       it('should append the count with #entry from api response', function() {
         var count, options;
-        sinon.stub(head, "insertBefore", function() {
+        sinon.stub(head, "appendChild", function() {
           return window.callback(data);
         });
         options = {
@@ -1223,11 +1229,11 @@
         new ButtonFrameContent(options);
         count = document.body.appendChild.args[1][0];
         expect(count.lastChild.innerHTML).to.equal("26");
-        return head.insertBefore.restore();
+        return head.appendChild.restore();
       });
       it('should append the count with #entry from api response by prepending missing / to api', function() {
         var count, options;
-        sinon.stub(head, "insertBefore", function() {
+        sinon.stub(head, "appendChild", function() {
           return window.callback(data);
         });
         options = {
@@ -1242,11 +1248,11 @@
         new ButtonFrameContent(options);
         count = document.body.appendChild.args[1][0];
         expect(count.lastChild.innerHTML).to.equal("26");
-        return head.insertBefore.restore();
+        return head.appendChild.restore();
       });
       it('should append the count with large number split by comma', function() {
         var count, options;
-        sinon.stub(head, "insertBefore", function() {
+        sinon.stub(head, "appendChild", function() {
           return window.callback(data);
         });
         options = {
@@ -1261,11 +1267,11 @@
         new ButtonFrameContent(options);
         count = document.body.appendChild.args[1][0];
         expect(count.lastChild.innerHTML).to.equal("899,645");
-        return head.insertBefore.restore();
+        return head.appendChild.restore();
       });
       it('should append the count with given aria label', function() {
         var count, options;
-        sinon.stub(head, "insertBefore", function() {
+        sinon.stub(head, "appendChild", function() {
           return window.callback(data);
         });
         options = {
@@ -1282,11 +1288,11 @@
         new ButtonFrameContent(options);
         count = document.body.appendChild.args[1][0];
         expect(count.getAttribute("aria-label")).to.equal("26 followers on GitHub");
-        return head.insertBefore.restore();
+        return head.appendChild.restore();
       });
       it('should append the count with text undefined when missing # in api', function() {
         var count, options;
-        sinon.stub(head, "insertBefore", function() {
+        sinon.stub(head, "appendChild", function() {
           return window.callback(data);
         });
         options = {
@@ -1301,11 +1307,11 @@
         new ButtonFrameContent(options);
         count = document.body.appendChild.args[1][0];
         expect(count.lastChild.innerHTML).to.equal("undefined");
-        return head.insertBefore.restore();
+        return head.appendChild.restore();
       });
       it('should append the count with text undefined when api #entry does not exist', function() {
         var count, options;
-        sinon.stub(head, "insertBefore", function() {
+        sinon.stub(head, "appendChild", function() {
           return window.callback(data);
         });
         options = {
@@ -1320,11 +1326,11 @@
         new ButtonFrameContent(options);
         count = document.body.appendChild.args[1][0];
         expect(count.lastChild.innerHTML).to.equal("undefined");
-        return head.insertBefore.restore();
+        return head.appendChild.restore();
       });
       return it('should not append the count when it fails to pull api data', function() {
         var button, options;
-        sinon.stub(head, "insertBefore", function() {
+        sinon.stub(head, "appendChild", function() {
           return window.callback({
             meta: {
               status: 404
@@ -1344,7 +1350,7 @@
         expect(document.body.appendChild).to.be.calledOnce;
         button = document.body.appendChild.args[0][0];
         expect(button).to.have.property("className").and.equal("button");
-        return head.insertBefore.restore();
+        return head.appendChild.restore();
       });
     });
   });

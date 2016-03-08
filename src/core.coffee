@@ -254,7 +254,15 @@ class ButtonFrameContent
                     return
 
                 head = document.getElementsByTagName("head")[0]
-                head.insertBefore script, head.firstChild
+
+                if window.opera
+                  new EventTarget document
+                    .on "DOMContentLoaded", ->
+                      head.appendChild script
+                      return
+                else
+                  head.appendChild script
+
                 return
               return
             return
