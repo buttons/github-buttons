@@ -380,6 +380,7 @@
       reload = (function(_this) {
         return function() {
           var size;
+          reload = null;
           size = _this.size();
           _this.$.parentNode.removeChild(_this.$);
           _this.once("load", function() {
@@ -394,10 +395,14 @@
       this.once("load", function() {
         if (callback = this.$.contentWindow.callback) {
           new Element(callback.script, function(script) {
-            this.on("load", "error", reload);
+            this.on("load", "error", function() {
+              if (reload) {
+                reload();
+              }
+            });
             if (script.readyState) {
               this.on("readystatechange", function() {
-                if (!/i/.test(script.readyState)) {
+                if (!/i/.test(script.readyState) && reload) {
                   reload();
                 }
               });

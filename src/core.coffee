@@ -142,6 +142,7 @@ class ButtonFrame extends Frame
     super callback
 
     reload = =>
+      reload = null
       size = @size()
       @$.parentNode.removeChild @$
       @once "load", ->
@@ -154,11 +155,13 @@ class ButtonFrame extends Frame
     @once "load", ->
       if callback = @$.contentWindow.callback
         new Element callback.script, (script) ->
-          @on "load", "error", reload
+          @on "load", "error", ->
+            reload() if reload
+            return
 
           if script.readyState
             @on "readystatechange", ->
-              reload() unless /i/.test script.readyState
+              reload() if not /i/.test(script.readyState) and reload
               return
           return
       else
