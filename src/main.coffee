@@ -170,7 +170,7 @@ class ButtonForm extends Form
         for name in ["show-count"]
           @$.elements[name].disabled = options.type is "download"
 
-        unless (!options.user or /^[a-z0-9][a-z0-9-]*$/i.test options.user) and (options.type is "follow" or !options.repo or (/^[\w.-]+$/.test(options.repo) and not /^\.\.?$/.test(options.repo)))
+        unless (!options.user or validate_user options.user) and (options.type is "follow" or !options.repo or validate_repo options.repo)
           user_repo.addClass "has-error"
         else
           user_repo.removeClass "has-error"
@@ -291,6 +291,12 @@ class ButtonForm extends Form
     if options["standard-icon"]? or config.data.icon is "octicon-mark-github"
       delete config.data.icon
     config
+
+  validate_user = (user) ->
+    0 < user.length < 40 and not /[^A-Za-z0-9-]|^-|-$|--/i.test user
+
+  validate_repo = (repo) ->
+    0 < repo.length < 101 and not /[^\w-.]|\.git$|^\.\.?$/i.test repo
 
 
 new StaticFrame iframe for iframe in document.getElementsByTagName "iframe"
