@@ -875,14 +875,13 @@
       var hash;
       hash = Hash.encode(ButtonAnchor.parse(document.createElement("a")));
       it('should callback with this twice', function(done) {
-        var _, _this;
+        var _this;
         _this = null;
-        return _ = new ButtonFrame(hash, function(iframe) {
+        return new ButtonFrame(hash, function(iframe) {
           document.body.appendChild(iframe);
           return _this = this;
         }, function(iframe) {
-          expect(_this).to.equal(_);
-          expect(this).to.equal(_);
+          expect(_this).to.equal(this);
           return done();
         });
       });

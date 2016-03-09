@@ -320,14 +320,12 @@ describe 'ButtonFrame', ->
 
     it 'should callback with this twice', (done) ->
       _this = null
-      _ = new ButtonFrame hash, (iframe) ->
+      new ButtonFrame hash, (iframe) ->
         document.body.appendChild iframe
         _this = @
       , (iframe) ->
         expect _this
-          .to.equal _
-        expect @
-          .to.equal _
+          .to.equal @
         done()
 
     it 'should callback with the iframe as argument twice', (done) ->
