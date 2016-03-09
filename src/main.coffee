@@ -125,11 +125,15 @@ class PreviewFrame extends Frame
       return
 
   load: (config) ->
-    @$.parentNode.style.height = "#{(if config.data.style is "mega" then 28 else 20) + 2}px"
+    parentNode = @$.parentNode
+    parentNode.removeChild @$
+    parentNode.style.height = "#{(if config.data.style is "mega" then 28 else 20) + 2}px"
+
     @$.style.width = "1px"
     @$.style.height = "0"
     @$.src = "buttons.html#{Hash.encode config}"
-    @$.contentWindow.document.location.reload()
+
+    parentNode.appendChild @$
     return
 
 
