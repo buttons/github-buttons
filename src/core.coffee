@@ -279,10 +279,11 @@ class ButtonFrameContent
             catch
               base.href = baseURLstring
               a.href = urlString
-              container = document.createElement "div"
-              container.innerHTML = a.outerHTML
-              a.href = container.firstChild.href
-              container = null
+              new Element "div", (div) ->
+                div.innerHTML = a.outerHTML
+                a.href = div.lastChild.href
+                div = null
+                return
               base.href = document.location.href
               base.removeAttribute "href"
           else
