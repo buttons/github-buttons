@@ -70,19 +70,15 @@ class Frame extends Element
         scrolling: "no"
         frameBorder: 0
       }
-      iframe.style[key] = value for key, value of {
-        border: "none"
-        height: "0"
-        width: "1px"
-      }
+      iframe.style.cssText = "width: 1px; height: 0; border: none"
+      iframe.src = "javascript:0"
       callback.call @, iframe if callback
       return
 
   html: (html) ->
     try
       contentDocument = @$.contentWindow.document
-      contentDocument.open()
-      contentDocument.write html
+      contentDocument.open().write html
       contentDocument.close()
     return
 

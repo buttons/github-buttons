@@ -257,7 +257,7 @@
 
     function Frame(callback) {
       Frame.__super__.constructor.call(this, "iframe", function(iframe) {
-        var key, ref, ref1, value;
+        var key, ref, value;
         ref = {
           allowtransparency: true,
           scrolling: "no",
@@ -267,15 +267,8 @@
           value = ref[key];
           iframe.setAttribute(key, value);
         }
-        ref1 = {
-          border: "none",
-          height: "0",
-          width: "1px"
-        };
-        for (key in ref1) {
-          value = ref1[key];
-          iframe.style[key] = value;
-        }
+        iframe.style.cssText = "width: 1px; height: 0; border: none";
+        iframe.src = "javascript:0";
         if (callback) {
           callback.call(this, iframe);
         }
@@ -286,8 +279,7 @@
       var contentDocument;
       try {
         contentDocument = this.$.contentWindow.document;
-        contentDocument.open();
-        contentDocument.write(html);
+        contentDocument.open().write(html);
         contentDocument.close();
       } catch (undefined) {}
     };
