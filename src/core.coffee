@@ -91,8 +91,8 @@ class Frame extends Element
       contentDocument = @$.contentWindow.document
       html = contentDocument.documentElement
       body = contentDocument.body
-      width = Math.max html.scrollWidth, body.scrollWidth
-      height = Math.max html.scrollHeight, body.scrollHeight
+      width = html.scrollWidth
+      height = html.scrollHeight
       if body.getBoundingClientRect
         body.style.display = "inline-block"
         boundingClientRect = body.getBoundingClientRect()
