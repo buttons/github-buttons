@@ -269,7 +269,7 @@ class ButtonFrameContent
     constructor: (urlString, baseURLstring, callback) ->
       super "a", (a) ->
         if base
-          if (a.href = baseURLstring) and !r_javascript.test a.href
+          if (a.href = baseURLstring) and a.protocol isnt javascript
             try
               a.href = new URL(urlString, baseURLstring).href
             catch
@@ -284,11 +284,11 @@ class ButtonFrameContent
               base.removeAttribute "href"
           else
             a.href = urlString
-          if r_javascript.test a.href
+          if a.protocol is javascript
             a.href = "#"
             a.target = "_self"
         callback a
         return
 
     base = document.getElementsByTagName("base")[0]
-    r_javascript = /^javascript:/i
+    javascript = "javascript:"

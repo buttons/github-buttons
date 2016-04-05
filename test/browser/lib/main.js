@@ -504,7 +504,7 @@
     }
 
     Anchor = (function(superClass) {
-      var base, r_javascript;
+      var base, javascript;
 
       extend(Anchor, superClass);
 
@@ -512,7 +512,7 @@
         Anchor.__super__.constructor.call(this, "a", function(a) {
           var error;
           if (base) {
-            if ((a.href = baseURLstring) && !r_javascript.test(a.href)) {
+            if ((a.href = baseURLstring) && a.protocol !== javascript) {
               try {
                 a.href = new URL(urlString, baseURLstring).href;
               } catch (error) {
@@ -529,7 +529,7 @@
             } else {
               a.href = urlString;
             }
-            if (r_javascript.test(a.href)) {
+            if (a.protocol === javascript) {
               a.href = "#";
               a.target = "_self";
             }
@@ -540,7 +540,7 @@
 
       base = document.getElementsByTagName("base")[0];
 
-      r_javascript = /^javascript:/i;
+      javascript = "javascript:";
 
       return Anchor;
 
