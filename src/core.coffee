@@ -284,6 +284,8 @@ class ButtonFrameContent
               base.removeAttribute "href"
           else
             a.href = urlString
+          if r_archive.test a.href
+            a.target = "_top"
           if a.protocol is javascript
             a.href = "#"
             a.target = "_self"
@@ -292,3 +294,9 @@ class ButtonFrameContent
 
     base = document.getElementsByTagName("base")[0]
     javascript = "javascript:"
+    r_archive = ///
+      ^https?://(
+        (gist\.)?github\.com/[^/]+/[^/]+/archive/ |
+        codeload\.github\.com/
+      )
+    ///
