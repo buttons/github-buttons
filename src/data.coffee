@@ -40,20 +40,20 @@ class QueryString
   @stringify: (obj) ->
     results = []
     for key, value of obj
-      results.push "#{key}=#{if value? then value else ""}"
+      results.push "#{encodeURIComponent key}=#{if value? then encodeURIComponent value else ""}"
     results.join "&"
 
   @parse: (str) ->
     obj = {}
     for pair in str.split "&" when pair isnt ""
       [key, value...] = pair.split "="
-      obj[key] = value.join "=" if key isnt ""
+      obj[decodeURIComponent key] = decodeURIComponent value.join "=" if key isnt ""
     obj
 
 
 class Hash
   @encode: (data) ->
-    "#" + encodeURIComponent QueryString.stringify FlatObject.flatten data
+    "#" + QueryString.stringify FlatObject.flatten data
 
   @decode: (data = document.location.hash) ->
-    (FlatObject.expand QueryString.parse decodeURIComponent data.replace /^#/, "") or {}
+    (FlatObject.expand QueryString.parse data.replace /^#/, "") or {}

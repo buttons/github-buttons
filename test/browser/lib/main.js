@@ -110,7 +110,7 @@
       results = [];
       for (key in obj) {
         value = obj[key];
-        results.push(key + "=" + (value != null ? value : ""));
+        results.push((encodeURIComponent(key)) + "=" + (value != null ? encodeURIComponent(value) : ""));
       }
       return results.join("&");
     };
@@ -126,7 +126,7 @@
         }
         ref1 = pair.split("="), key = ref1[0], value = 2 <= ref1.length ? slice.call(ref1, 1) : [];
         if (key !== "") {
-          obj[key] = value.join("=");
+          obj[decodeURIComponent(key)] = decodeURIComponent(value.join("="));
         }
       }
       return obj;
@@ -140,14 +140,14 @@
     function Hash() {}
 
     Hash.encode = function(data) {
-      return "#" + encodeURIComponent(QueryString.stringify(FlatObject.flatten(data)));
+      return "#" + QueryString.stringify(FlatObject.flatten(data));
     };
 
     Hash.decode = function(data) {
       if (data == null) {
         data = document.location.hash;
       }
-      return (FlatObject.expand(QueryString.parse(decodeURIComponent(data.replace(/^#/, ""))))) || {};
+      return (FlatObject.expand(QueryString.parse(data.replace(/^#/, "")))) || {};
     };
 
     return Hash;

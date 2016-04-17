@@ -161,7 +161,7 @@ describe 'Hash', ->
 
     it 'should encode object', ->
       expect Hash.encode hello: "world", github: "buttons"
-        .to.equal "#hello%3Dworld%26github%3Dbuttons"
+        .to.equal "#hello=world&github=buttons"
 
   describe '.decode()', ->
     it 'should decode string when string is empty', ->
@@ -173,9 +173,16 @@ describe 'Hash', ->
         .to.deep.equal {}
 
     it 'should decode string when string does not have a leading #', ->
-      expect Hash.decode "hello%3Dworld%26github%3Dbuttons"
-        .to.deep.equal hello: "world", github: "buttons"
+      data = hello: "world", github: "buttons"
+      expect Hash.decode Hash.encode(data).replace /^#/, ""
+        .to.deep.equal data
 
     it 'should decode string when string does have a leading #', ->
-      expect Hash.decode "#hello%3Dworld%26github%3Dbuttons"
-        .to.deep.equal hello: "world", github: "buttons"
+      data = hello: "world", github: "buttons"
+      expect Hash.decode Hash.encode data
+        .to.deep.equal data
+
+    it 'should decode string when string contains & or =', ->
+      data = "hello&world": "goodbye=jack"
+      expect Hash.decode Hash.encode data
+        .to.deep.equal data
