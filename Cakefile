@@ -132,7 +132,8 @@ task 'test:mocha', 'Test scripts', ->
   system "mocha", "--compilers", "coffee:coffee-script/register", "test/*.coffee"
 
 task 'test:mocha-phantomjs', 'Test browser scripts', ->
-  coffee.compile "test/browser/src/helpers.coffee",
+  coffee.compile "src/config.coffee",
+                 "test/browser/src/helpers.coffee",
                  "src/data.coffee",
                  "src/core.coffee",
                  "test/browser/src/core.coffee",

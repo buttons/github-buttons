@@ -5,13 +5,7 @@ if window._phantom
     @dispatchEvent event
     return
 
-Config =
-  api:         "https://api.github.com"
-  anchorClass: "github-button"
-  iconClass:   "octicon"
-  icon:        "octicon-mark-github"
-  scriptId:    "github-bjs"
-  script: src: "../../buttons.js"
-  url:         "../../"
+CONFIG_SCRIPT = src: "../../buttons.js"
+CONFIG_URL    = CONFIG_SCRIPT.src.replace /[^/]*([?#].*)?$/, "" if CONFIG_SCRIPT
 
 document.head.appendChild document.createElement "base"

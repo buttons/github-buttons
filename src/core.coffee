@@ -144,7 +144,7 @@ class ButtonFrame extends Frame
       @once "load", ->
         @resize size
         return
-      @load "#{Config.url}buttons.html#{hash}"
+      @load "#{CONFIG_URL}buttons.html#{hash}"
       callback.call @, @$ if callback
       return
 
@@ -171,11 +171,11 @@ class ButtonFrame extends Frame
       <head>
       <meta charset="utf-8">
       <title></title>
-      <link rel="stylesheet" href="#{Config.url}assets/css/buttons.css">
+      <link rel="stylesheet" href="#{CONFIG_URL}assets/css/buttons.css">
       <script>document.location.hash = "#{hash}";</script>
       </head>
       <body>
-      <script src="#{Config.script.src}"></script>
+      <script src="#{CONFIG_SCRIPT.src}"></script>
       </body>
       </html>
       """
@@ -190,7 +190,8 @@ class ButtonFrameContent
         a.className = "button"
         a.setAttribute "aria-label", options.aria.label if options.aria.label
         new Element "i", (icon) ->
-          icon.className = (options.data.icon or Config.icon) + if Config.iconClass then " #{Config.iconClass}" else ""
+          icon.className = options.data.icon or CONFIG_ICON_DEFAULT
+          @addClass CONFIG_ICON_CLASS if CONFIG_ICON_CLASS
           icon.setAttribute "aria-hidden", "true"
           a.appendChild icon
           return
@@ -225,7 +226,7 @@ class ButtonFrameContent
 
               new Element "script", (script) ->
                 script.async = true
-                script.src = "#{Config.api}#{endpoint}"
+                script.src = "#{CONFIG_API}#{endpoint}"
 
                 window.callback = (json) ->
                   window.callback = null
@@ -286,7 +287,7 @@ class ButtonFrameContent
             a.href = urlString
           if r_archive.test a.href
             a.target = "_top"
-          if a.protocol is javascript
+          if a.protocol is javascript or not r_hostname.test ".#{a.hostname}"
             a.href = "#"
             a.target = "_self"
         callback a
@@ -294,6 +295,7 @@ class ButtonFrameContent
 
     base = document.getElementsByTagName("base")[0]
     javascript = "javascript:"
+    r_hostname = /\.github\.com$/
     r_archive = ///
       ^https?://(
         (gist\.)?github\.com/[^/]+/[^/]+/archive/ |

@@ -542,7 +542,7 @@ describe 'ButtonFrameContent', ->
 
     it 'should append the button with given href', ->
       options =
-        href: "https://twitter.com/"
+        href: "https://ntkme.github.com/"
         data: {}
         aria: {}
       new ButtonFrameContent options
@@ -571,7 +571,7 @@ describe 'ButtonFrameContent', ->
         aria: {}
       new ButtonFrameContent options
       button = document.body.appendChild.args[0][0]
-      expect " #{button.firstChild.className} ".indexOf " #{Config.icon} "
+      expect " #{button.firstChild.className} ".indexOf " #{CONFIG_ICON_DEFAULT} "
         .to.be.at.least 0
 
     it 'should append the button with given icon', ->
@@ -623,7 +623,7 @@ describe 'ButtonFrameContent', ->
       options =
         data: count:
           api: "/dummy/api#followers"
-          href: "https://twitter.com/"
+          href: "https://gist.github.com/"
           aria: {}
         aria: {}
       new ButtonFrameContent options

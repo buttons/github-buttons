@@ -92,7 +92,7 @@ class StaticFrame extends Element
 class PreviewAnchor extends Element
   constructor: ({href, text, data, aria}, callback) ->
     super "a", (a) ->
-      a.className = Config.anchorClass
+      a.className = CONFIG_ANCHOR_CLASS
       a.href = href
       a.appendChild document.createTextNode "#{text}"
       a.setAttribute "data-#{name}", value for name, value of data

@@ -1,9 +1,9 @@
-if Config.script
+if CONFIG_SCRIPT
   if document.querySelectorAll
-    anchors = document.querySelectorAll "a.#{Config.anchorClass}"
+    anchors = document.querySelectorAll "a.#{CONFIG_ANCHOR_CLASS}"
   else
     anchors =
-      anchor for anchor in document.getElementsByTagName "a" when new Element(anchor).hasClass Config.anchorClass
+      anchor for anchor in document.getElementsByTagName "a" when new Element(anchor).hasClass CONFIG_ANCHOR_CLASS
 
   for anchor in anchors
     do (a = anchor) ->
