@@ -112,7 +112,7 @@ class ButtonForm extends Form
   constructor: (@$, {content, preview: {button, frame, code, warning}, snippet, user_repo}) ->
     snippet.$.value = \
       """
-      <!-- Place this tag right after the last button or just before your close body tag. -->
+      <!-- Place this tag anywhere on your page. -->
       <script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
       """
 
@@ -256,14 +256,16 @@ class ButtonForm extends Form
     0 < repo.length < 101 and not /[^\w-.]|\.git$|^\.\.?$/i.test repo
 
 
-new ButtonForm document.getElementById("button-config"),
-  content: new Element document.getElementById "content"
-  user_repo: new Element document.getElementById "user-repo"
-  preview:
-    button: new Element document.getElementById "preview-button"
-    frame: new PreviewFrame document.getElementById "preview"
-    code: new Code document.getElementById "code"
-    warning: new Element document.getElementById "preview-warning"
-  snippet: new Code document.getElementById "snippet"
+new Deferred ->
+  new ButtonForm document.getElementById("button-config"),
+    content: new Element document.getElementById "content"
+    user_repo: new Element document.getElementById "user-repo"
+    preview:
+      button: new Element document.getElementById "preview-button"
+      frame: new PreviewFrame document.getElementById "preview"
+      code: new Code document.getElementById "code"
+      warning: new Element document.getElementById "preview-warning"
+    snippet: new Code document.getElementById "snippet"
+  return
 
 @onbeforeunload = ->

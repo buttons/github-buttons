@@ -24,7 +24,7 @@ To get started, checkout **[buttons.github.io](https://buttons.github.io)**!
 
 ### Usage
 
-Add as many `<a class="github-button">` as you like, then put the `<script>` after the last button.
+Add as many `<a class="github-button">` as you like, then put the `<script>` anywhere on your page.
 
 ### Syntax
 
