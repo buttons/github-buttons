@@ -46,49 +46,6 @@ class Form extends Element
     data
 
 
-class StaticFrame extends Element
-  constructor: ->
-    super
-
-    onload = =>
-      contentDocument = @$.contentWindow.document
-
-      base = contentDocument.getElementsByTagName("base")[0]
-      base.parentNode.removeChild base
-
-      for a in contentDocument.getElementsByTagName "a"
-        a.href = "#"
-        a.style["pointer-events"] = "none"
-
-      new Element "div", (div) ->
-        div.style[key] = value for key, value of {
-          position: "fixed"
-          top: 0
-          right: 0
-          bottom: 0
-          left: 0
-          cursor: "pointer"
-          background: "transparent"
-          opacity: 0
-          filter: "alpha(opacity=0)"
-        }
-        contentDocument.body.appendChild div
-        return
-
-      new Element contentDocument.body
-        .on "click", =>
-          @$.parentNode.click()
-          return
-      return
-
-    @on "load", ->
-      try
-        onload()
-      catch
-        new EventTarget @$.contentWindow
-          .on "load", onload
-
-
 class PreviewAnchor extends Element
   constructor: ({href, text, data, aria}, callback) ->
     super "a", (a) ->
@@ -298,8 +255,6 @@ class ButtonForm extends Form
   validate_repo = (repo) ->
     0 < repo.length < 101 and not /[^\w-.]|\.git$|^\.\.?$/i.test repo
 
-
-new StaticFrame iframe for iframe in document.getElementsByTagName "iframe"
 
 new ButtonForm document.getElementById("button-config"),
   content: new Element document.getElementById "content"

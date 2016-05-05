@@ -2,6 +2,7 @@ html {
   position: relative;
   min-height: 100%;
 }
+
 .header {
   height: 48px;
   font-family: Helvetica, arial, freesans, clean, sans-serif;
@@ -44,19 +45,31 @@ html {
     }
   }
 }
+
 .main {
   padding-bottom: 50px;
 }
+
 .footer {
   position: absolute;
   bottom: 0;
   width: 100%;
   height: 48px;
 }
+
+.radio-inline:before {
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 100%;
+  content: '';
+}
+
 .input-group-addon:not(:first-child):not(:last-child) {
   border-right: 0;
   border-left: 0;
 }
+
 .code,
 .code[readonly] {
   font-family: monospace, sans-serif;
