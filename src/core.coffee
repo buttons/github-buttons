@@ -299,6 +299,7 @@ class ButtonFrameContent
     r_archive = ///
       ^https?://(
         (gist\.)?github\.com/[^/]+/[^/]+/archive/ |
+        github\.com/[^/]+/[^/]+/releases/download/ |
         codeload\.github\.com/
       )
     ///
