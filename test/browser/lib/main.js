@@ -501,7 +501,7 @@
                     });
                   }
                   head = document.getElementsByTagName("head")[0];
-                  if (window.opera) {
+                  if ("[object Opera]" === Object.prototype.toString.call(window.opera)) {
                     new EventTarget(document).on("DOMContentLoaded", function() {
                       head.appendChild(script);
                     });
