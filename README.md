@@ -42,7 +42,7 @@ Add as many `<a class="github-button">` as you like, then put the `<script>` any
 ```
 
 ``` html
-<script async="async" defer="defer" id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+<script async defer src="https://buttons.github.io/buttons.js"></script>
 ```
 
 #### Attributes

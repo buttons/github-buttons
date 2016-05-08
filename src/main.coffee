@@ -112,8 +112,8 @@ class ButtonForm extends Form
   constructor: (@$, {content, preview: {button, frame, code, warning}, snippet, user_repo}) ->
     snippet.$.value = \
       """
-      <!-- Place this tag anywhere on your page. -->
-      <script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+      <!-- Place this tag in your head or just before your close body tag. -->
+      <script async defer src="https://buttons.github.io/buttons.js"></script>
       """
 
     callback = ({force}) =>

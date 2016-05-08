@@ -13,11 +13,9 @@
 
   CONFIG_ICON_DEFAULT = CONFIG_ICON_CLASS + "-mark-github";
 
-  CONFIG_SCRIPT = document.getElementById("github-bjs");
+  CONFIG_SCRIPT = document.getElementById("cd8f5f9f-e3e8-569f-87ef-f03c6cfc29bc");
 
-  if (CONFIG_SCRIPT) {
-    CONFIG_URL = CONFIG_SCRIPT.src.replace(/[^\/]*([?#].*)?$/, "");
-  }
+  CONFIG_URL = CONFIG_SCRIPT ? CONFIG_SCRIPT.src.replace(/[^\/]*([?#].*)?$/, "") : (/^http:/.test(document.location) ? "http" : "https") + "://buttons.github.io/";
 
   CONFIG_UUID = "faa75404-3b97-5585-b449-4bc51338fbd1";
 
