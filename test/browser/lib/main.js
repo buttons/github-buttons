@@ -417,7 +417,7 @@
           reload();
         }
       });
-      this.html("<!DOCTYPE html>\n<html>\n<head>\n<meta charset=\"utf-8\">\n<title></title>\n<link rel=\"stylesheet\" href=\"" + CONFIG_URL + "assets/css/buttons.css\">\n<script>document.location.hash = \"" + hash + "\";</script>\n</head>\n<body>\n<script id=\"" + CONFIG_UUID + "\" src=\"" + CONFIG_SCRIPT.src + "\"></script>\n</body>\n</html>");
+      this.html("<!DOCTYPE html><html><head><meta charset=\"utf-8\"><title></title><link rel=\"stylesheet\" href=\"" + CONFIG_URL + "assets/css/buttons.css\"><script>document.location.hash = \"" + hash + "\";</script></head><body><script id=\"" + CONFIG_UUID + "\" src=\"" + CONFIG_URL + "buttons.js\"></script></body></html>");
     }
 
     return ButtonFrame;

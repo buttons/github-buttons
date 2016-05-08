@@ -166,18 +166,7 @@ class ButtonFrame extends Frame
 
     @html \
       """
-      <!DOCTYPE html>
-      <html>
-      <head>
-      <meta charset="utf-8">
-      <title></title>
-      <link rel="stylesheet" href="#{CONFIG_URL}assets/css/buttons.css">
-      <script>document.location.hash = "#{hash}";</script>
-      </head>
-      <body>
-      <script id="#{CONFIG_UUID}" src="#{CONFIG_SCRIPT.src}"></script>
-      </body>
-      </html>
+      <!DOCTYPE html><html><head><meta charset="utf-8"><title></title><link rel="stylesheet" href="#{CONFIG_URL}assets/css/buttons.css"><script>document.location.hash = "#{hash}";</script></head><body><script id="#{CONFIG_UUID}" src="#{CONFIG_URL}buttons.js"></script></body></html>
       """
 
 
