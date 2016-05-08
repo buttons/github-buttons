@@ -1,4 +1,6 @@
-if CONFIG_SCRIPT
+if document.getElementById CONFIG_UUID
+  new ButtonFrameContent Hash.decode()
+else if CONFIG_SCRIPT
   new Deferred ->
     if document.querySelectorAll
       anchors = document.querySelectorAll "a.#{CONFIG_ANCHOR_CLASS}"
@@ -16,5 +18,3 @@ if CONFIG_SCRIPT
           return
         return
     return
-else
-  new ButtonFrameContent Hash.decode()

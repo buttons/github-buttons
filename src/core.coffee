@@ -175,7 +175,7 @@ class ButtonFrame extends Frame
       <script>document.location.hash = "#{hash}";</script>
       </head>
       <body>
-      <script src="#{CONFIG_SCRIPT.src}"></script>
+      <script id="#{CONFIG_UUID}" src="#{CONFIG_SCRIPT.src}"></script>
       </body>
       </html>
       """
