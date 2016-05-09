@@ -110,6 +110,13 @@ class Code extends Element
 
 class ButtonForm extends Form
   constructor: (@$, {content, preview: {button, frame, code, warning}, snippet, user_repo}) ->
+    @$.setAttribute key, value for key, value of {
+      autocapitalize: "none"
+      autocomplete: "off"
+      autocorrect: "off"
+      spellcheck: "false"
+    }
+
     snippet.$.value = \
       """
       <!-- Place this tag in your head or just before your close body tag. -->
