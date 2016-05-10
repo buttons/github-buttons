@@ -5,7 +5,6 @@ if window._phantom
     @dispatchEvent event
     return
 
-CONFIG_SCRIPT = src: "../../buttons.js"
-CONFIG_URL    = CONFIG_SCRIPT.src.replace /[^/]*([?#].*)?$/, "" if CONFIG_SCRIPT
+CONFIG_URL = "../../"
 
 document.head.appendChild document.createElement "base"
