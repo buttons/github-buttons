@@ -1,4 +1,4 @@
-if document.getElementById CONFIG_UUID
+if document.title is CONFIG_UUID
   new ButtonFrameContent Hash.decode()
 else
   new Deferred ->
