@@ -7,16 +7,16 @@ jsdom = require 'jsdom'
 class OcticonsSizes
   constructor: (octicons, callback) ->
     sizes = {}
-    for svg in fs.readdirSync "#{octicons}/svg" when svg.match /\.svg$/i
+    for svg in fs.readdirSync "#{octicons}/build/svg" when svg.match /\.svg$/i
       selector = ".octicon-#{svg.replace /\.svg$/i, ""}"
 
-      window = jsdom.jsdom(fs.readFileSync("#{octicons}/svg/#{svg}").toString(), parsingMode: "xml").defaultView
+      window = jsdom.jsdom(fs.readFileSync("#{octicons}/build/svg/#{svg}").toString(), parsingMode: "xml").defaultView
       sizes[selector] =
         height: round window.document.documentElement.getAttribute "height"
         width: round window.document.documentElement.getAttribute "width"
       window.close()
 
-    stylesheet = css.parse fs.readFileSync("#{octicons}/octicons/octicons.css").toString()
+    stylesheet = css.parse fs.readFileSync("#{octicons}/build/font/octicons.css").toString()
       .stylesheet.rules.filter (rule) ->
         rule.type is "rule" and rule.selectors[0].match /:before$/i
       .map (rule) ->

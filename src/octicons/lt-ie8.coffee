@@ -4,7 +4,7 @@ css = require 'css'
 
 class OcticonsLtIE8
   constructor: (octicons, callback) ->
-    stylesheet = css.parse fs.readFileSync("#{octicons}/octicons/octicons.css").toString()
+    stylesheet = css.parse fs.readFileSync("#{octicons}/build/font/octicons.css").toString()
       .stylesheet.rules.filter (rule) ->
         rule.type is "rule" and rule.selectors[0].match /:before$/i
       .map (rule) ->

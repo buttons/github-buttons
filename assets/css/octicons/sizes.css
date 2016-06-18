@@ -1,5 +1,4 @@
 .octicon-alert,
-.octicon-microscope,
 .octicon-beaker,
 .octicon-book,
 .octicon-broadcast,
@@ -8,15 +7,13 @@
 .octicon-cloud-download,
 .octicon-cloud-upload,
 .octicon-comment-discussion,
+.octicon-comment,
 .octicon-credit-card,
 .octicon-dashboard,
-.octicon-clone,
 .octicon-desktop-download,
-.octicon-device-camera,
 .octicon-device-camera-video,
+.octicon-device-camera,
 .octicon-device-desktop,
-.octicon-eye-unwatch,
-.octicon-eye-watch,
 .octicon-eye,
 .octicon-graph,
 .octicon-home,
@@ -26,7 +23,6 @@
 .octicon-mark-github,
 .octicon-markdown,
 .octicon-megaphone,
-.octicon-mirror-public,
 .octicon-mirror,
 .octicon-mortar-board,
 .octicon-mute,
@@ -34,16 +30,13 @@
 .octicon-octoface,
 .octicon-package,
 .octicon-pin,
-.octicon-plug,
 .octicon-radio-tower,
 .octicon-repo-clone,
 .octicon-repo-pull,
 .octicon-rocket,
 .octicon-ruby,
-.octicon-search-save,
 .octicon-search,
 .octicon-settings,
-.octicon-log-out,
 .octicon-sign-out,
 .octicon-smiley,
 .octicon-squirrel,
@@ -66,11 +59,8 @@
 .octicon-chevron-down,
 .octicon-chevron-up,
 .octicon-device-mobile,
-.octicon-git-branch-create,
-.octicon-git-branch-delete,
 .octicon-git-branch,
 .octicon-horizontal-rule,
-.octicon-gist-fork,
 .octicon-repo-forked,
 .octicon-rss,
 .octicon-zap {
@@ -96,9 +86,6 @@
 .octicon-clippy,
 .octicon-clock,
 .octicon-code,
-.octicon-comment-add,
-.octicon-comment,
-.octicon-diff,
 .octicon-diff-added,
 .octicon-diff-ignored,
 .octicon-diff-modified,
@@ -123,24 +110,21 @@
 .octicon-jersey,
 .octicon-key,
 .octicon-law,
-.octicon-mail,
 .octicon-mail-read,
+.octicon-mail,
 .octicon-mention,
 .octicon-milestone,
 .octicon-organization,
 .octicon-pencil,
+.octicon-plug,
 .octicon-pulse,
 .octicon-question,
 .octicon-quote,
+.octicon-reply,
 .octicon-shield,
-.octicon-log-in,
 .octicon-sign-in,
-.octicon-star-add,
-.octicon-star-delete,
 .octicon-star,
 .octicon-stop,
-.octicon-tag-remove,
-.octicon-tag-add,
 .octicon-tag,
 .octicon-telescope,
 .octicon-terminal,
@@ -151,6 +135,7 @@
 
 .octicon-check,
 .octicon-database,
+.octicon-ellipses,
 .octicon-ellipsis,
 .octicon-file-binary,
 .octicon-file-code,
@@ -159,10 +144,10 @@
 .octicon-file-symlink-file,
 .octicon-file-text,
 .octicon-file-zip,
+.octicon-file,
 .octicon-flame,
 .octicon-gist,
 .octicon-git-merge,
-.octicon-git-pull-request-abandoned,
 .octicon-git-pull-request,
 .octicon-heart,
 .octicon-light-bulb,
@@ -170,30 +155,20 @@
 .octicon-list-ordered,
 .octicon-list-unordered,
 .octicon-location,
-.octicon-gist-private,
-.octicon-mirror-private,
-.octicon-git-fork-private,
 .octicon-lock,
 .octicon-mail-reply,
 .octicon-paintcan,
-.octicon-repo-create,
-.octicon-gist-new,
-.octicon-file-directory-create,
-.octicon-file-add,
 .octicon-plus,
-.octicon-repo-delete,
-.octicon-repo,
 .octicon-repo-force-push,
 .octicon-repo-push,
+.octicon-repo,
 .octicon-server,
-.octicon-repo-sync,
 .octicon-sync,
 .octicon-three-bars,
 .octicon-trashcan,
 .octicon-triangle-down,
 .octicon-triangle-up,
 .octicon-watch,
-.octicon-remove-close,
 .octicon-x {
   width: 0.75em;
 }
@@ -201,12 +176,15 @@
 .octicon-chevron-left,
 .octicon-chevron-right,
 .octicon-dash,
-.octicon-person-add,
-.octicon-person-follow,
+.octicon-grabber,
 .octicon-person,
 .octicon-primitive-dot,
 .octicon-primitive-square {
   width: 0.5em;
+}
+
+.octicon-diff {
+  width: 0.8125em;
 }
 
 .octicon-logo-gist {
@@ -215,6 +193,10 @@
 
 .octicon-logo-github {
   width: 2.8125em;
+}
+
+.octicon-plus-small {
+  width: 0.4375em;
 }
 
 .octicon-text-size {
