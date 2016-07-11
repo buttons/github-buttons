@@ -28,6 +28,7 @@
 .octicon-mute,
 .octicon-no-newline,
 .octicon-octoface,
+.octicon-organization,
 .octicon-package,
 .octicon-pin,
 .octicon-radio-tower,
@@ -114,7 +115,6 @@
 .octicon-mail,
 .octicon-mention,
 .octicon-milestone,
-.octicon-organization,
 .octicon-pencil,
 .octicon-plug,
 .octicon-pulse,
@@ -158,6 +158,7 @@
 .octicon-lock,
 .octicon-mail-reply,
 .octicon-paintcan,
+.octicon-person,
 .octicon-plus,
 .octicon-repo-force-push,
 .octicon-repo-push,
@@ -177,7 +178,6 @@
 .octicon-chevron-right,
 .octicon-dash,
 .octicon-grabber,
-.octicon-person,
 .octicon-primitive-dot,
 .octicon-primitive-square {
   width: 0.5em;
