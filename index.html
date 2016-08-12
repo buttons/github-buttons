@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>github:buttons</title>
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="components/octicons/build/font/octicons.min.css">
     <link rel="stylesheet" href="assets/css/main.css">
     <meta name="author" content="なつき">
@@ -12,6 +13,7 @@
     <meta name="keywords" content="GitHub, Developer, Button, Follow, Star, Fork, Issue, Gist, Octicon, API">
     <script async defer src="buttons.js"></script>
     <script async defer src="assets/js/main.js"></script>
+    <script src="dist/clipboard.min.js"></script>
   </head>
   <body>
     <header class="header">
@@ -140,7 +142,10 @@
                 <strong>Warning!</strong> Live Preview has been disabled due to low API rate limit remaining.
               </div>
               <div class="form-group">
-                <textarea id="code" class="code form-control" rows="2" readonly></textarea>
+                <textarea id="code" class="code form-control" rows="3" readonly></textarea>
+                <button class="btn" data-clipboard-target="#code">
+                  <img src="fa fa-clipboard" alt="Copy to clipboard">
+                </button>
               </div>
               <div class="form-group">
                 <textarea id="snippet" class="code form-control" rows="2" readonly></textarea>
