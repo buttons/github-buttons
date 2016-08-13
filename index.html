@@ -14,6 +14,8 @@
     <script async defer src="buttons.js"></script>
     <script async defer src="assets/js/main.js"></script>
     <script src="https://cdn.jsdelivr.net/clipboard.js/1.5.12/clipboard.min.js"></script>
+    <script>new Clipboard('.btn');
+  </script>
   </head>
   <body>
     <header class="header">
@@ -143,12 +145,11 @@
               </div>
               <div class="form-group">
                 <textarea id="code" class="code form-control" rows="3" readonly></textarea>
-                <button class="btn" data-clipboard-target="#code">
-                  <img src="fa fa-clipboard" alt="Copy to clipboard">
-                </button>
+                <button class="btn fa fa-scissors" data-clipboard-target="#code"></button>
               </div>
               <div class="form-group">
                 <textarea id="snippet" class="code form-control" rows="2" readonly></textarea>
+                <button class="btn fa fa-scissors" data-clipboard-target="#snippet"></button>
               </div>
             </div>
           </div>
