@@ -1,9 +1,9 @@
 class GitHubAPIStatus
   @low_rate_limit = false
 
-  window.callback = (json) =>
-    @rate_limit = json.data
-    @low_rate_limit = @rate_limit.resources.core.remaining < 16
+  window.callback = (json) ->
+    GitHubAPIStatus.rate_limit = json.data
+    GitHubAPIStatus.low_rate_limit = GitHubAPIStatus.rate_limit.resources.core.remaining < 16
     return
 
   @update: ->
