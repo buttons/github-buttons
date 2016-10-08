@@ -51,8 +51,8 @@ Add as many `<a class="github-button">` as you like, then put the `<script>` any
 | ---------               | -----------                                                                                                                                     |
 | `href`                  | GitHub link for the button.                                                                                                                     |
 | `data-icon`             | Octicon for the button. It defaults to `octicon-mark-github`. <br> All available icons can be found at [Octicons](https://octicons.github.com). |
-| `data-count-href`       | GitHub link for the count. It defaults to `href` value. <br> Relative url will be relative to `href` value.                                     |
-| `data-count-api`        | GitHub API endpoint for the count.                                                                                                              |
+| `data-count-href`       | GitHub link for the count. It defaults to `href` value. <br> Relative URL will be relative to `href` value.                                     |
+| `data-count-api`        | GitHub API endpoint and the key path (`#hash`) for the count.                                                                                   |
 | `data-count-aria-label` | Aria label for the count link. <br> `#` in this attribute will be replaced with a real count.                                                   |
 | `data-style`            | `default` or `mega`.                                                                                                                            |
 | `data-text`             | Text displayed on the button. This option will override `link_text`.                                                                            |
@@ -63,12 +63,10 @@ Add as many `<a class="github-button">` as you like, then put the `<script>` any
 
 You can use any GitHub API endpoint that supports GET request.  
 
-You must append a `#hash` to the endpoint to extract a value for the count from the JSON response.  
-e.g. `/users/octocat#followers` will extract `followers` from the JSON.  
+You must append a `#hash` to the endpoint URL to specify a key path for a deep property.  
 
-You can also access specific subnode in the JSON.  
-e.g. `/repos/octocat/hello-world#owner.login` will extract `owner.login`.  
-e.g. `/users/octocat/repos#[0].open_issues_count` will extract `open_issues_count` from the first enrty in the array.  
+e.g. `/repos/octocat/hello-world#owner.login` will use `owner.login`.  
+e.g. `/users/octocat/repos#[0].open_issues_count` will use `open_issues_count` from the first enrty in the array.  
 
 See [GitHub Developer](https://developer.github.com) for API references.
 
