@@ -1,39 +1,17 @@
-class FlatObject
-  @flatten: (obj) ->
-    flatten = (object, flat_key) ->
-      switch Object::toString.call object
-        when "[object Object]"
-          for key, value of object
-            flatten value, if flat_key then "#{flat_key}.#{key}" else key
-        when "[object Array]"
-          for item, index in object
-            flatten item, "#{flat_key}[#{index}]"
-        else
-          result[flat_key] = object
-      return
-    result = {}
-    flatten obj, ""
-    result
+class ObjectHelper
+  @deepProperty: (obj, path) ->
+    return obj unless path?
+    key_path = path.split /[.]|(?=\[\d+\])/
+    while key_path.length and obj?
+      key = key_path.shift()
+      key = Number match[1] if match = key.match /^\[(\d+)\]$/
+      obj = obj[key]
+    obj
 
-  @expand: (obj) ->
-    namespace = []
-    for flat_key, value of obj
-      keys = flat_key.match /((?!\[\d+\])[^.])+|\[\d+\]/g
-      target = namespace
-      key = 0
-      while keys.length
-        unless target[key]?
-          target[key] = if keys[0] is index keys[0] then {} else []
-        target = target[key]
-        key = index keys.shift()
-      target[key] = value
-    namespace[0]
 
-  index = (str) ->
-    if match = str.match /^\[(\d+)\]$/
-      Number match[1]
-    else
-      str
+class NumberHelper
+  @numberWithDelimiter: (number) ->
+    "#{number}".replace /\B(?=(\d{3})+(?!\d))/g, ","
 
 
 class QueryString
@@ -53,7 +31,7 @@ class QueryString
 
 class Hash
   @encode: (data) ->
-    "#" + QueryString.stringify FlatObject.flatten data
+    "#" + QueryString.stringify data
 
   @decode: (data = document.location.hash) ->
-    (FlatObject.expand QueryString.parse data.replace /^#/, "") or {}
+    (QueryString.parse data.replace /^#/, "") or {}

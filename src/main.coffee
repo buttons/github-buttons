@@ -84,7 +84,7 @@ class PreviewFrame extends Frame
   load: (config) ->
     parentNode = @$.parentNode
     parentNode.removeChild @$
-    parentNode.style.height = "#{(if config.data.style is "mega" then 28 else 20) + 2}px"
+    parentNode.style.height = "#{(if config["data-style"] is "mega" then 28 else 20) + 2}px"
 
     @$.style.width = "1px"
     @$.style.height = "0"

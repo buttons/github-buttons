@@ -167,7 +167,7 @@ describe 'Frame', ->
       <title></title>
     </head>
     <body style="margin: 0;">
-      <div style="width: 200.5px; height: 100px;"></div>
+      <div style="width: 200.49px; height: 100px;"></div>
     </body>
     </html>
     """
@@ -238,18 +238,14 @@ describe 'ButtonAnchor', ->
     it 'should parse the anchor without attribute', ->
       expect ButtonAnchor.parse a
         .to.deep.equal
-          href: ""
-          text: ""
-          data:
-            count:
-              api: ""
-              href: ""
-              aria:
-                label: ""
-            style: ""
-            icon: ""
-          aria:
-            label: ""
+          "href": ""
+          "text": ""
+          "data-count-api": ""
+          "data-count-href": ""
+          "data-count-aria-label": ""
+          "data-icon": ""
+          "data-style": ""
+          "aria-label": ""
 
     it 'should parse the attribute href', ->
       a.href = "https://buttons.github.io/"
@@ -283,34 +279,28 @@ describe 'ButtonAnchor', ->
       api = "/repos/:user/:repo#item"
       a.setAttribute "data-count-api", api
       expect ButtonAnchor.parse a
-        .to.have.deep.property "data.count.api"
+        .to.have.property "data-count-api"
         .and.equal api
 
     it 'should parse the attribute data-count-href', ->
       href = "https://github.com/"
       a.setAttribute "data-count-href", href
       expect ButtonAnchor.parse a
-        .to.have.deep.property "data.count.href"
+        .to.have.property "data-count-href"
         .and.equal href
-
-    it 'should fallback data.cout.href to the attribute href when the attribute data-count-href is not given', ->
-      a.href = "https://github.com/"
-      expect ButtonAnchor.parse a
-        .to.have.deep.property "data.count.href"
-        .and.equal a.href
 
     it 'should parse the attribute data-style', ->
       style = "mega"
       a.setAttribute "data-style", style
       expect ButtonAnchor.parse a
-        .to.have.deep.property "data.style"
+        .to.have.property "data-style"
         .and.equal style
 
     it 'should parse the attribute data-icon', ->
       icon = "octicon"
       a.setAttribute "data-icon", icon
       expect ButtonAnchor.parse a
-        .to.have.deep.property "data.icon"
+        .to.have.property "data-icon"
         .and.equal icon
 
 
@@ -512,26 +502,19 @@ describe 'ButtonFrameContent', ->
         .to.have.not.been.called
 
     it 'should not set base.href', ->
-      options =
-        href: "https://github.com/"
-        data: {}
-        aria: {}
+      options = "href": "https://github.com/"
       new ButtonFrameContent options
       expect base.getAttribute "href"
         .to.be.null
 
     it 'should set document.body.className when a style is given', ->
-      options =
-        data: style: "mega"
-        aria: {}
+      options = "data-style": "mega"
       new ButtonFrameContent options
       expect document.body.className
-        .to.equal options.data.style
+        .to.equal options["data-style"]
 
     it 'should append the button to document.body when the necessary options are given', ->
-      options =
-        data: {}
-        aria: {}
+      options = {}
       new ButtonFrameContent options
       expect document.body.appendChild
         .to.be.calledOnce
@@ -541,10 +524,7 @@ describe 'ButtonFrameContent', ->
         .and.equal "button"
 
     it 'should append the button with given href', ->
-      options =
-        href: "https://ntkme.github.com/"
-        data: {}
-        aria: {}
+      options = "href": "https://ntkme.github.com/"
       new ButtonFrameContent options
       button = document.body.appendChild.args[0][0]
       expect button.getAttribute "href"
@@ -553,9 +533,8 @@ describe 'ButtonFrameContent', ->
     it 'should filter javascript in the href', ->
       for href, i in javascript_protocals
         options =
-          href: href
-          data: count: href: href
-          aria: {}
+          "href": href
+          "data-count-href": href
         new ButtonFrameContent options
         button = document.body.appendChild.args[i][0]
         if button.protocol
@@ -566,162 +545,120 @@ describe 'ButtonFrameContent', ->
             .to.not.match /^javascript:/i
 
     it 'should append the button with the default icon', ->
-      options =
-        data: {}
-        aria: {}
+      options = {}
       new ButtonFrameContent options
       button = document.body.appendChild.args[0][0]
       expect " #{button.firstChild.className} ".indexOf " #{CONFIG_ICON_DEFAULT} "
         .to.be.at.least 0
 
     it 'should append the button with given icon', ->
-      options =
-        data: icon: "octicon-star"
-        aria: {}
+      options = "data-icon": "octicon-star"
       new ButtonFrameContent options
       button = document.body.appendChild.args[0][0]
-      expect " #{button.firstChild.className} ".indexOf " #{options.data.icon} "
+      expect " #{button.firstChild.className} ".indexOf " #{options["data-icon"]} "
         .to.be.at.least 0
 
     it 'should append the button with given text', ->
-      options =
-        text: "Follow"
-        data: {}
-        aria: {}
+      options = "text": "Follow"
       new ButtonFrameContent options
       button = document.body.appendChild.args[0][0]
       expect button.lastChild.innerHTML
         .to.equal options.text
 
     it 'should append the button with given aria label', ->
-      options =
-        data: {}
-        aria: label: "GitHub"
+      options = "aria-label": "GitHub"
       new ButtonFrameContent options
       button = document.body.appendChild.args[0][0]
       expect button.getAttribute "aria-label"
-        .to.equal options.aria.label
+        .to.equal options["aria-label"]
 
     it 'should append the count to document.body when the necessary options are given', ->
       sinon.stub head, "appendChild", -> window.callback data
-      options =
-        data: count:
-          api: "/dummy/api#followers"
-          aria: {}
-        aria: {}
+      options = "data-count-api": "/dummy/api#followers"
       new ButtonFrameContent options
       expect document.body.appendChild
         .to.be.calledTwice
       count = document.body.appendChild.args[1][0]
+      head.appendChild.restore()
       expect count
         .to.have.property "className"
         .and.equal "count"
-      head.appendChild.restore()
 
-    it 'should append the count with given data.count.href', ->
+    it 'should append the count with given data-count-href', ->
       sinon.stub head, "appendChild", -> window.callback data
       options =
-        data: count:
-          api: "/dummy/api#followers"
-          href: "https://gist.github.com/"
-          aria: {}
-        aria: {}
+        "data-count-api": "/dummy/api#followers"
+        "data-count-href": "https://gist.github.com/"
       new ButtonFrameContent options
       count = document.body.appendChild.args[1][0]
-      expect count.getAttribute "href"
-        .to.equal options.data.count.href
       head.appendChild.restore()
+      expect count.getAttribute "href"
+        .to.equal options["data-count-href"]
 
     it 'should append the count with #entry from api response', ->
       sinon.stub head, "appendChild", -> window.callback data
-      options =
-        data: count:
-          api: "/dummy/api#followers"
-          aria: {}
-        aria: {}
+      options = "data-count-api": "/dummy/api#followers"
       new ButtonFrameContent options
       count = document.body.appendChild.args[1][0]
+      head.appendChild.restore()
       expect count.lastChild.innerHTML
         .to.equal "26"
-      head.appendChild.restore()
 
     it 'should append the count with #entry from api response by prepending missing / to api', ->
       sinon.stub head, "appendChild", -> window.callback data
-      options =
-        data: count:
-          api: "dummy/api#followers"
-          aria: {}
-        aria: {}
+      options = "data-count-api": "dummy/api#followers"
       new ButtonFrameContent options
       count = document.body.appendChild.args[1][0]
+      head.appendChild.restore()
       expect count.lastChild.innerHTML
         .to.equal "26"
-      head.appendChild.restore()
 
     it 'should append the count with large number split by comma', ->
       sinon.stub head, "appendChild", -> window.callback data
-      options =
-        data: count:
-          api: "/dummy/api#id"
-          aria: {}
-        aria: {}
+      options = "data-count-api": "/dummy/api#id"
       new ButtonFrameContent options
       count = document.body.appendChild.args[1][0]
+      head.appendChild.restore()
       expect count.lastChild.innerHTML
         .to.equal "899,645"
-      head.appendChild.restore()
 
     it 'should append the count with given aria label', ->
       sinon.stub head, "appendChild", -> window.callback data
       options =
-        data: count:
-          api: "/dummy/api#followers"
-          aria: label: "# followers on GitHub"
-        aria: {}
+        "data-count-api": "dummy/api#followers"
+        "data-count-aria-label": "# followers on GitHub"
       new ButtonFrameContent options
       count = document.body.appendChild.args[1][0]
+      head.appendChild.restore()
       expect count.getAttribute "aria-label"
         .to.equal "26 followers on GitHub"
-      head.appendChild.restore()
 
     it 'should append the count with text undefined when missing # in api', ->
       sinon.stub head, "appendChild", -> window.callback data
-      options =
-        data: count:
-          api: "/dummy/api"
-          aria: {}
-        aria: {}
+      options = "data-count-api": "/dummy/api"
       new ButtonFrameContent options
       count = document.body.appendChild.args[1][0]
+      head.appendChild.restore()
       expect count.lastChild.innerHTML
         .to.equal "undefined"
-      head.appendChild.restore()
 
     it 'should append the count with text undefined when api #entry does not exist', ->
       sinon.stub head, "appendChild", -> window.callback data
-      options =
-        data: count:
-          api: "/dummy/api#fail"
-          aria: {}
-        aria: {}
+      options = "data-count-api": "/dummy/fail"
       new ButtonFrameContent options
       count = document.body.appendChild.args[1][0]
+      head.appendChild.restore()
       expect count.lastChild.innerHTML
         .to.equal "undefined"
-      head.appendChild.restore()
 
     it 'should not append the count when it fails to pull api data', ->
       sinon.stub head, "appendChild", -> window.callback meta: status: 404
-      options =
-        data: count:
-          api: "/dummy/api#followers"
-          aria: {}
-        aria: {}
+      options = "data-count-api": "dummy/api#followers"
       new ButtonFrameContent options
       expect document.body.appendChild
         .to.be.calledOnce
       button = document.body.appendChild.args[0][0]
+      head.appendChild.restore()
       expect button
         .to.have.property "className"
         .and.equal "button"
-      head.appendChild.restore()

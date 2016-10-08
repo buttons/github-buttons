@@ -1,126 +1,89 @@
 expect = require('chai').expect
-{FlatObject, QueryString, Hash} = require('./sandbox').require '../src/data'
+{ObjectHelper, NumberHelper, QueryString, Hash} = require('./sandbox').require '../src/data'
 
 
-describe 'FlatObject', ->
-  describe '.flatten()', ->
-    it 'should flatten object when object is empty', ->
-      expect FlatObject.flatten {}
+describe 'ObjectHelper', ->
+  describe '.deepProperty()', ->
+    it 'should get undefined when object is missing', ->
+      expect ObjectHelper.deepProperty()
+        .to.deep.equal undefined
+
+    it 'should get the object itself when path is missing', ->
+      expect ObjectHelper.deepProperty {}
         .to.deep.equal {}
+      expect ObjectHelper.deepProperty []
+        .to.deep.equal []
 
-    it 'should flatten object when no nested object or array exists', ->
-      expect FlatObject.flatten {
-        a: 1
-        b: 2
-      }
-        .to.deep.equal
-          "a": 1
-          "b": 2
+    it 'should get the deep property when no nested object or array exists', ->
+      expect ObjectHelper.deepProperty {
+        a: 1, b: 2
+      }, "a"
+        .to.deep.equal 1
 
-    it 'should flatten object when single-level nested object exists', ->
-      expect FlatObject.flatten {
+    it 'should get the deep property when single-level nested object exists', ->
+      expect ObjectHelper.deepProperty {
         a: 1
         b:
           c: 2
         d: 3
-      }
-        .to.deep.equal
-          "a": 1
-          "b.c": 2
-          "d": 3
+      }, "b.c"
+        .to.deep.equal 2
 
-    it 'should flatten object when multiple-level nested object exists', ->
-      expect FlatObject.flatten {
+    it 'should get the deep property when multi-level nested object exists', ->
+      expect ObjectHelper.deepProperty {
         a:
           b: 1
           c: 2
         d:
           e:
             f: 3
-      }
-        .to.deep.equal
-          "a.b": 1
-          "a.c": 2
-          "d.e.f": 3
+      }, "d.e.f"
+        .to.deep.equal 3
 
-    it 'should flatten object when nested array exists', ->
-      expect FlatObject.flatten {
+    it 'should get the deep property when nested array exists', ->
+      expect ObjectHelper.deepProperty {
         a: 1
         b: [2, 3]
         c: 4
-      }
-        .to.deep.equal
-          "a": 1
-          "b[0]": 2
-          "b[1]": 3
-          "c": 4
+      }, "b[1]"
+        .to.deep.equal 3
 
-    it 'should flatten array when array is empty', ->
-      expect FlatObject.flatten []
-        .to.deep.equal {}
+    it 'should get the deep property for array', ->
+      expect ObjectHelper.deepProperty [1, 2], "[1]"
+        .to.deep.equal 2
 
-    it 'should flatten array when no nested object or array exists', ->
-      expect FlatObject.flatten [1, 2]
-        .to.deep.equal
-          "[0]": 1
-          "[1]": 2
+    it 'should get the deep property for array when single-level nested array exists', ->
+      expect ObjectHelper.deepProperty [1, [2, 3], 4], "[1][1]"
+        .to.deep.equal 3
 
-    it 'should flatten array when single-level nested array exists', ->
-      expect FlatObject.flatten [1, [2, 3], 4]
-        .to.deep.equal
-          "[0]": 1
-          "[1][0]": 2
-          "[1][1]": 3
-          "[2]": 4
+    it 'should get the deep property for array when multi-level nested array exists', ->
+      expect ObjectHelper.deepProperty [1, [2, [3, 4]], 5], "[1][1][0]"
+        .to.deep.equal 3
 
-    it 'should flatten array when multiple-level nested array exists', ->
-      expect FlatObject.flatten [1, [2, [3, 4]], 5]
-        .to.deep.equal
-          "[0]": 1
-          "[1][0]": 2
-          "[1][1][0]": 3
-          "[1][1][1]": 4
-          "[2]": 5
+    it 'should get the deep property for array when nested object exists', ->
+      expect ObjectHelper.deepProperty [1, {a: 2, b: 3}, 4], "[1].a"
+        .to.deep.equal 2
 
-    it 'should flatten array when nested object exists', ->
-      expect FlatObject.flatten [1, {a: 2, b: 3}, 4]
-        .to.deep.equal
-          "[0]": 1
-          "[1].a": 2
-          "[1].b": 3
-          "[2]": 4
+    it 'should be able to handle empty string as key', ->
+      expect ObjectHelper.deepProperty {"": "test"}, ""
+        .to.deep.equal "test"
+      expect ObjectHelper.deepProperty {a: "": "": b: "empty"}, "a...b"
+        .to.deep.equal "empty"
 
-  describe '.expand()', ->
-    it 'should not expand obejct when obejct is empty', ->
-      expect FlatObject.expand {}
-        .to.equal undefined
 
-    it 'should expnad object as object', ->
-      expect FlatObject.expand {
-        "a": 1
-        "b.c": 2
-        "b.d[0]": 3
-        "b.d[1].e": 4
-        "f[0]": 5
-        "f[1]": 6
-      }
-        .to.deep.equal
-          a: 1
-          b:
-            c: 2
-            d: [3, e: 4]
-          f: [5, 6]
+describe 'NumberHelper', ->
+  describe '.numberWithDelimiter()', ->
+    it 'should not add delimiter when number has 3 digits or less', ->
+      expect NumberHelper.numberWithDelimiter 0
+        .to.equal "0"
+      expect NumberHelper.numberWithDelimiter 999
+        .to.equal "999"
 
-    it 'should expand object as array', ->
-      expect FlatObject.expand {
-        "[0]": 1
-        "[1][0]": 2
-        "[1][1].a": 3
-        "[1][1].b[0]": 4
-        "[2].c": 5
-        "[2].d": 6
-      }
-        .to.deep.equal [1, [2, {a: 3, b: [4]}], {c: 5, d: 6}]
+    it 'should not add delimiter when number has 4 digits or more', ->
+      expect NumberHelper.numberWithDelimiter 1000
+        .to.equal "1,000"
+      expect NumberHelper.numberWithDelimiter 2147483647
+        .to.equal "2,147,483,647"
 
 
 describe 'QueryString', ->

@@ -119,18 +119,18 @@ class Frame extends Element
 
 class ButtonAnchor
   @parse: (element) ->
-    href: element.href
-    text: element.getAttribute("data-text") or element.textContent or element.innerText or ""
-    data:
-      count:
-        api: element.getAttribute("data-count-api") or ""
-        href: element.getAttribute("data-count-href") or element.href
-        aria:
-          label: element.getAttribute("data-count-aria-label") or ""
-      style: element.getAttribute("data-style") or ""
-      icon: element.getAttribute("data-icon") or ""
-    aria:
-      label: element.getAttribute("aria-label") or ""
+    options =
+      "href": element.href
+      "text": element.getAttribute("data-text") or element.textContent or element.innerText or ""
+    options[attribute] = element.getAttribute(attribute) or "" for attribute in [
+      "data-count-api"
+      "data-count-href"
+      "data-count-aria-label"
+      "data-style"
+      "data-icon"
+      "aria-label"
+    ]
+    options
 
 
 class ButtonFrame extends Frame
@@ -172,14 +172,14 @@ class ButtonFrame extends Frame
 
 class ButtonFrameContent
   constructor: (options) ->
-    if options and options.data
-      document.body.className = options.data.style or ""
+    if options
+      document.body.className = options["data-style"] or ""
 
       new Anchor options.href, null, (a) ->
         a.className = "button"
-        a.setAttribute "aria-label", options.aria.label if options.aria.label
+        a.setAttribute "aria-label", aria_label if aria_label = options["aria-label"]
         new Element "i", (icon) ->
-          icon.className = options.data.icon or CONFIG_ICON_DEFAULT
+          icon.className = options["data-icon"] or CONFIG_ICON_DEFAULT
           @addClass CONFIG_ICON_CLASS if CONFIG_ICON_CLASS
           icon.setAttribute "aria-hidden", "true"
           a.appendChild icon
@@ -194,9 +194,9 @@ class ButtonFrameContent
         document.body.appendChild a
         return
 
-      do (options = options.data.count, baseUrl = options.href) ->
-        if options and options.api
-          new Anchor options.href, baseUrl, (a) ->
+      do ->
+        if api = options["data-count-api"]
+          new Anchor options["data-count-href"] or options.href, options.href, (a) ->
             a.className = "count"
             new Element "b", (b) ->
               a.appendChild b
@@ -208,7 +208,7 @@ class ButtonFrameContent
               a.appendChild span
 
               endpoint = do ->
-                url = options.api.replace(/^(?!\/)/, "/").split("#")[0]
+                url = api.replace(/^(?!\/)/, "/").split("#")[0]
                 query = QueryString.parse url.split("?")[1..].join("?")
                 query.callback = "callback"
                 "#{url.split("?")[0]}?#{QueryString.stringify query}"
@@ -221,11 +221,11 @@ class ButtonFrameContent
                   window.callback = null
 
                   if json.meta.status is 200
-                    data = FlatObject.flatten(json.data)[options.api.split("#")[1..].join("#")]
+                    data = ObjectHelper.deepProperty json.data, api.split("#")[1..].join("#")
                     if "[object Number]" is Object::toString.call data
-                      data = "#{data}".replace /\B(?=(\d{3})+(?!\d))/g, ","
+                      data = NumberHelper.numberWithDelimiter data
                     span.appendChild document.createTextNode data
-                    a.setAttribute "aria-label", options.aria.label.replace "#", data if options.aria.label
+                    a.setAttribute "aria-label", aria_label.replace "#", data if aria_label = options["data-count-aria-label"]
                     document.body.appendChild a
                   return
                 window.callback.script = script
