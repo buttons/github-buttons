@@ -13,7 +13,7 @@
 
   CONFIG_ICON_DEFAULT = CONFIG_ICON_CLASS + "-mark-github";
 
-  CONFIG_URL = document.currentScript ? document.currentScript.src.replace(/[^\/]*([?#].*)?$/, "") : (/^http:/.test(document.location) ? "http" : "https") + "://buttons.github.io/";
+  CONFIG_URL = !{}.hasOwnProperty.call(document, "currentScript") && delete document.currentScript && document.currentScript ? document.currentScript.src.replace(/[^\/]*([?#].*)?$/, "") : (/^http:/.test(document.location) ? "http" : "https") + "://buttons.github.io/";
 
   CONFIG_UUID = "faa75404-3b97-5585-b449-4bc51338fbd1";
 
