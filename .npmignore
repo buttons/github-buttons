@@ -1,5 +1,6 @@
 .*
 Cakefile
 circle.yml
+coffeelint.json
 src/
 test/
