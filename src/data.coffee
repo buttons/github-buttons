@@ -1,10 +1,10 @@
 class ObjectHelper
   @deepProperty: (obj, path) ->
     return obj unless path?
-    key_path = path.split /[.]|(?=\[\d+\])/
+    key_path = path.split /\.|(?=\[\d+\])/
     while key_path.length and obj?
       key = key_path.shift()
-      key = Number match[1] if match = key.match /^\[(\d+)\]$/
+      key = +match[1] if match = key.match /^\[(\d+)\]$/
       obj = obj[key]
     obj
 
