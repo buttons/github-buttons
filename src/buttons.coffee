@@ -6,7 +6,7 @@ else
       anchors = document.querySelectorAll "a.#{CONFIG_ANCHOR_CLASS}"
     else
       anchors =
-        anchor for anchor in document.getElementsByTagName "a" when new Element(anchor).hasClass CONFIG_ANCHOR_CLASS
+        a for a in document.getElementsByTagName "a" when ~" #{a.className} ".replace(/[ \t\n\f\r]+/g, " ").indexOf(" #{CONFIG_ANCHOR_CLASS} ")
 
     for anchor in anchors
       do (a = anchor) ->

@@ -25,6 +25,39 @@ class GitHubAPIStatus
   @update()
 
 
+class Element extends EventTarget
+  constructor: (element, callback) ->
+    @$ = if element and element.nodeType is 1 then element else document.createElement element
+    callback.call @, @$ if callback
+
+  addClass: (className) ->
+    addClass @$, className unless hasClass @$, className
+    return
+
+  removeClass: (className) ->
+    removeClass @$, className if hasClass @$, className
+    return
+
+  hasClass: (className) ->
+    hasClass @$, className
+
+  addClass = (element, className) ->
+    element.className += " #{className}"
+    return
+
+  removeClass = (element, className) ->
+    element.className = " #{element.className} "
+      .replace r_whitespace, " "
+      .replace " #{className} ", ""
+      .replace /^ | $/, ""
+    return
+
+  hasClass = (element, className) ->
+    " #{element.className} ".replace(r_whitespace, " ").indexOf(" #{className} ") >= 0
+
+  r_whitespace = /[ \t\n\f\r]+/g
+
+
 class Form extends Element
   on: (events..., func) ->
     if events.indexOf("change") >= 0

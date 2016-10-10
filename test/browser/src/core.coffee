@@ -121,40 +121,6 @@ describe 'Element', ->
           done()
       b.click()
 
-  describe '#addClass()', ->
-    it 'should add class to element', ->
-      element = document.createElement "a"
-      element.className = "hello"
-      a = new Element element
-      a.addClass "world"
-      expect a.$.className
-        .to.equal "hello world"
-      a.addClass "world"
-      expect a.$.className
-        .to.equal "hello world"
-
-  describe '#removeClass()', ->
-    it 'should remove class from element', ->
-      element = document.createElement "a"
-      element.className = "hello world"
-      a = new Element element
-      a.removeClass "hello"
-      expect a.$.className
-        .to.equal "world"
-      a.removeClass "hello"
-      expect a.$.className
-        .to.equal "world"
-
-  describe '#hasClass()', ->
-    it 'should return whether element has class', ->
-      element = document.createElement "a"
-      element.className = "world"
-      a = new Element element
-      expect a.hasClass "hello"
-        .to.be.false
-      expect a.hasClass "world"
-        .to.be.true
-
 
 describe 'Frame', ->
   frame = null

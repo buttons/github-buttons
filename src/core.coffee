@@ -34,33 +34,6 @@ class Element extends EventTarget
     @$ = if element and element.nodeType is 1 then element else document.createElement element
     callback.call @, @$ if callback
 
-  addClass: (className) ->
-    addClass @$, className unless hasClass @$, className
-    return
-
-  removeClass: (className) ->
-    removeClass @$, className if hasClass @$, className
-    return
-
-  hasClass: (className) ->
-    hasClass @$, className
-
-  addClass = (element, className) ->
-    element.className += " #{className}"
-    return
-
-  removeClass = (element, className) ->
-    element.className = " #{element.className} "
-      .replace r_whitespace, " "
-      .replace " #{className} ", ""
-      .replace /^ | $/, ""
-    return
-
-  hasClass = (element, className) ->
-    " #{element.className} ".replace(r_whitespace, " ").indexOf(" #{className} ") >= 0
-
-  r_whitespace = /[ \t\n\f\r]+/g
-
 
 class Frame extends Element
   constructor: (callback) ->
@@ -180,7 +153,7 @@ class ButtonFrameContent
         a.setAttribute "aria-label", aria_label if aria_label = options["aria-label"]
         new Element "i", (icon) ->
           icon.className = options["data-icon"] or CONFIG_ICON_DEFAULT
-          @addClass CONFIG_ICON_CLASS if CONFIG_ICON_CLASS
+          icon.className += " #{CONFIG_ICON_CLASS}" if CONFIG_ICON_CLASS
           icon.setAttribute "aria-hidden", "true"
           a.appendChild icon
           return

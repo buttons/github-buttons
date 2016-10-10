@@ -177,8 +177,6 @@
   })();
 
   Element = (function(superClass) {
-    var addClass, hasClass, r_whitespace, removeClass;
-
     extend(Element, superClass);
 
     function Element(element, callback) {
@@ -187,36 +185,6 @@
         callback.call(this, this.$);
       }
     }
-
-    Element.prototype.addClass = function(className) {
-      if (!hasClass(this.$, className)) {
-        addClass(this.$, className);
-      }
-    };
-
-    Element.prototype.removeClass = function(className) {
-      if (hasClass(this.$, className)) {
-        removeClass(this.$, className);
-      }
-    };
-
-    Element.prototype.hasClass = function(className) {
-      return hasClass(this.$, className);
-    };
-
-    addClass = function(element, className) {
-      element.className += " " + className;
-    };
-
-    removeClass = function(element, className) {
-      element.className = (" " + element.className + " ").replace(r_whitespace, " ").replace(" " + className + " ", "").replace(/^ | $/, "");
-    };
-
-    hasClass = function(element, className) {
-      return (" " + element.className + " ").replace(r_whitespace, " ").indexOf(" " + className + " ") >= 0;
-    };
-
-    r_whitespace = /[ \t\n\f\r]+/g;
 
     return Element;
 
@@ -392,7 +360,7 @@
           new Element("i", function(icon) {
             icon.className = options["data-icon"] || CONFIG_ICON_DEFAULT;
             if (CONFIG_ICON_CLASS) {
-              this.addClass(CONFIG_ICON_CLASS);
+              icon.className += " " + CONFIG_ICON_CLASS;
             }
             icon.setAttribute("aria-hidden", "true");
             a.appendChild(icon);
@@ -604,7 +572,7 @@
         return b.click();
       });
     });
-    describe('#once()', function() {
+    return describe('#once()', function() {
       var input;
       input = null;
       beforeEach(function() {
@@ -653,40 +621,6 @@
           return done();
         });
         return b.click();
-      });
-    });
-    describe('#addClass()', function() {
-      return it('should add class to element', function() {
-        var a, element;
-        element = document.createElement("a");
-        element.className = "hello";
-        a = new Element(element);
-        a.addClass("world");
-        expect(a.$.className).to.equal("hello world");
-        a.addClass("world");
-        return expect(a.$.className).to.equal("hello world");
-      });
-    });
-    describe('#removeClass()', function() {
-      return it('should remove class from element', function() {
-        var a, element;
-        element = document.createElement("a");
-        element.className = "hello world";
-        a = new Element(element);
-        a.removeClass("hello");
-        expect(a.$.className).to.equal("world");
-        a.removeClass("hello");
-        return expect(a.$.className).to.equal("world");
-      });
-    });
-    return describe('#hasClass()', function() {
-      return it('should return whether element has class', function() {
-        var a, element;
-        element = document.createElement("a");
-        element.className = "world";
-        a = new Element(element);
-        expect(a.hasClass("hello")).to.be["false"];
-        return expect(a.hasClass("world")).to.be["true"];
       });
     });
   });
