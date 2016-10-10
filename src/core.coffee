@@ -222,7 +222,7 @@ class ButtonFrameContent
 
                   if json.meta.status is 200
                     data = ObjectHelper.deepProperty json.data, api.split("#")[1..].join("#")
-                    if "[object Number]" is Object::toString.call data
+                    if "[object Number]" is {}.toString.call data
                       data = NumberHelper.numberWithDelimiter data
                     span.appendChild document.createTextNode data
                     a.setAttribute "aria-label", aria_label.replace "#", data if aria_label = options["data-count-aria-label"]
@@ -241,7 +241,7 @@ class ButtonFrameContent
 
                 head = document.getElementsByTagName("head")[0]
 
-                if "[object Opera]" is Object::toString.call window.opera
+                if "[object Opera]" is {}.toString.call window.opera
                   new EventTarget document
                     .on "DOMContentLoaded", ->
                       head.appendChild script
