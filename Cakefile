@@ -140,4 +140,4 @@ task 'test:mocha-phantomjs', 'Test browser scripts', ->
                  "src/core.coffee",
                  "test/browser/src/core.coffee",
                  "test/browser/lib/main.js",
-                 -> system "mocha-phantomjs", "--file", "/dev/null", "test/browser/index.html"
+                 -> system "mocha-phantomjs", "-p", "./node_modules/.bin/phantomjs", "--file", "/dev/null", "test/browser/index.html"
