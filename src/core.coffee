@@ -84,10 +84,7 @@ class Frame extends Element
   devicePixelRatio = window.devicePixelRatio or 1
 
   roundPixel = (px) ->
-    if devicePixelRatio > 1
-      Math.ceil(Math.round(px * devicePixelRatio) / devicePixelRatio * 2) / 2 or 0
-    else
-      Math.ceil(px) or 0
+    (if devicePixelRatio > 1 then Math.ceil(Math.round(px * devicePixelRatio) / devicePixelRatio * 2) / 2 else Math.ceil(px)) or 0
 
 
 class ButtonAnchor
@@ -113,10 +110,12 @@ class ButtonFrame extends Frame
     reload = =>
       reload = null
       size = @size()
+
       @$.parentNode.removeChild @$
       @once "load", ->
         @resize size
         return
+
       @load "#{CONFIG_URL}buttons.html#{hash}"
       callback.call @, @$ if callback
       return
@@ -151,19 +150,20 @@ class ButtonFrameContent
       new Anchor options.href, null, (a) ->
         a.className = "button"
         a.setAttribute "aria-label", aria_label if aria_label = options["aria-label"]
-        new Element "i", (icon) ->
-          icon.className = options["data-icon"] or CONFIG_ICON_DEFAULT
-          icon.className += " #{CONFIG_ICON_CLASS}" if CONFIG_ICON_CLASS
-          icon.setAttribute "aria-hidden", "true"
-          a.appendChild icon
+
+        new Element "i", (i) ->
+          i.className = "#{CONFIG_ICON_CLASS} #{options["data-icon"] or CONFIG_ICON_DEFAULT}"
+          i.setAttribute "aria-hidden", "true"
+          a.appendChild i
           return
 
         a.appendChild document.createTextNode " "
 
-        new Element "span", (text) ->
-          text.appendChild document.createTextNode options.text if options.text
-          a.appendChild text
+        new Element "span", (span) ->
+          span.appendChild document.createTextNode options.text if options.text
+          a.appendChild span
           return
+
         document.body.appendChild a
         return
 
@@ -171,33 +171,34 @@ class ButtonFrameContent
         if api = options["data-count-api"]
           new Anchor options["data-count-href"] or options.href, options.href, (a) ->
             a.className = "count"
+
             new Element "b", (b) ->
               a.appendChild b
               return
+
             new Element "i", (i) ->
               a.appendChild i
               return
+
             new Element "span", (span) ->
-              a.appendChild span
-
-              endpoint = do ->
-                url = api.replace(/^(?!\/)/, "/").split("#")[0]
-                query = QueryString.parse url.split("?")[1..].join("?")
-                query.callback = "callback"
-                "#{url.split("?")[0]}?#{QueryString.stringify query}"
-
               new Element "script", (script) ->
                 script.async = true
-                script.src = "#{CONFIG_API}#{endpoint}"
+                script.src = CONFIG_API + do ->
+                  path = api.replace(/^(?!\/)/, "/").split("#")[0]
+                  query = QueryString.parse path.split("?")[1..].join("?")
+                  query.callback = "callback"
+                  "#{path.split("?")[0]}?#{QueryString.stringify query}"
 
                 window.callback = (json) ->
                   window.callback = null
 
                   if json.meta.status is 200
                     data = ObjectHelper.deepProperty json.data, api.split("#")[1..].join("#")
-                    if "[object Number]" is {}.toString.call data
-                      data = NumberHelper.numberWithDelimiter data
+                    data = NumberHelper.numberWithDelimiter data if "[object Number]" is {}.toString.call data
+
                     span.appendChild document.createTextNode data
+                    a.appendChild span
+
                     a.setAttribute "aria-label", aria_label.replace "#", data if aria_label = options["data-count-aria-label"]
                     document.body.appendChild a
                   return
@@ -247,11 +248,13 @@ class ButtonFrameContent
               base.removeAttribute "href"
           else
             a.href = urlString
+
           if r_archive.test a.href
             a.target = "_top"
           if a.protocol is javascript or not r_hostname.test ".#{a.hostname}"
             a.href = "#"
             a.target = "_self"
+
         callback a
         return
 
