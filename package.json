@@ -16,6 +16,7 @@
   ],
   "author": "なつき <i@ntk.me>",
   "license": "BSD-2-Clause",
+  "private": true,
   "bugs": {
     "url": "https://github.com/ntkme/github-buttons/issues"
   },
