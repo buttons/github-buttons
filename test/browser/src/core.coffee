@@ -539,7 +539,7 @@ describe 'ButtonFrameContent', ->
         .to.equal options["aria-label"]
 
     it 'should append the count to document.body when the necessary options are given', ->
-      sinon.stub head, "appendChild", -> window.callback data
+      sinon.stub(head, "appendChild").callsFake -> window.callback data
       options = "data-count-api": "/dummy/api#followers"
       new ButtonFrameContent options
       expect document.body.appendChild
@@ -551,7 +551,7 @@ describe 'ButtonFrameContent', ->
         .and.equal "count"
 
     it 'should append the count with given data-count-href', ->
-      sinon.stub head, "appendChild", -> window.callback data
+      sinon.stub(head, "appendChild").callsFake -> window.callback data
       options =
         "data-count-api": "/dummy/api#followers"
         "data-count-href": "https://gist.github.com/"
@@ -562,7 +562,7 @@ describe 'ButtonFrameContent', ->
         .to.equal options["data-count-href"]
 
     it 'should append the count with #entry from api response', ->
-      sinon.stub head, "appendChild", -> window.callback data
+      sinon.stub(head, "appendChild").callsFake -> window.callback data
       options = "data-count-api": "/dummy/api#followers"
       new ButtonFrameContent options
       count = document.body.appendChild.args[1][0]
@@ -571,7 +571,7 @@ describe 'ButtonFrameContent', ->
         .to.equal "26"
 
     it 'should append the count with #entry from api response by prepending missing / to api', ->
-      sinon.stub head, "appendChild", -> window.callback data
+      sinon.stub(head, "appendChild").callsFake -> window.callback data
       options = "data-count-api": "dummy/api#followers"
       new ButtonFrameContent options
       count = document.body.appendChild.args[1][0]
@@ -580,7 +580,7 @@ describe 'ButtonFrameContent', ->
         .to.equal "26"
 
     it 'should append the count with large number split by comma', ->
-      sinon.stub head, "appendChild", -> window.callback data
+      sinon.stub(head, "appendChild").callsFake -> window.callback data
       options = "data-count-api": "/dummy/api#id"
       new ButtonFrameContent options
       count = document.body.appendChild.args[1][0]
@@ -589,7 +589,7 @@ describe 'ButtonFrameContent', ->
         .to.equal "899,645"
 
     it 'should append the count with given aria label', ->
-      sinon.stub head, "appendChild", -> window.callback data
+      sinon.stub(head, "appendChild").callsFake -> window.callback data
       options =
         "data-count-api": "dummy/api#followers"
         "data-count-aria-label": "# followers on GitHub"
@@ -600,7 +600,7 @@ describe 'ButtonFrameContent', ->
         .to.equal "26 followers on GitHub"
 
     it 'should append the count with text undefined when missing # in api', ->
-      sinon.stub head, "appendChild", -> window.callback data
+      sinon.stub(head, "appendChild").callsFake -> window.callback data
       options = "data-count-api": "/dummy/api"
       new ButtonFrameContent options
       count = document.body.appendChild.args[1][0]
@@ -609,7 +609,7 @@ describe 'ButtonFrameContent', ->
         .to.equal "undefined"
 
     it 'should append the count with text undefined when api #entry does not exist', ->
-      sinon.stub head, "appendChild", -> window.callback data
+      sinon.stub(head, "appendChild").callsFake -> window.callback data
       options = "data-count-api": "/dummy/fail"
       new ButtonFrameContent options
       count = document.body.appendChild.args[1][0]
@@ -618,7 +618,7 @@ describe 'ButtonFrameContent', ->
         .to.equal "undefined"
 
     it 'should not append the count when it fails to pull api data', ->
-      sinon.stub head, "appendChild", -> window.callback meta: status: 404
+      sinon.stub(head, "appendChild").callsFake -> window.callback meta: status: 404
       options = "data-count-api": "dummy/api#followers"
       new ButtonFrameContent options
       expect document.body.appendChild
