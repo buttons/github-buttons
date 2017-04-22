@@ -268,25 +268,8 @@ class ButtonForm extends Form
       config.data.style = "mega"
     if options["show-count"]?
       switch type
-        when "follow"
-          config.data["count-href"] = "/#{user}/followers"
-          config.data["count-api"] = "/users/#{user}#followers"
-          config.data["count-aria-label"] = "# followers on GitHub"
-        when "watch"
-          config.data["count-href"] = "/#{user}/#{repo}/watchers"
-          config.data["count-api"] = "/repos/#{user}/#{repo}#subscribers_count"
-          config.data["count-aria-label"] = "# watchers on GitHub"
-        when "star"
-          config.data["count-href"] = "/#{user}/#{repo}/stargazers"
-          config.data["count-api"] = "/repos/#{user}/#{repo}#stargazers_count"
-          config.data["count-aria-label"] = "# stargazers on GitHub"
-        when "fork"
-          config.data["count-href"] = "/#{user}/#{repo}/network"
-          config.data["count-api"] = "/repos/#{user}/#{repo}#forks_count"
-          config.data["count-aria-label"] = "# forks on GitHub"
-        when "issue"
-          config.data["count-api"] = "/repos/#{user}/#{repo}#open_issues_count"
-          config.data["count-aria-label"] = "# issues on GitHub"
+        when "follow", "watch", "star", "fork", "issue"
+          config.data["show-count"] = "true"
     if options["standard-icon"]? or config.data.icon is "octicon-mark-github"
       delete config.data.icon
     config

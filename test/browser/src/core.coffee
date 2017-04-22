@@ -206,10 +206,8 @@ describe 'ButtonAnchor', ->
         .to.deep.equal
           "href": ""
           "text": ""
-          "data-count-api": ""
-          "data-count-href": ""
-          "data-count-aria-label": ""
           "data-icon": ""
+          "data-show-count": ""
           "data-style": ""
           "aria-label": ""
 
@@ -241,19 +239,11 @@ describe 'ButtonAnchor', ->
         .to.have.property "text"
         .and.equal text
 
-    it 'should parse the attribute data-count-api', ->
+    it 'should parse the attribute data-count-api for backward compatibility', ->
       api = "/repos/:user/:repo#item"
       a.setAttribute "data-count-api", api
       expect ButtonAnchor.parse a
-        .to.have.property "data-count-api"
-        .and.equal api
-
-    it 'should parse the attribute data-count-href', ->
-      href = "https://github.com/"
-      a.setAttribute "data-count-href", href
-      expect ButtonAnchor.parse a
-        .to.have.property "data-count-href"
-        .and.equal href
+        .to.have.property "data-show-count"
 
     it 'should parse the attribute data-style', ->
       style = "mega"
@@ -540,86 +530,28 @@ describe 'ButtonFrameContent', ->
 
     it 'should append the count to document.body when the necessary options are given', ->
       sinon.stub(head, "appendChild").callsFake -> window.callback data
-      options = "data-count-api": "/dummy/api#followers"
+      options =
+        "href": "https://github.com/ntkme"
+        "data-show-count": true
       new ButtonFrameContent options
       expect document.body.appendChild
         .to.be.calledTwice
       count = document.body.appendChild.args[1][0]
       head.appendChild.restore()
+
       expect count
         .to.have.property "className"
         .and.equal "count"
-
-    it 'should append the count with given data-count-href', ->
-      sinon.stub(head, "appendChild").callsFake -> window.callback data
-      options =
-        "data-count-api": "/dummy/api#followers"
-        "data-count-href": "https://gist.github.com/"
-      new ButtonFrameContent options
-      count = document.body.appendChild.args[1][0]
-      head.appendChild.restore()
-      expect count.getAttribute "href"
-        .to.equal options["data-count-href"]
-
-    it 'should append the count with #entry from api response', ->
-      sinon.stub(head, "appendChild").callsFake -> window.callback data
-      options = "data-count-api": "/dummy/api#followers"
-      new ButtonFrameContent options
-      count = document.body.appendChild.args[1][0]
-      head.appendChild.restore()
       expect count.lastChild.innerHTML
         .to.equal "26"
-
-    it 'should append the count with #entry from api response by prepending missing / to api', ->
-      sinon.stub(head, "appendChild").callsFake -> window.callback data
-      options = "data-count-api": "dummy/api#followers"
-      new ButtonFrameContent options
-      count = document.body.appendChild.args[1][0]
-      head.appendChild.restore()
-      expect count.lastChild.innerHTML
-        .to.equal "26"
-
-    it 'should append the count with large number split by comma', ->
-      sinon.stub(head, "appendChild").callsFake -> window.callback data
-      options = "data-count-api": "/dummy/api#id"
-      new ButtonFrameContent options
-      count = document.body.appendChild.args[1][0]
-      head.appendChild.restore()
-      expect count.lastChild.innerHTML
-        .to.equal "899,645"
-
-    it 'should append the count with given aria label', ->
-      sinon.stub(head, "appendChild").callsFake -> window.callback data
-      options =
-        "data-count-api": "dummy/api#followers"
-        "data-count-aria-label": "# followers on GitHub"
-      new ButtonFrameContent options
-      count = document.body.appendChild.args[1][0]
-      head.appendChild.restore()
       expect count.getAttribute "aria-label"
         .to.equal "26 followers on GitHub"
 
-    it 'should append the count with text undefined when missing # in api', ->
-      sinon.stub(head, "appendChild").callsFake -> window.callback data
-      options = "data-count-api": "/dummy/api"
-      new ButtonFrameContent options
-      count = document.body.appendChild.args[1][0]
-      head.appendChild.restore()
-      expect count.lastChild.innerHTML
-        .to.equal "undefined"
-
-    it 'should append the count with text undefined when api #entry does not exist', ->
-      sinon.stub(head, "appendChild").callsFake -> window.callback data
-      options = "data-count-api": "/dummy/fail"
-      new ButtonFrameContent options
-      count = document.body.appendChild.args[1][0]
-      head.appendChild.restore()
-      expect count.lastChild.innerHTML
-        .to.equal "undefined"
-
     it 'should not append the count when it fails to pull api data', ->
       sinon.stub(head, "appendChild").callsFake -> window.callback meta: status: 404
-      options = "data-count-api": "dummy/api#followers"
+      options =
+        "href": "https://github.com/ntkme"
+        "data-show-count": true
       new ButtonFrameContent options
       expect document.body.appendChild
         .to.be.calledOnce

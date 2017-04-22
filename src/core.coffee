@@ -93,13 +93,12 @@ class ButtonAnchor
       "href": element.href
       "text": element.getAttribute("data-text") or element.textContent or element.innerText or ""
     options[attribute] = element.getAttribute(attribute) or "" for attribute in [
-      "data-count-api"
-      "data-count-href"
-      "data-count-aria-label"
+      "data-show-count"
       "data-style"
       "data-icon"
       "aria-label"
     ]
+    options["data-show-count"] = 1 if element.getAttribute "data-count-api"
     options
 
 
@@ -138,7 +137,7 @@ class ButtonFrame extends Frame
 
     @html \
       """
-      <!DOCTYPE html><html><head><meta charset="utf-8"><title>#{CONFIG_UUID}</title><link rel="stylesheet" href="#{CONFIG_URL}assets/css/buttons.css"><script>document.location.hash = "#{hash}";</script></head><body><script src="#{CONFIG_URL}buttons.js"></script></body></html>
+      <!DOCTYPE html><html><head><meta charset="utf-8"><title>#{CONFIG_UUID}</title><base><!--[if lte IE 6]></base><![endif]--><link rel="stylesheet" href="#{CONFIG_URL}assets/css/buttons.css"><script>document.location.hash = "#{hash}";</script></head><body><script src="#{CONFIG_URL}buttons.js"></script></body></html>
       """
 
 
@@ -165,11 +164,44 @@ class ButtonFrameContent
           return
 
         document.body.appendChild a
-        return
 
-      do ->
-        if api = options["data-count-api"]
-          new Anchor options["data-count-href"] or options.href, options.href, (a) ->
+        return unless a.hostname is "github.com" and /^true|1$/i.test options["data-show-count"]
+
+        do ->
+          match = a.pathname.replace(/^(?!\/)/, "/").match ///
+            ^/([^/?#]+)
+            (?:
+              /([^/?#]+)
+              (?:
+                /(?:(subscription)|(fork)|(issues)|([^/?#]+))
+              )?
+            )?
+            (?:[/?#]|$)
+          ///
+
+          return unless match and not match[6]
+
+          if match[2]
+            api = "/repos/#{match[1]}/#{match[2]}"
+            href = "/#{match[1]}/#{match[2]}/"
+            if match[3]
+              property = "subscribers_count"
+              href += "watchers"
+            else if match[4]
+              property = "forks_count"
+              href += "network"
+            else if match[5]
+              property = "open_issues_count"
+              href += "issues"
+            else
+              property = "stargazers_count"
+              href += "stargazers"
+          else
+            api = "/users/#{match[1]}"
+            property = "followers"
+            href = "/#{match[1]}/#{property}"
+
+          new Anchor href, a.href, (a) ->
             a.className = "count"
 
             new Element "b", (b) ->
@@ -184,22 +216,21 @@ class ButtonFrameContent
               new Element "script", (script) ->
                 script.async = true
                 script.src = CONFIG_API + do ->
-                  path = api.replace(/^(?!\/)/, "/").split("#")[0]
-                  query = QueryString.parse path.split("?")[1..].join("?")
+                  query = QueryString.parse api.split("?")[1..].join("?")
                   query.callback = "callback"
-                  "#{path.split("?")[0]}?#{QueryString.stringify query}"
+                  "#{api.split("?")[0]}?#{QueryString.stringify query}"
 
                 window.callback = (json) ->
                   window.callback = null
 
                   if json.meta.status is 200
-                    data = ObjectHelper.deepProperty json.data, api.split("#")[1..].join("#")
+                    data = ObjectHelper.deepProperty json.data, property
                     data = NumberHelper.numberWithDelimiter data if "[object Number]" is {}.toString.call data
 
                     span.appendChild document.createTextNode data
                     a.appendChild span
 
-                    a.setAttribute "aria-label", aria_label.replace "#", data if aria_label = options["data-count-aria-label"]
+                    a.setAttribute "aria-label", "#{data} #{property.replace(/_count$/, "").replace("_", " ")} on GitHub"
                     document.body.appendChild a
                   return
                 window.callback.script = script
@@ -226,6 +257,7 @@ class ButtonFrameContent
                 return
               return
             return
+          return
         return
 
 
