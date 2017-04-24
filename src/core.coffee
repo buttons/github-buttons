@@ -266,28 +266,27 @@ class ButtonFrameContent
   class Anchor extends Element
     constructor: (urlString, baseURLstring, callback) ->
       super "a", (a) ->
-        if base
-          if (a.href = baseURLstring) and a.protocol isnt javascript
-            try
-              a.href = new URL(urlString, baseURLstring).href
-            catch
-              base.href = baseURLstring
-              a.href = urlString
-              new Element "div", (div) ->
-                div.innerHTML = a.outerHTML
-                a.href = div.lastChild.href
-                div = null
-                return
-              base.href = document.location.href
-              base.removeAttribute "href"
-          else
+        if (a.href = baseURLstring) and a.protocol isnt javascript
+          try
+            a.href = new URL(urlString, baseURLstring).href
+          catch
+            base.href = baseURLstring
             a.href = urlString
+            new Element "div", (div) ->
+              div.innerHTML = a.outerHTML
+              a.href = div.lastChild.href
+              div = null
+              return
+            base.href = document.location.href
+            base.removeAttribute "href"
+        else
+          a.href = urlString
 
-          if r_archive.test a.href
-            a.target = "_top"
-          if a.protocol is javascript or not r_hostname.test ".#{a.hostname}"
-            a.href = "#"
-            a.target = "_self"
+        if r_archive.test a.href
+          a.target = "_top"
+        if a.protocol is javascript or not r_hostname.test ".#{a.hostname}"
+          a.href = "#"
+          a.target = "_self"
 
         callback a
         return
