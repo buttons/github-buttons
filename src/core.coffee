@@ -226,12 +226,9 @@ class ButtonFrameContent
                   window.callback = null
 
                   if json.meta.status is 200
-                    data = ObjectHelper.deepProperty json.data, property
-                    data = NumberHelper.numberWithDelimiter data if "[object Number]" is {}.toString.call data
-
-                    span.appendChild document.createTextNode data
+                    data = json.data[property]
+                    span.appendChild document.createTextNode "#{data}".replace /\B(?=(\d{3})+(?!\d))/g, ","
                     a.appendChild span
-
                     a.setAttribute "aria-label", "#{data} #{property.replace(/_count$/, "").replace("_", " ")} on GitHub"
                     document.body.appendChild a
                   return

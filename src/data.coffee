@@ -1,19 +1,3 @@
-class ObjectHelper
-  @deepProperty: (obj, path) ->
-    return obj unless path?
-    key_path = path.split /\.|(?=\[\d+\])/
-    while key_path.length and obj?
-      key = key_path.shift()
-      key = +match[1] if match = key.match /^\[(\d+)\]$/
-      obj = obj[key]
-    obj
-
-
-class NumberHelper
-  @numberWithDelimiter: (number) ->
-    "#{number}".replace /\B(?=(\d{3})+(?!\d))/g, ","
-
-
 class QueryString
   @stringify: (obj) ->
     results = []
