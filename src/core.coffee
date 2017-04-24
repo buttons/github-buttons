@@ -98,7 +98,9 @@ class ButtonAnchor
       "data-icon"
       "aria-label"
     ]
-    options["data-show-count"] = 1 if element.getAttribute "data-count-api"
+    if element.getAttribute "data-count-api"
+      console and console.warn "GitHub Buttons deprecated `data-count-api`: use `data-show-count` instead. Please refer to https://github.com/ntkme/github-buttons for more info."
+      options["data-show-count"] = 1
     options
 
 
