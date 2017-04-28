@@ -2,6 +2,7 @@ fs    = require 'fs'
 css   = require 'css'
 less  = require 'less'
 jsdom = require 'jsdom'
+JSDOM = jsdom.JSDOM
 
 
 class OcticonsSizes
@@ -10,7 +11,7 @@ class OcticonsSizes
     for name, svg of JSON.parse fs.readFileSync "#{octicons}/build/svg.json"
       selector = ".octicon-#{name}"
 
-      window = jsdom.jsdom(svg, parsingMode: "xml").defaultView
+      window = new JSDOM(svg, contentType: "image/svg+xml").window
       sizes[selector] =
         height: round window.document.documentElement.getAttribute "height"
         width: round window.document.documentElement.getAttribute "width"

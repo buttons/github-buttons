@@ -22,18 +22,22 @@
   },
   "homepage": "https://buttons.github.io",
   "devDependencies": {
-    "chai": "latest",
-    "css": "latest",
-    "coffee-script": "latest",
-    "jsdom": "latest",
-    "less": "latest",
-    "less-plugin-clean-css": "latest",
-    "mocha": "latest",
-    "mocha-phantomjs": "latest",
-    "phantomjs-prebuilt": "latest",
-    "recess": "latest",
-    "sinon": "latest",
-    "sinon-chai": "latest",
-    "uglify-js": "latest"
+    "chai": "^3.5.0",
+    "coffee-script": "^1.12.5",
+    "css": "^2.2.1",
+    "jsdom": "^10.0.0",
+    "less": "^2.7.2",
+    "less-plugin-clean-css": "^1.5.1",
+    "mocha": "^3.3.0",
+    "mocha-phantomjs": "^4.1.0",
+    "phantomjs-prebuilt": "^2.1.14",
+    "recess": "^1.1.9",
+    "sinon": "^2.1.0",
+    "sinon-chai": "^2.9.0",
+    "uglify-js": "^2.8.22"
+  },
+  "engines": {
+    "node": "^6.0.0",
+    "npm": "^4.0.0"
   }
 }
