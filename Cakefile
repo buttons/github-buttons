@@ -71,34 +71,17 @@ task 'build', 'Build everything', ->
   invoke 'build:coffee'
 
 task 'build:coffee', 'Build scripts', ->
-  coffee.compile "src/global.coffee",
-                 "src/config.coffee",
-                 "src/data.coffee",
-                 "src/core.coffee",
-                 "src/deferred.coffee",
-                 "src/buttons.coffee",
-                 "lib/buttons.js",
+  system "coffee", "-o", "lib/", "src/buttons.coffee", ->
+    system "uglifyjs", "--compress", "--mangle", "--source-map", "buttons.js.map", "--output", "buttons.js", "lib/buttons.js"
+  coffee.compile "src/buttons.coffee",
+                 "src/app.coffee",
+                 "assets/js/app.js",
                  -> system "uglifyjs",
                            "--compress",
                            "--mangle",
-                           "--source-map", "buttons.js.map",
-                           "--output", "buttons.js",
-                           "lib/buttons.js"
-  coffee.compile "src/global.coffee",
-                 "src/config.coffee",
-                 "src/data.coffee",
-                 "src/core.coffee",
-                 "src/deferred.coffee",
-                 "src/main.coffee",
-                 "lib/main.js",
-                 -> system "uglifyjs",
-                           "--compress",
-                           "--mangle",
-                           "--source-map", "assets/js/main.js.map",
-                           "--source-map-root", "../../",
-                           "--source-map-url", "main.js.map",
-                           "--output", "assets/js/main.js",
-                           "lib/main.js"
+                           "--source-map", "assets/js/app.js.map",
+                           "--output", "assets/js/app.min.js",
+                           "assets/js/app.js"
 
 task 'build:less', 'Build stylesheets', ->
   find("assets/css/", /^(buttons|main)\.less$/i).forEach (file) ->
@@ -112,9 +95,9 @@ task 'clean', 'Cleanup everything', ->
   js = /\.js(\.map)?$/
   css = /\.css(\.map)?$/
   targets = find "./", js
-    .concat find "assets/js/", js
+    .concat find "assets/js", js
     .concat find "lib/", js
-    .concat find "test/browser/lib/", js
+    .concat find "test/lib/", js
     .concat find "assets/css/", css
     .concat find "assets/css/octicons/", css
   system "rm", targets... if targets.length > 0
@@ -122,22 +105,28 @@ task 'clean', 'Cleanup everything', ->
 task 'test', 'Test everything', ->
   system "cake", "clean", ->
     system "cake", "build", ->
-      invoke 'test:recess'
-      invoke 'test:mocha'
+      invoke 'lint:coffee'
+      invoke 'lint:recess'
       invoke 'test:mocha-phantomjs'
 
-task 'test:recess', 'Test stylesheets', ->
+task 'lint:coffee', 'Lint coffeescripts', ->
+  system "coffeelint", "src", "test"
+
+task 'lint:recess', 'Lint stylesheets', ->
   targets = find "assets/css/", /\.css$/i
   system "recess", targets... if targets.length > 0
 
-task 'test:mocha', 'Test scripts', ->
-  system "mocha", "--compilers", "coffee:coffee-script/register", "test/*.coffee"
-
 task 'test:mocha-phantomjs', 'Test browser scripts', ->
-  coffee.compile "src/config.coffee",
-                 "test/browser/src/helpers.coffee",
-                 "src/data.coffee",
-                 "src/core.coffee",
-                 "test/browser/src/core.coffee",
-                 "test/browser/lib/main.js",
-                 -> system "mocha-phantomjs", "-p", "./node_modules/.bin/phantomjs", "--file", "/dev/null", "test/browser/index.html"
+  coffee.compile "src/buttons.coffee",
+                 "test/src/polyfill.coffee",
+                 "test/src/querystring.coffee",
+                 "test/src/event.coffee",
+                 "test/src/defer.coffee",
+                 "test/src/jsonp.coffee",
+                 "test/src/pixel.coffee",
+                 "test/src/frame.coffee",
+                 "test/src/config.coffee",
+                 "test/src/anchor.coffee",
+                 "test/src/render.coffee",
+                 "test/lib/main.js",
+                 -> system "mocha-phantomjs", "-p", "./node_modules/.bin/phantomjs", "--file", "/dev/null", "test/index.html"

@@ -4,155 +4,155 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>github:buttons</title>
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
     <link rel="stylesheet" href="components/octicons/build/font/octicons.min.css">
     <link rel="stylesheet" href="assets/css/main.css">
     <meta name="author" content="なつき">
     <meta name="description" content="The unofficial GitHub Buttons made for developers.">
     <meta name="keywords" content="GitHub, Developer, Button, Follow, Star, Fork, Issue, Gist, Octicon, API">
-    <script async defer src="buttons.js"></script>
-    <script async defer src="assets/js/main.js"></script>
+    <script>window.exports = {}</script>
+    <script async defer src="assets/js/app.js"></script>
+    <script src="//unpkg.com/vue@2.3.0/dist/vue.min.js"></script>
   </head>
   <body>
     <header class="header">
-      <div class="container">
-        <h1 class="pull-left"><span class="octicon octicon-logo-github" aria-label="GitHub"><!-- The Unofficial GitHub --></span><span class="logo-colon">:</span><span class="logo-buttons">buttons</span></h1>
-        <nav class="pull-right">
-          <a href="https://github.com/ntkme/github-buttons"><span class="hidden-xs"> View on GitHub </span><span class="octicon octicon-mark-github" aria-hidden="true"></span></a>
-        </nav>
-      </div>
+      <nav class="navbar d-block">
+        <div class="container px-0 clearfix">
+          <a class="navbar-brand"><span class="octicon octicon-logo-github" aria-label="GitHub"><!-- The Unofficial GitHub --></span><span class="logo logo-colon">:</span><span class="logo logo-buttons">buttons</span></a>
+          <a class="nav-link float-right px-0" href="https://github.com/ntkme/github-buttons"><span class="hidden-xs-down"> View on GitHub </span><span class="octicon octicon-mark-github" aria-hidden="true"></span></a>
+        </div>
+      </nav>
     </header>
-    <main class="main">
-      <form id="button-config">
-        <div id="button-type" class="container">
-          <div class="row">
-            <div class="col-xs-12">
-              <h3>Choose a button</h3>
-            </div>
-            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-2">
-              <label class="radio-inline">
-                <input type="radio" name="type" value="follow">
-                <span> Follow </span><br>
-                <span class="hidden-lg">
-                  <a class="github-button" href="https://github.com/ntkme" data-style="mega" aria-label="Follow @ntkme on GitHub" data-text="Follow"></a>
-                </span>
-                <span class="visible-lg-inline">
-                  <a class="github-button" href="https://github.com/ntkme" aria-label="Follow @ntkme on GitHub" data-text="Follow"></a>
-                </span>
-              </label>
-            </div>
-            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-2">
-              <label class="radio-inline">
-                <input type="radio" name="type" value="watch">
-                <span> Watch </span><br>
-                <span class="hidden-lg">
-                  <a class="github-button" href="https://github.com/ntkme/github-buttons" data-icon="octicon-eye" data-style="mega" aria-label="Watch ntkme/github-buttons on GitHub" data-text="Watch"></a>
-                </span>
-                <span class="visible-lg-inline">
-                  <a class="github-button" href="https://github.com/ntkme/github-buttons" data-icon="octicon-eye" aria-label="Watch ntkme/github-buttons on GitHub" data-text="Watch"></a>
-                </span>
-              </label>
-            </div>
-            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-2">
-              <label class="radio-inline">
-                <input type="radio" name="type" value="star">
-                <span> Star </span><br>
-                <span class="hidden-lg">
-                  <a class="github-button" href="https://github.com/ntkme/github-buttons" data-icon="octicon-star" data-style="mega" aria-label="Star ntkme/github-buttons on GitHub" data-text="Star"></a>
-                </span>
-                <span class="visible-lg-inline">
-                  <a class="github-button" href="https://github.com/ntkme/github-buttons" data-icon="octicon-star" aria-label="Star ntkme/github-buttons on GitHub" data-text="Star"></a>
-                </span>
-              </label>
-            </div>
-            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-2">
-              <label class="radio-inline">
-                <input type="radio" name="type" value="fork">
-                <span> Fork </span><br>
-                <span class="hidden-lg">
-                  <a class="github-button" href="https://github.com/ntkme/github-buttons/fork" data-icon="octicon-repo-forked" data-style="mega" aria-label="Fork ntkme/github-buttons on GitHub" data-text="Fork"></a>
-                </span>
-                <span class="visible-lg-inline">
-                  <a class="github-button" href="https://github.com/ntkme/github-buttons/fork" data-icon="octicon-repo-forked" aria-label="Fork ntkme/github-buttons on GitHub" data-text="Fork"></a>
-                </span>
-              </label>
-            </div>
-            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-2">
-              <label class="radio-inline">
-                <input type="radio" name="type" value="issue">
-                <span> Issue </span><br>
-                <span class="hidden-lg">
-                  <a class="github-button" href="https://github.com/ntkme/github-buttons/issues" data-icon="octicon-issue-opened" data-style="mega" aria-label="Issue ntkme/github-buttons on GitHub" data-text="Issue"></a>
-                </span>
-                <span class="visible-lg-inline">
-                  <a class="github-button" href="https://github.com/ntkme/github-buttons/issues" data-icon="octicon-issue-opened" aria-label="Issue ntkme/github-buttons on GitHub" data-text="Issue"></a>
-                </span>
-              </label>
-            </div>
-            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-2">
-              <label class="radio-inline">
-                <input type="radio" name="type" value="download">
-                <span> Download </span><br>
-                <span class="hidden-lg">
-                  <a class="github-button" href="https://github.com/ntkme/github-buttons/archive/master.zip" data-icon="octicon-cloud-download" data-style="mega" aria-label="Download ntkme/github-buttons on GitHub" data-text="Download"></a>
-                </span>
-                <span class="visible-lg-inline">
-                  <a class="github-button" href="https://github.com/ntkme/github-buttons/archive/master.zip" data-icon="octicon-cloud-download" aria-label="Download ntkme/github-buttons on GitHub" data-text="Download"></a>
-                </span>
-              </label>
-            </div>
-          </div>
-        </div>
-        <hr>
-        <div id="content" class="container hidden">
-          <div class="row">
-            <div class="col-xs-8 col-sm-6 col-md-4">
-              <h3>Button options</h3>
-              <div class="form-group">
-                <div id="user-repo" class="input-group">
-                  <input id="user" class="form-control" name="user" type="text" maxlength="39" placeholder=":user">
-                  <div class="input-group-addon">/</div>
-                  <input id="repo" class="form-control" name="repo" type="text" maxlength="100" placeholder=":repo">
-                </div>
-              </div>
-              <div class="checkbox">
-                <label>
-                  <input id="large-button" name="large-button" type="checkbox" checked> Large button
-                </label>
-              </div>
-              <div class="checkbox">
-                <label>
-                  <input name="show-count" type="checkbox" checked> Show count
-                </label>
-              </div>
-              <div class="checkbox">
-                <label>
-                  <input name="standard-icon" type="checkbox"> Standard icon
-                </label>
-              </div>
-              <button id="preview-button" class="btn btn-default hidden"> Preview </button>
-            </div>
-            <div class="col-xs-12 col-sm-6 col-md-8">
-              <h3>Preview and code</h3>
-              <p>Try out your button, then copy and paste the code below into the HTML for your site.</p>
-              <p id="preview"></p>
-              <div id="preview-warning" class="alert alert-warning hidden" role="alert">
-                <strong>Warning!</strong> Live Preview has been disabled due to low API rate limit remaining.
-              </div>
-              <div class="form-group">
-                <textarea id="code" class="code form-control" rows="2" readonly></textarea>
-              </div>
-              <div class="form-group">
-                <textarea id="snippet" class="code form-control" rows="2" readonly></textarea>
-              </div>
-            </div>
-          </div>
-        </div>
-      </form>
+    <main>
+      <div class="container my-3">
+        <div id="app"></div>
+      </div>
     </main>
     <footer class="footer">
       <div class="container">
       </div>
     </footer>
+    <script type="text/x-template" id="github-button-preview-template">
+      <p :style="{ height: config['data-style'] === 'mega' ? '28px' : '20px' }">
+        <iframe allowtransparency="true" scrolling="no" frameBorder="0" src="buttons.html" style="width: 1px; height: 0px; border: none;"></iframe>
+      </p>
+    </script>
+    <script type="text/x-template" id="github-button-code-template">
+      <textarea class="form-control" rows="2" readonly
+        v-model="text"
+        @click="$el.select()"
+        @focus="$el.select()"
+        @mouseup.prevent></textarea>
+    </script>
+    <script type="text/x-template" id="app-template">
+      <form autocapitalize="none" autocomplete="off" autocorrect="off" spellcheck="false">
+        <fieldset class="form-group">
+          <h4>Choose a button</h4>
+          <div class="row">
+            <div class="col-9 col-sm-6 col-md-4 col-lg-2">
+              <div class="form-check">
+                <label class="form-check-label">
+                  <input type="radio" class="form-check-input" name="type" value="follow" v-model="options.type">
+                  Follow
+                  <br>
+                  <span aria-hidden="true"><a class="github-button" href="#" data-style="mega" data-text="Follow"></a></span>
+                </label>
+              </div>
+            </div>
+            <div class="col-9 col-sm-6 col-md-4 col-lg-2">
+              <div class="form-check">
+                <label class="form-check-label">
+                  <input type="radio" class="form-check-input" name="type" value="watch" v-model="options.type">
+                  Watch
+                  <br>
+                  <span aria-hidden="true"><a class="github-button" href="#" data-icon="octicon-eye" data-style="mega" data-text="Watch"></a></span>
+                </label>
+              </div>
+            </div>
+            <div class="col-9 col-sm-6 col-md-4 col-lg-2">
+              <div class="form-check">
+                <label class="form-check-label">
+                  <input type="radio" class="form-check-input" name="type" value="star" v-model="options.type">
+                  Star
+                  <br>
+                  <span aria-hidden="true"><a class="github-button" href="#" data-icon="octicon-star" data-style="mega" data-text="Star"></a></span>
+                </label>
+              </div>
+            </div>
+            <div class="col-9 col-sm-6 col-md-4 col-lg-2">
+              <div class="form-check">
+                <label class="form-check-label">
+                  <input type="radio" class="form-check-input" name="type" value="fork" v-model="options.type">
+                  Fork
+                  <br>
+                  <span aria-hidden="true"><a class="github-button" href="#" data-icon="octicon-repo-forked" data-style="mega" data-text="Fork"></a></span>
+                </label>
+              </div>
+            </div>
+            <div class="col-9 col-sm-6 col-md-4 col-lg-2">
+              <div class="form-check">
+                <label class="form-check-label">
+                  <input type="radio" class="form-check-input" name="type" value="issue" v-model="options.type">
+                  Issue
+                  <br>
+                  <span aria-hidden="true"><a class="github-button" href="#" data-icon="octicon-issue-opened" data-style="mega" data-text="Issue"></a></span>
+                </label>
+              </div>
+            </div>
+            <div class="col-9 col-sm-6 col-md-4 col-lg-2">
+              <div class="form-check">
+                <label class="form-check-label">
+                  <input type="radio" class="form-check-input" name="type" value="download" v-model="options.type">
+                  Download
+                  <br>
+                  <span aria-hidden="true"><a class="github-button" href="#" data-icon="octicon-cloud-download" data-style="mega" data-text="Download"></a></span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+        <hr>
+        <div class="row" v-if="options.type">
+          <div class="col-12 col-sm-6 col-md-4">
+            <h4>Button options</h4>
+            <div class="form-group" :class="{ 'has-danger': hasDanger }">
+              <div class="input-group">
+                <input ref="user" class="form-control" type="text" maxlength="39" placeholder=":user" autofocus="autofocus" :class="{ 'form-control-danger': dangers.user }" v-model="options.user">
+                <div class="input-group-addon">/</div>
+                <input ref="repo" class="form-control" type="text" maxlength="100" placeholder=":repo" :disabled="options.type === 'follow'" :class="{ 'form-control-danger': dangers.repo }" v-model="options.repo">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" v-model="options.largeButton"> Large button
+                </label>
+              </div>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" v-model="options.showCount"> Show count
+                </label>
+              </div>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" v-model="options.standardIcon"> Standard icon
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-sm-6 col-md-8">
+            <h4>Preview and code</h4>
+            <p>Try out your button, then copy and paste the code below into the HTML for your site.</p>
+            <github-button-preview :config="config"></github-button-preview>
+            <div class="form-group">
+              <github-button-code :text="code"></github-button-code>
+            </div>
+            <div class="form-group">
+              <github-button-code :text="script"></github-button-code>
+            </div>
+          </div>
+        </div>
+      </form>
+    </script>
   </body>
 </html>

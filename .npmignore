@@ -1,6 +1,11 @@
 .*
+assets/
+components/
+src/
+test/
+index.html
+buttons.html
+favicon.ico
 Cakefile
 circle.yml
 coffeelint.json
-src/
-test/

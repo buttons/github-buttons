@@ -4,64 +4,43 @@ html {
 }
 
 .header {
-  height: 48px;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
   border-bottom: 1px solid #e5e5e5;
 
-  h1 {
-    height: 32px;
-    padding: 8px 0;
-    margin: 0 auto;
-    font-size: 32px;
+  .navbar-brand {
+    line-height: 28px;
 
     .octicon-logo-github {
-      height: 32px;
+      height: 24px;
       overflow: hidden;
-      font-size: 96px;
+      font-size: 72px;
       color: #000;
-      vertical-align: top;
+      vertical-align: middle;
+    }
+    .logo {
+      line-height: 1;
+      vertical-align: bottom;
     }
     .logo-colon {
-      font-size: 28px;
       color: #afafaf;
-      vertical-align: bottom;
     }
     .logo-buttons {
-      font-size: 28px;
-      font-weight: normal;
       color: #4ea6ea;
-      vertical-align: bottom;
-    }
-  }
-
-  a {
-    display: block;
-    padding: 14px 0;
-    color: #666;
-    text-decoration: none;
-
-    &:hover {
-      color: #4183c4;
-    }
-
-    .octicon-mark-github {
-      font-size: 20px;
     }
   }
 }
 
 .main {
-  padding-bottom: 50px;
+  padding-bottom: 56px;
 }
 
 .footer {
   position: absolute;
   bottom: 0;
   width: 100%;
-  height: 48px;
+  height: 56px;
 }
 
-.radio-inline:before {
+.form-check-label:before {
   position: absolute;
   display: block;
   width: 100%;
@@ -69,16 +48,16 @@ html {
   content: '';
 }
 
-.input-group-addon:not(:first-child):not(:last-child) {
-  border-right: 0;
-  border-left: 0;
+p {
+  overflow-x: scroll;
+  overflow-y: hidden;
 }
 
-.code,
-.code[readonly] {
+textarea,
+textarea[readonly] {
   font-family: monospace, sans-serif;
   font-size: 11px;
   cursor: pointer;
-  background-color: #fff;
+  background-color: #fff !important;
   resize: none;
 }

@@ -399,4 +399,241 @@
     }
   }
 
+  if (!{}.hasOwnProperty.call(document, 'currentScript') && delete document.currentScript && document.currentScript) {
+    BASEURL = document.currentScript.src.replace(/[^\/]*([?#].*)?$/, '').replace(/[^\/]*\/[^\/]*\/$/, '');
+  }
+
+  this.onbeforeunload = function() {};
+
+  defer(function() {
+    Vue.component('github-button-preview', {
+      template: '#github-button-preview-template',
+      props: ['config'],
+      data: function() {
+        return {
+          timeoutId: null
+        };
+      },
+      computed: {
+        rateLimitWait: function() {
+          if (this.config['data-show-count']) {
+            return 300;
+          } else {
+            return 0;
+          }
+        }
+      },
+      mounted: function() {
+        var iframe, onload;
+        iframe = this.$el.firstChild;
+        onload = function() {
+          setFrameSize(iframe, getFrameContentSize(iframe));
+        };
+        onEvent(iframe, 'load', function() {
+          var callback;
+          if (callback = iframe.contentWindow.callback) {
+            onceScriptLoad(callback.script, onload);
+          } else {
+            onload();
+          }
+        });
+        this.update();
+      },
+      updated: function() {
+        this.update();
+      },
+      methods: {
+        update: function() {
+          var iframe;
+          iframe = this.$el.firstChild;
+          setFrameSize(iframe, [1, 0]);
+          clearTimeout(this.timeoutId);
+          this.timeoutId = setTimeout((function(_this) {
+            return function() {
+              iframe = _this.$el.removeChild(iframe);
+              iframe.src = 'buttons.html#' + stringifyQueryString(_this.config);
+              _this.$el.appendChild(iframe);
+            };
+          })(this), this.rateLimitWait);
+        }
+      }
+    });
+    Vue.component('github-button-code', {
+      template: '#github-button-code-template',
+      props: ['text']
+    });
+    new Vue({
+      el: '#app',
+      template: '#app-template',
+      mounted: function() {
+        setTimeout(renderAll);
+      },
+      updated: function() {
+        if (this.focus) {
+          this.focus.focus();
+          this.focus = null;
+        }
+      },
+      data: function() {
+        return {
+          script: '<!-- Place this tag in your head or just before your close body tag. -->\n<script async defer src="https://buttons.github.io/buttons.js"></script>',
+          focus: null,
+          options: {
+            type: null,
+            user: '',
+            repo: '',
+            largeButton: false,
+            showCount: false,
+            standardIcon: false
+          }
+        };
+      },
+      watch: {
+        'options.type': function() {
+          if (document.activeElement !== this.$refs.user && document.activeElement !== this.$refs.repo) {
+            if (this.options.type === 'follow' || !this.successes.user || (this.successes.user && this.successes.repo)) {
+              this.focus = this.$refs.user;
+            } else {
+              this.focus = this.$refs.repo;
+            }
+          }
+        }
+      },
+      computed: {
+        code: function() {
+          var a, name, ref1, value;
+          a = createElement('a');
+          a.className = 'github-button';
+          a.href = this.config.href;
+          a.textContent = this.config['data-text'];
+          ref1 = this.config;
+          for (name in ref1) {
+            value = ref1[name];
+            if (name !== 'href' && name !== 'data-text' && (value != null)) {
+              a.setAttribute(name, value);
+            }
+          }
+          return a.outerHTML;
+        },
+        successes: function() {
+          return {
+            user: (function(user) {
+              return 0 < user.length && user.length < 40 && !/[^A-Za-z0-9-]|^-|-$|--/i.test(user);
+            })(this.options.user),
+            repo: (function(repo) {
+              return 0 < repo.length && repo.length < 101 && !/[^\w-.]|\.git$|^\.\.?$/i.test(repo);
+            })(this.options.repo)
+          };
+        },
+        hasSuccess: function() {
+          return this.successes.user && this.successes.repo;
+        },
+        dangers: function() {
+          return {
+            user: this.options.user !== '' && !this.successes.user,
+            repo: this.options.type !== 'follow' && this.options.repo !== '' && !this.successes.repo
+          };
+        },
+        hasDanger: function() {
+          return this.dangers.user || this.dangers.repo;
+        },
+        config: function() {
+          var options;
+          if (this.options.type == null) {
+            return;
+          }
+          options = {
+            type: this.options.type,
+            user: this.hasSuccess ? this.options.user : 'ntkme',
+            repo: this.hasSuccess ? this.options.repo : 'github-buttons',
+            largeButton: this.options.largeButton,
+            showCount: this.options.showCount,
+            standardIcon: this.options.standardIcon
+          };
+          return {
+            href: (function() {
+              var base, repo, user;
+              base = 'https://github.com';
+              user = '/' + options.user;
+              repo = user + '/' + options.repo;
+              switch (options.type) {
+                case 'follow':
+                  return base + user;
+                case 'watch':
+                  return base + repo + '/subscription';
+                case 'star':
+                  return base + repo;
+                case 'fork':
+                  return base + repo + '/fork';
+                case 'issue':
+                  return base + repo + '/issues';
+                case 'download':
+                  return base + repo + '/archive/master.zip';
+                default:
+                  return base;
+              }
+            })(),
+            'data-text': (function() {
+              switch (options.type) {
+                case 'follow':
+                  return 'Follow @' + options.user;
+                default:
+                  return options.type.charAt(0).toUpperCase() + options.type.slice(1).toLowerCase();
+              }
+            })(),
+            'data-icon': (function() {
+              if (options.standardIcon) {
+                return;
+              }
+              switch (options.type) {
+                case 'watch':
+                  return 'octicon-eye';
+                case 'star':
+                  return 'octicon-star';
+                case 'fork':
+                  return 'octicon-repo-forked';
+                case 'issue':
+                  return 'octicon-issue-opened';
+                case 'download':
+                  return 'octicon-cloud-download';
+              }
+            })(),
+            'data-style': (function() {
+              if (options.largeButton) {
+                return 'mega';
+              } else {
+                return null;
+              }
+            })(),
+            'data-show-count': (function() {
+              if (options.showCount) {
+                switch (options.type) {
+                  case 'download':
+                    return null;
+                  default:
+                    return true;
+                }
+              }
+              return null;
+            })(),
+            'aria-label': (function() {
+              switch (options.type) {
+                case 'follow':
+                  return 'Follow @' + options.user + ' on GitHub';
+                case 'watch':
+                case 'star':
+                case 'fork':
+                case 'issue':
+                case 'download':
+                  return (options.type.charAt(0).toUpperCase() + options.type.slice(1).toLowerCase()) + ' ' + options.user + '/' + options.repo + ' on GitHub';
+                default:
+                  return 'GitHub';
+              }
+            })()
+          };
+        }
+      }
+    });
+  });
+
 }).call(this);

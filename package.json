@@ -2,7 +2,7 @@
   "name": "github-buttons",
   "version": "0.0.0",
   "description": "GitHub Buttons",
-  "main": "README.md",
+  "main": "buttons.js",
   "scripts": {
     "test": "cake test"
   },
@@ -24,6 +24,7 @@
   "devDependencies": {
     "chai": "^3.5.0",
     "coffee-script": "^1.12.5",
+    "coffeelint": "^1.16.0",
     "css": "^2.2.1",
     "jsdom": "^10.0.0",
     "less": "^2.7.2",

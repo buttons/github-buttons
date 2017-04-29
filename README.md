@@ -32,10 +32,10 @@ Add as many `<a class="github-button">` as you like, then put the `<script>` any
 <a class="github-button"
    href="{{ link }}"
    data-icon="{{ octicon }}"
-   data-show-count="{{ show_count }}"
+   data-show-count="{{ show count }}"
    data-style="{{ style }}"
-   data-text="{{ button_text }}"
-   aria-label="{{ button_aria_label }}"
+   data-text="{{ text }}"
+   aria-label="{{ aria label }}"
    >{{ text }}</a>
 ```
 
@@ -43,7 +43,7 @@ Add as many `<a class="github-button">` as you like, then put the `<script>` any
 <script async defer src="https://buttons.github.io/buttons.js"></script>
 ```
 
-#### Attributes
+#### Config
 
 | Attribute               | Description                                                                                                                                     |
 | ---------               | -----------                                                                                                                                     |
@@ -54,9 +54,29 @@ Add as many `<a class="github-button">` as you like, then put the `<script>` any
 | `data-count-aria-label` | Obsoleted.                                                                                                                                      |
 | `data-show-count`       | `true` or `false`.                                                                                                                              |
 | `data-style`            | `default` or `mega`.                                                                                                                            |
-| `data-text`             | Text displayed on the button. This option will override `text` in the fallback link.                                                            |
-| `text`                  | Text displayed on the button and the fallback link.                                                                                             |
+| `data-text`             | Text displayed on the button. It defaults to the text content within the link.                                                                  |
 | `aria-label`            | Aira label for the button link.                                                                                                                 |
+
+### Advanced Usage
+
+This module works with CommonJS or AMD loader. *Keep in mind that it works only in browser.*
+
+**It is recommended to use a module bundler rather than a module loader.**
+
+To create buttons dynamically, you will use the `render()` function, which is a named export of this module.
+
+``` javascript
+var GitHubButtons = require('github-buttons')
+GitHubButtons.render(target, config)
+```
+
+`target` is a DOM node to be replaced by the button, and `config` is an object containing the attributes.
+
+``` javascript
+GitHubButtons.render(target)
+```
+
+`target` must be an AnchorElement (`<a>`) containing the attributes if `config` is not provided.
 
 
 
