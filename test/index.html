@@ -3,15 +3,31 @@
   <head>
     <meta charset="utf-8">
     <title>Mocha Tests</title>
-    <link rel="stylesheet" href="../node_modules/mocha/mocha.css">
+    <script>
+      window.unpkg = function() {
+        var $ = window.event.target, _, node_modules = /(^|.*\/)node_modules\//, unpkg = '//unpkg.com/';
+        switch ($.tagName) {
+          case 'LINK':
+            $.href = $.href.replace(node_modules, unpkg);
+            break;
+          case 'SCRIPT':
+            $.parentNode.removeChild($);
+            _ = document.createElement('script');
+            _.src = $.src.replace(node_modules, unpkg);
+            document.write(_.outerHTML);
+            break;
+        }
+      };
+    </script>
+    <link rel="stylesheet" href="../node_modules/mocha/mocha.css" onerror="unpkg()">
     <meta name="robots" content="noindex, nofollow">
   </head>
   <body>
     <div id="mocha"></div>
-    <script src="../node_modules/chai/chai.js"></script>
-    <script src="../node_modules/sinon/pkg/sinon.js"></script>
-    <script src="../node_modules/sinon-chai/lib/sinon-chai.js"></script>
-    <script src="../node_modules/mocha/mocha.js"></script>
+    <script src="../node_modules/chai/chai.js" onerror="unpkg()"></script>
+    <script src="../node_modules/sinon/pkg/sinon.js" onerror="unpkg()"></script>
+    <script src="../node_modules/sinon-chai/lib/sinon-chai.js" onerror="unpkg()"></script>
+    <script src="../node_modules/mocha/mocha.js" onerror="unpkg()"></script>
     <script>
       var expect = chai.expect;
       mocha.setup('bdd');
