@@ -718,7 +718,7 @@
       it("should create an anchor with given relative url", function() {
         return expect(createAnchor("/ntkme/github-buttons", "https://github.com/ntkme")).to.have.property("href").to.equal("https://github.com/ntkme/github-buttons");
       });
-      it("should create an anchor with given relative url withoug rely on new URL()", function() {
+      it("should create an anchor with given relative url without using new URL()", function() {
         sinon.stub(window, "URL").throws();
         expect(createAnchor("/ntkme/github-buttons", "https://github.com/ntkme")).to.have.property("href").to.equal("https://github.com/ntkme/github-buttons");
         if (typeof window.URL !== "function") {

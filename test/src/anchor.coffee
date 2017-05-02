@@ -24,7 +24,7 @@ describe "Anchor", ->
         .to.have.property "href"
         .to.equal "https://github.com/ntkme/github-buttons"
 
-    it "should create an anchor with given relative url withoug rely on new URL()", ->
+    it "should create an anchor with given relative url without using new URL()", ->
       sinon.stub window, "URL"
         .throws()
       expect createAnchor "/ntkme/github-buttons", "https://github.com/ntkme"
