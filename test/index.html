@@ -5,7 +5,7 @@
     <title>Mocha Tests</title>
     <script>
       window.unpkg = function() {
-        var $ = window.event.target, _, node_modules = /(^|.*\/)node_modules\//, unpkg = '//unpkg.com/';
+        var $ = window.event.target, _, node_modules = /(^|.*\/)node_modules\//, unpkg = (/^http:/.test(document.location) ? 'http' : 'https') + '://unpkg.com/';
         switch ($.tagName) {
           case 'LINK':
             $.href = $.href.replace(node_modules, unpkg);

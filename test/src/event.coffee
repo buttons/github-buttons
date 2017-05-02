@@ -20,25 +20,15 @@ describe "Event", ->
       expect spy
         .to.have.been.calledTwice
 
-  describe "offEvent(target, eventName, func)", ->
-    it "should turn off the function on event", ->
-      spy = sinon.spy()
-      onEvent input, "click", spy
-
-      input.click()
-      expect spy
-        .to.have.been.calledOnce
-
-      offEvent input, "click", spy
-
-      input.click()
-      expect spy
-        .to.have.been.calledOnce
 
   describe "onceEvent(target, eventName, func)", ->
     it "should call the function on event only once", ->
       spy = sinon.spy()
       onceEvent input, "click", spy
+
+      input.click()
+      expect spy
+        .to.have.been.calledOnce
 
       input.click()
       expect spy

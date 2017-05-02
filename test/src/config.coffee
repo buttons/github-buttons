@@ -2,7 +2,7 @@ describe "Config", ->
   a = null
 
   beforeEach ->
-    a = document.createElement "a"
+    a = createElement "a"
 
   describe "parseConfig(anchor)", ->
     it "should parse the anchor without attribute", ->
@@ -30,7 +30,7 @@ describe "Config", ->
 
     it "should parse the text content", ->
       text = "something"
-      a.appendChild document.createTextNode text
+      a.appendChild createTextNode text
       expect parseConfig a
         .to.have.property "data-text"
         .and.equal text
@@ -38,7 +38,7 @@ describe "Config", ->
     it "should ignore the text content when the attribute data-text is given", ->
       text = "something"
       a.setAttribute "data-text", text
-      a.appendChild document.createTextNode "something else"
+      a.appendChild createTextNode "something else"
       expect parseConfig a
         .to.have.property "data-text"
         .and.equal text

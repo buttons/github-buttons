@@ -34,16 +34,12 @@ onEvent = (target, eventName, func) ->
     target.attachEvent "on#{eventName}", func
   return
 
-offEvent = (target, eventName, func) ->
-  if target.removeEventListener
-    target.removeEventListener "#{eventName}", func
-  else
-    target.detachEvent "on#{eventName}", func
-  return
-
 onceEvent = (target, eventName, func) ->
   callback = (event) ->
-    offEvent target, eventName, callback
+    if target.removeEventListener
+      target.removeEventListener "#{eventName}", callback
+    else
+      target.detachEvent "on#{eventName}", callback
     func event || window.event
   onEvent target, eventName, callback
   return
@@ -51,7 +47,7 @@ onceEvent = (target, eventName, func) ->
 onceScriptLoad = (script, func) ->
   token = 0
   callback = ->
-    func() if !token and token = !token
+    func() if !token and token = 1
     return
   onEvent script, "load", callback
   onEvent script, "error", callback
