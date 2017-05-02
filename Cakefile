@@ -79,7 +79,9 @@ task 'build:coffee', 'Build scripts', ->
                  -> system "uglifyjs",
                            "--compress",
                            "--mangle",
-                           "--source-map", "assets/js/app.js.map",
+                           "--source-map", "assets/js/app.min.js.map",
+                           "--source-map-root", "../../",
+                           "--source-map-url", "app.min.js.map",
                            "--output", "assets/js/app.min.js",
                            "assets/js/app.js"
 
