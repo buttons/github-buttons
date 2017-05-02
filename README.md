@@ -96,13 +96,13 @@ cd github-buttons && npm install
 ### Build
 
 ``` sh
-cake build
+npm run build
 ```
 
 ### Test
 
 ``` sh
-cake test
+npm test
 ```
 
 

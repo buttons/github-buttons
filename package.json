@@ -4,6 +4,7 @@
   "description": "GitHub Buttons",
   "main": "buttons.js",
   "scripts": {
+    "build": "cake build",
     "test": "cake test"
   },
   "repository": {
