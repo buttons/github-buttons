@@ -13,24 +13,24 @@ describe "JSON-P", ->
       url = "/random/url/" + new Date().getTime()
 
       jsonp url, (json) ->
-        expect window.callback
+        expect window._
           .to.be.undefined
         expect json
           .to.deep.equal data
         done()
 
-      expect window.callback
+      expect window._
         .to.be.a "function"
 
-      expect window.callback.script
+      expect window._.$
         .to.have.property "tagName"
         .to.equal "SCRIPT"
 
-      expect window.callback.script.src.endsWith url + "?callback=callback"
+      expect window._.$.src.endsWith url + "?callback=_"
         .to.be.true
 
       expect head.appendChild
         .to.have.been.calledOnce
-        .and.have.been.calledWith window.callback.script
+        .and.have.been.calledWith window._.$
 
-      window.callback data
+      window._ data

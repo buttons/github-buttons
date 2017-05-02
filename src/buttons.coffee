@@ -76,22 +76,22 @@ jsonp = (url, func) ->
   script.async = true
   ref = url.split "?"
   query = parseQueryString ref.slice(1).join "?"
-  query.callback = "callback"
+  query.callback = "_"
   script.src = ref[0] + "?" + stringifyQueryString query
 
-  window.callback = (json) ->
-    delete window.callback
+  window._ = (json) ->
+    delete window._
     func json
     return
-  window.callback.script = script
+  window._.$ = script
 
   onEvent script, "error", ->
-    delete window.callback
+    delete window._
     return
 
   if script.readyState
     onEvent script, "readystatechange", ->
-      delete window.callback if script.readyState is "loaded" and script.children and script.readyState is "loading"
+      delete window._ if script.readyState is "loaded" and script.children and script.readyState is "loading"
       return
 
   head = document.getElementsByTagName("head")[0]
@@ -283,8 +283,8 @@ render = (targetNode, config) ->
     return
 
   onceEvent iframe, "load", ->
-    if callback = iframe.contentWindow.callback
-      onceScriptLoad callback.script, onload
+    if callback = iframe.contentWindow._
+      onceScriptLoad callback.$, onload
     else
       onload()
     return

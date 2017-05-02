@@ -75,11 +75,11 @@ describe "Render", ->
     testRenderCount = (url, func) ->
       sinon.stub head, "appendChild"
         .callsFake ->
-          sinon.stub window, "callback"
+          sinon.stub window, "_"
             .callsFake ->
-              args = window.callback.args[0]
-              window.callback.restore()
-              window.callback.apply null, args
+              args = window._.args[0]
+              window._.restore()
+              window._.apply null, args
               func()
           script = head.appendChild.args[0][0]
           head.appendChild.restore()
@@ -153,7 +153,7 @@ describe "Render", ->
       sinon.stub head, "appendChild"
         .callsFake ->
           head.appendChild.restore()
-          window.callback meta: status: 404
+          window._ meta: status: 404
           expect document.body.insertBefore
             .to.have.not.been.called
       button.href = "https://github.com/ntkme"

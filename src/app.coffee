@@ -19,8 +19,8 @@ defer ->
         setFrameSize iframe, getFrameContentSize iframe
         return
       onEvent iframe, 'load', ->
-        if callback = iframe.contentWindow.callback
-          onceScriptLoad callback.script, onload
+        if callback = iframe.contentWindow._
+          onceScriptLoad callback.$, onload
         else
           onload()
         return

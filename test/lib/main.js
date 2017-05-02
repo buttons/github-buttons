@@ -126,20 +126,20 @@
     script.async = true;
     ref = url.split("?");
     query = parseQueryString(ref.slice(1).join("?"));
-    query.callback = "callback";
+    query.callback = "_";
     script.src = ref[0] + "?" + stringifyQueryString(query);
-    window.callback = function(json) {
-      delete window.callback;
+    window._ = function(json) {
+      delete window._;
       func(json);
     };
-    window.callback.script = script;
+    window._.$ = script;
     onEvent(script, "error", function() {
-      delete window.callback;
+      delete window._;
     });
     if (script.readyState) {
       onEvent(script, "readystatechange", function() {
         if (script.readyState === "loaded" && script.children && script.readyState === "loading") {
-          delete window.callback;
+          delete window._;
         }
       });
     }
@@ -347,8 +347,8 @@
     };
     onceEvent(iframe, "load", function() {
       var callback;
-      if (callback = iframe.contentWindow.callback) {
-        onceScriptLoad(callback.script, onload);
+      if (callback = iframe.contentWindow._) {
+        onceScriptLoad(callback.$, onload);
       } else {
         onload();
       }
@@ -535,15 +535,15 @@
         };
         url = "/random/url/" + new Date().getTime();
         jsonp(url, function(json) {
-          expect(window.callback).to.be.undefined;
+          expect(window._).to.be.undefined;
           expect(json).to.deep.equal(data);
           return done();
         });
-        expect(window.callback).to.be.a("function");
-        expect(window.callback.script).to.have.property("tagName").to.equal("SCRIPT");
-        expect(window.callback.script.src.endsWith(url + "?callback=callback")).to.be["true"];
-        expect(head.appendChild).to.have.been.calledOnce.and.have.been.calledWith(window.callback.script);
-        return window.callback(data);
+        expect(window._).to.be.a("function");
+        expect(window._.$).to.have.property("tagName").to.equal("SCRIPT");
+        expect(window._.$.src.endsWith(url + "?callback=_")).to.be["true"];
+        expect(head.appendChild).to.have.been.calledOnce.and.have.been.calledWith(window._.$);
+        return window._(data);
       });
     });
   });
@@ -850,11 +850,11 @@
       testRenderCount = function(url, func) {
         sinon.stub(head, "appendChild").callsFake(function() {
           var script;
-          sinon.stub(window, "callback").callsFake(function() {
+          sinon.stub(window, "_").callsFake(function() {
             var args;
-            args = window.callback.args[0];
-            window.callback.restore();
-            window.callback.apply(null, args);
+            args = window._.args[0];
+            window._.restore();
+            window._.apply(null, args);
             return func();
           });
           script = head.appendChild.args[0][0];
@@ -926,7 +926,7 @@
       return it("should not append the count when it fails to pull api data", function() {
         sinon.stub(head, "appendChild").callsFake(function() {
           head.appendChild.restore();
-          window.callback({
+          window._({
             meta: {
               status: 404
             }

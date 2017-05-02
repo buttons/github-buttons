@@ -1,4 +1,4 @@
-/**/callback({
+/**/_({
   "meta": {
     "Content-Type": "application/javascript; charset=utf-8",
     "X-RateLimit-Limit": "60",

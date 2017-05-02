@@ -126,20 +126,20 @@
     script.async = true;
     ref = url.split("?");
     query = parseQueryString(ref.slice(1).join("?"));
-    query.callback = "callback";
+    query.callback = "_";
     script.src = ref[0] + "?" + stringifyQueryString(query);
-    window.callback = function(json) {
-      delete window.callback;
+    window._ = function(json) {
+      delete window._;
       func(json);
     };
-    window.callback.script = script;
+    window._.$ = script;
     onEvent(script, "error", function() {
-      delete window.callback;
+      delete window._;
     });
     if (script.readyState) {
       onEvent(script, "readystatechange", function() {
         if (script.readyState === "loaded" && script.children && script.readyState === "loading") {
-          delete window.callback;
+          delete window._;
         }
       });
     }
@@ -347,8 +347,8 @@
     };
     onceEvent(iframe, "load", function() {
       var callback;
-      if (callback = iframe.contentWindow.callback) {
-        onceScriptLoad(callback.script, onload);
+      if (callback = iframe.contentWindow._) {
+        onceScriptLoad(callback.$, onload);
       } else {
         onload();
       }
@@ -427,8 +427,8 @@
         };
         onEvent(iframe, 'load', function() {
           var callback;
-          if (callback = iframe.contentWindow.callback) {
-            onceScriptLoad(callback.script, onload);
+          if (callback = iframe.contentWindow._) {
+            onceScriptLoad(callback.$, onload);
           } else {
             onload();
           }
