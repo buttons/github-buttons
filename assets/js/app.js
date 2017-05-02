@@ -526,7 +526,11 @@
           };
         },
         hasSuccess: function() {
-          return this.successes.user && this.successes.repo;
+          if (this.options.type === 'follow') {
+            return this.successes.user;
+          } else {
+            return this.successes.user && this.successes.repo;
+          }
         },
         dangers: function() {
           return {

@@ -93,7 +93,10 @@ defer ->
         repo: do (repo = @options.repo) ->
           0 < repo.length && repo.length < 101 && !/[^\w-.]|\.git$|^\.\.?$/i.test(repo)
       hasSuccess: ->
-        @successes.user and @successes.repo
+        if @options.type is 'follow'
+          @successes.user
+        else
+          @successes.user and @successes.repo
       dangers: ->
         user: @options.user isnt '' and not @successes.user
         repo: @options.type isnt 'follow' and @options.repo isnt '' and not @successes.repo
