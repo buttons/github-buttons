@@ -77,24 +77,38 @@ Tailing slash, query string, and hash in the `href` are handled.
 
 ### Advanced Usage
 
+#### Import as a Module
+
 This module works with CommonJS or AMD loader. *Keep in mind that it works only in browser.*
 
-**It is recommended to use a module bundler rather than a module loader.**
+``` javascript
+var GitHubButtons = require('github-buttons')
+```
+
+It is recommended to use a module bundler rather than a module loader.
+
+#### Render a Button
 
 To create buttons dynamically, you will use the `render()` function, which is a named export of this module.
 
 ``` javascript
-var GitHubButtons = require('github-buttons')
 GitHubButtons.render(target, config)
 ```
 
-`target` is a DOM node to be replaced by the button, and `config` is an object containing the attributes.
+- `target` is a DOM node to be replaced by a button.
+- `config` is an object containing the attributes.
+
+To append the button to a parent node instead, you need to create a placeholder as target.
+
+``` javascript
+GitHubButtons.render(parentNode.appendChild(document.createElement('span')), config)
+```
+
+Alternatively, config can be read from the `target` if it is an Anchor (`<a>`) with attributes. 
 
 ``` javascript
 GitHubButtons.render(target)
 ```
-
-`target` must be an AnchorElement (`<a>`) containing the attributes if `config` is not provided.
 
 
 
