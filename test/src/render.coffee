@@ -17,7 +17,7 @@ describe "Render", ->
     it "should append the button to document.body when the necessary config is given", ->
       renderButton {}
       expect document.body.appendChild
-        .to.be.calledOnce
+        .to.have.been.calledOnce
       button = document.body.appendChild.args[0][0]
       expect button
         .to.have.property "className"
@@ -61,16 +61,19 @@ describe "Render", ->
     button = null
     head = document.getElementsByTagName("head")[0]
     REAL_GITHUB_API_BASEURL = GITHUB_API_BASEURL
+    real_jsonp = jsonp
 
     beforeEach ->
       GITHUB_API_BASEURL = "./api.github.com"
       button = document.body.appendChild createElement "a"
       sinon.stub document.body, "insertBefore"
+      jsonp = sinon.spy jsonp
 
     afterEach ->
       GITHUB_API_BASEURL = REAL_GITHUB_API_BASEURL
       button.parentNode.removeChild button
       document.body.insertBefore.restore()
+      jsonp = real_jsonp
 
     testRenderCount = (url, func) ->
       sinon.stub head, "appendChild"
@@ -89,8 +92,10 @@ describe "Render", ->
 
     it "should append the count when a known button type is given", (done) ->
       testRenderCount "https://github.com/ntkme", ->
+        expect jsonp
+          .to.have.been.calledOnce
         expect document.body.insertBefore
-          .to.be.calledOnce
+          .to.have.been.calledOnce
         count = document.body.insertBefore.args[0][0]
         expect count
           .to.have.property "className"
@@ -100,6 +105,10 @@ describe "Render", ->
     it "should append the count for follow button", (done) ->
       testRenderCount "https://github.com/ntkme", ->
         count = document.body.insertBefore.args[0][0]
+        expect jsonp.args[0][0]
+          .to.equal GITHUB_API_BASEURL + "/users/ntkme"
+        expect count.href
+          .to.equal "https://github.com/ntkme/followers"
         expect count.lastChild.innerHTML
           .to.equal "53"
         expect count.getAttribute "aria-label"
@@ -109,6 +118,10 @@ describe "Render", ->
     it "should append the count for watch button", (done) ->
       testRenderCount "https://github.com/ntkme/github-buttons/subscription", ->
         count = document.body.insertBefore.args[0][0]
+        expect jsonp.args[0][0]
+          .to.equal GITHUB_API_BASEURL + "/repos/ntkme/github-buttons"
+        expect count.href
+          .to.equal "https://github.com/ntkme/github-buttons/watchers"
         expect count.lastChild.innerHTML
           .to.equal "14"
         expect count.getAttribute "aria-label"
@@ -118,6 +131,10 @@ describe "Render", ->
     it "should append the count for star button", (done) ->
       testRenderCount "https://github.com/ntkme/github-buttons", ->
         count = document.body.insertBefore.args[0][0]
+        expect jsonp.args[0][0]
+          .to.equal GITHUB_API_BASEURL + "/repos/ntkme/github-buttons"
+        expect count.href
+          .to.equal "https://github.com/ntkme/github-buttons/stargazers"
         expect count.lastChild.innerHTML
           .to.equal "302"
         expect count.getAttribute "aria-label"
@@ -127,6 +144,10 @@ describe "Render", ->
     it "should append the count for fork button", (done) ->
       testRenderCount "https://github.com/ntkme/github-buttons/fork", ->
         count = document.body.insertBefore.args[0][0]
+        expect jsonp.args[0][0]
+          .to.equal GITHUB_API_BASEURL + "/repos/ntkme/github-buttons"
+        expect count.href
+          .to.equal "https://github.com/ntkme/github-buttons/network"
         expect count.lastChild.innerHTML
           .to.equal "42"
         expect count.getAttribute "aria-label"
@@ -136,6 +157,10 @@ describe "Render", ->
     it "should append the count for issue button", (done) ->
       testRenderCount "https://github.com/ntkme/github-buttons/issues", ->
         count = document.body.insertBefore.args[0][0]
+        expect jsonp.args[0][0]
+          .to.equal GITHUB_API_BASEURL + "/repos/ntkme/github-buttons"
+        expect count.href
+          .to.equal "https://github.com/ntkme/github-buttons/issues"
         expect count.lastChild.innerHTML
           .to.equal "1"
         expect count.getAttribute "aria-label"
@@ -145,6 +170,8 @@ describe "Render", ->
     it "should not append the count for unknown button type", ->
       button.href = "https://github.com/"
       renderCount button
+      expect jsonp
+        .to.have.not.been.called
       expect document.body.insertBefore
         .to.have.not.been.called
 

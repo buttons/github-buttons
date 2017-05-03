@@ -211,20 +211,20 @@ renderCount = (button) ->
   return unless match and not match[6]
 
   if match[2]
-    api = "/repos/#{match[1]}/#{match[2]}"
-    href = "/#{match[1]}/#{match[2]}/"
+    href = "/#{match[1]}/#{match[2]}"
+    api = "/repos#{href}"
     if match[3]
       property = "subscribers_count"
-      href += "watchers"
+      href += "/watchers"
     else if match[4]
       property = "forks_count"
-      href += "network"
+      href += "/network"
     else if match[5]
       property = "open_issues_count"
-      href += "issues"
+      href += "/issues"
     else
       property = "stargazers_count"
-      href += "stargazers"
+      href += "/stargazers"
   else
     api = "/users/#{match[1]}"
     property = "followers"

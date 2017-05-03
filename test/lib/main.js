@@ -264,20 +264,20 @@
       return;
     }
     if (match[2]) {
-      api = "/repos/" + match[1] + "/" + match[2];
-      href = "/" + match[1] + "/" + match[2] + "/";
+      href = "/" + match[1] + "/" + match[2];
+      api = "/repos" + href;
       if (match[3]) {
         property = "subscribers_count";
-        href += "watchers";
+        href += "/watchers";
       } else if (match[4]) {
         property = "forks_count";
-        href += "network";
+        href += "/network";
       } else if (match[5]) {
         property = "open_issues_count";
-        href += "issues";
+        href += "/issues";
       } else {
         property = "stargazers_count";
-        href += "stargazers";
+        href += "/stargazers";
       }
     } else {
       api = "/users/" + match[1];
@@ -785,7 +785,7 @@
       it("should append the button to document.body when the necessary config is given", function() {
         var button;
         renderButton({});
-        expect(document.body.appendChild).to.be.calledOnce;
+        expect(document.body.appendChild).to.have.been.calledOnce;
         button = document.body.appendChild.args[0][0];
         return expect(button).to.have.property("className").and.equal("button");
       });
@@ -833,19 +833,22 @@
       });
     });
     describe("rednerCount(button)", function() {
-      var REAL_GITHUB_API_BASEURL, button, head, testRenderCount;
+      var REAL_GITHUB_API_BASEURL, button, head, real_jsonp, testRenderCount;
       button = null;
       head = document.getElementsByTagName("head")[0];
       REAL_GITHUB_API_BASEURL = GITHUB_API_BASEURL;
+      real_jsonp = jsonp;
       beforeEach(function() {
         GITHUB_API_BASEURL = "./api.github.com";
         button = document.body.appendChild(createElement("a"));
-        return sinon.stub(document.body, "insertBefore");
+        sinon.stub(document.body, "insertBefore");
+        return jsonp = sinon.spy(jsonp);
       });
       afterEach(function() {
         GITHUB_API_BASEURL = REAL_GITHUB_API_BASEURL;
         button.parentNode.removeChild(button);
-        return document.body.insertBefore.restore();
+        document.body.insertBefore.restore();
+        return jsonp = real_jsonp;
       });
       testRenderCount = function(url, func) {
         sinon.stub(head, "appendChild").callsFake(function() {
@@ -867,7 +870,8 @@
       it("should append the count when a known button type is given", function(done) {
         return testRenderCount("https://github.com/ntkme", function() {
           var count;
-          expect(document.body.insertBefore).to.be.calledOnce;
+          expect(jsonp).to.have.been.calledOnce;
+          expect(document.body.insertBefore).to.have.been.calledOnce;
           count = document.body.insertBefore.args[0][0];
           expect(count).to.have.property("className").and.equal("count");
           return done();
@@ -877,6 +881,8 @@
         return testRenderCount("https://github.com/ntkme", function() {
           var count;
           count = document.body.insertBefore.args[0][0];
+          expect(jsonp.args[0][0]).to.equal(GITHUB_API_BASEURL + "/users/ntkme");
+          expect(count.href).to.equal("https://github.com/ntkme/followers");
           expect(count.lastChild.innerHTML).to.equal("53");
           expect(count.getAttribute("aria-label")).to.equal("53 followers on GitHub");
           return done();
@@ -886,6 +892,8 @@
         return testRenderCount("https://github.com/ntkme/github-buttons/subscription", function() {
           var count;
           count = document.body.insertBefore.args[0][0];
+          expect(jsonp.args[0][0]).to.equal(GITHUB_API_BASEURL + "/repos/ntkme/github-buttons");
+          expect(count.href).to.equal("https://github.com/ntkme/github-buttons/watchers");
           expect(count.lastChild.innerHTML).to.equal("14");
           expect(count.getAttribute("aria-label")).to.equal("14 subscribers on GitHub");
           return done();
@@ -895,6 +903,8 @@
         return testRenderCount("https://github.com/ntkme/github-buttons", function() {
           var count;
           count = document.body.insertBefore.args[0][0];
+          expect(jsonp.args[0][0]).to.equal(GITHUB_API_BASEURL + "/repos/ntkme/github-buttons");
+          expect(count.href).to.equal("https://github.com/ntkme/github-buttons/stargazers");
           expect(count.lastChild.innerHTML).to.equal("302");
           expect(count.getAttribute("aria-label")).to.equal("302 stargazers on GitHub");
           return done();
@@ -904,6 +914,8 @@
         return testRenderCount("https://github.com/ntkme/github-buttons/fork", function() {
           var count;
           count = document.body.insertBefore.args[0][0];
+          expect(jsonp.args[0][0]).to.equal(GITHUB_API_BASEURL + "/repos/ntkme/github-buttons");
+          expect(count.href).to.equal("https://github.com/ntkme/github-buttons/network");
           expect(count.lastChild.innerHTML).to.equal("42");
           expect(count.getAttribute("aria-label")).to.equal("42 forks on GitHub");
           return done();
@@ -913,6 +925,8 @@
         return testRenderCount("https://github.com/ntkme/github-buttons/issues", function() {
           var count;
           count = document.body.insertBefore.args[0][0];
+          expect(jsonp.args[0][0]).to.equal(GITHUB_API_BASEURL + "/repos/ntkme/github-buttons");
+          expect(count.href).to.equal("https://github.com/ntkme/github-buttons/issues");
           expect(count.lastChild.innerHTML).to.equal("1");
           expect(count.getAttribute("aria-label")).to.equal("1 open issues on GitHub");
           return done();
@@ -921,6 +935,7 @@
       it("should not append the count for unknown button type", function() {
         button.href = "https://github.com/";
         renderCount(button);
+        expect(jsonp).to.have.not.been.called;
         return expect(document.body.insertBefore).to.have.not.been.called;
       });
       return it("should not append the count when it fails to pull api data", function() {
