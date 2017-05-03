@@ -52,10 +52,28 @@ Add as many `<a class="github-button">` as you like, then put the `<script>` any
 | `data-count-api`        | Deprecated. Same as `data-show-count="true"`.                                                                                                   |
 | `data-count-href`       | Obsoleted.                                                                                                                                      |
 | `data-count-aria-label` | Obsoleted.                                                                                                                                      |
-| `data-show-count`       | `true` or `false`.                                                                                                                              |
+| `data-show-count`       | `true` or `false`. The dynamic count is generated based on detected button type.                                                                |
 | `data-style`            | `default` or `mega`.                                                                                                                            |
 | `data-text`             | Text displayed on the button. It defaults to the text content within the link.                                                                  |
 | `aria-label`            | Aira label for the button link.                                                                                                                 |
+
+#### Built-in Button Types
+
+Button type is detected through button's `href` attribute.
+
+- `https://github.com/:user` (follow)
+- `https://github.com/:user/:repo` (star)
+- `https://github.com/:user/:repo/subscription` (watch)
+- `https://github.com/:user/:repo/fork` (fork)
+- `https://github.com/:user/:repo/issues` (issues)
+- `https://github.com/:user/:repo/issues/new` (issues)
+
+Tailing slash, query string, and hash in the `href` are handled.
+
+- `https://github.com/:user/` (follow)
+- `https://github.com/:user?tab=repositories` (follow)
+- `https://github.com/:user/:repo#license` (star)
+- `https://github.com/:user/:repo/#license` (star)
 
 ### Advanced Usage
 
