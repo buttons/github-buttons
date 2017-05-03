@@ -86,7 +86,7 @@ defer ->
         for name, value of @config
           if name isnt 'href' and name isnt 'data-text' and value?
             a.setAttribute name, value
-        a.outerHTML
+        '<!-- Place this tag where you want the button to render. -->\n' + a.outerHTML
       successes: ->
         user: do (user = @options.user) ->
           0 < user.length && user.length < 40 && !/[^A-Za-z0-9-]|^-|-$|--/i.test(user)

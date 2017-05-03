@@ -509,7 +509,7 @@
               a.setAttribute(name, value);
             }
           }
-          return a.outerHTML;
+          return '<!-- Place this tag where you want the button to render. -->\n' + a.outerHTML;
         },
         successes: function() {
           return {
