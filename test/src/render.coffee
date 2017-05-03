@@ -268,11 +268,11 @@ describe "Render", ->
       expect document.body.appendChild
         .to.have.not.been.called
 
-    it "should set document.body.className when data-style is given", ->
-      config = "data-style": "mega"
+    it "should set document.body.className when data-size is large", ->
+      config = "data-size": "large"
       renderFrameContent config
       expect document.body.className
-        .to.equal config["data-style"]
+        .to.equal "large"
 
     it "should call renderButton(config)", ->
       renderFrameContent {}

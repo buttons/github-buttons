@@ -12,8 +12,8 @@ describe "Config", ->
           "data-text": ""
           "aria-label": null
           "data-icon": null
+          "data-size": null
           "data-show-count": null
-          "data-style": null
 
     it "should parse the attribute href", ->
       a.href = "https://buttons.github.io/"
@@ -49,12 +49,18 @@ describe "Config", ->
       expect parseConfig a
         .to.have.property "data-show-count"
 
-    it "should parse the attribute data-style", ->
-      style = "mega"
-      a.setAttribute "data-style", style
+    it "should parse the attribute data-size", ->
+      size = "large"
+      a.setAttribute "data-size", size
       expect parseConfig a
-        .to.have.property "data-style"
-        .and.equal style
+        .to.have.property "data-size"
+        .and.equal size
+
+    it "should parse the attribute data-style for backward compatibility", ->
+      a.setAttribute "data-style", "mega"
+      expect parseConfig a
+        .to.have.property "data-size"
+        .and.equal "large"
 
     it "should parse the attribute data-icon", ->
       icon = "octicon"

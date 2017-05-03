@@ -40,7 +40,7 @@
       </div>
     </footer>
     <script type="text/x-template" id="github-button-preview-template">
-      <p :style="{ height: config['data-style'] === 'mega' ? '28px' : '20px' }">
+      <p :style="{ height: config['data-size'] === 'large' ? '28px' : '20px' }">
         <iframe allowtransparency="true" scrolling="no" frameBorder="0" src="buttons.html" style="width: 1px; height: 0px; border: none;"></iframe>
       </p>
     </script>
@@ -62,7 +62,7 @@
                   <input type="radio" class="form-check-input" name="type" value="follow" v-model="options.type">
                   Follow
                   <br>
-                  <span aria-hidden="true"><a class="github-button" href="#" data-style="mega" data-text="Follow"></a></span>
+                  <span aria-hidden="true"><a class="github-button" href="#" data-size="large" data-text="Follow"></a></span>
                 </label>
               </div>
             </div>
@@ -72,7 +72,7 @@
                   <input type="radio" class="form-check-input" name="type" value="watch" v-model="options.type">
                   Watch
                   <br>
-                  <span aria-hidden="true"><a class="github-button" href="#" data-icon="octicon-eye" data-style="mega" data-text="Watch"></a></span>
+                  <span aria-hidden="true"><a class="github-button" href="#" data-icon="octicon-eye" data-size="large" data-text="Watch"></a></span>
                 </label>
               </div>
             </div>
@@ -82,7 +82,7 @@
                   <input type="radio" class="form-check-input" name="type" value="star" v-model="options.type">
                   Star
                   <br>
-                  <span aria-hidden="true"><a class="github-button" href="#" data-icon="octicon-star" data-style="mega" data-text="Star"></a></span>
+                  <span aria-hidden="true"><a class="github-button" href="#" data-icon="octicon-star" data-size="large" data-text="Star"></a></span>
                 </label>
               </div>
             </div>
@@ -92,7 +92,7 @@
                   <input type="radio" class="form-check-input" name="type" value="fork" v-model="options.type">
                   Fork
                   <br>
-                  <span aria-hidden="true"><a class="github-button" href="#" data-icon="octicon-repo-forked" data-style="mega" data-text="Fork"></a></span>
+                  <span aria-hidden="true"><a class="github-button" href="#" data-icon="octicon-repo-forked" data-size="large" data-text="Fork"></a></span>
                 </label>
               </div>
             </div>
@@ -102,7 +102,7 @@
                   <input type="radio" class="form-check-input" name="type" value="issue" v-model="options.type">
                   Issue
                   <br>
-                  <span aria-hidden="true"><a class="github-button" href="#" data-icon="octicon-issue-opened" data-style="mega" data-text="Issue"></a></span>
+                  <span aria-hidden="true"><a class="github-button" href="#" data-icon="octicon-issue-opened" data-size="large" data-text="Issue"></a></span>
                 </label>
               </div>
             </div>
@@ -112,7 +112,7 @@
                   <input type="radio" class="form-check-input" name="type" value="download" v-model="options.type">
                   Download
                   <br>
-                  <span aria-hidden="true"><a class="github-button" href="#" data-icon="octicon-cloud-download" data-style="mega" data-text="Download"></a></span>
+                  <span aria-hidden="true"><a class="github-button" href="#" data-icon="octicon-cloud-download" data-size="large" data-text="Download"></a></span>
                 </label>
               </div>
             </div>

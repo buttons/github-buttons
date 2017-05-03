@@ -131,18 +131,24 @@ parseConfig = (anchor) ->
     "href": anchor.href
     "aria-label": anchor.getAttribute "aria-label"
   for attribute in [
-    "text"
-    "show-count"
-    "style"
     "icon"
+    "text"
+    "size"
+    "show-count"
   ]
     attribute = "data-" + attribute
     config[attribute] = anchor.getAttribute attribute
   if !config["data-text"]?
     config["data-text"] = anchor.textContent or anchor.innerText
-  if anchor.getAttribute "data-count-api"
-    console and console.warn "GitHub Buttons deprecated `data-count-api`: use `data-show-count` instead. Please refer to https://github.com/ntkme/github-buttons for more info."
-    config["data-show-count"] = 1
+
+  deprecate = (oldAttribute, newAttribute, newValue) ->
+    if anchor.getAttribute oldAttribute
+      config[newAttribute] = newValue
+      console and console.warn "GitHub Buttons deprecated `#{oldAttribute}`: use `#{newAttribute}=\"#{newValue}\"` instead. Please refer to https://github.com/ntkme/github-buttons#readme for more info."
+    return
+  deprecate "data-count-api", "data-show-count", "true"
+  deprecate "data-style", "data-size", "large"
+
   config
 
 createAnchor = (url, baseUrl) ->
@@ -247,7 +253,7 @@ renderCount = (button) ->
 
 renderFrameContent = (config) ->
   return unless config
-  document.body.className = config["data-style"] or ""
+  document.body.className = "large" if /^large$/i.test config["data-size"]
   button = renderButton config
   renderCount button if /^(true|1)$/i.test config["data-show-count"]
   return

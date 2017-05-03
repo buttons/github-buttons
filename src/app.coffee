@@ -153,8 +153,8 @@ defer ->
               return 'octicon-cloud-download'
             else
               return
-        'data-style': do ->
-          return if options.largeButton then 'mega' else null
+        'data-size': do ->
+          return if options.largeButton then 'large' else null
         'data-show-count': do ->
           if options.showCount
             switch options.type

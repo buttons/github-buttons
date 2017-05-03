@@ -19,8 +19,8 @@ The easiest way to get started is to use the **[github:button generator](https:/
 <a class="github-button"
    href="{{ link }}"
    data-icon="{{ octicon }}"
+   data-size="{{ size }}"
    data-show-count="{{ show count }}"
-   data-style="{{ style }}"
    data-text="{{ text }}"
    aria-label="{{ aria label }}"
    >{{ text }}</a>
@@ -36,12 +36,9 @@ The easiest way to get started is to use the **[github:button generator](https:/
 | Attribute               | Description                                                                                                                                 |
 | ---------               | -----------                                                                                                                                 |
 | `href`                  | GitHub link for the button.                                                                                                                 |
-| `data-icon`             | Octicon for the button. It defaults to `octicon-mark-github`. <br> Available icons can be found at [Octicons](https://octicons.github.com). |
-| `data-count-api`        | Deprecated. Same as `data-show-count="true"`.                                                                                               |
-| `data-count-href`       | Obsoleted.                                                                                                                                  |
-| `data-count-aria-label` | Obsoleted.                                                                                                                                  |
-| `data-show-count`       | `true` or `false`. The dynamic count is generated based on detected button type.                                                            |
-| `data-style`            | `default` or `mega`.                                                                                                                        |
+| `data-icon`             | Octicon for the button. `octicon-mark-github`. <br> Available icons can be found at [Octicons](https://octicons.github.com). |
+| `data-size`             | _None_ by default or `large`.                                                                                                               |
+| `data-show-count`       | `false` by default or `true`. The dynamic count is generated based on detected button type.                                       |
 | `data-text`             | Text displayed on the button. It defaults to the text content within the link.                                                              |
 | `aria-label`            | Aira label for the button link.                                                                                                             |
 

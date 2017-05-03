@@ -182,12 +182,12 @@
   };
 
   parseConfig = function(anchor) {
-    var attribute, config, j, len, ref1;
+    var attribute, config, deprecate, j, len, ref1;
     config = {
       "href": anchor.href,
       "aria-label": anchor.getAttribute("aria-label")
     };
-    ref1 = ["text", "show-count", "style", "icon"];
+    ref1 = ["icon", "text", "size", "show-count"];
     for (j = 0, len = ref1.length; j < len; j++) {
       attribute = ref1[j];
       attribute = "data-" + attribute;
@@ -196,10 +196,14 @@
     if (config["data-text"] == null) {
       config["data-text"] = anchor.textContent || anchor.innerText;
     }
-    if (anchor.getAttribute("data-count-api")) {
-      console && console.warn("GitHub Buttons deprecated `data-count-api`: use `data-show-count` instead. Please refer to https://github.com/ntkme/github-buttons for more info.");
-      config["data-show-count"] = 1;
-    }
+    deprecate = function(oldAttribute, newAttribute, newValue) {
+      if (anchor.getAttribute(oldAttribute)) {
+        config[newAttribute] = newValue;
+        console && console.warn("GitHub Buttons deprecated `" + oldAttribute + "`: use `" + newAttribute + "=\"" + newValue + "\"` instead. Please refer to https://github.com/ntkme/github-buttons#readme for more info.");
+      }
+    };
+    deprecate("data-count-api", "data-show-count", "true");
+    deprecate("data-style", "data-size", "large");
     return config;
   };
 
@@ -305,7 +309,9 @@
     if (!config) {
       return;
     }
-    document.body.className = config["data-style"] || "";
+    if (/^large$/i.test(config["data-size"])) {
+      document.body.className = "large";
+    }
     button = renderButton(config);
     if (/^(true|1)$/i.test(config["data-show-count"])) {
       renderCount(button);
@@ -598,9 +604,9 @@
                   return 'octicon-cloud-download';
               }
             })(),
-            'data-style': (function() {
+            'data-size': (function() {
               if (options.largeButton) {
-                return 'mega';
+                return 'large';
               } else {
                 return null;
               }
