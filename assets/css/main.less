@@ -11,18 +11,13 @@ html {
   user-select: none;
 
   .navbar-brand {
-    line-height: 28px;
     cursor: pointer;
 
     .octicon-logo-github {
-      height: 24px;
-      overflow: hidden;
-      font-size: 72px;
       color: #000;
-      vertical-align: middle;
     }
     .logo {
-      line-height: 1;
+      line-height: 24px;
       vertical-align: bottom;
     }
     .logo-colon {
@@ -35,14 +30,16 @@ html {
 }
 
 .main {
-  padding-bottom: 56px;
+  padding-bottom: 57px;
 }
 
 .footer {
   position: absolute;
   bottom: 0;
   width: 100%;
-  height: 56px;
+  height: 57px;
+  overflow-y: hidden;
+  border-top: 1px solid #e5e5e5;
 }
 
 .form-check-label:before {
@@ -66,3 +63,10 @@ textarea[readonly] {
   background-color: #fff !important;
   resize: none;
 }
+
+.octicon {
+  display: inline-block;
+  vertical-align: text-top;
+  fill: currentColor;
+}
+
