@@ -43,11 +43,12 @@ describe "Config", ->
         .to.have.property "data-text"
         .and.equal text
 
-    it "should parse the attribute data-count-api for backward compatibility", ->
-      api = "/repos/:user/:repo#item"
-      a.setAttribute "data-count-api", api
+    it "should parse the attribute data-icon", ->
+      icon = "octicon"
+      a.setAttribute "data-icon", icon
       expect parseConfig a
-        .to.have.property "data-show-count"
+        .to.have.property "data-icon"
+        .and.equal icon
 
     it "should parse the attribute data-size", ->
       size = "large"
@@ -62,9 +63,22 @@ describe "Config", ->
         .to.have.property "data-size"
         .and.equal "large"
 
-    it "should parse the attribute data-icon", ->
-      icon = "octicon"
-      a.setAttribute "data-icon", icon
+    it "should parse the attribute data-show-count", ->
+      a.setAttribute "data-show-count", "true"
       expect parseConfig a
-        .to.have.property "data-icon"
-        .and.equal icon
+        .to.have.property "data-show-count"
+        .and.equal "true"
+
+    it "should parse the attribute data-count-api for backward compatibility", ->
+      api = "/repos/:user/:repo#item"
+      a.setAttribute "data-count-api", api
+      expect parseConfig a
+        .to.have.property "data-show-count"
+        .and.equal "true"
+
+    it "should parse the attribute aria-label", ->
+      label = "GitHub"
+      a.setAttribute "aria-label", label
+      expect parseConfig a
+        .to.have.property "aria-label"
+        .and.equal label

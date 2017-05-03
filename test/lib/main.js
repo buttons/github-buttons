@@ -682,11 +682,11 @@
         a.appendChild(createTextNode("something else"));
         return expect(parseConfig(a)).to.have.property("data-text").and.equal(text);
       });
-      it("should parse the attribute data-count-api for backward compatibility", function() {
-        var api;
-        api = "/repos/:user/:repo#item";
-        a.setAttribute("data-count-api", api);
-        return expect(parseConfig(a)).to.have.property("data-show-count");
+      it("should parse the attribute data-icon", function() {
+        var icon;
+        icon = "octicon";
+        a.setAttribute("data-icon", icon);
+        return expect(parseConfig(a)).to.have.property("data-icon").and.equal(icon);
       });
       it("should parse the attribute data-size", function() {
         var size;
@@ -698,11 +698,21 @@
         a.setAttribute("data-style", "mega");
         return expect(parseConfig(a)).to.have.property("data-size").and.equal("large");
       });
-      return it("should parse the attribute data-icon", function() {
-        var icon;
-        icon = "octicon";
-        a.setAttribute("data-icon", icon);
-        return expect(parseConfig(a)).to.have.property("data-icon").and.equal(icon);
+      it("should parse the attribute data-show-count", function() {
+        a.setAttribute("data-show-count", "true");
+        return expect(parseConfig(a)).to.have.property("data-show-count").and.equal("true");
+      });
+      it("should parse the attribute data-count-api for backward compatibility", function() {
+        var api;
+        api = "/repos/:user/:repo#item";
+        a.setAttribute("data-count-api", api);
+        return expect(parseConfig(a)).to.have.property("data-show-count").and.equal("true");
+      });
+      return it("should parse the attribute aria-label", function() {
+        var label;
+        label = "GitHub";
+        a.setAttribute("aria-label", label);
+        return expect(parseConfig(a)).to.have.property("aria-label").and.equal(label);
       });
     });
   });
