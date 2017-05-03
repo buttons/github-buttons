@@ -100,7 +100,7 @@ GitHubButtons.render(target)
 If you have `<a class="github-button">` in a virtual DOM template, including `<script src="buttons.js">` won't work, because the script execution happens before virtual DOM is rendered.  You can either put the button outside of the virtual DOM, or use the `render()` function.  To avoid the side effect from alternating real DOM in the virtual DOM, you have to store the `target` and restore it on the before update hook.
 
 - [GithubButton.vue](examples/vue/GithubButton.vue) for [Vue](https://vuejs.org)
-- [GithubButton.js](examples/react/GithubButton.js) for [React](https://facebook.github.io/react/)
+- [GitHubButton.js](examples/react/GitHubButton.js) for [React](https://facebook.github.io/react/)
 
 
 

@@ -1,5 +1,5 @@
 <script>
-import GithubButtons from 'github-buttons'
+import { render } from 'github-buttons'
 
 export default {
   name: 'github-button',
@@ -26,13 +26,13 @@ export default {
     ])
   },
   mounted () {
-    GithubButtons.render(this._ = this.$el.firstChild)
+    render(this._ = this.$el.firstChild)
   },
   beforeUpdate () {
     this.$el.replaceChild(this._, this.$el.firstChild)
   },
   updated () {
-    GithubButtons.render(this._ = this.$el.firstChild)
+    render(this._ = this.$el.firstChild)
   }
 }
 </script>
