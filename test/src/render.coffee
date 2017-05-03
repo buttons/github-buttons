@@ -167,8 +167,65 @@ describe "Render", ->
           .to.equal "1 open issues on GitHub"
         done()
 
+    it "should append the count for issue button when it links to new issue", (done) ->
+      testRenderCount "https://github.com/ntkme/github-buttons/issues/new", ->
+        count = document.body.insertBefore.args[0][0]
+        expect jsonp.args[0][0]
+          .to.equal GITHUB_API_BASEURL + "/repos/ntkme/github-buttons"
+        expect count.href
+          .to.equal "https://github.com/ntkme/github-buttons/issues"
+        expect count.lastChild.innerHTML
+          .to.equal "1"
+        expect count.getAttribute "aria-label"
+          .to.equal "1 open issues on GitHub"
+        done()
+
+    it "should append the count for button whose link has a tailing slash", (done) ->
+      testRenderCount "https://github.com/ntkme/", ->
+        count = document.body.insertBefore.args[0][0]
+        expect count.href
+          .to.equal "https://github.com/ntkme/followers"
+        done()
+
+    it "should append the count for button whose link has a query", (done) ->
+      testRenderCount "https://github.com/ntkme?tab=repositories", ->
+        count = document.body.insertBefore.args[0][0]
+        expect count.href
+          .to.equal "https://github.com/ntkme/followers"
+        done()
+
+    it "should append the count for button whose link has a hash", (done) ->
+      testRenderCount "https://github.com/ntkme#github-buttons", ->
+        count = document.body.insertBefore.args[0][0]
+        expect count.href
+          .to.equal "https://github.com/ntkme/followers"
+        done()
+
+    it "should append the count for button whose link has both a tailing slash and a query", (done) ->
+      testRenderCount "https://github.com/ntkme/?tab=repositories", ->
+        count = document.body.insertBefore.args[0][0]
+        expect count.href
+          .to.equal "https://github.com/ntkme/followers"
+        done()
+
+    it "should append the count for button whose link has both a tailing slash and a hash", (done) ->
+      testRenderCount "https://github.com/ntkme/#github-buttons", ->
+        count = document.body.insertBefore.args[0][0]
+        expect count.href
+          .to.equal "https://github.com/ntkme/followers"
+        done()
+
+    it "should append the count for button whose link has a tailing slash, a query, and a hash", (done) ->
+      testRenderCount "https://github.com/ntkme/?tab=repositories#github-buttons", ->
+        count = document.body.insertBefore.args[0][0]
+        expect count.href
+          .to.equal "https://github.com/ntkme/followers"
+        done()
+
     it "should not append the count for unknown button type", ->
       button.href = "https://github.com/"
+      renderCount button
+      button.href = "https://github.com/ntkme/github-buttons/test"
       renderCount button
       expect jsonp
         .to.have.not.been.called

@@ -932,8 +932,69 @@
           return done();
         });
       });
+      it("should append the count for issue button when it links to new issue", function(done) {
+        return testRenderCount("https://github.com/ntkme/github-buttons/issues/new", function() {
+          var count;
+          count = document.body.insertBefore.args[0][0];
+          expect(jsonp.args[0][0]).to.equal(GITHUB_API_BASEURL + "/repos/ntkme/github-buttons");
+          expect(count.href).to.equal("https://github.com/ntkme/github-buttons/issues");
+          expect(count.lastChild.innerHTML).to.equal("1");
+          expect(count.getAttribute("aria-label")).to.equal("1 open issues on GitHub");
+          return done();
+        });
+      });
+      it("should append the count for button whose link has a tailing slash", function(done) {
+        return testRenderCount("https://github.com/ntkme/", function() {
+          var count;
+          count = document.body.insertBefore.args[0][0];
+          expect(count.href).to.equal("https://github.com/ntkme/followers");
+          return done();
+        });
+      });
+      it("should append the count for button whose link has a query", function(done) {
+        return testRenderCount("https://github.com/ntkme?tab=repositories", function() {
+          var count;
+          count = document.body.insertBefore.args[0][0];
+          expect(count.href).to.equal("https://github.com/ntkme/followers");
+          return done();
+        });
+      });
+      it("should append the count for button whose link has a hash", function(done) {
+        return testRenderCount("https://github.com/ntkme#github-buttons", function() {
+          var count;
+          count = document.body.insertBefore.args[0][0];
+          expect(count.href).to.equal("https://github.com/ntkme/followers");
+          return done();
+        });
+      });
+      it("should append the count for button whose link has both a tailing slash and a query", function(done) {
+        return testRenderCount("https://github.com/ntkme/?tab=repositories", function() {
+          var count;
+          count = document.body.insertBefore.args[0][0];
+          expect(count.href).to.equal("https://github.com/ntkme/followers");
+          return done();
+        });
+      });
+      it("should append the count for button whose link has both a tailing slash and a hash", function(done) {
+        return testRenderCount("https://github.com/ntkme/#github-buttons", function() {
+          var count;
+          count = document.body.insertBefore.args[0][0];
+          expect(count.href).to.equal("https://github.com/ntkme/followers");
+          return done();
+        });
+      });
+      it("should append the count for button whose link has a tailing slash, a query, and a hash", function(done) {
+        return testRenderCount("https://github.com/ntkme/?tab=repositories#github-buttons", function() {
+          var count;
+          count = document.body.insertBefore.args[0][0];
+          expect(count.href).to.equal("https://github.com/ntkme/followers");
+          return done();
+        });
+      });
       it("should not append the count for unknown button type", function() {
         button.href = "https://github.com/";
+        renderCount(button);
+        button.href = "https://github.com/ntkme/github-buttons/test";
         renderCount(button);
         expect(jsonp).to.have.not.been.called;
         return expect(document.body.insertBefore).to.have.not.been.called;
