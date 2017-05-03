@@ -33,14 +33,14 @@ The easiest way to get started is to use the **[github:button generator](https:/
 
 #### Config
 
-| Attribute               | Description                                                                                                                                 |
-| ---------               | -----------                                                                                                                                 |
-| `href`                  | GitHub link for the button.                                                                                                                 |
+| Attribute               | Description                                                                                                                  |
+| ---------               | -----------                                                                                                                  |
+| `href`                  | GitHub link for the button.                                                                                                  |
 | `data-icon`             | Octicon for the button. `octicon-mark-github`. <br> Available icons can be found at [Octicons](https://octicons.github.com). |
-| `data-size`             | _None_ by default or `large`.                                                                                                               |
-| `data-show-count`       | `false` by default or `true`. The dynamic count is generated based on detected button type.                                       |
-| `data-text`             | Text displayed on the button. It defaults to the text content within the link.                                                              |
-| `aria-label`            | Aira label for the button link.                                                                                                             |
+| `data-size`             | _None_ by default or `large`.                                                                                                |
+| `data-show-count`       | `false` by default or `true`. The dynamic count is generated based on detected button type.                                  |
+| `data-text`             | Text displayed on the button. It defaults to the text content within the link.                                               |
+| `aria-label`            | Aira label for the button link.                                                                                              |
 
 #### Built-in Button Types
 
@@ -94,6 +94,12 @@ Alternatively, config can be read from the `target` if it is an Anchor (`<a>`) w
 ``` javascript
 GitHubButtons.render(target)
 ```
+
+### Virtual DOM
+
+If you have `<a class="github-button">` in a virtual DOM template, including `<script src="buttons.js">` won't work, because the script execution happens before virtual DOM is rendered.  You can either put the button outside of the virtual DOM, or use the `render()` function.  To avoid the side effect from alternating real DOM in the virtual DOM, you have to store the `target` and restore it on the before update hook.
+
+- [GithubButton.vue](examples/vue/GithubButton.vue) for [Vue.js](https://vuejs.org)
 
 
 
