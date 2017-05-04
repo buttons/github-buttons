@@ -71,8 +71,8 @@ task 'build', 'Build everything', ->
   invoke 'build:coffee'
 
 task 'build:coffee', 'Build scripts', ->
-  system "coffee", "-o", "lib/", "src/buttons.coffee", ->
-    system "uglifyjs", "--compress", "--mangle", "--source-map", "buttons.js.map", "--output", "buttons.js", "lib/buttons.js"
+  system "coffee", "-o", "dist/", "src/buttons.coffee", ->
+    system "uglifyjs", "--compress", "--mangle", "--source-map", "buttons.js.map", "--output", "buttons.js", "dist/buttons.js"
   coffee.compile "src/buttons.coffee",
                  "src/app.coffee",
                  "assets/js/app.js",
@@ -98,7 +98,7 @@ task 'clean', 'Cleanup everything', ->
   css = /\.css(\.map)?$/
   targets = find "./", js
     .concat find "assets/js", js
-    .concat find "lib/", js
+    .concat find "dist/", js
     .concat find "test/lib/", js
     .concat find "assets/css/", css
     .concat find "assets/css/octicons/", css

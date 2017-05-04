@@ -99,9 +99,9 @@ GitHubButtons.render(target)
 
 Including `<script src="buttons.js">` won't work for `<a class="github-button">` unless the button is in the real DOM tree when the page is loaded.  When using `render()` function, be careful with alternating the real DOM.
 
-- [GithubButton.vue](examples/vue/GithubButton.vue) for [Vue](https://vuejs.org)
-- [GitHubButton.js](examples/react/GitHubButton.js) for [React](https://facebook.github.io/react/)
-- [github-button.component.ts](examples/angular/github-button.component.ts) for [Angular](https://angular.io)
+- [GithubButton.vue](dist/vue/GithubButton.vue) for [Vue](https://vuejs.org)
+- [GitHubButton.js](dist/react/GitHubButton.js) for [React](https://facebook.github.io/react/)
+- [github-button.component.ts](dist/angular/github-button.component.ts) for [Angular](https://angular.io)
 
 
 
