@@ -2,7 +2,8 @@
   "name": "github-buttons",
   "version": "0.0.0",
   "description": "GitHub Buttons",
-  "main": "buttons.js",
+  "main": "lib/buttons.js",
+  "typings": "lib/buttons.d.ts",
   "scripts": {
     "build": "cake build",
     "test": "cake test"
