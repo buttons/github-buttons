@@ -4,7 +4,7 @@ import { render } from 'github-buttons'
 
 export default class GitHubButton extends React.Component {
   render () {
-    return React.createElement('span', null, React.createElement('a', this.props))
+    return React.createElement('span', null, React.createElement('a', this.props, this.props.children))
   }
   componentDidMount () {
     render(this._ = ReactDOM.findDOMNode(this).firstChild)

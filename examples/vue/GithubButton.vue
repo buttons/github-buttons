@@ -22,7 +22,7 @@ export default {
           'data-text': this.dataText,
           'aria-label': this.ariaLabel
         }
-      })
+      }, this.$slots.default)
     ])
   },
   mounted () {
