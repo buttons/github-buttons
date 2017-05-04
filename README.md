@@ -12,6 +12,14 @@ Documentation
 
 The easiest way to get started is to use the **[github:button generator](https://buttons.github.io)**.
 
+### Components
+
+- [GithubButton.vue](dist/vue) for [Vue](https://vuejs.org)
+- [GitHubButton.js](dist/react/) for [React](https://facebook.github.io/react/)
+- [github-button.component.ts](dist/angular/) for [Angular](https://angular.io)
+
+### Basic Usage (without component)
+
 #### Markup Syntax
 
 ``` html
@@ -95,13 +103,6 @@ Alternatively, config can be read from the `target` if it is an Anchor (`<a>`) w
 GitHubButtons.render(target)
 ```
 
-### Virtual DOM / Shadow DOM
-
-Including `<script src="buttons.js">` won't work for `<a class="github-button">` unless the button is in the real DOM tree when the page is loaded.  When using `render()` function, be careful with alternating the real DOM.
-
-- [GithubButton.vue](dist/vue/GithubButton.vue) for [Vue](https://vuejs.org)
-- [GitHubButton.js](dist/react/GitHubButton.js) for [React](https://facebook.github.io/react/)
-- [github-button.component.ts](dist/angular/github-button.component.ts) for [Angular](https://angular.io)
 
 
 
