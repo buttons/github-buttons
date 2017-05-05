@@ -397,7 +397,7 @@
     if (document.title === UUID) {
       renderFrameContent(parseQueryString(document.location.hash.replace(/^#/, "")));
     } else {
-      render();
+      defer(render);
     }
   }
 

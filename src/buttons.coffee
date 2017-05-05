@@ -326,4 +326,4 @@ else
   if document.title is UUID
     renderFrameContent parseQueryString document.location.hash.replace /^#/, ""
   else
-    render()
+    defer render
