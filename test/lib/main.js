@@ -368,7 +368,7 @@
     var anchor, anchors, j, k, len, len1, ref1;
     anchors = [];
     if (document.querySelectorAll) {
-      anchors = anchors.slice.call(document.querySelectorAll("a." + BUTTON_CLASS));
+      anchors = document.querySelectorAll("a." + BUTTON_CLASS);
     } else {
       ref1 = document.getElementsByTagName("a");
       for (j = 0, len = ref1.length; j < len; j++) {

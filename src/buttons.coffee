@@ -306,7 +306,7 @@ render = (targetNode, config) ->
 renderAll = ->
   anchors = []
   if document.querySelectorAll
-    anchors = anchors.slice.call document.querySelectorAll "a.#{BUTTON_CLASS}"
+    anchors = document.querySelectorAll "a.#{BUTTON_CLASS}"
   else
     for anchor in document.getElementsByTagName "a"
       if ~" #{anchor.className} ".replace(/[ \t\n\f\r]+/g, " ").indexOf(" #{BUTTON_CLASS} ")
