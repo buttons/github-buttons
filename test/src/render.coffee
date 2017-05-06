@@ -1,12 +1,4 @@
 describe "Render", ->
-  base = null
-
-  before ->
-    base = document.getElementsByTagName("head")[0].appendChild createElement "base"
-
-  after ->
-    base.parentNode.removeChild base
-
   describe "renderButton(config)", ->
     beforeEach ->
       sinon.stub document.body, "appendChild"
@@ -29,6 +21,49 @@ describe "Render", ->
       button = document.body.appendChild.args[0][0]
       expect button.getAttribute "href"
         .to.equal config.href
+
+    it "should create a button with href # if domain is not github", ->
+      renderButton "href": "https://twitter/ntkme"
+      button = document.body.appendChild.args[0][0]
+      expect button
+        .to.have.property "href"
+        .to.equal document.location.href + "#"
+      expect button
+        .to.have.property "target"
+        .to.equal "_self"
+
+    it "should create an anchor with href # if url contains javascript", ->
+      for i, protocol of [
+        "javascript:"
+        "JAVASCRIPT:"
+        "JavaScript:"
+        " javascript:"
+        "   javascript:"
+        "\tjavascript:"
+        "\njavascript:"
+        "\rjavascript:"
+        "\fjavascript:"
+      ]
+        renderButton "href": protocol
+        button = document.body.appendChild.args[i][0]
+        expect button
+          .to.have.property "href"
+          .to.equal document.location.href + "#"
+        expect button
+          .to.have.property "target"
+          .to.equal "_self"
+
+    it "should create an anchor with target _top if url is a download link", ->
+      for i, url of [
+        "https://github.com/ntkme/github-buttons/archive/master.zip"
+        "https://codeload.github.com/ntkme/github-buttons/zip/master"
+        "https://github.com/octocat/Hello-World/releases/download/v1.0.0/example.zip"
+      ]
+        renderButton "href": url
+        button = document.body.appendChild.args[i][0]
+        expect button
+          .to.have.property "target"
+          .to.equal "_top"
 
     it "should append the button with the default icon", ->
       renderButton {}

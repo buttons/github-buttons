@@ -128,7 +128,6 @@ task 'test:mocha-phantomjs', 'Test browser scripts', ->
                  "test/src/pixel.coffee",
                  "test/src/frame.coffee",
                  "test/src/config.coffee",
-                 "test/src/anchor.coffee",
                  "test/src/render.coffee",
                  "test/lib/main.js",
                  -> system "mocha-phantomjs", "-p", "./node_modules/.bin/phantomjs", "--file", "/dev/null", "test/index.html"

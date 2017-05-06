@@ -151,45 +151,22 @@ parseConfig = (anchor) ->
 
   config
 
-createAnchor = (url, baseUrl) ->
-  anchor = createElement "a"
+renderButton = (config) ->
+  a = createElement "a"
+  a.href = config.href
 
-  javascript = "javascript:"
-  if (anchor.href = baseUrl) and anchor.protocol isnt javascript
-    try
-      href = new URL(url, baseUrl).href
-      throw href unless href?
-      anchor.href = href
-    catch
-      base = document.getElementsByTagName("base")[0]
-      base.href = baseUrl
-      anchor.href = url
-      div = createElement "div"
-      div.innerHTML = anchor.outerHTML
-      anchor.href = div.lastChild.href
-      div = null
-      base.href = document.location.href
-      base.removeAttribute "href"
-  else
-    anchor.href = url
-
-  if anchor.protocol is javascript or not /\.github\.com$/.test ".#{anchor.hostname}"
-    anchor.href = "#"
-    anchor.target = "_self"
-
-  if ///
+  if not /\.github\.com$/.test ".#{a.hostname}"
+    a.href = "#"
+    a.target = "_self"
+  else if ///
     ^https?://(
       (gist\.)?github\.com/[^/?#]+/[^/?#]+/archive/ |
       github\.com/[^/?#]+/[^/?#]+/releases/download/ |
       codeload\.github\.com/
     )
-  ///.test anchor.href
-    anchor.target = "_top"
+  ///.test a.href
+    a.target = "_top"
 
-  anchor
-
-renderButton = (config) ->
-  a = createAnchor config.href, null
   a.className = "button"
   a.setAttribute "aria-label", ariaLabel if ariaLabel = config["aria-label"]
   i = a.appendChild createElement "i"
@@ -240,7 +217,8 @@ renderCount = (button) ->
     if json.meta.status is 200
       data = json.data[property]
 
-      a = createAnchor href, button.href
+      a = createElement "a"
+      a.href = "https://github.com" + href
       a.className = "count"
       a.setAttribute "aria-label", "#{data} #{property.replace(/_count$/, "").replace("_", " ")} on GitHub"
       a.appendChild createElement "b"
@@ -298,7 +276,7 @@ render = (targetNode, config) ->
   contentDocument = iframe.contentWindow.document
   contentDocument.open().write \
     """
-    <!DOCTYPE html><html><head><meta charset="utf-8"><title>#{UUID}</title><base><!--[if lte IE 6]></base><![endif]--><link rel="stylesheet" href="#{BASEURL}assets/css/buttons.css"><script>document.location.hash = "#{hash}";</script></head><body><script src="#{BASEURL}buttons.js"></script></body></html>
+    <!DOCTYPE html><html><head><meta charset="utf-8"><title>#{UUID}</title><link rel="stylesheet" href="#{BASEURL}assets/css/buttons.css"><script>document.location.hash = "#{hash}";</script></head><body><script src="#{BASEURL}buttons.js"></script></body></html>
     """
   contentDocument.close()
   return
