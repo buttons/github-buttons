@@ -31,7 +31,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'my-app',
   template: `
-    <github-button href="{{ 'http://github.com/ntkme' }}"> Follo @ntkme </github-button>
+    <github-button href="{{ 'http://github.com/ntkme' }}"> Follow @ntkme </github-button>
   `
 })
 export class AppComponent { }
