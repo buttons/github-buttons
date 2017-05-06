@@ -321,7 +321,7 @@ if typeof define is "function" and define.amd
 else if typeof exports is "object" and typeof exports.nodeName isnt "string"
   exports.render = render
 else
-  if not {}.hasOwnProperty.call(document, "currentScript") and delete document.currentScript and document.currentScript
+  if not {}.hasOwnProperty.call(document, "currentScript") and document.currentScript and delete document.currentScript and document.currentScript
     BASEURL = document.currentScript.src.replace /[^/]*([?#].*)?$/, ""
   if document.title is UUID
     renderFrameContent parseQueryString document.location.hash.replace /^#/, ""

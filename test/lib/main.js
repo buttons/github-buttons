@@ -391,7 +391,7 @@
   } else if (typeof exports === "object" && typeof exports.nodeName !== "string") {
     exports.render = render;
   } else {
-    if (!{}.hasOwnProperty.call(document, "currentScript") && delete document.currentScript && document.currentScript) {
+    if (!{}.hasOwnProperty.call(document, "currentScript") && document.currentScript && delete document.currentScript && document.currentScript) {
       BASEURL = document.currentScript.src.replace(/[^\/]*([?#].*)?$/, "");
     }
     if (document.title === UUID) {
