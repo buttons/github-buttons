@@ -1,6 +1,6 @@
 fs    = require 'fs'
 css   = require 'css'
-less  = require 'less'
+sass  = require 'node-sass'
 jsdom = require 'jsdom'
 JSDOM = jsdom.JSDOM
 
@@ -27,16 +27,15 @@ class OcticonsSizes
           size = sizes[selector]
           break
 
-        "#{selectors.join ", "} { width: unit(( #{size.width} / #{size.height} ), em); }"
+        "#{selectors.join ", "} { width: ( #{size.width} / #{size.height} ) * 1em; }"
       .join "\n"
 
-    less.render stylesheet, (_, output) ->
-      ast = css.parse output.css
-      ast.stylesheet.rules = ast.stylesheet.rules.filter (rule, index, array) ->
-        _index = array.findIndex (_rule) -> _rule.declarations[0].value is rule.declarations[0].value
-        array[_index].selectors = array[_index].selectors.concat rule.selectors if index isnt _index
-        index is _index
-      callback css.stringify ast
+    ast = css.parse sass.renderSync(data: stylesheet).css.toString()
+    ast.stylesheet.rules = ast.stylesheet.rules.filter (rule, index, array) ->
+      _index = array.findIndex (_rule) -> _rule.declarations[0].value is rule.declarations[0].value
+      array[_index].selectors = array[_index].selectors.concat rule.selectors if index isnt _index
+      index is _index
+    callback css.stringify ast
 
   round = (length) ->
     if Math.abs(length - Math.round length) < 0.01
