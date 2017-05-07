@@ -2,37 +2,32 @@ html {
   position: relative;
   min-height: 100%;
 }
-
 .header {
   border-bottom: 1px solid #e5e5e5;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-
-  .navbar-brand {
-    cursor: pointer;
-
-    .octicon-logo-github {
-      color: #000;
-    }
-    .logo {
-      line-height: 24px;
-      vertical-align: bottom;
-    }
-    .logo-colon {
-      color: #afafaf;
-    }
-    .logo-buttons {
-      color: #4ea6ea;
-    }
-  }
 }
-
+.navbar-brand {
+  cursor: pointer;
+}
+.octicon-logo-github {
+  color: #000;
+}
+.logo {
+  line-height: 24px;
+  vertical-align: bottom;
+}
+.logo-colon {
+  color: #afafaf;
+}
+.logo-buttons {
+  color: #4ea6ea;
+}
 .main {
   padding-bottom: 57px;
 }
-
 .footer {
   position: absolute;
   bottom: 0;
@@ -41,7 +36,6 @@ html {
   overflow-y: hidden;
   border-top: 1px solid #e5e5e5;
 }
-
 .form-check-label:before {
   position: absolute;
   display: block;
@@ -49,12 +43,10 @@ html {
   height: 100%;
   content: '';
 }
-
 p {
   overflow-x: scroll;
   overflow-y: hidden;
 }
-
 textarea,
 textarea[readonly] {
   font-family: monospace, sans-serif;
@@ -63,10 +55,8 @@ textarea[readonly] {
   background-color: #fff !important;
   resize: none;
 }
-
 .octicon {
   display: inline-block;
   vertical-align: text-top;
   fill: currentColor;
 }
-

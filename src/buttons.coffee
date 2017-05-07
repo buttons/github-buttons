@@ -167,7 +167,7 @@ renderButton = (config) ->
   ///.test a.href
     a.target = "_top"
 
-  a.className = "button"
+  a.className = "btn"
   a.setAttribute "aria-label", ariaLabel if ariaLabel = config["aria-label"]
   i = a.appendChild createElement "i"
   i.className = "#{ICON_CLASS} #{config["data-icon"] or ICON_CLASS_DEFAULT}"
@@ -219,7 +219,7 @@ renderCount = (button) ->
 
       a = createElement "a"
       a.href = "https://github.com" + href
-      a.className = "count"
+      a.className = "social-count"
       a.setAttribute "aria-label", "#{data} #{property.replace(/_count$/, "").replace("_", " ")} on GitHub"
       a.appendChild createElement "b"
       a.appendChild createElement "i"

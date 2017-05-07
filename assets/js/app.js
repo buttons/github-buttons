@@ -217,7 +217,7 @@
     } else if (/^https?:\/\/((gist\.)?github\.com\/[^\/?#]+\/[^\/?#]+\/archive\/|github\.com\/[^\/?#]+\/[^\/?#]+\/releases\/download\/|codeload\.github\.com\/)/.test(a.href)) {
       a.target = "_top";
     }
-    a.className = "button";
+    a.className = "btn";
     if (ariaLabel = config["aria-label"]) {
       a.setAttribute("aria-label", ariaLabel);
     }
@@ -266,7 +266,7 @@
         data = json.data[property];
         a = createElement("a");
         a.href = "https://github.com" + href;
-        a.className = "count";
+        a.className = "social-count";
         a.setAttribute("aria-label", data + " " + (property.replace(/_count$/, "").replace("_", " ")) + " on GitHub");
         a.appendChild(createElement("b"));
         a.appendChild(createElement("i"));

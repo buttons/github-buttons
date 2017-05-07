@@ -13,7 +13,7 @@ describe "Render", ->
       button = document.body.appendChild.args[0][0]
       expect button
         .to.have.property "className"
-        .and.equal "button"
+        .and.equal "btn"
 
     it "should append the button with given href", ->
       config = "href": "https://ntkme.github.com/"
@@ -134,7 +134,7 @@ describe "Render", ->
         count = document.body.insertBefore.args[0][0]
         expect count
           .to.have.property "className"
-          .and.equal "count"
+          .and.equal "social-count"
         done()
 
     it "should append the count for follow button", (done) ->

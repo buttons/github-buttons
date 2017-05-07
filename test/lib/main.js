@@ -217,7 +217,7 @@
     } else if (/^https?:\/\/((gist\.)?github\.com\/[^\/?#]+\/[^\/?#]+\/archive\/|github\.com\/[^\/?#]+\/[^\/?#]+\/releases\/download\/|codeload\.github\.com\/)/.test(a.href)) {
       a.target = "_top";
     }
-    a.className = "button";
+    a.className = "btn";
     if (ariaLabel = config["aria-label"]) {
       a.setAttribute("aria-label", ariaLabel);
     }
@@ -266,7 +266,7 @@
         data = json.data[property];
         a = createElement("a");
         a.href = "https://github.com" + href;
-        a.className = "count";
+        a.className = "social-count";
         a.setAttribute("aria-label", data + " " + (property.replace(/_count$/, "").replace("_", " ")) + " on GitHub");
         a.appendChild(createElement("b"));
         a.appendChild(createElement("i"));
@@ -703,7 +703,7 @@
         renderButton({});
         expect(document.body.appendChild).to.have.been.calledOnce;
         button = document.body.appendChild.args[0][0];
-        return expect(button).to.have.property("className").and.equal("button");
+        return expect(button).to.have.property("className").and.equal("btn");
       });
       it("should append the button with given href", function() {
         var button, config;
@@ -827,7 +827,7 @@
           expect(jsonp).to.have.been.calledOnce;
           expect(document.body.insertBefore).to.have.been.calledOnce;
           count = document.body.insertBefore.args[0][0];
-          expect(count).to.have.property("className").and.equal("count");
+          expect(count).to.have.property("className").and.equal("social-count");
           return done();
         });
       });

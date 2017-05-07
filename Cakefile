@@ -86,8 +86,8 @@ task 'build:coffee', 'Build scripts', ->
                            "assets/js/app.js"
 
 task 'build:less', 'Build stylesheets', ->
-  find("assets/css/", /^(buttons|main)\.less$/i).forEach (file) ->
-    system "lessc", "--clean-css=--s1 --advanced --compatibility=ie7", "--source-map", file, "#{file.replace /\.less$/i, '.css'}"
+  find("assets/scss/", /\.scss$/i).forEach (file) ->
+    system "node-sass", "--source-map", "true", "--output-style", "compressed", "--output", "assets/css/", file
 
 task 'build:octicons', 'Build octicons', ->
   system "coffee", "src/octicons/sizes.coffee", "assets/css/octicons/sizes.css"
