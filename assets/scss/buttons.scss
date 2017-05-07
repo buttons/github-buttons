@@ -96,15 +96,6 @@ a {
   }
 }
 
-.btn {
-  i {
-    line-height: inherit;
-  }
-  span {
-    vertical-align: top;
-  }
-}
-
 .social-count {
   position: relative;
   background-color: $social-count-background-color;
@@ -125,6 +116,11 @@ a {
 
   i {
     font-size: 14px;
+    line-height: inherit;
+  }
+
+  span {
+    vertical-align: 1px;
   }
 }
 .social-count {
@@ -145,6 +141,10 @@ a {
 
     i {
       font-size: 16px;
+    }
+
+    span {
+      vertical-align: 2px;
     }
   }
 
