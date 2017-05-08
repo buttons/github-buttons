@@ -61,7 +61,12 @@ defer = (func) ->
     window.setTimeout func
   else
     if document.addEventListener
-      onceEvent document, "DOMContentLoaded", func
+      token = 0
+      callback = ->
+        func() if !token and token = 1
+        return
+      onceEvent document, "DOMContentLoaded", callback
+      onceEvent window, "load", callback
     else
       callback = ->
         if /m/.test document.readyState

@@ -102,12 +102,19 @@
   };
 
   defer = function(func) {
-    var callback;
+    var callback, token;
     if (/m/.test(document.readyState) || (!/g/.test(document.readyState) && !document.documentElement.doScroll)) {
       window.setTimeout(func);
     } else {
       if (document.addEventListener) {
-        onceEvent(document, "DOMContentLoaded", func);
+        token = 0;
+        callback = function() {
+          if (!token && (token = 1)) {
+            func();
+          }
+        };
+        onceEvent(document, "DOMContentLoaded", callback);
+        onceEvent(window, "load", callback);
       } else {
         callback = function() {
           if (/m/.test(document.readyState)) {
