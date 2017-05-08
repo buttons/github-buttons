@@ -128,13 +128,10 @@
   };
 
   jsonp = function(url, func) {
-    var head, query, ref, script;
+    var head, script;
     script = createElement("script");
     script.async = true;
-    ref = url.split("?");
-    query = parseQueryString(ref.slice(1).join("?"));
-    query.callback = "_";
-    script.src = ref[0] + "?" + stringifyQueryString(query);
+    script.src = url + (/\?/.test(url) ? "&" : "?") + "callback=_";
     window._ = function(json) {
       window._ = null;
       func(json);
