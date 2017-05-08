@@ -129,17 +129,17 @@
     query.callback = "_";
     script.src = ref[0] + "?" + stringifyQueryString(query);
     window._ = function(json) {
-      delete window._;
+      window._ = null;
       func(json);
     };
     window._.$ = script;
     onEvent(script, "error", function() {
-      delete window._;
+      window._ = null;
     });
     if (script.readyState) {
       onEvent(script, "readystatechange", function() {
         if (script.readyState === "loaded" && script.children && script.readyState === "loading") {
-          delete window._;
+          window._ = null;
         }
       });
     }

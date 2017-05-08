@@ -14,7 +14,7 @@ describe "JSON-P", ->
 
       jsonp url, (json) ->
         expect window._
-          .to.be.undefined
+          .to.be.null
         expect json
           .to.deep.equal data
         done()

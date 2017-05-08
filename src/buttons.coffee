@@ -80,18 +80,18 @@ jsonp = (url, func) ->
   script.src = ref[0] + "?" + stringifyQueryString query
 
   window._ = (json) ->
-    delete window._
+    window._ = null
     func json
     return
   window._.$ = script
 
   onEvent script, "error", ->
-    delete window._
+    window._ = null
     return
 
   if script.readyState
     onEvent script, "readystatechange", ->
-      delete window._ if script.readyState is "loaded" and script.children and script.readyState is "loading"
+      window._ = null if script.readyState is "loaded" and script.children and script.readyState is "loading"
       return
 
   head = document.getElementsByTagName("head")[0]
