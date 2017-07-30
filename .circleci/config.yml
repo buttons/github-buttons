@@ -1,0 +1,17 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/node:latest-browsers
+    steps:
+      - checkout
+      - run: git submodule sync && git submodule update --init
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+      - run: npm install
+      - save_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+          paths:
+            - ./node_modules
+      - run: npm test
+      - run: git diff --exit-code
