@@ -72,16 +72,14 @@ task 'build', 'Build everything', ->
 
 task 'build:coffee', 'Build scripts', ->
   system "coffee", "-o", "dist/", "src/buttons.coffee", ->
-    system "uglifyjs", "--compress", "--mangle", "--source-map", "buttons.js.map", "--output", "buttons.js", "dist/buttons.js"
+    system "uglifyjs", "--compress", "--mangle", "--source-map", "url='buttons.js.map'", "--output", "buttons.js", "dist/buttons.js"
   coffee.compile "src/buttons.coffee",
                  "src/app.coffee",
                  "assets/js/app.js",
                  -> system "uglifyjs",
                            "--compress",
                            "--mangle",
-                           "--source-map", "assets/js/app.min.js.map",
-                           "--source-map-root", "../../",
-                           "--source-map-url", "app.min.js.map",
+                           "--source-map", "root='../../',url='app.min.js.map'",
                            "--output", "assets/js/app.min.js",
                            "assets/js/app.js"
 

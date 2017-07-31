@@ -24,19 +24,19 @@
   },
   "homepage": "https://buttons.github.io",
   "devDependencies": {
-    "chai": "^3.5.0",
-    "coffee-script": "^1.12.5",
+    "chai": "^4.1.0",
+    "coffee-script": "^1.12.7",
     "coffeelint": "^1.16.0",
     "css": "^2.2.1",
-    "jsdom": "^10.1.0",
-    "mocha": "^3.3.0",
+    "jsdom": "^11.1.0",
+    "mocha": "^3.5.0",
     "mocha-phantomjs": "^4.1.0",
-    "node-sass": "^4.5.2",
+    "node-sass": "^4.5.3",
     "phantomjs-prebuilt": "^2.1.14",
     "recess": "^1.1.9",
-    "sinon": "^2.1.0",
-    "sinon-chai": "^2.10.0",
-    "uglify-js": "^2.8.22"
+    "sinon": "^2.4.1",
+    "sinon-chai": "^2.12.0",
+    "uglify-js": "^3.0.27"
   },
   "engines": {
     "node": ">=6.0.0"
