@@ -107,7 +107,7 @@ task 'test', 'Test everything', ->
     system "cake", "build", ->
       invoke 'lint:coffee'
       invoke 'lint:recess'
-      invoke 'test:mocha-phantomjs'
+      invoke 'test:karma'
 
 task 'lint:coffee', 'Lint coffeescripts', ->
   system "coffeelint", "src", "test"
@@ -116,7 +116,7 @@ task 'lint:recess', 'Lint stylesheets', ->
   targets = find "assets/css/", /\.css$/i
   system "recess", targets... if targets.length > 0
 
-task 'test:mocha-phantomjs', 'Test browser scripts', ->
+task 'test:karma', 'Test browser scripts', ->
   coffee.compile "src/buttons.coffee",
                  "test/src/polyfill.coffee",
                  "test/src/querystring.coffee",
@@ -128,4 +128,4 @@ task 'test:mocha-phantomjs', 'Test browser scripts', ->
                  "test/src/config.coffee",
                  "test/src/render.coffee",
                  "test/lib/main.js",
-                 -> system "mocha-phantomjs", "-p", "./node_modules/.bin/phantomjs", "--file", "/dev/null", "test/index.html"
+                 -> system "karma", "start", "--single-run", "--browsers", "ChromeHeadless,Firefox"

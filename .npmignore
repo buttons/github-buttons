@@ -8,3 +8,4 @@ buttons.html
 favicon.ico
 Cakefile
 coffeelint.json
+karma.conf.coffee

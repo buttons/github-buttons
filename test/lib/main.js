@@ -797,7 +797,7 @@
       REAL_GITHUB_API_BASEURL = GITHUB_API_BASEURL;
       real_jsonp = jsonp;
       beforeEach(function() {
-        GITHUB_API_BASEURL = "./api.github.com";
+        GITHUB_API_BASEURL = "api.github.com";
         button = document.body.appendChild(createElement("a"));
         sinon.stub(document.body, "insertBefore");
         return jsonp = sinon.spy(jsonp);

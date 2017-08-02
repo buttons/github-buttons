@@ -99,7 +99,7 @@ describe "Render", ->
     real_jsonp = jsonp
 
     beforeEach ->
-      GITHUB_API_BASEURL = "./api.github.com"
+      GITHUB_API_BASEURL = "api.github.com"
       button = document.body.appendChild createElement "a"
       sinon.stub document.body, "insertBefore"
       jsonp = sinon.spy jsonp
