@@ -1,9 +1,10 @@
+#!/usr/bin/env coffee
+
 fs    = require 'fs'
 css   = require 'css'
 sass  = require 'node-sass'
 jsdom = require 'jsdom'
 JSDOM = jsdom.JSDOM
-
 
 class OcticonsSizes
   constructor: (octicons, callback) ->
@@ -42,7 +43,6 @@ class OcticonsSizes
       Math.round length
     else
       length
-
 
 new OcticonsSizes "components/octicons", (stylesheet) ->
   if process.argv.length > 2

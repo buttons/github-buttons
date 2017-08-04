@@ -1,6 +1,7 @@
+#!/usr/bin/env coffee
+
 fs  = require 'fs'
 css = require 'css'
-
 
 class OcticonsLtIE8
   constructor: (octicons, callback) ->
@@ -19,7 +20,6 @@ class OcticonsLtIE8
 
     css.parse stylesheet
     callback stylesheet
-
 
 new OcticonsLtIE8 "components/octicons", (stylesheet) ->
   if process.argv.length > 2

@@ -1,8 +1,33 @@
-if not {}.hasOwnProperty.call(document, 'currentScript') and delete document.currentScript and document.currentScript
-  BASEURL = document.currentScript.src.replace /[^/]*([?#].*)?$/, ''
-                                      .replace /[^/]*\/[^/]*\/$/, ''
+import {
+  document
+  createElement
+} from "./alias"
+import {
+  stringifyQueryString
+} from "./querystring"
+import {
+  onEvent
+  onceScriptLoad
+} from "./event"
+import {
+  defer
+} from "./defer"
+import {
+  setFrameSize
+  getFrameContentSize
+} from "./frame"
+import {
+  renderAll
+} from "./render"
+import {
+  setBaseURL
+  currentScriptURL
+} from "./config"
 
-@onbeforeunload = ->
+if currentScriptURL
+  setBaseURL currentScriptURL.replace /[^/]*\/[^/]*\/[^/]*([?#].*)?$/, ''
+
+window.onbeforeunload = ->
 
 defer ->
   Vue.component 'github-button-preview',

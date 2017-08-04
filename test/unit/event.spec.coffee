@@ -1,8 +1,14 @@
+import {
+  onEvent
+  onceEvent
+  onceScriptLoad
+} from "@/event.coffee"
+
 describe "Event", ->
   input = null
 
   beforeEach ->
-    input = document.body.appendChild createElement "input"
+    input = document.body.appendChild document.createElement "input"
 
   afterEach ->
     input.parentNode.removeChild input
@@ -19,7 +25,6 @@ describe "Event", ->
       input.click()
       expect spy
         .to.have.been.calledTwice
-
 
   describe "onceEvent(target, eventName, func)", ->
     it "should call the function on event only once", ->
@@ -44,13 +49,13 @@ describe "ScriptEvent", ->
     script = null
 
     beforeEach ->
-      script = createElement "script"
+      script = document.createElement "script"
 
     afterEach ->
       script.parentNode.removeChild script
 
     it "should call the function on script load only once", (done) ->
-      script.src = "../buttons.js"
+      script.src = "/base/buttons.js"
       onceScriptLoad script, done
       head.appendChild script
 

@@ -1,3 +1,8 @@
+import {
+  stringifyQueryString
+  parseQueryString
+} from "@/querystring"
+
 describe "QueryString", ->
 
   describe "stringifyQueryString(obj)", ->

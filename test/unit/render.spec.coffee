@@ -1,3 +1,15 @@
+import {
+  iconBaseClass
+  iconClass
+} from "@/config"
+import {
+  renderButton
+  renderCount
+  renderFrameContent
+  render
+  renderAll
+} from "@/render"
+
 describe "Render", ->
   describe "renderButton(config)", ->
     beforeEach ->
@@ -68,7 +80,9 @@ describe "Render", ->
     it "should append the button with the default icon", ->
       renderButton {}
       button = document.body.appendChild.args[0][0]
-      expect " #{button.firstChild.className} ".indexOf " #{ICON_CLASS_DEFAULT} "
+      expect " #{button.firstChild.className} ".indexOf " #{iconBaseClass} "
+        .to.be.at.least 0
+      expect " #{button.firstChild.className} ".indexOf " #{iconClass} "
         .to.be.at.least 0
 
     it "should append the button with given icon", ->
@@ -95,20 +109,14 @@ describe "Render", ->
   describe "rednerCount(button)", ->
     button = null
     head = document.getElementsByTagName("head")[0]
-    REAL_GITHUB_API_BASEURL = GITHUB_API_BASEURL
-    real_jsonp = jsonp
 
     beforeEach ->
-      GITHUB_API_BASEURL = "api.github.com"
-      button = document.body.appendChild createElement "a"
+      button = document.body.appendChild document.createElement "a"
       sinon.stub document.body, "insertBefore"
-      jsonp = sinon.spy jsonp
 
     afterEach ->
-      GITHUB_API_BASEURL = REAL_GITHUB_API_BASEURL
       button.parentNode.removeChild button
       document.body.insertBefore.restore()
-      jsonp = real_jsonp
 
     testRenderCount = (url, func) ->
       sinon.stub head, "appendChild"
@@ -120,6 +128,7 @@ describe "Render", ->
               window._.apply null, args
               func()
           script = head.appendChild.args[0][0]
+          script.src = script.src.replace /^https?:\/\//, "/base/test/fixtures/"
           head.appendChild.restore()
           head.appendChild script
       button.href = url
@@ -127,8 +136,6 @@ describe "Render", ->
 
     it "should append the count when a known button type is given", (done) ->
       testRenderCount "https://github.com/ntkme", ->
-        expect jsonp
-          .to.have.been.calledOnce
         expect document.body.insertBefore
           .to.have.been.calledOnce
         count = document.body.insertBefore.args[0][0]
@@ -140,8 +147,6 @@ describe "Render", ->
     it "should append the count for follow button", (done) ->
       testRenderCount "https://github.com/ntkme", ->
         count = document.body.insertBefore.args[0][0]
-        expect jsonp.args[0][0]
-          .to.equal GITHUB_API_BASEURL + "/users/ntkme"
         expect count.href
           .to.equal "https://github.com/ntkme/followers"
         expect count.lastChild.innerHTML
@@ -153,8 +158,6 @@ describe "Render", ->
     it "should append the count for watch button", (done) ->
       testRenderCount "https://github.com/ntkme/github-buttons/subscription", ->
         count = document.body.insertBefore.args[0][0]
-        expect jsonp.args[0][0]
-          .to.equal GITHUB_API_BASEURL + "/repos/ntkme/github-buttons"
         expect count.href
           .to.equal "https://github.com/ntkme/github-buttons/watchers"
         expect count.lastChild.innerHTML
@@ -166,8 +169,6 @@ describe "Render", ->
     it "should append the count for star button", (done) ->
       testRenderCount "https://github.com/ntkme/github-buttons", ->
         count = document.body.insertBefore.args[0][0]
-        expect jsonp.args[0][0]
-          .to.equal GITHUB_API_BASEURL + "/repos/ntkme/github-buttons"
         expect count.href
           .to.equal "https://github.com/ntkme/github-buttons/stargazers"
         expect count.lastChild.innerHTML
@@ -179,8 +180,6 @@ describe "Render", ->
     it "should append the count for fork button", (done) ->
       testRenderCount "https://github.com/ntkme/github-buttons/fork", ->
         count = document.body.insertBefore.args[0][0]
-        expect jsonp.args[0][0]
-          .to.equal GITHUB_API_BASEURL + "/repos/ntkme/github-buttons"
         expect count.href
           .to.equal "https://github.com/ntkme/github-buttons/network"
         expect count.lastChild.innerHTML
@@ -192,8 +191,6 @@ describe "Render", ->
     it "should append the count for issue button", (done) ->
       testRenderCount "https://github.com/ntkme/github-buttons/issues", ->
         count = document.body.insertBefore.args[0][0]
-        expect jsonp.args[0][0]
-          .to.equal GITHUB_API_BASEURL + "/repos/ntkme/github-buttons"
         expect count.href
           .to.equal "https://github.com/ntkme/github-buttons/issues"
         expect count.lastChild.innerHTML
@@ -205,8 +202,6 @@ describe "Render", ->
     it "should append the count for issue button when it links to new issue", (done) ->
       testRenderCount "https://github.com/ntkme/github-buttons/issues/new", ->
         count = document.body.insertBefore.args[0][0]
-        expect jsonp.args[0][0]
-          .to.equal GITHUB_API_BASEURL + "/repos/ntkme/github-buttons"
         expect count.href
           .to.equal "https://github.com/ntkme/github-buttons/issues"
         expect count.lastChild.innerHTML
@@ -258,12 +253,12 @@ describe "Render", ->
         done()
 
     it "should not append the count for unknown button type", ->
+      button.href = "https://twitter.com/"
+      renderCount button
       button.href = "https://github.com/"
       renderCount button
       button.href = "https://github.com/ntkme/github-buttons/test"
       renderCount button
-      expect jsonp
-        .to.have.not.been.called
       expect document.body.insertBefore
         .to.have.not.been.called
 
@@ -280,45 +275,22 @@ describe "Render", ->
 
   describe "renderFrameContent(config)", ->
     className = document.body.className
-    _renderButton = renderButton
-    _renderCount = renderCount
-
-    before ->
-      sinon.stub document.body, "appendChild"
-
-    after ->
-      document.body.className = className
-      document.body.appendChild.restore()
-
-    beforeEach ->
-      renderButton = sinon.stub().returns createElement "a"
-      renderCount = sinon.stub()
 
     afterEach ->
-      renderButton = _renderButton
-      renderCount = _renderCount
+      document.body.className = className
 
-    it "should do nothing when config is missing", ->
+    it "should do nothing when no option given", ->
       renderFrameContent()
-      expect document.body.appendChild
-        .to.have.not.been.called
 
     it "should set document.body.className when data-size is large", ->
-      config = "data-size": "large"
-      renderFrameContent config
+      renderFrameContent "data-size": "large"
       expect document.body.className
         .to.equal "large"
 
-    it "should call renderButton(config)", ->
-      renderFrameContent {}
-      expect renderButton
-        .to.have.been.calledOnce
-      expect renderCount
-        .to.have.not.been.called
+    it "should call renderButton()", ->
+      renderFrameContent "href": "https://google.com"
 
-    it "should call renderCount(config) when data-show-count is true", ->
-      renderFrameContent "data-show-count": true
-      expect renderButton
-        .to.have.been.calledOnce
-      expect renderCount
-        .to.have.been.calledOnce
+    it "should call renderCount() when data-show-count is true", ->
+      renderFrameContent
+        "href": "https://google.com"
+        "data-show-count": true

@@ -1,11 +1,13 @@
 .*
 assets/
+build/
 components/
+coverage/
 src/
 test/
 index.html
 buttons.html
 favicon.ico
-Cakefile
 coffeelint.json
-karma.conf.coffee
+karma.conf.js
+rollup.config.js

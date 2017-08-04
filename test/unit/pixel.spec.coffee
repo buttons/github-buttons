@@ -1,9 +1,25 @@
+import {
+  ceilPixel
+} from "@/pixel"
+
 describe "Pixel", ->
   describe "ceilPixel(px)", ->
     devicePixelRatio = window.devicePixelRatio
 
     afterEach ->
       window.devicePixelRatio = devicePixelRatio
+
+    it "should assume the devicePixelRatio is 1 if not available", ->
+      window.devicePixelRatio = null
+
+      expect ceilPixel 1
+        .to.equal 1
+
+      expect ceilPixel 1.5
+        .to.equal 2
+
+      expect ceilPixel 1.25
+        .to.equal 2
 
     it "should ceil the pixel when devicePixelRatio is 1", ->
       window.devicePixelRatio = 1
@@ -31,7 +47,6 @@ describe "Pixel", ->
 
       expect ceilPixel 1.75
         .to.equal 2
-
 
     it "should round the pixel to 1/3 then ceil the pixel to 1/2 when devicePixelRatio is 3", ->
       window.devicePixelRatio = 3
@@ -74,3 +89,7 @@ describe "Pixel", ->
 
       expect ceilPixel 2
         .to.equal 2
+
+    it "should return 0 for NaN", ->
+      expect ceilPixel NaN
+        .to.equal 0
