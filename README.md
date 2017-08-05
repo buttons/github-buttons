@@ -1,7 +1,9 @@
 github-buttons
 ==============
 
-[![Circle CI](https://circleci.com/gh/ntkme/github-buttons.svg?style=svg)](https://circleci.com/gh/ntkme/github-buttons)
+[![CircleCI](https://img.shields.io/circleci/project/github/ntkme/github-buttons.svg)](https://circleci.com/gh/ntkme/github-buttons)
+[![Codecov](https://img.shields.io/codecov/c/github/ntkme/github-buttons.svg)](https://codecov.io/gh/ntkme/github-buttons)
+
 
 To get started, checkout **[buttons.github.io](https://buttons.github.io)**!  
 
