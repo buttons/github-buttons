@@ -28,7 +28,7 @@ module.exports = function(config) {
             }
           }, {
             test: /src\/.+\.coffee$/,
-            exclude: /(node_modules|test\/.+\.coffee$|src\/(app|buttons)\.coffee$)/,
+            exclude: /node_modules/,
             loader: 'istanbul-instrumenter-loader',
             enforce: 'post',
             options: {
