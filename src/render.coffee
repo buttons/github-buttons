@@ -169,4 +169,10 @@ renderAll = ->
   render anchor for anchor in anchors
   return
 
-export { renderButton, renderCount, renderFrameContent, render, renderAll }
+export {
+  renderButton
+  renderCount
+  renderFrameContent
+  render
+  renderAll
+}
