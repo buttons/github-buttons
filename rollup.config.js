@@ -4,11 +4,15 @@ import uglify from 'rollup-plugin-uglify'
 
 export default [
   {
-    entry: 'src/buttons.coffee',
+    entry: 'src/main.coffee',
     dest: 'dist/buttons.js'
   }, {
-    entry: 'src/buttons.coffee',
+    entry: 'src/main.coffee',
     dest: 'dist/buttons.min.js'
+  }, {
+    entry: 'src/lib.coffee',
+    format: 'es',
+    dest: 'dist/buttons.esm.js'
   }, {
     entry: 'src/app.coffee',
     dest: 'assets/js/app.js'
