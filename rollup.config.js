@@ -10,10 +10,6 @@ export default [
     entry: 'src/main.coffee',
     dest: 'dist/buttons.min.js'
   }, {
-    entry: 'src/lib.coffee',
-    format: 'es',
-    dest: 'dist/buttons.esm.js'
-  }, {
     entry: 'src/app.coffee',
     dest: 'assets/js/app.js'
   }, {
