@@ -1,7 +1,5 @@
 .*
 assets/
-build/
-components/
 coverage/
 src/
 test/
