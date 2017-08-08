@@ -6,8 +6,7 @@
   "module": "dist/buttons.esm.js",
   "typings": "dist/buttons.d.ts",
   "scripts": {
-    "build": "npm run build:octicons && npm run build:css && npm run build:js",
-    "build:octicons": "coffee build/octicons/sizes.coffee assets/css/octicons/sizes.css && coffee build/octicons/lt-ie8.coffee assets/css/octicons/lt-ie8.css",
+    "build": "npm run build:css && npm run build:js",
     "build:css": "node-sass --output-style compressed --output assets/css assets/scss",
     "build:js": "rollup -c rollup.config.js",
     "pretest": "coffeelint src/ test/",
@@ -53,6 +52,7 @@
     "karma-webpack": "^2.0.4",
     "mocha": "^3.5.0",
     "node-sass": "^4.5.3",
+    "octicons": "^5.0.1",
     "rollup": "^0.45.2",
     "rollup-plugin-coffee-script": "^1.1.0",
     "rollup-plugin-node-resolve": "^3.0.0",

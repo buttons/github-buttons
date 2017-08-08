@@ -3,8 +3,6 @@ import {
 } from "./alias"
 
 buttonClass = "github-button"
-iconBaseClass = "octicon"
-iconClass = "#{iconBaseClass}-mark-github"
 uuid = "faa75404-3b97-5585-b449-4bc51338fbd1"
 
 ### istanbul ignore next ###

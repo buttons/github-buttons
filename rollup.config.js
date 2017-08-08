@@ -27,6 +27,42 @@ export default [
       extensions: ['.coffee', '.js', '.json']
     }),
     coffeescript(),
+    {
+      name: 'json',
+      transform (json, id) {
+        if (id.slice(-5) !== '.json') return null;
+
+        const data = JSON.parse(json);
+        let code = '';
+
+        const ast = {
+          type: 'Program',
+          sourceType: 'module',
+          start: 0,
+          end: null,
+          body: []
+        };
+
+        code = `export default ${json};`;
+
+        ast.body.push({
+          type: 'ExportDefaultDeclaration',
+          start: 0,
+          end: code.length,
+          declaration: {
+            type: 'Literal',
+            start: 15,
+            end: code.length - 1,
+            value: null,
+            raw: 'null'
+          }
+        });
+
+        ast.end = code.length;
+
+        return { ast, code, map: { mappings: '' } };
+      }
+    },
     ...(/\.min\.js$/.test(config.dest) ? [uglify()] : [])
   ]
 }, config))

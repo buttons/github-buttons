@@ -114,7 +114,7 @@ Development
 ### Clone
 
 ``` sh
-git clone --recursive https://github.com/ntkme/github-buttons.git
+git clone https://github.com/ntkme/github-buttons.git
 ```
 
 ``` sh

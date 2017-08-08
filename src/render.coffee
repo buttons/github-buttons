@@ -6,8 +6,6 @@ import {
 import {
   baseURL
   buttonClass
-  iconBaseClass
-  iconClass
   uuid
 } from './config'
 import {
@@ -27,6 +25,9 @@ import {
   getFrameContentSize
   setFrameSize
 } from "./frame"
+import {
+  octicon
+} from "./octicons"
 
 renderButton = (options) ->
   a = createElement "a"
@@ -46,9 +47,7 @@ renderButton = (options) ->
 
   a.className = "btn"
   a.setAttribute "aria-label", ariaLabel if ariaLabel = options["aria-label"]
-  i = a.appendChild createElement "i"
-  i.className = "#{iconBaseClass} #{options["data-icon"] or iconClass}"
-  i.setAttribute "aria-hidden", "true"
+  a.innerHTML = octicon options["data-icon"], if /^large$/i.test options["data-size"] then 16 else 14
   a.appendChild createTextNode " "
   span = a.appendChild createElement "span"
   span.appendChild createTextNode options["data-text"] or ""

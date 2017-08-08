@@ -5,7 +5,6 @@ jobs:
       - image: circleci/node:latest-browsers
     steps:
       - checkout
-      - run: git submodule sync && git submodule update --init
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
       - run: npm install

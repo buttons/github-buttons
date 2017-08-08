@@ -105,6 +105,11 @@ a {
   }
 }
 
+.octicon {
+  position: relative;
+  display: inline-block;
+}
+
 .btn,
 .social-count {
   height: 18px;
@@ -114,11 +119,6 @@ a {
 .btn {
   font-size: 11px;
 
-  i {
-    font-size: 14px;
-    line-height: inherit;
-  }
-
   span {
     vertical-align: 1px;
   }
@@ -126,6 +126,10 @@ a {
 .social-count {
   margin-left: 5px;
   font-size: 10px;
+}
+.octicon {
+  height: 14px;
+  top: 2px;
 }
 
 .large {
@@ -139,12 +143,8 @@ a {
     padding: 0 10px;
     font-size: 12px;
 
-    i {
-      font-size: 16px;
-    }
-
     span {
-      vertical-align: 2px;
+      vertical-align: 0;
     }
   }
 
@@ -152,6 +152,11 @@ a {
     padding: 0 7px;
     margin-left: 7px;
     font-size: 11px;
+  }
+
+  .octicon {
+    height: 16px;
+    top: 4px;
   }
 }
 
@@ -204,10 +209,3 @@ a {
     }
   }
 }
-
-.octicon {
-  display: inline-block;
-  _overflow: hidden;
-}
-
-@import '../css/octicons/sizes';

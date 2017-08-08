@@ -1,8 +1,4 @@
 import {
-  iconBaseClass
-  iconClass
-} from "@/config"
-import {
   renderButton
   renderCount
   renderFrameContent
@@ -80,16 +76,16 @@ describe "Render", ->
     it "should append the button with the default icon", ->
       renderButton {}
       button = document.body.appendChild.args[0][0]
-      expect " #{button.firstChild.className} ".indexOf " #{iconBaseClass} "
+      expect " #{button.firstChild.getAttribute "class"} ".indexOf " octicon "
         .to.be.at.least 0
-      expect " #{button.firstChild.className} ".indexOf " #{iconClass} "
+      expect " #{button.firstChild.getAttribute "class"} ".indexOf " octicon-mark-github "
         .to.be.at.least 0
 
     it "should append the button with given icon", ->
       config = "data-icon": "octicon-star"
       renderButton config
       button = document.body.appendChild.args[0][0]
-      expect " #{button.firstChild.className} ".indexOf " #{config["data-icon"]} "
+      expect " #{button.firstChild.getAttribute "class"} ".indexOf " #{config["data-icon"]} "
         .to.be.at.least 0
 
     it "should append the button with given text", ->
