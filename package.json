@@ -2,6 +2,27 @@
   "name": "github-buttons",
   "version": "0.0.0",
   "description": "GitHub Buttons",
+  "keywords": [
+    "github",
+    "buttons",
+    "vue",
+    "react",
+    "angular"
+  ],
+  "license": "BSD-2-Clause",
+  "homepage": "https://buttons.github.io/",
+  "bugs": {
+    "url": "https://github.com/ntkme/github-buttons/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ntkme/github-buttons.git"
+  },
+  "author": {
+    "name": "なつき",
+    "email": "i@ntk.me",
+    "url": "https://ntk.me/"
+  },
   "main": "dist/buttons.js",
   "module": "dist/buttons.esm.js",
   "typings": "dist/buttons.d.ts",
@@ -12,21 +33,6 @@
     "pretest": "coffeelint src/ test/",
     "test": "karma start --single-run"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/ntkme/github-buttons.git"
-  },
-  "keywords": [
-    "GitHub",
-    "buttons"
-  ],
-  "author": "なつき <i@ntk.me>",
-  "license": "BSD-2-Clause",
-  "private": true,
-  "bugs": {
-    "url": "https://github.com/ntkme/github-buttons/issues"
-  },
-  "homepage": "https://buttons.github.io",
   "devDependencies": {
     "chai": "^4.1.0",
     "codecov": "^2.3.0",
@@ -59,6 +65,7 @@
     "webpack": "^3.4.1"
   },
   "engines": {
-    "node": ">=6.0.0"
-  }
+    "node": ">=6.5.0"
+  },
+  "private": true
 }
