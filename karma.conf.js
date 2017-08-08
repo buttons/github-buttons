@@ -1,7 +1,7 @@
 const path = require('path')
 const webpack = require('webpack')
 
-module.exports = function(config) {
+module.exports = function (config) {
   return config.set({
     frameworks: ['mocha', 'chai', 'sinon', 'sinon-chai'],
     reporters: ['mocha', 'coverage-istanbul'],
