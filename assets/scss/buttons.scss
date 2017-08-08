@@ -115,13 +115,13 @@ a {
   height: 18px;
   padding: 0 5px;
   line-height: 18px;
-}
-.btn {
-  font-size: 11px;
 
   span {
     vertical-align: 1px;
   }
+}
+.btn {
+  font-size: 11px;
 }
 .social-count {
   margin-left: 5px;
@@ -137,15 +137,15 @@ a {
   .social-count {
     height: 26px;
     line-height: 26px;
+
+    span {
+      vertical-align: 0;
+    }
   }
 
   .btn {
     padding: 0 10px;
     font-size: 12px;
-
-    span {
-      vertical-align: 0;
-    }
   }
 
   .social-count {
