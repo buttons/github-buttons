@@ -23,7 +23,8 @@
     "email": "i@ntk.me",
     "url": "https://ntk.me/"
   },
-  "main": "dist/buttons.js",
+  "main": "dist/buttons.common.js",
+  "module": "dist/buttons.esm.js",
   "typings": "dist/buttons.d.ts",
   "scripts": {
     "build": "npm run build:css && npm run build:js",
