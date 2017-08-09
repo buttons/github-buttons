@@ -14,9 +14,13 @@ import {
 } from "./defer"
 import {
   renderFrameContent
+} from "./frame-content"
+import {
   render
-  renderAll
 } from "./render"
+import {
+  renderAll
+} from "./render-all"
 
 if typeof define is "function" and define.amd
   define [], { render: render }

@@ -22,8 +22,6 @@ currentScriptURL = if not {}.hasOwnProperty.call(document, currentScript) \
 
 export {
   buttonClass
-  iconBaseClass
-  iconClass
   uuid
   baseURL
   setBaseURL

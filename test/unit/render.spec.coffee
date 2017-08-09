@@ -1,10 +1,18 @@
 import {
   renderButton
-  renderCount
+} from  "@/button"
+import {
+  renderSocialCount
+} from "@/social-count"
+import {
   renderFrameContent
+} from "@/frame-content"
+import {
   render
-  renderAll
 } from "@/render"
+import {
+  renderAll
+} from "@/render-all"
 
 describe "Render", ->
   describe "renderButton(config)", ->
@@ -128,7 +136,7 @@ describe "Render", ->
           head.appendChild.restore()
           head.appendChild script
       button.href = url
-      renderCount button
+      renderSocialCount button
 
     it "should append the count when a known button type is given", (done) ->
       testRenderCount "https://github.com/ntkme", ->
@@ -250,11 +258,11 @@ describe "Render", ->
 
     it "should not append the count for unknown button type", ->
       button.href = "https://twitter.com/"
-      renderCount button
+      renderSocialCount button
       button.href = "https://github.com/"
-      renderCount button
+      renderSocialCount button
       button.href = "https://github.com/ntkme/github-buttons/test"
-      renderCount button
+      renderSocialCount button
       expect document.body.insertBefore
         .to.have.not.been.called
 
@@ -267,7 +275,7 @@ describe "Render", ->
           expect document.body.insertBefore
             .to.have.not.been.called
       button.href = "https://github.com/ntkme"
-      renderCount button
+      renderSocialCount button
 
   describe "renderFrameContent(config)", ->
     className = document.body.className
@@ -286,7 +294,7 @@ describe "Render", ->
     it "should call renderButton()", ->
       renderFrameContent "href": "https://google.com"
 
-    it "should call renderCount() when data-show-count is true", ->
+    it "should call renderSocialCount() when data-show-count is true", ->
       renderFrameContent
         "href": "https://google.com"
         "data-show-count": true

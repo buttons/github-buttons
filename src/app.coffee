@@ -3,6 +3,10 @@ import {
   createElement
 } from "./alias"
 import {
+  setBaseURL
+  currentScriptURL
+} from "./config"
+import {
   stringifyQueryString
 } from "./querystring"
 import {
@@ -15,14 +19,10 @@ import {
 import {
   setFrameSize
   getFrameContentSize
-} from "./frame"
+} from "./frame-size"
 import {
   renderAll
-} from "./render"
-import {
-  setBaseURL
-  currentScriptURL
-} from "./config"
+} from "./render-all"
 
 if currentScriptURL
   setBaseURL currentScriptURL.replace /[^/]*\/[^/]*\/[^/]*([?#].*)?$/, ''
