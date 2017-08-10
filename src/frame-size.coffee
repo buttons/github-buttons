@@ -12,11 +12,12 @@ getFrameContentSize = (iframe) ->
   width = html.scrollWidth
   height = html.scrollHeight
   if body.getBoundingClientRect
+    display = body.style.display
     body.style.display = "inline-block"
     boundingClientRect = body.getBoundingClientRect()
     width = Math.max width, ceilPixel boundingClientRect.width or boundingClientRect.right - boundingClientRect.left
     height = Math.max height, ceilPixel boundingClientRect.height or boundingClientRect.bottom - boundingClientRect.top
-    body.style.display = ""
+    body.style.display = display
   [width, height]
 
 setFrameSize = (iframe, size) ->

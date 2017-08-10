@@ -124,18 +124,19 @@ var getFrameContentSize;
 var setFrameSize;
 
 getFrameContentSize = function(iframe) {
-  var body, boundingClientRect, contentDocument, height, html, width;
+  var body, boundingClientRect, contentDocument, display, height, html, width;
   contentDocument = iframe.contentWindow.document;
   html = contentDocument.documentElement;
   body = contentDocument.body;
   width = html.scrollWidth;
   height = html.scrollHeight;
   if (body.getBoundingClientRect) {
+    display = body.style.display;
     body.style.display = "inline-block";
     boundingClientRect = body.getBoundingClientRect();
     width = Math.max(width, ceilPixel(boundingClientRect.width || boundingClientRect.right - boundingClientRect.left));
     height = Math.max(height, ceilPixel(boundingClientRect.height || boundingClientRect.bottom - boundingClientRect.top));
-    body.style.display = "";
+    body.style.display = display;
   }
   return [width, height];
 };
