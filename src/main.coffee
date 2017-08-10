@@ -4,8 +4,10 @@ import {
 import {
   uuid
   setBaseURL
-  currentScriptURL
 } from "./config"
+import {
+  currentScriptURL
+} from "./current-script"
 import {
   parseQueryString
 } from "./querystring"

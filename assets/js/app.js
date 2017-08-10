@@ -15,8 +15,6 @@ var createElement = function(tag) {
 
 var baseURL;
 var buttonClass;
-var currentScript;
-var currentScriptURL;
 var setBaseURL;
 var uuid;
 
@@ -32,6 +30,9 @@ baseURL = (/^http:/.test(document.location) ? "http" : "https") + "://buttons.gi
 setBaseURL = function(url) {
   baseURL = url;
 };
+
+var currentScript;
+var currentScriptURL;
 
 currentScript = "currentScript";
 

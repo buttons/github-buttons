@@ -31,16 +31,16 @@ describe "JSON-P", ->
 
       jsonp url
 
-      expect window._.$.src.endsWith url + "?callback=_"
-        .to.be.true
+      expect window._.$.getAttribute "src"
+        .to.equal url + "?callback=_"
 
     it "should append callback query to request url with existing query", ->
       url = "/random/url?query=" + new Date().getTime()
 
       jsonp url
 
-      expect window._.$.src.endsWith url + "&callback=_"
-        .to.be.true
+      expect window._.$.getAttribute "src"
+        .to.equal url + "&callback=_"
 
     it "should clean up and run callback when request is fulfilled", (done) ->
       data = test: "test"

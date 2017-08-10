@@ -4,8 +4,10 @@ import {
 } from "./alias"
 import {
   setBaseURL
-  currentScriptURL
 } from "./config"
+import {
+  currentScriptURL
+} from "./current-script"
 import {
   stringifyQueryString
 } from "./querystring"

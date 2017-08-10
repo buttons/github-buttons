@@ -12,8 +12,6 @@ var createElement = function(tag) {
 
 var baseURL;
 var buttonClass;
-var currentScript;
-var currentScriptURL;
 var setBaseURL;
 var uuid;
 
@@ -29,13 +27,6 @@ baseURL = (/^http:/.test(document.location) ? "http" : "https") + "://buttons.gi
 setBaseURL = function(url) {
   baseURL = url;
 };
-
-currentScript = "currentScript";
-
-
-/* istanbul ignore next */
-
-currentScriptURL = !{}.hasOwnProperty.call(document, currentScript) && document[currentScript] && delete document[currentScript] && document[currentScript] ? document[currentScript].src : void 0;
 
 var parseOptions = function(anchor) {
   var attribute, deprecate, i, len, options, ref;

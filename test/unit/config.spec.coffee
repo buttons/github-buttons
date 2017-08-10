@@ -1,11 +1,10 @@
 import {
   baseURL
   setBaseURL
-  currentScriptURL
 } from "@/config"
 
 originalBaseURL = "" + baseURL
-setBaseURL currentScriptURL
+setBaseURL "/something/else"
 
 describe "Config", ->
   it "should export base url", ->
