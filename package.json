@@ -54,15 +54,15 @@
     "karma-webpack": "^2.0.4",
     "mocha": "^3.5.0",
     "node-sass": "^4.5.3",
-    "octicons": "^6.0.0",
-    "rollup": "^0.45.2",
+    "octicons": "^6.0.1",
+    "rollup": "^0.47.4",
     "rollup-plugin-coffee-script": "^1.1.0",
     "rollup-plugin-node-resolve": "^3.0.0",
     "rollup-plugin-uglify": "^2.0.1",
     "rollup-watch": "^4.3.1",
     "sinon": "^3.2.0",
-    "sinon-chai": "^2.12.0",
-    "webpack": "^3.5.3"
+    "sinon-chai": "^2.13.0",
+    "webpack": "^3.5.4"
   },
   "engines": {
     "node": ">=6.5.0"
