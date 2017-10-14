@@ -12,7 +12,6 @@ var createElement = function(tag) {
 
 var baseURL;
 var buttonClass;
-var setBaseURL;
 var uuid;
 
 buttonClass = "github-button";
@@ -23,10 +22,6 @@ uuid = "faa75404-3b97-5585-b449-4bc51338fbd1";
 /* istanbul ignore next */
 
 baseURL = (/^http:/.test(document.location) ? "http" : "https") + "://buttons.github.io/";
-
-setBaseURL = function(url) {
-  baseURL = url;
-};
 
 var parseOptions = function(anchor) {
   var attribute, deprecate, i, len, options, ref;
