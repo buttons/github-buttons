@@ -4,28 +4,43 @@ import uglify from 'rollup-plugin-uglify'
 
 export default [
   {
-    entry: 'src/main.coffee',
-    dest: 'dist/buttons.js'
+    input: 'src/main.coffee',
+    output: {
+      format: 'iife',
+      file: 'dist/buttons.js'
+    }
   }, {
-    entry: 'src/main.coffee',
-    dest: 'dist/buttons.min.js'
+    input: 'src/main.coffee',
+    output: {
+      format: 'iife',
+      file: 'dist/buttons.min.js'
+    }
   }, {
-    entry: 'src/render.coffee',
-    format: 'es',
-    dest: 'dist/buttons.esm.js'
+    input: 'src/render.coffee',
+    output: {
+      format: 'es',
+      file: 'dist/buttons.esm.js'
+    }
   }, {
-    entry: 'src/render.coffee',
-    format: 'cjs',
-    dest: 'dist/buttons.common.js'
+    input: 'src/render.coffee',
+    output: {
+      format: 'cjs',
+      file: 'dist/buttons.common.js'
+    }
   }, {
-    entry: 'src/app.coffee',
-    dest: 'assets/js/app.js'
+    input: 'src/app.coffee',
+    output: {
+      format: 'iife',
+      file: 'assets/js/app.js'
+    }
   }, {
-    entry: 'src/app.coffee',
-    dest: 'assets/js/app.min.js'
+    input: 'src/app.coffee',
+    output: {
+      format: 'iife',
+      file: 'assets/js/app.min.js'
+    }
   }
 ].map(config => Object.assign({
-  format: 'iife',
   plugins: [
     resolve({
       extensions: ['.coffee', '.js', '.json']
@@ -64,6 +79,6 @@ export default [
         return { ast, code, map: { mappings: '' } }
       }
     },
-    ...(/\.min\.js$/.test(config.dest) ? [uglify()] : [])
+    ...(/\.min\.js$/.test(config.output.file) ? [uglify()] : [])
   ]
 }, config))
