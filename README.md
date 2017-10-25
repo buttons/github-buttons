@@ -74,13 +74,27 @@ Tailing slash, query string, and hash in the `href` are handled.
 
 #### Import as a Module
 
-This module works with CommonJS or AMD loader. *Keep in mind that it works only in browser.*
+This module works with CommonJS or AMD loader.
+
+The default behavior of including the `<script>` tag is to render all the `<a class="github-button">` tags on the page. **This behavior is turned off when loading as a module.**
 
 ``` javascript
 var GitHubButtons = require('github-buttons')
 ```
 
 It is recommended to use a module bundler rather than a module loader.
+
+###### Using button.js with RequireJS
+
+Loading this module as `<script>` tag together with `require.js` will cause an [error](https://github.com/ntkme/github-buttons/issues/31).
+
+This is _intentional_. To avoid the ambiguity on default behavoir, you should load the module via RequireJS API like following:
+
+``` javascript
+require(['https://buttons.github.io/buttons.js'], function (GitHubButtons) {
+  GitHubButtons.render()
+});
+```
 
 #### Render a Button
 
