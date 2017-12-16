@@ -4,6 +4,7 @@ import {
 } from "./alias"
 import {
   onEvent
+  onceScriptError
 } from "./event"
 import {
   defer
@@ -15,20 +16,16 @@ jsonp = (url, func) ->
   script.src = url + (if /\?/.test url then "&" else "?") + "callback=_"
 
   window._ = (json) ->
-    window._ = null
-    func json
-    return
-  window._.$ = script
-
-  onEvent script, "error", ->
-    window._ = null
+    window._._ null, json
     return
 
-  if script.readyState
-    ### istanbul ignore next: IE lt 9 ###
-    onEvent script, "readystatechange", ->
-      window._ = null if script.readyState is "loaded" and script.children and script.readyState is "loading"
-      return
+  onceScriptError script, (error) ->
+    window._._ error
+    return
+
+  window._._ = ->
+    func.apply (window._ = null), arguments
+    return
 
   head = document.getElementsByTagName("head")[0]
   ### istanbul ignore if: Presto based Opera ###

@@ -2,7 +2,7 @@ var document = window.document;
 
 var encodeURIComponent = window.encodeURIComponent;
 
-
+var decodeURIComponent = window.decodeURIComponent;
 
 var Math = window.Math;
 
@@ -63,7 +63,6 @@ var stringifyQueryString = function(obj) {
 
 var onEvent;
 var onceEvent;
-var onceScriptLoad;
 
 onEvent = function(target, eventName, func) {
 
@@ -88,25 +87,6 @@ onceEvent = function(target, eventName, func) {
     return func(event);
   };
   onEvent(target, eventName, callback);
-};
-
-onceScriptLoad = function(script, func) {
-  var callback, token;
-  token = 0;
-  callback = function() {
-    if (!token && (token = 1)) {
-      func();
-    }
-  };
-  onEvent(script, "load", callback);
-  onEvent(script, "error", callback);
-
-  /* istanbul ignore next: IE lt 9 */
-  onEvent(script, "readystatechange", function() {
-    if (!/i/.test(script.readyState)) {
-      callback();
-    }
-  });
 };
 
 var ceilPixel = function(px) {
@@ -203,9 +183,13 @@ render = function(targetNode, options) {
     targetNode.parentNode.replaceChild(iframe, targetNode);
   };
   onceEvent(iframe, "load", function() {
-    var callback;
+    var _, callback;
     if (callback = iframe.contentWindow._) {
-      onceScriptLoad(callback.$, onload);
+      _ = callback._;
+      callback._ = function() {
+        _.apply(null, arguments);
+        onload();
+      };
     } else {
       onload();
     }

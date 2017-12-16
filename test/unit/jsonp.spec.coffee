@@ -12,26 +12,28 @@ describe "JSON-P", ->
     afterEach ->
       head.appendChild.restore()
 
-    it "should set up the script and callback function", ->
+    it "should set up the callback function", ->
       jsonp "hello", ->
 
       expect window._
         .to.be.a "function"
 
-      expect window._.$
-        .to.have.property "tagName"
-        .to.equal "SCRIPT"
+      expect window._._
+        .to.be.a "function"
 
-      expect head.appendChild
-        .to.have.been.calledOnce
-        .and.have.been.calledWith window._.$
-
-    it "should add callback query to request url", ->
+    it "should setup the script and add callback query to request url", ->
       url = "/random/url/" + new Date().getTime()
 
       jsonp url
 
-      expect window._.$.getAttribute "src"
+      expect head.appendChild
+        .to.have.been.calledOnce
+
+      expect head.appendChild.args[0][0]
+        .to.have.property "tagName"
+        .to.equal "SCRIPT"
+
+      expect head.appendChild.args[0][0].getAttribute "src"
         .to.equal url + "?callback=_"
 
     it "should append callback query to request url with existing query", ->
@@ -39,25 +41,27 @@ describe "JSON-P", ->
 
       jsonp url
 
-      expect window._.$.getAttribute "src"
+      expect head.appendChild.args[0][0].getAttribute "src"
         .to.equal url + "&callback=_"
 
     it "should clean up and run callback when request is fulfilled", (done) ->
       data = test: "test"
 
-      jsonp "world", (json) ->
+      jsonp "world", (error, json) ->
         expect window._
           .to.be.null
+        expect !!error
+          .to.be.false
         expect json
           .to.deep.equal data
         done()
 
       window._ data
 
-    it "should clean up when request is failed", ->
-      jsonp "fail"
+    it "should clean up when request is failed", (done) ->
+      jsonp "fail", (error, json) ->
+        expect !!error
+          .to.be.true
+        done()
 
-      window._.$.dispatchEvent new CustomEvent "error"
-
-      expect window._
-        .to.be.null
+      head.appendChild.args[0][0].dispatchEvent new CustomEvent "error"

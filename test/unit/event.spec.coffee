@@ -1,7 +1,7 @@
 import {
   onEvent
   onceEvent
-  onceScriptLoad
+  onceScriptError
 } from "@/event.coffee"
 
 describe "Event", ->
@@ -44,7 +44,7 @@ describe "Event", ->
         .to.have.been.calledOnce
 
 describe "ScriptEvent", ->
-  describe "onceScriptLoad", ->
+  describe "onceScriptError(script, func)", ->
     head = document.getElementsByTagName("head")[0]
     script = null
 
@@ -54,12 +54,10 @@ describe "ScriptEvent", ->
     afterEach ->
       script.parentNode.removeChild script
 
-    it "should call the function on script load only once", (done) ->
-      script.src = "/base/buttons.js"
-      onceScriptLoad script, done
-      head.appendChild script
-
     it "should call the function on script error only once", (done) ->
       script.src = "404.js"
-      onceScriptLoad script, done
+      onceScriptError script, (error) ->
+        expect !!error
+          .to.be.true
+        done()
       head.appendChild script

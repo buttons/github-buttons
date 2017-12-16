@@ -42,8 +42,8 @@ renderSocialCount = (button) ->
     property = "followers"
     href = "/#{match[1]}/#{property}"
 
-  jsonp "https://api.github.com#{api}", (json) ->
-    if json.meta.status is 200
+  jsonp "https://api.github.com#{api}", (error, json) ->
+    if !error and json.meta.status is 200
       data = json.data[property]
 
       a = createElement "a"

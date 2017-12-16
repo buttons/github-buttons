@@ -13,7 +13,6 @@ import {
 } from "./querystring"
 import {
   onEvent
-  onceScriptLoad
 } from "./event"
 import {
   defer
@@ -47,7 +46,11 @@ defer ->
         return
       onEvent iframe, 'load', ->
         if callback = iframe.contentWindow._
-          onceScriptLoad callback.$, onload
+          _ = callback._
+          callback._ = ->
+            _.apply null, arguments
+            onload()
+            return
         else
           onload()
         return

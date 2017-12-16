@@ -17,22 +17,24 @@ onceEvent = (target, eventName, func) ->
   onEvent target, eventName, callback
   return
 
-onceScriptLoad = (script, func) ->
+onceScriptError = (script, func) ->
   token = 0
   callback = ->
-    func() if !token and token = 1
+    if !token and token = 1
+      func token
     return
-  onEvent script, "load", callback
+
   onEvent script, "error", callback
-  ### istanbul ignore next: IE lt 9 ###
-  onEvent script, "readystatechange", ->
-    unless /i/.test script.readyState
-      callback()
-    return
+
+  if script.readyState
+    ### istanbul ignore next: IE lt 9 ###
+    onEvent script, "readystatechange", ->
+      callback() if script.readyState is "loaded" and script.children and script.readyState is "loading"
+      return
   return
 
 export {
   onEvent
   onceEvent
-  onceScriptLoad
+  onceScriptError
 }

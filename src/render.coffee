@@ -14,7 +14,6 @@ import {
 } from "./querystring"
 import {
   onceEvent
-  onceScriptLoad
 } from "./event"
 import {
   getFrameContentSize
@@ -55,7 +54,11 @@ render = (targetNode, options) ->
 
   onceEvent iframe, "load", ->
     if callback = iframe.contentWindow._
-      onceScriptLoad callback.$, onload
+      _ = callback._
+      callback._ = ->
+        _.apply null, arguments
+        onload()
+        return
     else
       onload()
     return
