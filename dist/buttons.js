@@ -76,7 +76,6 @@ var parseQueryString = function(str) {
 
 var onEvent;
 var onceEvent;
-var onceScriptError;
 
 onEvent = function(target, eventName, func) {
 
@@ -101,26 +100,6 @@ onceEvent = function(target, eventName, func) {
     return func(event);
   };
   onEvent(target, eventName, callback);
-};
-
-onceScriptError = function(script, func) {
-  var callback, token;
-  token = 0;
-  callback = function() {
-    if (!token && (token = 1)) {
-      func(token);
-    }
-  };
-  onEvent(script, "error", callback);
-  if (script.readyState) {
-
-    /* istanbul ignore next: IE lt 9 */
-    onEvent(script, "readystatechange", function() {
-      if (script.readyState === "loaded" && script.children && script.readyState === "loading") {
-        callback();
-      }
-    });
-  }
 };
 
 var defer;
@@ -193,19 +172,32 @@ renderButton = function(options) {
 var jsonp;
 
 jsonp = function(url, func) {
-  var head, script;
+  var head, onceError, onceToken, script;
   script = createElement("script");
   script.async = true;
   script.src = url + (/\?/.test(url) ? "&" : "?") + "callback=_";
   window._ = function(json) {
-    window._._(null, json);
+    _._(null, json);
   };
-  onceScriptError(script, function(error) {
-    window._._(error);
-  });
   window._._ = function() {
     func.apply((window._ = null), arguments);
   };
+  onceToken = 0;
+  onceError = function() {
+    if (!onceToken && (onceToken = 1)) {
+      _._(onceToken);
+    }
+  };
+  onEvent(script, "error", onceError);
+  if (script.readyState) {
+
+    /* istanbul ignore next: IE lt 9 */
+    onEvent(script, "readystatechange", function() {
+      if (script.readyState === "loaded" && (window._ != null)) {
+        onceError();
+      }
+    });
+  }
   head = document.getElementsByTagName("head")[0];
 
   /* istanbul ignore if: Presto based Opera */
