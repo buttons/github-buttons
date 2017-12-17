@@ -83,14 +83,8 @@ defer ->
     mounted: ->
       setTimeout renderAll
       return
-    updated: ->
-      if @focus
-        @focus.focus()
-        @focus = null
-      return
     data: ->
       script: '<!-- Place this tag in your head or just before your close body tag. -->\n<script async defer src="https://buttons.github.io/buttons.js"></script>'
-      focus: null
       options:
         type: null
         user: ''
@@ -100,12 +94,14 @@ defer ->
         standardIcon: false
     watch:
       'options.type': ->
-        if document.activeElement isnt @$refs.user and document.activeElement isnt @$refs.repo
-          if @options.type is 'follow' or not @successes.user or
-              (@successes.user and @successes.repo)
-            @focus = @$refs.user
-          else
-            @focus = @$refs.repo
+        @$nextTick ->
+          if document.activeElement isnt @$refs.user and document.activeElement isnt @$refs.repo
+            if @options.type is 'follow' or not @successes.user or
+                (@successes.user and @successes.repo)
+              @$refs.user.focus()
+            else
+              @$refs.repo.focus()
+          return
         return
     computed:
       code: ->
@@ -201,4 +197,14 @@ defer ->
               return (options.type.charAt(0).toUpperCase() + options.type.slice(1).toLowerCase()) + ' ' + options.user + '/' + options.repo + ' on GitHub'
             else
               return 'GitHub'
+    methods:
+      paste: ->
+        [user, repo] = @options.user.split /\/+/
+        @options.user = user
+        @options.repo = repo if repo?
+        if @options.user is ''
+          @$refs.user.focus()
+        else
+          @$refs.repo.focus()
+        return
   return

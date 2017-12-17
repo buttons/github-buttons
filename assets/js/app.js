@@ -320,16 +320,9 @@ defer(function() {
     mounted: function() {
       setTimeout(renderAll);
     },
-    updated: function() {
-      if (this.focus) {
-        this.focus.focus();
-        this.focus = null;
-      }
-    },
     data: function() {
       return {
         script: '<!-- Place this tag in your head or just before your close body tag. -->\n<script async defer src="https://buttons.github.io/buttons.js"></script>',
-        focus: null,
         options: {
           type: null,
           user: '',
@@ -342,13 +335,15 @@ defer(function() {
     },
     watch: {
       'options.type': function() {
-        if (document.activeElement !== this.$refs.user && document.activeElement !== this.$refs.repo) {
-          if (this.options.type === 'follow' || !this.successes.user || (this.successes.user && this.successes.repo)) {
-            this.focus = this.$refs.user;
-          } else {
-            this.focus = this.$refs.repo;
+        this.$nextTick(function() {
+          if (document.activeElement !== this.$refs.user && document.activeElement !== this.$refs.repo) {
+            if (this.options.type === 'follow' || !this.successes.user || (this.successes.user && this.successes.repo)) {
+              this.$refs.user.focus();
+            } else {
+              this.$refs.repo.focus();
+            }
           }
-        }
+        });
       }
     },
     computed: {
@@ -487,6 +482,21 @@ defer(function() {
             }
           })()
         };
+      }
+    },
+    methods: {
+      paste: function() {
+        var ref, repo, user;
+        ref = this.options.user.split(/\/+/), user = ref[0], repo = ref[1];
+        this.options.user = user;
+        if (repo != null) {
+          this.options.repo = repo;
+        }
+        if (this.options.user === '') {
+          this.$refs.user.focus();
+        } else {
+          this.$refs.repo.focus();
+        }
       }
     }
   });

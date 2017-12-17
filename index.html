@@ -126,7 +126,7 @@
             <h4>Button options</h4>
             <div class="form-group">
               <div class="input-group">
-                <input ref="user" class="form-control" type="text" maxlength="39" placeholder=":user" autofocus="autofocus" :class="{ 'is-invalid': dangers.user }" v-model="options.user">
+                <input ref="user" class="form-control" type="text" maxlength="39" placeholder=":user" autofocus="autofocus" :class="{ 'is-invalid': dangers.user }" v-model="options.user" @paste="$nextTick(paste)">
                 <div class="input-group-addon">/</div>
                 <input ref="repo" class="form-control" type="text" maxlength="100" placeholder=":repo" :disabled="options.type === 'follow'" :class="{ 'is-invalid': dangers.repo }" v-model="options.repo">
               </div>
