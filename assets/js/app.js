@@ -485,18 +485,19 @@ defer(function() {
       }
     },
     methods: {
-      paste: function() {
-        var ref, repo, user;
-        ref = this.options.user.split(/\/+/), user = ref[0], repo = ref[1];
-        this.options.user = user;
-        if (repo != null) {
-          this.options.repo = repo;
-        }
-        if (this.options.user === '') {
-          this.$refs.user.focus();
-        } else {
-          this.$refs.repo.focus();
-        }
+      onPaste: function() {
+        this.$nextTick(function() {
+          var ref, repo, user;
+          ref = this.options.user.replace(/^\s+/g, '').replace(/\/+/, '/').replace(/^\//, '').split('/'), user = ref[0], repo = ref[1];
+          this.options.user = user;
+          if (repo != null) {
+            this.options.repo = repo;
+            if (this.options.user !== '') {
+              this.$refs.repo.focus();
+              this.$refs.repo.selectionStart = this.$refs.repo.selectionEnd = this.options.repo.length;
+            }
+          }
+        });
       }
     }
   });

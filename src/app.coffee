@@ -198,13 +198,15 @@ defer ->
             else
               return 'GitHub'
     methods:
-      paste: ->
-        [user, repo] = @options.user.split /\/+/
-        @options.user = user
-        @options.repo = repo if repo?
-        if @options.user is ''
-          @$refs.user.focus()
-        else
-          @$refs.repo.focus()
+      onPaste: ->
+        @$nextTick ->
+          [user, repo] = @options.user.replace(/^\s+/g, '').replace(/\/+/, '/').replace(/^\//, '').split '/'
+          @options.user = user
+          if repo?
+            @options.repo = repo
+            if @options.user isnt ''
+              @$refs.repo.focus()
+              @$refs.repo.selectionStart = @$refs.repo.selectionEnd = @options.repo.length
+          return
         return
   return
