@@ -86,14 +86,14 @@ var defer;
 /* istanbul ignore next */
 
 defer = function(func) {
-  var callback, token;
+  var callback, onceToken;
   if (/m/.test(document.readyState) || (!/g/.test(document.readyState) && !document.documentElement.doScroll)) {
     window.setTimeout(func);
   } else {
     if (document.addEventListener) {
-      token = 0;
+      onceToken = 0;
       callback = function() {
-        if (!token && (token = 1)) {
+        if (!onceToken && (onceToken = 1)) {
           func();
         }
       };
