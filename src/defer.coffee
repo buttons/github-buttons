@@ -8,7 +8,7 @@ import {
 ### istanbul ignore next ###
 defer = (func) ->
   if /m/.test(document.readyState) or (!/g/.test(document.readyState) and !document.documentElement.doScroll)
-    window.setTimeout func
+    setTimeout func
   else
     if document.addEventListener
       onceToken = 0

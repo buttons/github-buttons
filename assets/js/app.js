@@ -88,7 +88,7 @@ var defer;
 defer = function(func) {
   var callback, onceToken;
   if (/m/.test(document.readyState) || (!/g/.test(document.readyState) && !document.documentElement.doScroll)) {
-    window.setTimeout(func);
+    setTimeout(func);
   } else {
     if (document.addEventListener) {
       onceToken = 0;
@@ -161,7 +161,7 @@ var parseOptions = function(anchor) {
   deprecate = function(oldAttribute, newAttribute, newValue) {
     if (anchor.getAttribute(oldAttribute)) {
       options[newAttribute] = newValue;
-      window.console && window.console.warn("GitHub Buttons deprecated `" + oldAttribute + "`: use `" + newAttribute + "=\"" + newValue + "\"` instead. Please refer to https://github.com/ntkme/github-buttons#readme for more info.");
+      window.console && console.warn("GitHub Buttons deprecated `" + oldAttribute + "`: use `" + newAttribute + "=\"" + newValue + "\"` instead. Please refer to https://github.com/ntkme/github-buttons#readme for more info.");
     }
   };
   deprecate("data-count-api", "data-show-count", "true");

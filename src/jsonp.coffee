@@ -18,7 +18,7 @@ jsonp = (url, func) ->
     _._ null, json
     return
 
-  window._._ = ->
+  _._ = ->
     func.apply (window._ = null), arguments
     return
 
