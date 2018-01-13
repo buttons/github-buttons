@@ -36,9 +36,14 @@ fetch = (url, func) ->
 
   if xhr
     onEvent xhr, "error", onceError
+    onEvent xhr, "abort", onceError
 
     onEvent xhr, "load", ->
-      _ JSON.parse xhr.responseText if xhr.readyState is xhr.DONE and xhr.status is 200
+      if xhr.status is 200
+        _ JSON.parse xhr.responseText
+      else
+        ### istanbul ignore next ###
+        onceError()
       return
 
     xhr.open "GET", url

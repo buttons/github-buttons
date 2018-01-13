@@ -204,9 +204,14 @@ fetch = function(url, func) {
   };
   if (xhr) {
     onEvent(xhr, "error", onceError);
+    onEvent(xhr, "abort", onceError);
     onEvent(xhr, "load", function() {
-      if (xhr.readyState === xhr.DONE && xhr.status === 200) {
+      if (xhr.status === 200) {
         _(JSON.parse(xhr.responseText));
+      } else {
+
+        /* istanbul ignore next */
+        onceError();
       }
     });
     xhr.open("GET", url);
