@@ -206,7 +206,7 @@ fetch = function(url, func) {
     onEvent(xhr, "error", onceError);
     onEvent(xhr, "load", function() {
       if (xhr.readyState === xhr.DONE && xhr.status === 200) {
-        window._(JSON.parse(xhr.responseText));
+        _(JSON.parse(xhr.responseText));
       }
     });
     xhr.open("GET", url);
