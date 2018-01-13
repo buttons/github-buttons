@@ -176,11 +176,7 @@ var fetch;
 
 fetch = function(url, func) {
   var head, onceError, onceToken, script, xhr;
-  if (window.XDomainRequest) {
-
-    /* istanbul ignore next: IE */
-    xhr = new XDomainRequest();
-  } else if (window.XMLHttpRequest) {
+  if (window.XMLHttpRequest) {
     xhr = new XMLHttpRequest();
 
     /* istanbul ignore if */

@@ -6,17 +6,14 @@ describe "JSON-P", ->
   describe "fetch(url, func)", ->
     jsonp = fetch
 
-    XDomainRequest = window.XDomainRequest
     XMLHttpRequest = window.XMLHttpRequest
     head = document.getElementsByTagName("head")[0]
 
     beforeEach ->
-      window.XDomainRequest = null
       window.XMLHttpRequest = null
       sinon.stub head, "appendChild"
 
     afterEach ->
-      window.XDomainRequest = XDomainRequest
       window.XMLHttpRequest = XMLHttpRequest
       head.appendChild.restore()
 

@@ -10,11 +10,7 @@ import {
 } from "./defer"
 
 fetch = (url, func) ->
-
-  if window.XDomainRequest
-    ### istanbul ignore next: IE ###
-    xhr = new XDomainRequest()
-  else if window.XMLHttpRequest
+  if window.XMLHttpRequest
     xhr = new XMLHttpRequest()
     ### istanbul ignore if ###
     xhr = null unless "withCredentials" of xhr
