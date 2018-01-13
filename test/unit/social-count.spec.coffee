@@ -1,6 +1,11 @@
 import {
+  setApiBaseURL
+} from "@/config"
+import {
   renderSocialCount
 } from "@/social-count"
+
+setApiBaseURL "/base/test/fixtures/api.github.com/"
 
 describe "Social Sount", ->
   describe "renderSocialCount(button)", ->
@@ -9,85 +14,68 @@ describe "Social Sount", ->
 
     beforeEach ->
       button = document.body.appendChild document.createElement "a"
-      sinon.stub document.body, "insertBefore"
 
     afterEach ->
       button.parentNode.removeChild button
-      document.body.insertBefore.restore()
 
     testRenderCount = (url, func) ->
-      sinon.stub head, "appendChild"
+      sinon.stub document.body, "insertBefore"
         .callsFake ->
-          sinon.stub window, "_"
-            .callsFake ->
-              args = window._.args[0]
-              window._.restore()
-              window._.apply null, args
-              func()
-          script = head.appendChild.args[0][0]
-          script.src = script.src.replace /^https?:\/\//, "/base/test/fixtures/"
-          head.appendChild.restore()
-          head.appendChild script
+          document.body.insertBefore.restore()
+          func.apply null, arguments
+          return
       button.href = url
       renderSocialCount button
 
     it "should append the count when a known button type is given", (done) ->
-      testRenderCount "https://github.com/ntkme", ->
-        expect document.body.insertBefore
-          .to.have.been.calledOnce
-        count = document.body.insertBefore.args[0][0]
+      testRenderCount "https://github.com/ntkme", (count) ->
         expect count
           .to.have.property "className"
           .and.equal "social-count"
         done()
 
     it "should append the count for follow button", (done) ->
-      testRenderCount "https://github.com/ntkme", ->
-        count = document.body.insertBefore.args[0][0]
+      testRenderCount "https://github.com/ntkme", (count) ->
         expect count.href
           .to.equal "https://github.com/ntkme/followers"
         expect count.lastChild.innerHTML
-          .to.equal "53"
+          .to.equal "58"
         expect count.getAttribute "aria-label"
-          .to.equal "53 followers on GitHub"
+          .to.equal "58 followers on GitHub"
         done()
 
     it "should append the count for watch button", (done) ->
-      testRenderCount "https://github.com/ntkme/github-buttons/subscription", ->
-        count = document.body.insertBefore.args[0][0]
+      testRenderCount "https://github.com/ntkme/github-buttons/subscription", (count) ->
         expect count.href
           .to.equal "https://github.com/ntkme/github-buttons/watchers"
         expect count.lastChild.innerHTML
-          .to.equal "14"
+          .to.equal "18"
         expect count.getAttribute "aria-label"
-          .to.equal "14 subscribers on GitHub"
+          .to.equal "18 subscribers on GitHub"
         done()
 
     it "should append the count for star button", (done) ->
-      testRenderCount "https://github.com/ntkme/github-buttons", ->
-        count = document.body.insertBefore.args[0][0]
+      testRenderCount "https://github.com/ntkme/github-buttons", (count) ->
         expect count.href
           .to.equal "https://github.com/ntkme/github-buttons/stargazers"
         expect count.lastChild.innerHTML
-          .to.equal "302"
+          .to.equal "397"
         expect count.getAttribute "aria-label"
-          .to.equal "302 stargazers on GitHub"
+          .to.equal "397 stargazers on GitHub"
         done()
 
     it "should append the count for fork button", (done) ->
-      testRenderCount "https://github.com/ntkme/github-buttons/fork", ->
-        count = document.body.insertBefore.args[0][0]
+      testRenderCount "https://github.com/ntkme/github-buttons/fork", (count) ->
         expect count.href
           .to.equal "https://github.com/ntkme/github-buttons/network"
         expect count.lastChild.innerHTML
-          .to.equal "42"
+          .to.equal "60"
         expect count.getAttribute "aria-label"
-          .to.equal "42 forks on GitHub"
+          .to.equal "60 forks on GitHub"
         done()
 
     it "should append the count for issue button", (done) ->
-      testRenderCount "https://github.com/ntkme/github-buttons/issues", ->
-        count = document.body.insertBefore.args[0][0]
+      testRenderCount "https://github.com/ntkme/github-buttons/issues", (count) ->
         expect count.href
           .to.equal "https://github.com/ntkme/github-buttons/issues"
         expect count.lastChild.innerHTML
@@ -97,8 +85,7 @@ describe "Social Sount", ->
         done()
 
     it "should append the count for issue button when it links to new issue", (done) ->
-      testRenderCount "https://github.com/ntkme/github-buttons/issues/new", ->
-        count = document.body.insertBefore.args[0][0]
+      testRenderCount "https://github.com/ntkme/github-buttons/issues/new", (count) ->
         expect count.href
           .to.equal "https://github.com/ntkme/github-buttons/issues"
         expect count.lastChild.innerHTML
@@ -108,48 +95,44 @@ describe "Social Sount", ->
         done()
 
     it "should append the count for button whose link has a tailing slash", (done) ->
-      testRenderCount "https://github.com/ntkme/", ->
-        count = document.body.insertBefore.args[0][0]
+      testRenderCount "https://github.com/ntkme/", (count) ->
         expect count.href
           .to.equal "https://github.com/ntkme/followers"
         done()
 
     it "should append the count for button whose link has a query", (done) ->
-      testRenderCount "https://github.com/ntkme?tab=repositories", ->
-        count = document.body.insertBefore.args[0][0]
+      testRenderCount "https://github.com/ntkme?tab=repositories", (count) ->
         expect count.href
           .to.equal "https://github.com/ntkme/followers"
         done()
 
     it "should append the count for button whose link has a hash", (done) ->
-      testRenderCount "https://github.com/ntkme#github-buttons", ->
-        count = document.body.insertBefore.args[0][0]
+      testRenderCount "https://github.com/ntkme#github-buttons", (count) ->
         expect count.href
           .to.equal "https://github.com/ntkme/followers"
         done()
 
     it "should append the count for button whose link has both a tailing slash and a query", (done) ->
-      testRenderCount "https://github.com/ntkme/?tab=repositories", ->
-        count = document.body.insertBefore.args[0][0]
+      testRenderCount "https://github.com/ntkme/?tab=repositories", (count) ->
         expect count.href
           .to.equal "https://github.com/ntkme/followers"
         done()
 
     it "should append the count for button whose link has both a tailing slash and a hash", (done) ->
-      testRenderCount "https://github.com/ntkme/#github-buttons", ->
-        count = document.body.insertBefore.args[0][0]
+      testRenderCount "https://github.com/ntkme/#github-buttons", (count) ->
         expect count.href
           .to.equal "https://github.com/ntkme/followers"
         done()
 
     it "should append the count for button whose link has a tailing slash, a query, and a hash", (done) ->
-      testRenderCount "https://github.com/ntkme/?tab=repositories#github-buttons", ->
-        count = document.body.insertBefore.args[0][0]
+      testRenderCount "https://github.com/ntkme/?tab=repositories#github-buttons", (count) ->
         expect count.href
           .to.equal "https://github.com/ntkme/followers"
         done()
 
     it "should not append the count for unknown button type", ->
+      sinon.stub document.body, "insertBefore"
+
       button.href = "https://twitter.com/"
       renderSocialCount button
       button.href = "https://github.com/"
@@ -159,13 +142,4 @@ describe "Social Sount", ->
       expect document.body.insertBefore
         .to.have.not.been.called
 
-
-    it "should not append the count when it fails to pull api data", ->
-      sinon.stub head, "appendChild"
-        .callsFake ->
-          head.appendChild.restore()
-          window._ meta: status: 404
-          expect document.body.insertBefore
-            .to.have.not.been.called
-      button.href = "https://github.com/ntkme"
-      renderSocialCount button
+      document.body.insertBefore.restore()

@@ -1,15 +1,23 @@
 import {
-  jsonp
-} from "@/jsonp"
+  fetch
+} from "@/fetch"
 
 describe "JSON-P", ->
-  describe "jsonp(url, func)", ->
+  describe "fetch(url, func)", ->
+    jsonp = fetch
+
+    XDomainRequest = window.XDomainRequest
+    XMLHttpRequest = window.XMLHttpRequest
     head = document.getElementsByTagName("head")[0]
 
     beforeEach ->
+      window.XDomainRequest = null
+      window.XMLHttpRequest = null
       sinon.stub head, "appendChild"
 
     afterEach ->
+      window.XDomainRequest = XDomainRequest
+      window.XMLHttpRequest = XMLHttpRequest
       head.appendChild.restore()
 
     it "should set up the callback function", ->
@@ -45,7 +53,11 @@ describe "JSON-P", ->
         .to.equal url + "&callback=_"
 
     it "should clean up and run callback when request is fulfilled", (done) ->
-      data = test: "test"
+      response =
+        meta:
+          status: 200
+        data:
+          test: "test"
 
       jsonp "world", (error, json) ->
         expect window._
@@ -53,15 +65,32 @@ describe "JSON-P", ->
         expect !!error
           .to.be.false
         expect json
-          .to.deep.equal data
+          .to.deep.equal response.data
         done()
 
-      window._ data
+      window._ response
 
     it "should clean up when request is failed", (done) ->
-      jsonp "fail", (error, json) ->
+      jsonp "fail2", (error, json) ->
         expect !!error
           .to.be.true
+        expect json
+          .to.be.undefined
         done()
 
       head.appendChild.args[0][0].dispatchEvent new CustomEvent "error"
+
+    it "should clean up when request is failed with non 200 status", (done) ->
+      response =
+        meta:
+          status: 500
+
+      jsonp "fail", (error, json) ->
+        expect !!error
+          .to.be.true
+        expect json
+          .to.be.undefined
+        done()
+
+      window._ response
+
