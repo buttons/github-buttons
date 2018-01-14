@@ -175,7 +175,7 @@ renderButton = function(options) {
 var fetch;
 
 fetch = function(url, func) {
-  var callback, head, onceToken, script, xhr;
+  var callback, head, onceToken, onloadend, script, xhr;
   window.$ = function() {
     window.$ = null;
   };
@@ -203,13 +203,20 @@ fetch = function(url, func) {
     script = createElement("script");
     script.async = true;
     script.src = url + (/\?/.test(url) ? "&" : "?") + "callback=_";
-    onEvent(script, "error", callback);
+    onloadend = function() {
+      if (window._) {
+        _({
+          meta: {}
+        });
+      }
+    };
+    onEvent(script, "error", onloadend);
     if (script.readyState) {
 
       /* istanbul ignore next: IE lt 9 */
       onEvent(script, "readystatechange", function() {
-        if (script.readyState === "loaded" && (window._ != null)) {
-          callback(1);
+        if (script.readyState === "loaded") {
+          onloadend();
         }
       });
     }

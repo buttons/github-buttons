@@ -42,13 +42,16 @@ fetch = (url, func) ->
     script.async = true
     script.src = url + (if /\?/.test url then "&" else "?") + "callback=_"
 
-    onEvent script, "error", callback
+    onloadend = ->
+      _ meta: {} if window._
+      return
+
+    onEvent script, "error", onloadend
 
     if script.readyState
       ### istanbul ignore next: IE lt 9 ###
       onEvent script, "readystatechange", ->
-        if script.readyState is "loaded" and window._?
-          callback 1
+        onloadend() if script.readyState is "loaded"
         return
 
     head = document.getElementsByTagName("head")[0]
