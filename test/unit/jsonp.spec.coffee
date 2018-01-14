@@ -23,7 +23,7 @@ describe "JSON-P", ->
       expect window._
         .to.be.a "function"
 
-      expect window._._
+      expect window.$
         .to.be.a "function"
 
     it "should setup the script and add callback query to request url", ->

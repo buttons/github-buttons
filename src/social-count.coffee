@@ -45,7 +45,7 @@ renderSocialCount = (button) ->
     property = "followers"
     href = "/#{match[1]}/#{property}"
 
-  fetch "#{apiBaseURL}#{api}", (error, json) ->
+  fetch apiBaseURL + api, (error, json) ->
     if !error
       data = json[property]
 

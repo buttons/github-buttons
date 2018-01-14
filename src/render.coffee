@@ -53,12 +53,9 @@ render = (targetNode, options) ->
     return
 
   onceEvent iframe, "load", ->
-    if callback = iframe.contentWindow._
-      _ = callback._
-      callback._ = ->
-        _.apply null, arguments
-        onload()
-        return
+    contentWindow = iframe.contentWindow
+    if contentWindow.$
+      contentWindow.$ = onload
     else
       onload()
     return

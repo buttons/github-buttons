@@ -183,13 +183,10 @@ render = function(targetNode, options) {
     targetNode.parentNode.replaceChild(iframe, targetNode);
   };
   onceEvent(iframe, "load", function() {
-    var _, callback;
-    if (callback = iframe.contentWindow._) {
-      _ = callback._;
-      callback._ = function() {
-        _.apply(null, arguments);
-        onload();
-      };
+    var contentWindow;
+    contentWindow = iframe.contentWindow;
+    if (contentWindow.$) {
+      contentWindow.$ = onload;
     } else {
       onload();
     }

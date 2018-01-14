@@ -10,56 +10,45 @@ import {
 } from "./defer"
 
 fetch = (url, func) ->
-  if window.XMLHttpRequest
-    xhr = new XMLHttpRequest()
-    ### istanbul ignore if ###
-    xhr = null unless "withCredentials" of xhr
-
-  window._ = (json) ->
-    if xhr
-      _._ null, json
-    else if json.meta.status is 200
-      _._ null, json.data
-    else
-      onceError()
-    return
-
-  _._ = ->
-    func.apply (window._ = null), arguments
+  window.$ = ->
+    window.$ = null
     return
 
   onceToken = 0
-  onceError = ->
+  callback = ->
     if !onceToken and onceToken = 1
-      _._ onceToken
+      func.apply null, arguments
+      $()
     return
 
-  if xhr
-    onEvent xhr, "error", onceError
-    onEvent xhr, "abort", onceError
+  if window.XMLHttpRequest and "withCredentials" of XMLHttpRequest.prototype
+    xhr = new XMLHttpRequest()
 
+    onEvent xhr, "abort", callback
+    onEvent xhr, "error", callback
     onEvent xhr, "load", ->
-      if xhr.status is 200
-        _ JSON.parse xhr.responseText
-      else
-        ### istanbul ignore next ###
-        onceError()
+      callback xhr.status isnt 200, JSON.parse xhr.responseText
       return
 
     xhr.open "GET", url
     xhr.send()
   else
+    window._ = (json) ->
+      window._ = null
+      callback json.meta.status isnt 200, json.data
+      return
+
     script = createElement "script"
     script.async = true
     script.src = url + (if /\?/.test url then "&" else "?") + "callback=_"
 
-    onEvent script, "error", onceError
+    onEvent script, "error", callback
 
     if script.readyState
       ### istanbul ignore next: IE lt 9 ###
       onEvent script, "readystatechange", ->
         if script.readyState is "loaded" and window._?
-          onceError()
+          callback 1
         return
 
     head = document.getElementsByTagName("head")[0]
@@ -70,7 +59,6 @@ fetch = (url, func) ->
         return
     else
       head.appendChild script
-
   return
 
 export {

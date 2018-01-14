@@ -175,58 +175,41 @@ renderButton = function(options) {
 var fetch;
 
 fetch = function(url, func) {
-  var head, onceError, onceToken, script, xhr;
-  if (window.XMLHttpRequest) {
-    xhr = new XMLHttpRequest();
-
-    /* istanbul ignore if */
-    if (!("withCredentials" in xhr)) {
-      xhr = null;
-    }
-  }
-  window._ = function(json) {
-    if (xhr) {
-      _._(null, json);
-    } else if (json.meta.status === 200) {
-      _._(null, json.data);
-    } else {
-      onceError();
-    }
-  };
-  _._ = function() {
-    func.apply((window._ = null), arguments);
+  var callback, head, onceToken, script, xhr;
+  window.$ = function() {
+    window.$ = null;
   };
   onceToken = 0;
-  onceError = function() {
+  callback = function() {
     if (!onceToken && (onceToken = 1)) {
-      _._(onceToken);
+      func.apply(null, arguments);
+      $();
     }
   };
-  if (xhr) {
-    onEvent(xhr, "error", onceError);
-    onEvent(xhr, "abort", onceError);
+  if (window.XMLHttpRequest && "withCredentials" in XMLHttpRequest.prototype) {
+    xhr = new XMLHttpRequest();
+    onEvent(xhr, "abort", callback);
+    onEvent(xhr, "error", callback);
     onEvent(xhr, "load", function() {
-      if (xhr.status === 200) {
-        _(JSON.parse(xhr.responseText));
-      } else {
-
-        /* istanbul ignore next */
-        onceError();
-      }
+      callback(xhr.status !== 200, JSON.parse(xhr.responseText));
     });
     xhr.open("GET", url);
     xhr.send();
   } else {
+    window._ = function(json) {
+      window._ = null;
+      callback(json.meta.status !== 200, json.data);
+    };
     script = createElement("script");
     script.async = true;
     script.src = url + (/\?/.test(url) ? "&" : "?") + "callback=_";
-    onEvent(script, "error", onceError);
+    onEvent(script, "error", callback);
     if (script.readyState) {
 
       /* istanbul ignore next: IE lt 9 */
       onEvent(script, "readystatechange", function() {
         if (script.readyState === "loaded" && (window._ != null)) {
-          onceError();
+          callback(1);
         }
       });
     }
@@ -275,7 +258,7 @@ renderSocialCount = function(button) {
     property = "followers";
     href = "/" + match[1] + "/" + property;
   }
-  fetch("" + apiBaseURL + api, function(error, json) {
+  fetch(apiBaseURL + api, function(error, json) {
     var a, data, span;
     if (!error) {
       data = json[property];
@@ -428,13 +411,10 @@ render = function(targetNode, options) {
     targetNode.parentNode.replaceChild(iframe, targetNode);
   };
   onceEvent(iframe, "load", function() {
-    var _, callback;
-    if (callback = iframe.contentWindow._) {
-      _ = callback._;
-      callback._ = function() {
-        _.apply(null, arguments);
-        onload();
-      };
+    var contentWindow;
+    contentWindow = iframe.contentWindow;
+    if (contentWindow.$) {
+      contentWindow.$ = onload;
     } else {
       onload();
     }
