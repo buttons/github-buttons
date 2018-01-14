@@ -26,31 +26,30 @@ renderSocialCount = (button) ->
   return unless match and not match[6]
 
   if match[2]
-    href = "/#{match[1]}/#{match[2]}"
-    api = "repos#{href}"
+    api = "repos/#{match[1]}/#{match[2]}"
     if match[3]
       property = "subscribers_count"
-      href += "/watchers"
+      href = "/watchers"
     else if match[4]
       property = "forks_count"
-      href += "/network"
+      href = "/network"
     else if match[5]
       property = "open_issues_count"
-      href += "/issues"
+      href = "/issues"
     else
       property = "stargazers_count"
-      href += "/stargazers"
+      href = "/stargazers"
   else
     api = "users/#{match[1]}"
     property = "followers"
-    href = "/#{match[1]}/#{property}"
+    href = "/#{property}"
 
   fetch apiBaseURL + api, (error, json) ->
     if !error
       data = json[property]
 
       a = createElement "a"
-      a.href = "https://github.com" + href
+      a.href = json.html_url + href
       a.className = "social-count"
       a.setAttribute "aria-label", "#{data} #{property.replace(/_count$/, "").replace("_", " ")} on GitHub"
       a.appendChild createElement "b"
