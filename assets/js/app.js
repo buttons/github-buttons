@@ -111,9 +111,14 @@ defer = function(func) {
   }
 };
 
-var ceilPixel = function(px) {
-  var devicePixelRatio;
-  devicePixelRatio = window.devicePixelRatio || 1;
+var ceilPixel;
+var devicePixelRatio;
+
+/* istanbul ignore next */
+
+devicePixelRatio = window.devicePixelRatio || 1;
+
+ceilPixel = function(px) {
   return (devicePixelRatio > 1 ? Math.ceil(Math.round(px * devicePixelRatio) / devicePixelRatio * 2) / 2 : Math.ceil(px)) || 0;
 };
 
