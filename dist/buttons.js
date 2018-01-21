@@ -142,7 +142,7 @@ var octicon;
 octicon = function(icon, height) {
   var width;
   icon = ("" + icon).toLowerCase().replace(/^octicon-/, "");
-  if (!data[icon]) {
+  if (!data.hasOwnProperty(icon)) {
     icon = "mark-github";
   }
   width = height * data[icon].width / data[icon].height;
