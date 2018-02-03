@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>github:buttons</title>
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="assets/css/main.css">
     <script src="//unpkg.com/vue/dist/vue.min.js"></script>
     <script async defer src="assets/js/app.min.js"></script>
@@ -127,7 +127,9 @@
             <div class="form-group">
               <div class="input-group">
                 <input ref="user" class="form-control" type="text" maxlength="39" placeholder=":user" autofocus="autofocus" :class="{ 'is-invalid': dangers.user }" v-model="options.user" @paste="onPaste">
-                <div class="input-group-addon">/</div>
+                <div class="input-group-append input-group-prepend">
+                  <span class="input-group-text">/</span>
+                </div>
                 <input ref="repo" class="form-control" type="text" maxlength="100" placeholder=":repo" :disabled="options.type === 'follow'" :class="{ 'is-invalid': dangers.repo }" v-model="options.repo">
               </div>
             </div>
