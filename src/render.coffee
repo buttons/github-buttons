@@ -39,6 +39,7 @@ render = (targetNode, options) ->
   setFrameSize iframe, [1, 0]
   iframe.style.border = "none"
   iframe.src = "javascript:0"
+  iframe.title = title if title = options.title
 
   document.body.appendChild iframe
 

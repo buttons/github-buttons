@@ -1,6 +1,7 @@
 export parseOptions = (anchor) ->
   options =
     "href": anchor.href
+    "title": anchor.title
     "aria-label": anchor.getAttribute "aria-label"
   for attribute in [
     "icon"

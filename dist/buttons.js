@@ -300,6 +300,7 @@ var parseOptions = function(anchor) {
   var attribute, deprecate, i, len, options, ref;
   options = {
     "href": anchor.href,
+    "title": anchor.title,
     "aria-label": anchor.getAttribute("aria-label")
   };
   ref = ["icon", "text", "size", "show-count"];
@@ -388,7 +389,7 @@ var render;
 /* istanbul ignore next */
 
 render = function(targetNode, options) {
-  var contentDocument, hash, iframe, name, onload, ref, value;
+  var contentDocument, hash, iframe, name, onload, ref, title, value;
   if (targetNode == null) {
     return renderAll();
   }
@@ -409,6 +410,9 @@ render = function(targetNode, options) {
   setFrameSize(iframe, [1, 0]);
   iframe.style.border = "none";
   iframe.src = "javascript:0";
+  if (title = options.title) {
+    iframe.title = title;
+  }
   document.body.appendChild(iframe);
   onload = function() {
     var size;

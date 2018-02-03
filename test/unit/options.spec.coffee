@@ -13,6 +13,7 @@ describe "Options", ->
       expect parseOptions a
         .to.deep.equal
           "href": ""
+          "title": ""
           "data-text": ""
           "aria-label": null
           "data-icon": null
@@ -24,6 +25,12 @@ describe "Options", ->
       expect parseOptions a
         .to.have.property "href"
         .and.equal a.href
+
+    it "should parse the attribute href", ->
+      a.title = "button"
+      expect parseOptions a
+        .to.have.property "title"
+        .and.equal a.title
 
     it "should parse the attribute data-text", ->
       text = "test"
