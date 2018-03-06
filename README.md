@@ -28,6 +28,7 @@ The easiest way to get started is to use the **[github:button generator](https:/
 <!-- Place this tag where you want the button to render. -->
 <a class="github-button"
    href="{{ link }}"
+   title="{{ title }}"
    data-icon="{{ octicon }}"
    data-size="{{ size }}"
    data-show-count="{{ show count }}"
@@ -46,6 +47,7 @@ The easiest way to get started is to use the **[github:button generator](https:/
 | Attribute               | Description                                                                                                                  |
 | ---------               | -----------                                                                                                                  |
 | `href`                  | GitHub link for the button.                                                                                                  |
+| `title`                 | `title` attribute for the button's `<iframe>`.                                                                               |
 | `data-icon`             | Octicon for the button. `octicon-mark-github`. <br> Available icons can be found at [Octicons](https://octicons.github.com). |
 | `data-size`             | _None_ by default or `large`.                                                                                                |
 | `data-show-count`       | `false` by default or `true`. The dynamic count is generated based on detected button type.                                  |
