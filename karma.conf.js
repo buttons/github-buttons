@@ -9,6 +9,7 @@ module.exports = function (config) {
       '**/*.coffee': ['webpack', 'sourcemap']
     },
     webpack: {
+      mode: 'none',
       devtool: 'inline-source-map',
       resolve: {
         alias: {

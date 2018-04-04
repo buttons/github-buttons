@@ -14,9 +14,7 @@ var createElement = function(tag) {
   return document.createElement(tag);
 };
 
-var baseURL;
-var buttonClass;
-var uuid;
+var baseURL, buttonClass, uuid;
 
 buttonClass = "github-button";
 
@@ -66,8 +64,7 @@ var stringifyQueryString = function(obj) {
   return params.join("&");
 };
 
-var onEvent;
-var onceEvent;
+var onEvent, onceEvent;
 
 onEvent = function(target, eventName, func) {
 
@@ -94,8 +91,8 @@ onceEvent = function(target, eventName, func) {
   onEvent(target, eventName, callback);
 };
 
-var ceilPixel;
-var devicePixelRatio;
+var ceilPixel, devicePixelRatio;
+
 
 /* istanbul ignore next */
 
@@ -105,8 +102,7 @@ ceilPixel = function(px) {
   return (devicePixelRatio > 1 ? Math.ceil(Math.round(px * devicePixelRatio) / devicePixelRatio * 2) / 2 : Math.ceil(px)) || 0;
 };
 
-var getFrameContentSize;
-var setFrameSize;
+var getFrameContentSize, setFrameSize;
 
 getFrameContentSize = function(iframe) {
   var body, boundingClientRect, contentDocument, display, height, html, width;
@@ -132,6 +128,7 @@ setFrameSize = function(iframe, size) {
 };
 
 var renderAll;
+
 
 /* istanbul ignore next */
 
