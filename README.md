@@ -44,17 +44,17 @@ The easiest way to get started is to use the **[github:button generator](https:/
 
 #### Config
 
-| Attribute               | Description                                                                                                                  |
-| ---------               | -----------                                                                                                                  |
-| `href`                  | GitHub link for the button.                                                                                                  |
-| `title`                 | `title` attribute for the button's `<iframe>`.                                                                               |
-| `data-icon`             | Octicon for the button. `octicon-mark-github`. <br> Available icons can be found at [Octicons](https://octicons.github.com). |
-| `data-size`             | _None_ by default or `large`.                                                                                                |
-| `data-show-count`       | `false` by default or `true`. The dynamic count is generated based on detected button type.                                  |
-| `data-text`             | Text displayed on the button. It defaults to the text content within the link.                                               |
-| `aria-label`            | Aira label for the button link.                                                                                              |
+| Attribute         | Description                                                                                                           |
+| ---------         | -----------                                                                                                           |
+| `href`            | GitHub link for the button.                                                                                           |
+| `title`           | `title` attribute for the button's `<iframe>`.                                                                        |
+| `data-icon`       | `octicon-mark-github` by default. A [subset](rollup.config.js) of [Octicons](https://octicons.github.com) is bundled. |
+| `data-size`       | _None_ by default or `large`.                                                                                         |
+| `data-show-count` | `false` by default or `true`. The dynamic count is generated based on detected button type.                           |
+| `data-text`       | Text displayed on the button. It defaults to the text content within the link.                                        |
+| `aria-label`      | Aira label for the button link.                                                                                       |
 
-#### Built-in Button Types
+##### Built-in Button Types
 
 Button type is detected through button's `href` attribute.
 

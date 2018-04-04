@@ -52,8 +52,21 @@ export default [
         if (!id.endsWith('/node_modules/octicons/build/data.json')) return null
 
         const data = JSON.parse(json)
-        Object.keys(data).forEach(key => { delete data[key].keywords })
-        json = JSON.stringify(data)
+
+        json = JSON.stringify(Object.assign({}, ...[
+          'mark-github',
+          'eye',
+          'star',
+          'repo-forked',
+          'issue-opened',
+          'cloud-download'
+        ].map(key => ({
+          [key]: {
+            width: data[key].width,
+            height: data[key].height,
+            path: data[key].path
+          }
+        }))))
 
         const code = `export default ${json}`
 
