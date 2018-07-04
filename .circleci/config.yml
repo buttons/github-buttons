@@ -14,6 +14,6 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-      - run: npm run build && git diff --exit-code
+      - run: npm run build && git diff --exit-code -- :^package-lock.json
       - run: npm test -- --browsers ChromeHeadless,Firefox
       - run: test -z "$CIRCLE_PULL_REQUEST" && ./node_modules/.bin/codecov
