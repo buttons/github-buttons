@@ -7,9 +7,10 @@ import {
   octicon
 } from "./octicons"
 
-renderButton = (options) ->
+render = (root, options) ->
   a = createElement "a"
   a.href = options.href
+  a.target = "_blank"
 
   if not /\.github\.com$/.test ".#{a.hostname}"
     a.href = "#"
@@ -29,8 +30,8 @@ renderButton = (options) ->
   a.appendChild createTextNode " "
   span = a.appendChild createElement "span"
   span.appendChild createTextNode options["data-text"] or ""
-  document.body.appendChild a
+  root.appendChild a
 
 export {
-  renderButton
+  render
 }

@@ -210,3 +210,16 @@ a {
     }
   }
 }
+
+:host {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 0;
+  white-space: nowrap;
+
+  .btn,
+  .social-count {
+    vertical-align: bottom;
+  }
+}
+

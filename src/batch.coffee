@@ -5,11 +5,11 @@ import {
   buttonClass
 } from "./config"
 import {
-  render
-} from "./render"
+  render as renderContainer
+} from "./container"
 
 ### istanbul ignore next ###
-renderAll = ->
+render = ->
   anchors = []
   if document.querySelectorAll
     anchors = document.querySelectorAll "a.#{buttonClass}"
@@ -17,9 +17,9 @@ renderAll = ->
     for anchor in document.getElementsByTagName "a"
       if ~" #{anchor.className} ".replace(/[ \t\n\f\r]+/g, " ").indexOf(" #{buttonClass} ")
         anchors.push anchor
-  render anchor for anchor in anchors
+  renderContainer anchor for anchor in anchors
   return
 
 export {
-  renderAll
+  render
 }

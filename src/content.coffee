@@ -2,19 +2,19 @@ import {
   document
 } from "./alias"
 import {
-  renderButton
+  render as renderButton
 } from "./button"
 import {
-  renderSocialCount
+  render as renderSocialCount
 } from "./social-count"
 
-renderFrameContent = (options) ->
+render = (root, options) ->
   return unless options
-  document.body.className = "large" if /^large$/i.test options["data-size"]
-  button = renderButton options
+  root.className = "large" if /^large$/i.test options["data-size"]
+  button = renderButton root, options
   renderSocialCount button if /^(true|1)$/i.test options["data-show-count"]
   return
 
 export {
-  renderFrameContent
+  render
 }

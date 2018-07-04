@@ -2,6 +2,7 @@ import {
   apiBaseURL
 } from "./config"
 import {
+  document
   createElement
   createTextNode
 } from "./alias"
@@ -9,7 +10,7 @@ import {
   fetch
 } from "./fetch"
 
-renderSocialCount = (button) ->
+render = (button) ->
   return unless button.hostname is "github.com"
 
   match = button.pathname.replace(/^(?!\/)/, "/").match ///
@@ -43,12 +44,16 @@ renderSocialCount = (button) ->
     api = "users/#{match[1]}"
     href = property = "followers"
 
+  ### istanbul ignore if ###
+  hook = "$" unless document.getElementsByTagName("head")[0].attachShadow
+
   fetch apiBaseURL + api, (error, json) ->
     if !error
       data = json[property]
 
       a = createElement "a"
       a.href = json.html_url + "/" + href
+      a.target = "_blank"
       a.className = "social-count"
       a.setAttribute "aria-label", "#{data} #{property.replace(/_count$/, "").replace("_", " ")} on GitHub"
       a.appendChild createElement "b"
@@ -57,8 +62,9 @@ renderSocialCount = (button) ->
       span.appendChild createTextNode "#{data}".replace /\B(?=(\d{3})+(?!\d))/g, ","
       button.parentNode.insertBefore a, button.nextSibling
     return
+  , hook
   return
 
 export {
-  renderSocialCount
+  render
 }

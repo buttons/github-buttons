@@ -2,13 +2,13 @@ import {
   setApiBaseURL
 } from "@/config"
 import {
-  renderSocialCount
+  render
 } from "@/social-count"
 
 setApiBaseURL "/base/test/fixtures/api.github.com/"
 
 describe "Social Sount", ->
-  describe "renderSocialCount(button)", ->
+  describe "render(button)", ->
     button = null
     head = document.getElementsByTagName("head")[0]
 
@@ -25,7 +25,7 @@ describe "Social Sount", ->
           func.apply null, arguments
           return
       button.href = url
-      renderSocialCount button
+      render button
 
     it "should append the count when a known button type is given", (done) ->
       testRenderCount "https://github.com/ntkme", (count) ->
@@ -134,11 +134,11 @@ describe "Social Sount", ->
       sinon.stub document.body, "insertBefore"
 
       button.href = "https://twitter.com/"
-      renderSocialCount button
+      render button
       button.href = "https://github.com/"
-      renderSocialCount button
+      render button
       button.href = "https://github.com/ntkme/github-buttons/test"
-      renderSocialCount button
+      render button
       expect document.body.insertBefore
         .to.have.not.been.called
 

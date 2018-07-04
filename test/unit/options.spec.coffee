@@ -68,21 +68,8 @@ describe "Options", ->
         .to.have.property "data-size"
         .and.equal size
 
-    it "should parse the attribute data-style for backward compatibility", ->
-      a.setAttribute "data-style", "mega"
-      expect parseOptions a
-        .to.have.property "data-size"
-        .and.equal "large"
-
     it "should parse the attribute data-show-count", ->
       a.setAttribute "data-show-count", "true"
-      expect parseOptions a
-        .to.have.property "data-show-count"
-        .and.equal "true"
-
-    it "should parse the attribute data-count-api for backward compatibility", ->
-      api = "/repos/:user/:repo#item"
-      a.setAttribute "data-count-api", api
       expect parseOptions a
         .to.have.property "data-show-count"
         .and.equal "true"

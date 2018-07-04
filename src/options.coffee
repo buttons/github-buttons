@@ -13,13 +13,4 @@ export parseOptions = (anchor) ->
     options[attribute] = anchor.getAttribute attribute
   if !options["data-text"]?
     options["data-text"] = anchor.textContent or anchor.innerText
-
-  deprecate = (oldAttribute, newAttribute, newValue) ->
-    if anchor.getAttribute oldAttribute
-      options[newAttribute] = newValue
-      window.console and console.warn "GitHub Buttons deprecated `#{oldAttribute}`: use `#{newAttribute}=\"#{newValue}\"` instead. Please refer to https://github.com/ntkme/github-buttons#readme for more info."
-    return
-  deprecate "data-count-api", "data-show-count", "true"
-  deprecate "data-style", "data-size", "large"
-
   options

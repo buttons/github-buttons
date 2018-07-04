@@ -4,9 +4,9 @@ import {
 import {
   getFrameContentSize
   setFrameSize
-} from "@/frame-size"
+} from "@/frame"
 
-describe "Frame Size", ->
+describe "Frame", ->
   iframe = null
 
   getRandomInt = (min = 0, max = 1000) ->

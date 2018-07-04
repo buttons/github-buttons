@@ -9,16 +9,17 @@ import {
   defer
 } from "./defer"
 
-fetch = (url, func) ->
-  window.$ = ->
-    window.$ = null
-    return
+fetch = (url, func, hook) ->
+  if hook
+    window[hook] = ->
+      window[hook] = null
+      return
 
   onceToken = 0
   callback = ->
     if !onceToken and onceToken = 1
       func.apply null, arguments
-      $()
+      window[hook]() if hook
     return
 
   if window.XMLHttpRequest and "withCredentials" of XMLHttpRequest.prototype

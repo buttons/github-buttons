@@ -1,6 +1,6 @@
 import coffeescript from 'rollup-plugin-coffee-script'
 import resolve from 'rollup-plugin-node-resolve'
-import uglify from 'rollup-plugin-uglify'
+import { uglify } from 'rollup-plugin-uglify'
 
 export default [
   {
@@ -16,13 +16,13 @@ export default [
       file: 'dist/buttons.min.js'
     }
   }, {
-    input: 'src/render.coffee',
+    input: 'src/container.coffee',
     output: {
       format: 'es',
       file: 'dist/buttons.esm.js'
     }
   }, {
-    input: 'src/render.coffee',
+    input: 'src/container.coffee',
     output: {
       format: 'cjs',
       file: 'dist/buttons.common.js'

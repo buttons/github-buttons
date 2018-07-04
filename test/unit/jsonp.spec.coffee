@@ -3,7 +3,7 @@ import {
 } from "@/fetch"
 
 describe "JSON-P", ->
-  describe "fetch(url, func)", ->
+  describe "fetch(url, func, hook)", ->
     jsonp = fetch
 
     XMLHttpRequest = window.XMLHttpRequest
@@ -23,8 +23,14 @@ describe "JSON-P", ->
       expect window._
         .to.be.a "function"
 
+    it "should set up the hook function", ->
+      jsonp "hello", ->
+        return
+      , "$"
+
       expect window.$
         .to.be.a "function"
+
 
     it "should setup the script and add callback query to request url", ->
       url = "/random/url/" + new Date().getTime()
@@ -64,6 +70,7 @@ describe "JSON-P", ->
         expect json
           .to.deep.equal response.data
         done()
+      , "$"
 
       window._ response
 

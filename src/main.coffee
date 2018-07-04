@@ -15,23 +15,23 @@ import {
   defer
 } from "./defer"
 import {
-  renderFrameContent
-} from "./frame-content"
+  render as renderContainer
+} from "./container"
 import {
-  render
-} from "./render"
+  render as renderContent
+} from "./content"
 import {
-  renderAll
-} from "./render-all"
+  render as batchRender
+} from "./batch"
 
 if typeof define is "function" and define.amd
-  define [], { render: render }
+  define [], { render: renderContainer }
 else if typeof exports is "object" and typeof exports.nodeName isnt "string"
-  exports.render = render
+  exports.render = renderContainer
 else
   setBaseURL currentScriptURL.replace /[^/]*([?#].*)?$/, "" if currentScriptURL
 
   if document.title is uuid
-    renderFrameContent parseQueryString document.location.hash.replace /^#/, ""
+    renderContent document.body, parseQueryString document.location.hash.replace /^#/, ""
   else
-    defer renderAll
+    defer batchRender

@@ -20,10 +20,10 @@ import {
 import {
   setFrameSize
   getFrameContentSize
-} from "./frame-size"
+} from "./frame"
 import {
-  renderAll
-} from "./render-all"
+  render as batchRender
+} from "./batch"
 
 if currentScriptURL
   setBaseURL currentScriptURL.replace /[^/]*\/[^/]*\/[^/]*([?#].*)?$/, ''
@@ -78,7 +78,7 @@ defer ->
     el: '#app'
     template: '#app-template'
     mounted: ->
-      setTimeout renderAll
+      setTimeout batchRender
       return
     data: ->
       script: '<!-- Place this tag in your head or just before your close body tag. -->\n<script async defer src="https://buttons.github.io/buttons.js"></script>'
