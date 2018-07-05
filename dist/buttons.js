@@ -284,7 +284,7 @@
     }
 
     /* istanbul ignore if */
-    if (!document.getElementsByTagName("head")[0].attachShadow) {
+    if (!HTMLElement.prototype.attachShadow) {
       hook = "$";
     }
     fetch(apiBaseURL + api, function(error, json) {
@@ -395,7 +395,7 @@
     if (options == null) {
       options = parseOptions(targetNode);
     }
-    if (document.head.attachShadow) {
+    if (HTMLElement.prototype.attachShadow) {
       host = createElement("span");
       if (title = options.title) {
         host.title = title;

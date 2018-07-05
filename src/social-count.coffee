@@ -45,7 +45,7 @@ render = (button) ->
     href = property = "followers"
 
   ### istanbul ignore if ###
-  hook = "$" unless document.getElementsByTagName("head")[0].attachShadow
+  hook = "$" unless HTMLElement::attachShadow
 
   fetch apiBaseURL + api, (error, json) ->
     if !error

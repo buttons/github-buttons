@@ -255,7 +255,7 @@ render$1 = function(button) {
   }
 
   /* istanbul ignore if */
-  if (!document.getElementsByTagName("head")[0].attachShadow) {
+  if (!HTMLElement.prototype.attachShadow) {
     hook = "$";
   }
   fetch(apiBaseURL + api, function(error, json) {
@@ -363,7 +363,7 @@ exports.render = function(targetNode, options) {
   if (options == null) {
     options = parseOptions(targetNode);
   }
-  if (document.head.attachShadow) {
+  if (HTMLElement.prototype.attachShadow) {
     host = createElement("span");
     if (title = options.title) {
       host.title = title;

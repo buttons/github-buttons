@@ -31,7 +31,7 @@ render = (targetNode, options) ->
   return batchRender() unless targetNode?
   options = parseOptions targetNode unless options?
 
-  if document.head.attachShadow
+  if HTMLElement::attachShadow
     host = createElement "span"
     host.title = title if title = options.title
     root = host.attachShadow mode: "closed"
