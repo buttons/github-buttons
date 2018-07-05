@@ -53,10 +53,6 @@ module.exports = function (config) {
         pattern: 'test/fixtures/**/*',
         included: false,
         served: true
-      }, {
-        pattern: 'buttons.js',
-        included: false,
-        served: true
       }
     ],
     browsers: ['ChromeHeadless', 'Firefox', 'Safari']
