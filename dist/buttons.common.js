@@ -365,7 +365,7 @@ exports.render = function(targetNode, options) {
   if (options == null) {
     options = parseOptions(targetNode);
   }
-  if (HTMLElement.prototype.attachShadow) {
+  if (HTMLElement.prototype.attachShadow && !HTMLElement.prototype.attachShadow.prototype) {
     host = createElement("span");
     if (title = options.title) {
       host.title = title;
