@@ -14,11 +14,13 @@ var createTextNode = function(text) {
   return document.createTextNode(text);
 };
 
-var apiBaseURL, baseURL, buttonClass, uuid;
+var apiBaseURL, baseURL, buttonClass, isInFrame, uuid;
 
 buttonClass = "github-button";
 
 uuid = "faa75404-3b97-5585-b449-4bc51338fbd1";
+
+isInFrame = document.title === uuid;
 
 
 /* istanbul ignore next */
@@ -251,7 +253,7 @@ render$1 = function(button) {
   }
 
   /* istanbul ignore if */
-  if (!HTMLElement.prototype.attachShadow) {
+  if (isInFrame) {
     hook = "$";
   }
   fetch(apiBaseURL + api, function(error, json) {

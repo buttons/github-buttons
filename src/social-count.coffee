@@ -1,5 +1,6 @@
 import {
   apiBaseURL
+  isInFrame
 } from "./config"
 import {
   document
@@ -45,7 +46,7 @@ render = (button) ->
     href = property = "followers"
 
   ### istanbul ignore if ###
-  hook = "$" unless HTMLElement::attachShadow
+  hook = "$" if isInFrame
 
   fetch apiBaseURL + api, (error, json) ->
     if !error

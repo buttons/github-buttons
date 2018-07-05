@@ -3,6 +3,7 @@ import {
 } from "./alias"
 import {
   uuid
+  isInFrame
   setBaseURL
 } from "./config"
 import {
@@ -31,7 +32,7 @@ else if typeof exports is "object" and typeof exports.nodeName isnt "string"
 else
   setBaseURL currentScriptURL.replace /[^/]*([?#].*)?$/, "" if currentScriptURL
 
-  if document.title is uuid
+  if isInFrame
     renderContent document.body, parseQueryString document.location.hash.replace /^#/, ""
   else
     defer batchRender

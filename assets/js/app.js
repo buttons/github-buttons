@@ -17,11 +17,13 @@
     return document.createTextNode(text);
   };
 
-  var apiBaseURL, baseURL, buttonClass, setBaseURL, uuid;
+  var apiBaseURL, baseURL, buttonClass, isInFrame, setBaseURL, uuid;
 
   buttonClass = "github-button";
 
   uuid = "faa75404-3b97-5585-b449-4bc51338fbd1";
+
+  isInFrame = document.title === uuid;
 
 
   /* istanbul ignore next */
@@ -303,7 +305,7 @@
     }
 
     /* istanbul ignore if */
-    if (!HTMLElement.prototype.attachShadow) {
+    if (isInFrame) {
       hook = "$";
     }
     fetch(apiBaseURL + api, function(error, json) {
