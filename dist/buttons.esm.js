@@ -46,7 +46,7 @@ var parseOptions = function(anchor) {
   return options;
 };
 
-var stringifyQueryString = function(obj) {
+var stringify = function(obj) {
   var name, params, value;
   params = [];
   for (name in obj) {
@@ -377,7 +377,7 @@ render$4 = function(targetNode, options) {
     render$2(root.appendChild(createElement("span")), options);
     targetNode.parentNode.replaceChild(host, targetNode);
   } else {
-    hash = "#" + stringifyQueryString(options);
+    hash = "#" + stringify(options);
     iframe = createElement("iframe");
     ref = {
       allowtransparency: true,

@@ -43,7 +43,7 @@
 
   currentScriptURL = !{}.hasOwnProperty.call(document, currentScript) && document[currentScript] && delete document[currentScript] && document[currentScript] ? document[currentScript].src : void 0;
 
-  var stringifyQueryString = function(obj) {
+  var stringify = function(obj) {
     var name, params, value;
     params = [];
     for (name in obj) {
@@ -368,7 +368,7 @@
       render$2(root.appendChild(createElement("span")), options);
       targetNode.parentNode.replaceChild(host, targetNode);
     } else {
-      hash = "#" + stringifyQueryString(options);
+      hash = "#" + stringify(options);
       iframe = createElement("iframe");
       ref = {
         allowtransparency: true,
@@ -489,7 +489,7 @@
           this.timeoutId = setTimeout((function(_this) {
             return function() {
               iframe = _this.$el.removeChild(iframe);
-              iframe.src = 'buttons.html#' + stringifyQueryString(_this.config);
+              iframe.src = 'buttons.html#' + stringify(_this.config);
               _this.$el.appendChild(iframe);
             };
           })(this), this.rateLimitWait);

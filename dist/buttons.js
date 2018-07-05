@@ -43,7 +43,7 @@
 
   currentScriptURL = !{}.hasOwnProperty.call(document, currentScript) && document[currentScript] && delete document[currentScript] && document[currentScript] ? document[currentScript].src : void 0;
 
-  var stringifyQueryString = function(obj) {
+  var stringify = function(obj) {
     var name, params, value;
     params = [];
     for (name in obj) {
@@ -55,7 +55,7 @@
     return params.join("&");
   };
 
-  var parseQueryString = function(str) {
+  var parse = function(str) {
     var i, len, pair, params, ref, ref1;
     params = {};
     ref1 = str.split("&");
@@ -65,9 +65,7 @@
         continue;
       }
       ref = pair.split("=");
-      if (ref[0] !== "") {
-        params[decodeURIComponent(ref[0])] = decodeURIComponent(ref.slice(1).join("="));
-      }
+      params[decodeURIComponent(ref[0])] = (ref[1] != null ? decodeURIComponent(ref.slice(1).join("=")) : void 0);
     }
     return params;
   };
@@ -410,7 +408,7 @@
       render$2(root.appendChild(createElement("span")), options);
       targetNode.parentNode.replaceChild(host, targetNode);
     } else {
-      hash = "#" + stringifyQueryString(options);
+      hash = "#" + stringify(options);
       iframe = createElement("iframe");
       ref = {
         allowtransparency: true,
@@ -464,7 +462,7 @@
       setBaseURL(currentScriptURL.replace(/[^\/]*([?#].*)?$/, ""));
     }
     if (document.title === uuid) {
-      render$2(document.body, parseQueryString(document.location.hash.replace(/^#/, "")));
+      render$2(document.body, parse(document.location.hash.replace(/^#/, "")));
     } else {
       defer(render$3);
     }

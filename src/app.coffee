@@ -9,7 +9,7 @@ import {
   currentScriptURL
 } from "./current-script"
 import {
-  stringifyQueryString
+  stringify as stringifyQueryString
 } from "./querystring"
 import {
   onEvent

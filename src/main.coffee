@@ -9,7 +9,7 @@ import {
   currentScriptURL
 } from "./current-script"
 import {
-  parseQueryString
+  parse as parseQueryString
 } from "./querystring"
 import {
   defer

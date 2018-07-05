@@ -10,7 +10,7 @@ import {
   parseOptions
 } from "./options"
 import {
-  stringifyQueryString
+  stringify as stringifyQueryString
 } from "./querystring"
 import {
   onceEvent
