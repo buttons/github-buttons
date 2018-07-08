@@ -2,6 +2,9 @@ import {
   document
 } from "./alias"
 import {
+  render as renderStyle
+} from "./style"
+import {
   render as renderButton
 } from "./button"
 import {
@@ -11,6 +14,7 @@ import {
 render = (root, options) ->
   return unless options
   root.className = "large" if /^large$/i.test options["data-size"]
+  renderStyle root
   button = renderButton root, options
   renderSocialCount button if /^(true|1)$/i.test options["data-show-count"]
   return

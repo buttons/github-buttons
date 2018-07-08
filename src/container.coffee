@@ -35,10 +35,6 @@ render = (targetNode, options) ->
     host = createElement "span"
     host.title = title if title = options.title
     root = host.attachShadow mode: "closed"
-    link = createElement "link"
-    link.rel = "stylesheet"
-    link.href = "#{baseURL}assets/css/buttons.css"
-    root.appendChild link
     renderContent root.appendChild(createElement "span"), options
     targetNode.parentNode.replaceChild host, targetNode
   else
@@ -78,7 +74,7 @@ render = (targetNode, options) ->
     contentDocument = iframe.contentWindow.document
     contentDocument.open().write \
       """
-      <!DOCTYPE html><html><head><meta charset="utf-8"><title>#{uuid}</title><link rel="stylesheet" href="#{baseURL}assets/css/buttons.css"><script>document.location.hash = "#{hash}";</script></head><body><script src="#{baseURL}buttons.js"></script></body></html>
+      <!DOCTYPE html><html><head><meta charset="utf-8"><title>#{uuid}</title><script>document.location.hash = "#{hash}";</script></head><body><script src="#{baseURL}buttons.js"></script></body></html>
       """
     contentDocument.close()
   return

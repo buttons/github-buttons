@@ -20,6 +20,12 @@ module.exports = function (config) {
       module: {
         rules: [
           {
+            test: /\.css$/,
+            use: {
+              loader: 'raw-loader'
+            }
+          },
+          {
             test: /\.coffee$/,
             use: {
               loader: 'coffee-loader',
@@ -27,7 +33,8 @@ module.exports = function (config) {
                 sourceMap: true
               }
             }
-          }, {
+          },
+          {
             test: /src\/.+\.coffee$/,
             exclude: /node_modules/,
             loader: 'istanbul-instrumenter-loader',
@@ -49,7 +56,8 @@ module.exports = function (config) {
       noInfo: true
     },
     files: [
-      'test/unit/**/*.coffee', {
+      'test/unit/**/*.coffee',
+      {
         pattern: 'test/fixtures/**/*',
         included: false,
         served: true
