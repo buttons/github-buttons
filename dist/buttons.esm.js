@@ -93,7 +93,7 @@ var render;
 
 render = function(root) {
   var style;
-  style = document.createElement("style");
+  style = createElement("style");
   style.type = "text/css";
   root.appendChild(style);
 
@@ -101,7 +101,7 @@ render = function(root) {
   if (style.styleSheet) {
     style.styleSheet.cssText = css;
   } else {
-    style.appendChild(document.createTextNode(css));
+    style.appendChild(createTextNode(css));
   }
 };
 

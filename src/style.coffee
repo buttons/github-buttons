@@ -1,10 +1,11 @@
 import css from "../assets/css/buttons.css"
 import {
-  document
+  createElement
+  createTextNode
 } from "./alias"
 
 render = (root) ->
-  style = document.createElement "style"
+  style = createElement "style"
   style.type = "text/css"
   root.appendChild style
 
@@ -12,7 +13,7 @@ render = (root) ->
   if style.styleSheet
     style.styleSheet.cssText = css
   else
-    style.appendChild document.createTextNode css
+    style.appendChild createTextNode css
 
   return
 
