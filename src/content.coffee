@@ -11,12 +11,20 @@ import {
   render as renderSocialCount
 } from "./social-count"
 
-render = (root, options) ->
+render = (root, options, callback) ->
   return unless options
-  root.className = "large" if /^large$/i.test options["data-size"]
+
   renderStyle root
-  button = renderButton root, options
-  renderSocialCount button if /^(true|1)$/i.test options["data-show-count"]
+
+  container = root.appendChild document.createElement "div"
+  container.className = "widget" + (if /^large$/i.test options["data-size"] then " large" else "")
+  button = renderButton container, options
+  if /^(true|1)$/i.test options["data-show-count"]
+    renderSocialCount.call @, button, ->
+      callback container if callback
+      return
+  else
+    callback container if callback
   return
 
 export {

@@ -23,15 +23,6 @@ describe "JSON-P", ->
       expect window._
         .to.be.a "function"
 
-    it "should set up the hook function", ->
-      jsonp "hello", ->
-        return
-      , "$"
-
-      expect window.$
-        .to.be.a "function"
-
-
     it "should setup the script and add callback query to request url", ->
       url = "/random/url/" + new Date().getTime()
 

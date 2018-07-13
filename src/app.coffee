@@ -18,9 +18,8 @@ import {
   defer
 } from "./defer"
 import {
-  setFrameSize
-  getFrameContentSize
-} from "./frame"
+  render as renderContainer
+} from "./container"
 import {
   render as batchRender
 } from "./batch"
@@ -40,32 +39,21 @@ defer ->
       rateLimitWait: ->
         if @config['data-show-count'] then 300 else 0
     mounted: ->
-      iframe = @$el.firstChild
-      onload = ->
-        setFrameSize iframe, getFrameContentSize iframe
-        return
-      onEvent iframe, 'load', ->
-        contentWindow = iframe.contentWindow
-        if contentWindow.$
-          contentWindow.$ = onload
-        else
-          onload()
-        return
       @update()
+      return
+    beforeUpdate: ->
+      clearTimeout @timeoutId
+      if @$el.firstChild
+        @$el.removeChild @$el.firstChild
       return
     updated: ->
       @update()
       return
     methods:
       update: ->
-        iframe = @$el.firstChild
-        setFrameSize iframe, [1, 0]
-
-        clearTimeout @timeoutId
         @timeoutId = setTimeout ((_this) -> ->
-          iframe = _this.$el.removeChild iframe
-          iframe.src = 'buttons.html#' + stringifyQueryString _this.config
-          _this.$el.appendChild iframe
+          root = _this.$el.appendChild createElement "span"
+          renderContainer root, _this.config
           return
         )(@), @rateLimitWait
         return

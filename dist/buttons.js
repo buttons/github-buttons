@@ -17,13 +17,11 @@
     return document.createTextNode(text);
   };
 
-  var apiBaseURL, baseURL, buttonClass, isInFrame, setBaseURL, uuid;
+  var apiBaseURL, baseURL, buttonClass, setBaseURL, uuid;
 
   buttonClass = "github-button";
 
   uuid = "faa75404-3b97-5585-b449-4bc51338fbd1";
-
-  isInFrame = document.title === uuid;
 
 
   /* istanbul ignore next */
@@ -149,7 +147,7 @@
     return options;
   };
 
-  var css = "html{font-family:-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}body{margin:0;font-size:0;white-space:nowrap}a{color:#24292e;text-decoration:none;outline:0}.btn,.social-count{display:inline-block;font-weight:600;vertical-align:middle;cursor:pointer;border:1px solid #d1d2d3;border-radius:0.25em}.btn:focus,.social-count:focus{border-color:#c8e1ff}.btn{background-color:#eff3f6;background-image:-webkit-linear-gradient(top, #fafbfc, #e4ebf0);background-image:-moz-linear-gradient(top, #fafbfc, #e4ebf0);background-image:linear-gradient(to bottom, #fafbfc, #e4ebf0);background-repeat:repeat-x;background-size:110% 110%;-ms-filter:\"progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFAFBFC', endColorstr='#FFE4EBF0')\";*filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFAFBFC', endColorstr='#FFE4EBF0')}.btn:active{background-color:#e9ecef;background-image:none;border-color:#afb1b2;box-shadow:inset 0 0.15em 0.3em rgba(27,31,35,0.15)}.btn:hover{background-color:#e6ebf1;background-image:-webkit-linear-gradient(top, #f0f3f6, #dce3ec);background-image:-moz-linear-gradient(top, #f0f3f6, #dce3ec);background-image:linear-gradient(to bottom, #f0f3f6, #dce3ec);border-color:#afb1b2;-ms-filter:\"progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFF0F3F6', endColorstr='#FFDCE3EC')\";*filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFF0F3F6', endColorstr='#FFDCE3EC')}.social-count{position:relative;background-color:#fff}.social-count:hover{color:#0366d6}.octicon{position:relative;display:inline-block;fill:currentColor}.btn,.social-count{height:18px;padding:0 5px;line-height:18px}.btn span,.social-count span{vertical-align:1px}.btn{font-size:11px}.social-count{margin-left:5px;font-size:10px}.octicon{height:14px;top:2px}.large .btn,.large .social-count{height:26px;line-height:26px}.large .btn span,.large .social-count span{vertical-align:0}.large .btn{padding:0 10px;font-size:12px}.large .social-count{padding:0 7px;margin-left:7px;font-size:11px}.large .octicon{height:16px;top:4px}.social-count b,.social-count i{position:absolute;top:50%;right:100%;display:block;width:0;height:0;margin-top:-4px;_font-size:0;_line-height:0;border:4px solid transparent}.social-count b{margin-right:0;border-right-color:#d1d2d3}.social-count:focus b{border-right-color:#c8e1ff}.social-count i{margin-right:-1.5px;border-right-color:#fff}.social-count b,.social-count i{_border-top-color:red !important;_border-bottom-color:red !important;_border-left-color:red !important;_filter:chroma(color=red)}.large .social-count b,.large .social-count i{margin-top:-6px;border-width:6px}:host>*{display:inline-block;overflow:hidden;font-family:-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif;font-size:0;white-space:nowrap;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}:host .btn,:host .social-count{vertical-align:bottom}\n";
+  var css = "body{margin:0}a{color:#24292e;text-decoration:none;outline:0}.widget{display:inline-block;overflow:hidden;font-family:-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif;font-size:0;white-space:nowrap;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.btn,.social-count{display:inline-block;font-weight:600;vertical-align:bottom;cursor:pointer;border:1px solid #d1d2d3;border-radius:0.25em}.btn:focus,.social-count:focus{border-color:#c8e1ff}.btn{background-color:#eff3f6;background-image:-webkit-linear-gradient(top, #fafbfc, #e4ebf0);background-image:-moz-linear-gradient(top, #fafbfc, #e4ebf0);background-image:linear-gradient(to bottom, #fafbfc, #e4ebf0);background-repeat:repeat-x;background-size:110% 110%;-ms-filter:\"progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFAFBFC', endColorstr='#FFE4EBF0')\";*filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFAFBFC', endColorstr='#FFE4EBF0')}.btn:active{background-color:#e9ecef;background-image:none;border-color:#afb1b2;box-shadow:inset 0 0.15em 0.3em rgba(27,31,35,0.15)}.btn:hover{background-color:#e6ebf1;background-image:-webkit-linear-gradient(top, #f0f3f6, #dce3ec);background-image:-moz-linear-gradient(top, #f0f3f6, #dce3ec);background-image:linear-gradient(to bottom, #f0f3f6, #dce3ec);border-color:#afb1b2;-ms-filter:\"progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFF0F3F6', endColorstr='#FFDCE3EC')\";*filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFF0F3F6', endColorstr='#FFDCE3EC')}.social-count{position:relative;background-color:#fff}.social-count:hover{color:#0366d6}.octicon{position:relative;display:inline-block;fill:currentColor}.btn,.social-count{height:18px;padding:0 5px;line-height:18px}.btn span,.social-count span{vertical-align:1px}.btn{font-size:11px}.social-count{margin-left:5px;font-size:10px}.octicon{height:14px;top:2px}.large .btn,.large .social-count{height:26px;line-height:26px}.large .btn span,.large .social-count span{vertical-align:0}.large .btn{padding:0 10px;font-size:12px}.large .social-count{padding:0 7px;margin-left:7px;font-size:11px}.large .octicon{height:16px;top:4px}.social-count b,.social-count i{position:absolute;top:50%;right:100%;display:block;width:0;height:0;margin-top:-4px;_font-size:0;_line-height:0;border:4px solid transparent}.social-count b{margin-right:0;border-right-color:#d1d2d3}.social-count:focus b{border-right-color:#c8e1ff}.social-count i{margin-right:-1.5px;border-right-color:#fff}.social-count b,.social-count i{_border-top-color:red !important;_border-bottom-color:red !important;_border-left-color:red !important;_filter:chroma(color=red)}.large .social-count b,.large .social-count i{margin-top:-6px;border-width:6px}\n";
 
   var render;
 
@@ -207,23 +205,16 @@
 
   var fetch;
 
-  fetch = function(url, func, hook) {
-    var callback, head, onceToken, onloadend, script, xhr;
-    if (hook) {
-      window[hook] = function() {
-        window[hook] = null;
-      };
-    }
+  fetch = function(url, func) {
+    var XMLHttpRequest, callback, global, onceToken, onloadend, script, xhr;
+    global = this || window;
     onceToken = 0;
     callback = function() {
       if (!onceToken && (onceToken = 1)) {
         func.apply(null, arguments);
-        if (hook) {
-          window[hook]();
-        }
       }
     };
-    if (window.XMLHttpRequest && "withCredentials" in XMLHttpRequest.prototype) {
+    if ((XMLHttpRequest = window.XMLHttpRequest) && "withCredentials" in XMLHttpRequest.prototype) {
       xhr = new XMLHttpRequest();
       onEvent(xhr, "abort", callback);
       onEvent(xhr, "error", callback);
@@ -233,16 +224,16 @@
       xhr.open("GET", url);
       xhr.send();
     } else {
-      window._ = function(json) {
-        window._ = null;
+      global._ = function(json) {
+        global._ = null;
         callback(json.meta.status !== 200, json.data);
       };
       script = createElement("script");
       script.async = true;
       script.src = url + (/\?/.test(url) ? "&" : "?") + "callback=_";
       onloadend = function() {
-        if (window._) {
-          _({
+        if (global._) {
+          global._({
             meta: {}
           });
         }
@@ -257,29 +248,25 @@
           }
         });
       }
-      head = document.getElementsByTagName("head")[0];
-
-      /* istanbul ignore if: Presto based Opera */
-      if ("[object Opera]" === {}.toString.call(window.opera)) {
-        defer(function() {
-          head.appendChild(script);
-        });
-      } else {
-        head.appendChild(script);
-      }
+      global.document.getElementsByTagName("head")[0].appendChild(script);
     }
   };
 
   var render$2;
 
-  render$2 = function(button) {
-    var api, hook, href, match, property;
+  render$2 = function(button, func) {
+    var api, callback, href, match, property;
+    callback = function() {
+      if (func) {
+        func();
+      }
+    };
     if (button.hostname !== "github.com") {
-      return;
+      return callback();
     }
     match = button.pathname.replace(/^(?!\/)/, "/").match(/^\/([^\/?#]+)(?:\/([^\/?#]+)(?:\/(?:(subscription)|(fork)|(issues)|([^\/?#]+)))?)?(?:[\/?#]|$)/);
     if (!(match && !match[6])) {
-      return;
+      return callback();
     }
     if (match[2]) {
       api = "repos/" + match[1] + "/" + match[2];
@@ -300,12 +287,7 @@
       api = "users/" + match[1];
       href = property = "followers";
     }
-
-    /* istanbul ignore if */
-    if (isInFrame) {
-      hook = "$";
-    }
-    fetch(apiBaseURL + api, function(error, json) {
+    fetch.call(this, apiBaseURL + api, function(error, json) {
       var a, data, span;
       if (!error) {
         data = json[property];
@@ -320,60 +302,32 @@
         span.appendChild(createTextNode(("" + data).replace(/\B(?=(\d{3})+(?!\d))/g, ",")));
         button.parentNode.insertBefore(a, button.nextSibling);
       }
-    }, hook);
+      callback();
+    });
   };
 
   var render$3;
 
-  render$3 = function(root, options) {
-    var button;
+  render$3 = function(root, options, callback) {
+    var button, container;
     if (!options) {
       return;
     }
-    if (/^large$/i.test(options["data-size"])) {
-      root.className = "large";
-    }
     render(root);
-    button = render$1(root, options);
+    container = root.appendChild(document.createElement("div"));
+    container.className = "widget" + (/^large$/i.test(options["data-size"]) ? " large" : "");
+    button = render$1(container, options);
     if (/^(true|1)$/i.test(options["data-show-count"])) {
-      render$2(button);
+      render$2.call(this, button, function() {
+        if (callback) {
+          callback(container);
+        }
+      });
+    } else {
+      if (callback) {
+        callback(container);
+      }
     }
-  };
-
-  var ceilPixel, devicePixelRatio;
-
-
-  /* istanbul ignore next */
-
-  devicePixelRatio = window.devicePixelRatio || 1;
-
-  ceilPixel = function(px) {
-    return (devicePixelRatio > 1 ? Math.ceil(Math.round(px * devicePixelRatio) / devicePixelRatio * 2) / 2 : Math.ceil(px)) || 0;
-  };
-
-  var getFrameContentSize, setFrameSize;
-
-  getFrameContentSize = function(iframe) {
-    var body, boundingClientRect, contentDocument, display, height, html, width;
-    contentDocument = iframe.contentWindow.document;
-    html = contentDocument.documentElement;
-    body = contentDocument.body;
-    width = html.scrollWidth;
-    height = html.scrollHeight;
-    if (body.getBoundingClientRect) {
-      display = body.style.display;
-      body.style.display = "inline-block";
-      boundingClientRect = body.getBoundingClientRect();
-      width = Math.max(width, ceilPixel(boundingClientRect.width || boundingClientRect.right - boundingClientRect.left));
-      height = Math.max(height, ceilPixel(boundingClientRect.height || boundingClientRect.bottom - boundingClientRect.top));
-      body.style.display = display;
-    }
-    return [width, height];
-  };
-
-  setFrameSize = function(iframe, size) {
-    iframe.style.width = size[0] + "px";
-    iframe.style.height = size[1] + "px";
   };
 
   var render$4;
@@ -401,13 +355,43 @@
     }
   };
 
+  var ceilPixel, devicePixelRatio;
+
+
+  /* istanbul ignore next */
+
+  devicePixelRatio = window.devicePixelRatio || 1;
+
+  ceilPixel = function(px) {
+    return (devicePixelRatio > 1 ? Math.ceil(Math.round(px * devicePixelRatio) / devicePixelRatio * 2) / 2 : Math.ceil(px)) || 0;
+  };
+
+  var get, set;
+
+  get = function(el) {
+    var boundingClientRect, height, width;
+    width = el.scrollWidth;
+    height = el.scrollHeight;
+    if (el.getBoundingClientRect) {
+      boundingClientRect = el.getBoundingClientRect();
+      width = Math.max(width, ceilPixel(boundingClientRect.width || boundingClientRect.right - boundingClientRect.left));
+      height = Math.max(height, ceilPixel(boundingClientRect.height || boundingClientRect.bottom - boundingClientRect.top));
+    }
+    return [width, height];
+  };
+
+  set = function(el, size) {
+    el.style.width = size[0] + "px";
+    el.style.height = size[1] + "px";
+  };
+
   var render$5;
 
 
   /* istanbul ignore next */
 
   render$5 = function(targetNode, options) {
-    var contentDocument, hash, host, iframe, name, onload, ref, root, title, value;
+    var host, iframe, name, ref, root, title, value;
     if (targetNode == null) {
       return render$4();
     }
@@ -422,10 +406,9 @@
       root = host.attachShadow({
         mode: "closed"
       });
-      render$3(root.appendChild(createElement("span")), options);
+      render$3(root, options);
       targetNode.parentNode.replaceChild(host, targetNode);
     } else {
-      hash = "#" + stringify(options);
       iframe = createElement("iframe");
       ref = {
         allowtransparency: true,
@@ -436,35 +419,27 @@
         value = ref[name];
         iframe.setAttribute(name, value);
       }
-      setFrameSize(iframe, [1, 0]);
+      set(iframe, [1, 0]);
       iframe.style.border = "none";
       iframe.src = "javascript:0";
       if (title = options.title) {
         iframe.title = title;
       }
-      document.body.appendChild(iframe);
-      onload = function() {
-        var size;
-        size = getFrameContentSize(iframe);
-        iframe.parentNode.removeChild(iframe);
-        onceEvent(iframe, "load", function() {
-          setFrameSize(iframe, size);
-        });
-        iframe.src = baseURL + "buttons.html" + hash;
-        targetNode.parentNode.replaceChild(iframe, targetNode);
-      };
       onceEvent(iframe, "load", function() {
         var contentWindow;
         contentWindow = iframe.contentWindow;
-        if (contentWindow.$) {
-          contentWindow.$ = onload;
-        } else {
-          onload();
-        }
+        render$3.call(contentWindow, contentWindow.document.body, options, function(container) {
+          var size;
+          size = get(container);
+          iframe.parentNode.removeChild(iframe);
+          onceEvent(iframe, "load", function() {
+            set(iframe, size);
+          });
+          iframe.src = baseURL + "buttons.html#" + (stringify(options));
+          return targetNode.parentNode.replaceChild(iframe, targetNode);
+        });
       });
-      contentDocument = iframe.contentWindow.document;
-      contentDocument.open().write("<!DOCTYPE html><html><head><meta charset=\"utf-8\"><title>" + uuid + "</title><script>document.location.hash = \"" + hash + "\";</script></head><body><script src=\"" + baseURL + "buttons.js\"></script></body></html>");
-      contentDocument.close();
+      document.body.appendChild(iframe);
     }
   };
 
@@ -478,7 +453,7 @@
     if (currentScriptURL) {
       setBaseURL(currentScriptURL.replace(/[^\/]*([?#].*)?$/, ""));
     }
-    if (isInFrame) {
+    if (document.title === uuid) {
       render$3(document.body, parse(document.location.hash.replace(/^#/, "")));
     } else {
       defer(render$4);

@@ -40,18 +40,8 @@ $social-count-background-color: white;
 }
 
 
-html {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
 body {
   margin: 0;
-  font-size: 0;
-  white-space: nowrap;
 }
 
 a {
@@ -60,11 +50,23 @@ a {
   outline: 0;
 }
 
+.widget {
+  display: inline-block;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 0;
+  white-space: nowrap;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
 .btn,
 .social-count {
   display: inline-block;
   font-weight: 600;
-  vertical-align: middle;
+  vertical-align: bottom;
   cursor: pointer;
   border: 1px solid $btn-border-color;
   border-radius: 0.25em;
@@ -208,24 +210,5 @@ a {
       margin-top: -6px;
       border-width: 6px;
     }
-  }
-}
-
-:host {
-  & > * {
-    display: inline-block;
-    overflow: hidden;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    font-size: 0;
-    white-space: nowrap;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-  }
-
-  .btn,
-  .social-count {
-    vertical-align: bottom;
   }
 }

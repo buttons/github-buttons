@@ -19,12 +19,12 @@ import {
   render as renderContent
 } from "./content"
 import {
-  getFrameContentSize
-  setFrameSize
-} from "./frame"
-import {
   render as batchRender
 } from "./batch"
+import {
+  get as getSize
+  set as setSize
+} from "./size"
 
 ### istanbul ignore next ###
 render = (targetNode, options) ->
@@ -35,48 +35,31 @@ render = (targetNode, options) ->
     host = createElement "span"
     host.title = title if title = options.title
     root = host.attachShadow mode: "closed"
-    renderContent root.appendChild(createElement "span"), options
+    renderContent root, options
     targetNode.parentNode.replaceChild host, targetNode
   else
-    hash = "#" + stringifyQueryString options
-
     iframe = createElement "iframe"
     iframe.setAttribute name, value for name, value of {
       allowtransparency: true
       scrolling: "no"
       frameBorder: 0
     }
-    setFrameSize iframe, [1, 0]
+    setSize iframe, [1, 0]
     iframe.style.border = "none"
     iframe.src = "javascript:0"
     iframe.title = title if title = options.title
-
-    document.body.appendChild iframe
-
-    onload = ->
-      size = getFrameContentSize iframe
-      iframe.parentNode.removeChild iframe
-      onceEvent iframe, "load", ->
-        setFrameSize iframe, size
-        return
-      iframe.src = "#{baseURL}buttons.html#{hash}"
-      targetNode.parentNode.replaceChild iframe, targetNode
-      return
-
     onceEvent iframe, "load", ->
       contentWindow = iframe.contentWindow
-      if contentWindow.$
-        contentWindow.$ = onload
-      else
-        onload()
+      renderContent.call contentWindow, contentWindow.document.body, options, (container) ->
+        size = getSize container
+        iframe.parentNode.removeChild iframe
+        onceEvent iframe, "load", ->
+          setSize iframe, size
+          return
+        iframe.src = "#{baseURL}buttons.html##{stringifyQueryString options}"
+        targetNode.parentNode.replaceChild iframe, targetNode
       return
-
-    contentDocument = iframe.contentWindow.document
-    contentDocument.open().write \
-      """
-      <!DOCTYPE html><html><head><meta charset="utf-8"><title>#{uuid}</title><script>document.location.hash = "#{hash}";</script></head><body><script src="#{baseURL}buttons.js"></script></body></html>
-      """
-    contentDocument.close()
+    document.body.appendChild iframe
   return
 
 export {

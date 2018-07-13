@@ -9,20 +9,16 @@ import {
   defer
 } from "./defer"
 
-fetch = (url, func, hook) ->
-  if hook
-    window[hook] = ->
-      window[hook] = null
-      return
+fetch = (url, func) ->
+  global = @ or window
 
   onceToken = 0
   callback = ->
     if !onceToken and onceToken = 1
       func.apply null, arguments
-      window[hook]() if hook
     return
 
-  if window.XMLHttpRequest and "withCredentials" of XMLHttpRequest.prototype
+  if (XMLHttpRequest = window.XMLHttpRequest) and "withCredentials" of XMLHttpRequest::
     xhr = new XMLHttpRequest()
 
     onEvent xhr, "abort", callback
@@ -34,8 +30,8 @@ fetch = (url, func, hook) ->
     xhr.open "GET", url
     xhr.send()
   else
-    window._ = (json) ->
-      window._ = null
+    global._ = (json) ->
+      global._ = null
       callback json.meta.status isnt 200, json.data
       return
 
@@ -44,7 +40,7 @@ fetch = (url, func, hook) ->
     script.src = url + (if /\?/.test url then "&" else "?") + "callback=_"
 
     onloadend = ->
-      _ meta: {} if window._
+      global._ meta: {} if global._
       return
 
     onEvent script, "error", onloadend
@@ -55,14 +51,7 @@ fetch = (url, func, hook) ->
         onloadend() if script.readyState is "loaded"
         return
 
-    head = document.getElementsByTagName("head")[0]
-    ### istanbul ignore if: Presto based Opera ###
-    if "[object Opera]" is {}.toString.call window.opera
-      defer ->
-        head.appendChild script
-        return
-    else
-      head.appendChild script
+    global.document.getElementsByTagName("head")[0].appendChild script
   return
 
 export {
