@@ -363,7 +363,7 @@ exports.render = function(targetNode, options) {
           set(iframe, size);
         });
         iframe.src = baseURL + "buttons.html#" + (stringify(options));
-        return targetNode.parentNode.replaceChild(iframe, targetNode);
+        targetNode.parentNode.replaceChild(iframe, targetNode);
       });
     });
     document.body.appendChild(iframe);

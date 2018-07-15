@@ -57,6 +57,7 @@ render = (targetNode, options) ->
           return
         iframe.src = "#{baseURL}buttons.html##{stringifyQueryString options}"
         targetNode.parentNode.replaceChild iframe, targetNode
+        return
       return
     document.body.appendChild iframe
   return
