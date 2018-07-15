@@ -34,8 +34,9 @@ render = (targetNode, options) ->
     host = createElement "span"
     host.title = title if title = options.title
     root = host.attachShadow mode: "closed"
-    renderContent root, options
-    targetNode.parentNode.replaceChild host, targetNode
+    renderContent root, options, ->
+      targetNode.parentNode.replaceChild host, targetNode
+      return
   else
     iframe = createElement "iframe"
     iframe.setAttribute name, value for name, value of {

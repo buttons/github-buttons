@@ -332,8 +332,9 @@ render$2 = function(targetNode, options) {
     root = host.attachShadow({
       mode: "closed"
     });
-    render(root, options);
-    targetNode.parentNode.replaceChild(host, targetNode);
+    render(root, options, function() {
+      targetNode.parentNode.replaceChild(host, targetNode);
+    });
   } else {
     iframe = createElement("iframe");
     ref = {
