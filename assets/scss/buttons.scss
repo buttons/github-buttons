@@ -110,6 +110,7 @@ a {
 .octicon {
   position: relative;
   display: inline-block;
+  vertical-align: top;
   fill: currentColor;
 }
 
@@ -118,10 +119,6 @@ a {
   height: 18px;
   padding: 0 5px;
   line-height: 18px;
-
-  span {
-    vertical-align: 1px;
-  }
 }
 .btn {
   font-size: 11px;
@@ -140,10 +137,6 @@ a {
   .social-count {
     height: 26px;
     line-height: 26px;
-
-    span {
-      vertical-align: 0;
-    }
   }
 
   .btn {
@@ -158,7 +151,7 @@ a {
   }
 
   .octicon {
-    height: 16px;
+    height: 18px;
     top: 4px;
   }
 }
