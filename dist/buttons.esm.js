@@ -317,7 +317,7 @@ var render$2;
 /* istanbul ignore next */
 
 render$2 = function(targetNode, options) {
-  var HTMLElement, host, iframe, name, ref, root, title, value;
+  var HTMLElement, host, iframe, name, ref, title, value;
   if (targetNode == null) {
     return render$1();
   }
@@ -329,10 +329,9 @@ render$2 = function(targetNode, options) {
     if (title = options.title) {
       host.title = title;
     }
-    root = host.attachShadow({
+    render(host.attachShadow({
       mode: "closed"
-    });
-    render(root, options, function() {
+    }), options, function() {
       targetNode.parentNode.replaceChild(host, targetNode);
     });
   } else {
@@ -349,9 +348,6 @@ render$2 = function(targetNode, options) {
     set(iframe, [1, 0]);
     iframe.style.border = "none";
     iframe.src = "javascript:0";
-    if (title = options.title) {
-      iframe.title = title;
-    }
     onceEvent(iframe, "load", function() {
       var contentWindow;
       contentWindow = iframe.contentWindow;
@@ -363,6 +359,9 @@ render$2 = function(targetNode, options) {
           set(iframe, size);
         });
         iframe.src = baseURL + "buttons.html#" + (stringify(options));
+        if (title = options.title) {
+          iframe.title = title;
+        }
         targetNode.parentNode.replaceChild(iframe, targetNode);
       });
     });

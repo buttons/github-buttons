@@ -33,8 +33,7 @@ render = (targetNode, options) ->
   if (HTMLElement = window.HTMLElement) and HTMLElement::attachShadow and !HTMLElement::attachShadow::
     host = createElement "span"
     host.title = title if title = options.title
-    root = host.attachShadow mode: "closed"
-    renderContent root, options, ->
+    renderContent (host.attachShadow mode: "closed"), options, ->
       targetNode.parentNode.replaceChild host, targetNode
       return
   else
@@ -47,7 +46,6 @@ render = (targetNode, options) ->
     setSize iframe, [1, 0]
     iframe.style.border = "none"
     iframe.src = "javascript:0"
-    iframe.title = title if title = options.title
     onceEvent iframe, "load", ->
       contentWindow = iframe.contentWindow
       renderContent.call contentWindow, contentWindow.document.body, options, (widget) ->
@@ -57,6 +55,7 @@ render = (targetNode, options) ->
           setSize iframe, size
           return
         iframe.src = "#{baseURL}buttons.html##{stringifyQueryString options}"
+        iframe.title = title if title = options.title
         targetNode.parentNode.replaceChild iframe, targetNode
         return
       return
