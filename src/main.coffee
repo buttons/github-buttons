@@ -2,7 +2,7 @@ import {
   document
 } from "./alias"
 import {
-  uuid
+  baseURL
   setBaseURL
 } from "./config"
 import {
@@ -31,7 +31,7 @@ else if typeof exports is "object" and typeof exports.nodeName isnt "string"
 else
   setBaseURL currentScriptURL.replace /[^/]*([?#].*)?$/, "" if currentScriptURL
 
-  if document.title is uuid
+  if baseURL + "buttons.html" is document.location.href.replace /[?#].*$/, ""
     renderContent document.body, parseQueryString document.location.hash.replace /^#/, ""
   else
     defer batchRender

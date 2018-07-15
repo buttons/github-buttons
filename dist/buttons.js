@@ -17,11 +17,9 @@
     return document.createTextNode(text);
   };
 
-  var apiBaseURL, baseURL, buttonClass, setBaseURL, uuid;
+  var apiBaseURL, baseURL, buttonClass, setBaseURL;
 
   buttonClass = "github-button";
-
-  uuid = "faa75404-3b97-5585-b449-4bc51338fbd1";
 
 
   /* istanbul ignore next */
@@ -453,7 +451,7 @@
     if (currentScriptURL) {
       setBaseURL(currentScriptURL.replace(/[^\/]*([?#].*)?$/, ""));
     }
-    if (document.title === uuid) {
+    if (baseURL + "buttons.html" === document.location.href.replace(/[?#].*$/, "")) {
       render$3(document.body, parse(document.location.hash.replace(/^#/, "")));
     } else {
       defer(render$4);

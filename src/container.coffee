@@ -4,7 +4,6 @@ import {
 } from "./alias"
 import {
   baseURL
-  uuid
 } from "./config"
 import {
   parseOptions
