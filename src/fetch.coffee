@@ -9,13 +9,16 @@ import {
   defer
 } from "./defer"
 
+queues = {}
+
 fetch = (url, func) ->
-  global = @ or window
+  return if 1 < (queue = (queues[url] ||= [])).push func
 
   onceToken = 0
   callback = ->
     if !onceToken and onceToken = 1
-      func.apply null, arguments
+      delete queues[url]
+      func.apply null, arguments while func = queue.shift()
     return
 
   if (XMLHttpRequest = window.XMLHttpRequest) and "withCredentials" of XMLHttpRequest::
@@ -30,8 +33,10 @@ fetch = (url, func) ->
     xhr.open "GET", url
     xhr.send()
   else
-    global._ = (json) ->
-      global._ = null
+    contentWindow = @ or window
+
+    contentWindow._ = (json) ->
+      contentWindow._ = null
       callback json.meta.status isnt 200, json.data
       return
 
@@ -40,7 +45,7 @@ fetch = (url, func) ->
     script.src = url + (if /\?/.test url then "&" else "?") + "callback=_"
 
     onloadend = ->
-      global._ meta: {} if global._
+      contentWindow._ meta: {} if contentWindow._
       return
 
     onEvent script, "error", onloadend
@@ -51,7 +56,7 @@ fetch = (url, func) ->
         onloadend() if script.readyState is "loaded"
         return
 
-    global.document.getElementsByTagName("head")[0].appendChild script
+    contentWindow.document.getElementsByTagName("head")[0].appendChild script
   return
 
 export {

@@ -186,15 +186,22 @@
     return root.appendChild(a);
   };
 
-  var fetch;
+  var fetch, queues;
+
+  queues = {};
 
   fetch = function(url, func) {
-    var XMLHttpRequest, callback, global, onceToken, onloadend, script, xhr;
-    global = this || window;
+    var XMLHttpRequest, callback, contentWindow, onceToken, onloadend, queue, script, xhr;
+    if (1 < (queue = (queues[url] || (queues[url] = []))).push(func)) {
+      return;
+    }
     onceToken = 0;
     callback = function() {
       if (!onceToken && (onceToken = 1)) {
-        func.apply(null, arguments);
+        delete queues[url];
+        while (func = queue.shift()) {
+          func.apply(null, arguments);
+        }
       }
     };
     if ((XMLHttpRequest = window.XMLHttpRequest) && "withCredentials" in XMLHttpRequest.prototype) {
@@ -207,16 +214,17 @@
       xhr.open("GET", url);
       xhr.send();
     } else {
-      global._ = function(json) {
-        global._ = null;
+      contentWindow = this || window;
+      contentWindow._ = function(json) {
+        contentWindow._ = null;
         callback(json.meta.status !== 200, json.data);
       };
       script = createElement("script");
       script.async = true;
       script.src = url + (/\?/.test(url) ? "&" : "?") + "callback=_";
       onloadend = function() {
-        if (global._) {
-          global._({
+        if (contentWindow._) {
+          contentWindow._({
             meta: {}
           });
         }
@@ -231,7 +239,7 @@
           }
         });
       }
-      global.document.getElementsByTagName("head")[0].appendChild(script);
+      contentWindow.document.getElementsByTagName("head")[0].appendChild(script);
     }
   };
 
