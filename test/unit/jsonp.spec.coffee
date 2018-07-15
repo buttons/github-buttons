@@ -3,7 +3,7 @@ import {
 } from "@/fetch"
 
 describe "JSON-P", ->
-  describe "fetch(url, func, hook)", ->
+  describe "fetch(url, func)", ->
     jsonp = fetch
 
     XMLHttpRequest = window.XMLHttpRequest
@@ -88,4 +88,3 @@ describe "JSON-P", ->
         done()
 
       window._ response
-

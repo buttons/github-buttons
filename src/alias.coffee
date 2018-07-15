@@ -3,4 +3,3 @@ export encodeURIComponent = window.encodeURIComponent
 export decodeURIComponent = window.decodeURIComponent
 export Math = window.Math
 export createElement = (tag) -> document.createElement tag
-export createTextNode = (text) -> document.createTextNode text

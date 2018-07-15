@@ -28,8 +28,3 @@ describe "Alias", ->
     element = createElement 'div'
     expect element.nodeType
       .to.equal element.ELEMENT_NODE
-
-  it "should create an alias for document.createTextNode()", ->
-    text = createTextNode 'hello world'
-    expect text.nodeType
-      .to.equal text.TEXT_NODE

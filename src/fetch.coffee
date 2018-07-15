@@ -27,7 +27,7 @@ fetch = (url, func) ->
     onEvent xhr, "abort", callback
     onEvent xhr, "error", callback
     onEvent xhr, "load", ->
-      callback xhr.status isnt 200, JSON.parse xhr.responseText
+      callback xhr.status isnt 200, try JSON.parse xhr.responseText
       return
 
     xhr.open "GET", url
@@ -40,7 +40,7 @@ fetch = (url, func) ->
       callback json.meta.status isnt 200, json.data
       return
 
-    script = createElement "script"
+    script = contentWindow.document.createElement "script"
     script.async = true
     script.src = url + (if /\?/.test url then "&" else "?") + "callback=_"
 
