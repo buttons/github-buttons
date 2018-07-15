@@ -221,7 +221,7 @@
   var render;
 
   render = function(root, options, func) {
-    var button, callback, container, createElement, createTextNode, document, style;
+    var button, callback, createElement, createTextNode, document, style, widget;
     if (!options) {
       return;
     }
@@ -242,11 +242,11 @@
     } else {
       style.appendChild(createTextNode(css));
     }
-    container = root.appendChild(createElement("div"));
-    container.className = "widget" + (/^large$/i.test(options["data-size"]) ? " large" : "");
+    widget = root.appendChild(createElement("div"));
+    widget.className = "widget" + (/^large$/i.test(options["data-size"]) ? " large" : "");
     callback = function() {
       if (func) {
-        func(container);
+        func(widget);
       }
     };
     button = (function() {
@@ -268,7 +268,7 @@
       a.appendChild(createTextNode(" "));
       span = a.appendChild(createElement("span"));
       span.appendChild(createTextNode(options["data-text"] || ""));
-      return container.appendChild(a);
+      return widget.appendChild(a);
     })();
     (function() {
       var api, href, match, property;
@@ -417,9 +417,9 @@
       onceEvent(iframe, "load", function() {
         var contentWindow;
         contentWindow = iframe.contentWindow;
-        render.call(contentWindow, contentWindow.document.body, options, function(container) {
+        render.call(contentWindow, contentWindow.document.body, options, function(widget) {
           var size;
-          size = get(container);
+          size = get(widget);
           iframe.parentNode.removeChild(iframe);
           onceEvent(iframe, "load", function() {
             set(iframe, size);

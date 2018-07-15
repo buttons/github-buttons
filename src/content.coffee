@@ -25,11 +25,11 @@ render = (root, options, func) ->
   else
     style.appendChild createTextNode css
 
-  container = root.appendChild createElement "div"
-  container.className = "widget" + (if /^large$/i.test options["data-size"] then " large" else "")
+  widget = root.appendChild createElement "div"
+  widget.className = "widget" + (if /^large$/i.test options["data-size"] then " large" else "")
 
   callback = ->
-    func container if func
+    func widget if func
     return
 
   button = do ->
@@ -55,7 +55,7 @@ render = (root, options, func) ->
     a.appendChild createTextNode " "
     span = a.appendChild createElement "span"
     span.appendChild createTextNode options["data-text"] or ""
-    container.appendChild a
+    widget.appendChild a
 
   do ->
     return callback() unless /^(true|1)$/i.test(options["data-show-count"]) and button.hostname is "github.com"

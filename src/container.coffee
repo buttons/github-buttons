@@ -50,8 +50,8 @@ render = (targetNode, options) ->
     iframe.title = title if title = options.title
     onceEvent iframe, "load", ->
       contentWindow = iframe.contentWindow
-      renderContent.call contentWindow, contentWindow.document.body, options, (container) ->
-        size = getSize container
+      renderContent.call contentWindow, contentWindow.document.body, options, (widget) ->
+        size = getSize widget
         iframe.parentNode.removeChild iframe
         onceEvent iframe, "load", ->
           setSize iframe, size
