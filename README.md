@@ -16,9 +16,9 @@ The easiest way to get started is to use the **[github:button generator](https:/
 
 ### Components
 
-- [GithubButton.vue](dist/vue) for [Vue](https://vuejs.org)
-- [GitHubButton.js](dist/react/) for [React](https://facebook.github.io/react/)
-- [github-button.component.ts](dist/angular/) for [Angular](https://angular.io)
+- [github-buttons/dist/vue](dist/vue/) for [Vue](https://vuejs.org)
+- [github-buttons/dist/react](dist/react/) for [React](https://facebook.github.io/react/)
+- [github-buttons/dist/angular](dist/angular/) for [Angular](https://angular.io)
 
 ### Basic Usage (without component)
 

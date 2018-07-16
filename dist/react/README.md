@@ -1,10 +1,8 @@
-GitHubButton.js
----------------
+GitHub Button for React
+-----------------------
 
 ``` jsx
-import GitHubButton from 'github-buttons/dist/react/GitHubButton';
+import GitHubButton from 'github-buttons/dist/react';
 
 var githubButton = <GitHubButton {...props}></GitHubButton>;
 ```
-
-You may have to copy `GitHubButton.js` to your project `src` folder for babel to work properly.
