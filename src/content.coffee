@@ -12,6 +12,7 @@ import {
 render = (root, options, func) ->
   return unless options
 
+  contentWindow = @
   document = root.ownerDocument
   createElement = (tag) -> document.createElement tag
   createTextNode = (text) -> document.createTextNode text
@@ -91,7 +92,7 @@ render = (root, options, func) ->
       api = "/users/#{match[1]}"
       href = property = "followers"
 
-    fetch.call @, apiBaseURL + api, (error, json) ->
+    fetch.call contentWindow, apiBaseURL + api, (error, json) ->
       if !error
         data = json[property]
 

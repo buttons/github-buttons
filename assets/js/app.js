@@ -210,10 +210,11 @@
   var render;
 
   render = function(root, options, func) {
-    var button, callback, createElement, createTextNode, document, style, widget;
+    var button, callback, contentWindow, createElement, createTextNode, document, style, widget;
     if (!options) {
       return;
     }
+    contentWindow = this;
     document = root.ownerDocument;
     createElement = function(tag) {
       return document.createElement(tag);
@@ -287,7 +288,7 @@
         api = "/users/" + match[1];
         href = property = "followers";
       }
-      fetch.call(this, apiBaseURL + api, function(error, json) {
+      fetch.call(contentWindow, apiBaseURL + api, function(error, json) {
         var a, data, span;
         if (!error) {
           data = json[property];
