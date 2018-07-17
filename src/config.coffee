@@ -1,13 +1,16 @@
 import {
   document
+  location
 } from "./alias"
 
 buttonClass = "github-button"
 
 ### istanbul ignore next ###
-baseURL = "#{if /^http:/.test document.location then "http" else "https"}://buttons.github.io/"
+baseURL = "#{if /^http:/.test location then "http" else "https"}://buttons.github.io"
 
-apiBaseURL = "https://api.github.com/"
+htmlPath = "/buttons.html"
+
+apiBaseURL = "https://api.github.com"
 
 setBaseURL = (url) ->
   baseURL = url
@@ -20,6 +23,7 @@ setApiBaseURL = (url) ->
 export {
   buttonClass
   baseURL
+  htmlPath
   apiBaseURL
   setBaseURL
   setApiBaseURL

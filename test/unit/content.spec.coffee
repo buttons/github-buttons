@@ -5,7 +5,7 @@ import {
   setApiBaseURL
 } from "@/config"
 
-setApiBaseURL "/base/test/fixtures/api.github.com/"
+setApiBaseURL "/base/test/fixtures/api.github.com"
 
 describe "Content", ->
   root = null

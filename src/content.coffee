@@ -74,7 +74,7 @@ render = (root, options, func) ->
     return callback() unless match and not match[6]
 
     if match[2]
-      api = "repos/#{match[1]}/#{match[2]}"
+      api = "/repos/#{match[1]}/#{match[2]}"
       if match[3]
         property = "subscribers_count"
         href = "watchers"
@@ -88,7 +88,7 @@ render = (root, options, func) ->
         property = "stargazers_count"
         href = "stargazers"
     else
-      api = "users/#{match[1]}"
+      api = "/users/#{match[1]}"
       href = property = "followers"
 
     fetch.call @, apiBaseURL + api, (error, json) ->

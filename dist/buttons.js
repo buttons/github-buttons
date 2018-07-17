@@ -3,6 +3,8 @@
 
   var document = window.document;
 
+  var location = document.location;
+
   var encodeURIComponent = window.encodeURIComponent;
 
   var decodeURIComponent = window.decodeURIComponent;
@@ -13,16 +15,18 @@
     return document.createElement(tag);
   };
 
-  var apiBaseURL, baseURL, buttonClass, setBaseURL;
+  var apiBaseURL, baseURL, buttonClass, htmlPath, setBaseURL;
 
   buttonClass = "github-button";
 
 
   /* istanbul ignore next */
 
-  baseURL = (/^http:/.test(document.location) ? "http" : "https") + "://buttons.github.io/";
+  baseURL = (/^http:/.test(location) ? "http" : "https") + "://buttons.github.io";
 
-  apiBaseURL = "https://api.github.com/";
+  htmlPath = "/buttons.html";
+
+  apiBaseURL = "https://api.github.com";
 
   setBaseURL = function(url) {
     baseURL = url;
@@ -280,7 +284,7 @@
         return callback();
       }
       if (match[2]) {
-        api = "repos/" + match[1] + "/" + match[2];
+        api = "/repos/" + match[1] + "/" + match[2];
         if (match[3]) {
           property = "subscribers_count";
           href = "watchers";
@@ -295,7 +299,7 @@
           href = "stargazers";
         }
       } else {
-        api = "users/" + match[1];
+        api = "/users/" + match[1];
         href = property = "followers";
       }
       fetch.call(this, apiBaseURL + api, function(error, json) {
@@ -420,7 +424,7 @@
           onceEvent(iframe, "load", function() {
             set(iframe, size);
           });
-          iframe.src = baseURL + "buttons.html#" + (stringify(options));
+          iframe.src = baseURL + htmlPath + "#" + stringify(options);
           if (title = options.title) {
             iframe.title = title;
           }
@@ -439,10 +443,10 @@
     exports.render = render$2;
   } else {
     if (currentScriptURL) {
-      setBaseURL(currentScriptURL.replace(/[^\/]*([?#].*)?$/, ""));
+      setBaseURL(currentScriptURL.replace(/\/[^\/]*([?#].*)?$/, ""));
     }
-    if (baseURL + "buttons.html" === document.location.href.replace(/[?#].*$/, "")) {
-      render(document.body, parse(document.location.hash.replace(/^#/, "")));
+    if (location.protocol + "//" + location.host + location.pathname === baseURL + htmlPath) {
+      render(document.body, parse(location.hash.replace(/^#/, "")));
     } else {
       defer(render$1);
     }

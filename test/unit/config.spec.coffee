@@ -1,5 +1,6 @@
 import {
   baseURL
+  htmlPath
   setBaseURL
 } from "@/config"
 
@@ -9,7 +10,11 @@ setBaseURL "/something/else"
 describe "Config", ->
   it "should export base url", ->
     expect originalBaseURL
-      .to.match ///^https?://buttons.github.io/$///
+      .to.match ///^https?://buttons.github.io$///
+
+  it "should export html path", ->
+    expect htmlPath
+      .to.equal "/buttons.html"
 
   describe "setBaseURL(url)", ->
     it "should set relative base url when document.currentScript is safe to use", ->

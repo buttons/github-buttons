@@ -4,6 +4,7 @@ import {
 } from "./alias"
 import {
   baseURL
+  htmlPath
 } from "./config"
 import {
   parseOptions
@@ -54,7 +55,7 @@ render = (targetNode, options) ->
         onceEvent iframe, "load", ->
           setSize iframe, size
           return
-        iframe.src = "#{baseURL}buttons.html##{stringifyQueryString options}"
+        iframe.src = baseURL + htmlPath + "#" + stringifyQueryString options
         iframe.title = title if title = options.title
         targetNode.parentNode.replaceChild iframe, targetNode
         return

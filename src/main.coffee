@@ -1,8 +1,10 @@
 import {
   document
+  location
 } from "./alias"
 import {
   baseURL
+  htmlPath
   setBaseURL
 } from "./config"
 import {
@@ -29,9 +31,9 @@ if typeof define is "function" and define.amd
 else if typeof exports is "object" and typeof exports.nodeName isnt "string"
   exports.render = renderContainer
 else
-  setBaseURL currentScriptURL.replace /[^/]*([?#].*)?$/, "" if currentScriptURL
+  setBaseURL currentScriptURL.replace /\/[^/]*([?#].*)?$/, "" if currentScriptURL
 
-  if baseURL + "buttons.html" is document.location.href.replace /[?#].*$/, ""
-    renderContent document.body, parseQueryString document.location.hash.replace /^#/, ""
+  if location.protocol + "//" + location.host + location.pathname is baseURL + htmlPath
+    renderContent document.body, parseQueryString location.hash.replace /^#/, ""
   else
     defer batchRender

@@ -1,5 +1,6 @@
 import {
   document
+  location
   encodeURIComponent
   decodeURIComponent
   Math
@@ -11,6 +12,10 @@ describe "Alias", ->
   it "should export an alias for window.document", ->
     expect document
       .to.equal window.document
+
+  it "should export an alias for window.document", ->
+    expect location
+      .to.equal document.location
 
   it "should export an alias for window.encodeURIComponent", ->
     expect encodeURIComponent
