@@ -3,7 +3,7 @@
 /coverage/
 /src/
 /test/
-/*.html
+/index.html
 /favicon.ico
 /coffeelint.json
 /karma.conf.js
