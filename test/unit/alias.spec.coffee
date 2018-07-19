@@ -5,7 +5,6 @@ import {
   decodeURIComponent
   Math
   createElement
-  createTextNode
 } from "@/alias"
 
 describe "Alias", ->
