@@ -3,17 +3,15 @@ import { render } from 'github-buttons'
 export default {
   name: 'github-button',
   render (h) {
-    return h('span', [
-      h('a', { attrs: this.$attrs }, this.$slots.default)
-    ])
+    return h('a', this.$slots.default)
   },
   mounted () {
-    render(this._ = this.$el.lastChild)
+    render(this.$el.parentNode.insertBefore(this._ = document.createElement('span'), this.$el).appendChild(this.$el))
   },
   beforeUpdate () {
-    this.$el.replaceChild(this._, this.$el.lastChild)
+    this._.parentNode.replaceChild(this.$el, this._)
   },
   updated () {
-    render(this._ = this.$el.lastChild)
+    render(this.$el.parentNode.insertBefore(this._ = document.createElement('span'), this.$el).appendChild(this.$el))
   }
 }
