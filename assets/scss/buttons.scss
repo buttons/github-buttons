@@ -161,11 +161,11 @@ a {
   i {
     position: absolute;
     top: 50%;
-    right: 100%;
+    left: 0;
     display: block;
     width: 0;
     height: 0;
-    margin-top: -4px;
+    margin: -4px 0 0 -4px;
     _font-size: 0;
     _line-height: 0;
     border: solid transparent;
@@ -173,7 +173,6 @@ a {
   }
 
   b {
-    margin-right: 0;
     border-right-color: $btn-border-color;
   }
 
@@ -184,7 +183,7 @@ a {
   }
 
   i {
-    margin-right: -1.5px;
+    margin-left: -3px;
     border-right-color: $social-count-background-color;
   }
 
@@ -201,8 +200,12 @@ a {
   .social-count {
     b,
     i {
-      margin-top: -6px;
-      border-width: 6px 6px 6px 0;
+      margin: -5px 0 0 -5px;
+      border-width: 5px 5px 5px 0;
+    }
+
+    i {
+      margin-left: -4px;
     }
   }
 }
