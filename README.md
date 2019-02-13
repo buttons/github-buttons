@@ -12,13 +12,13 @@ Documentation
 
 ### Quick Start
 
-The easiest way to get started is to use the **[github:button generator](https://buttons.github.io)**.
+The easiest way to get started is to use the **[github:button configurator](https://buttons.github.io)**.
+
+The source code for the configurator is at [ntkme/github-buttons-app](https://github.com/ntkme/github-buttons-app).
 
 ### Components
 
-- [github-buttons/dist/vue](dist/vue/) for [Vue](https://vuejs.org)
-- [github-buttons/dist/react](dist/react/) for [React](https://facebook.github.io/react/)
-- [github-buttons/dist/angular](dist/angular/) for [Angular](https://angular.io)
+- [vue-github-button](https://github.com/ntkme/vue-github-button) for [Vue](https://vuejs.org)
 
 ### Basic Usage (without component)
 
@@ -161,4 +161,4 @@ See also
 License
 -------
 
-See [LICENSE.md](LICENSE.md).
+See [LICENSE](LICENSE).

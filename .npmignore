@@ -1,10 +1,7 @@
 .*
-/assets/
 /coverage/
 /src/
 /test/
-/index.html
-/favicon.ico
 /coffeelint.json
 /karma.conf.js
 /rollup.config.js

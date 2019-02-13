@@ -1,4 +1,4 @@
-import css from "../assets/css/buttons.css"
+import css from "./buttons.scss"
 import {
   octicon
 } from "./octicons"

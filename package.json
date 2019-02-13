@@ -1,6 +1,6 @@
 {
   "name": "github-buttons",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "GitHub Buttons",
   "keywords": [
     "github",
@@ -27,9 +27,7 @@
   "module": "dist/buttons.esm.js",
   "typings": "dist/buttons.d.ts",
   "scripts": {
-    "build": "npm run build:css && npm run build:js",
-    "build:css": "node-sass --output-style compressed --output assets/css assets/scss",
-    "build:js": "rollup -c rollup.config.js",
+    "build": "rollup -c rollup.config.js",
     "pretest": "coffeelint src/ test/",
     "test": "karma start --single-run"
   },
@@ -61,12 +59,12 @@
     "rollup-plugin-node-resolve": "^4.0.0",
     "rollup-plugin-uglify": "^6.0.2",
     "rollup-watch": "^4.3.1",
+    "sass-loader": "^7.1.0",
     "sinon": "^7.2.3",
     "sinon-chai": "^3.3.0",
     "webpack": "^4.29.3"
   },
   "engines": {
     "node": ">=6.5.0"
-  },
-  "private": true
+  }
 }

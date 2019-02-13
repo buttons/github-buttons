@@ -20,10 +20,18 @@ module.exports = function (config) {
       module: {
         rules: [
           {
-            test: /\.css$/,
-            use: {
-              loader: 'raw-loader'
-            }
+            test: /\.s[ac]ss$/,
+            use: [
+              {
+                loader: 'raw-loader'
+              },
+              {
+                loader: 'sass-loader',
+                options: {
+                  outputStyle: 'compressed'
+                }
+              }
+            ]
           },
           {
             test: /\.coffee$/,

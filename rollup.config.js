@@ -1,6 +1,7 @@
 import coffeescript from 'rollup-plugin-coffee-script'
 import resolve from 'rollup-plugin-node-resolve'
 import { uglify } from 'rollup-plugin-uglify'
+import sass from 'node-sass'
 
 const raw = function ({ name, test, transform = (code) => code }) {
   return {
@@ -59,18 +60,6 @@ export default [
       format: 'cjs',
       file: 'dist/buttons.common.js'
     }
-  }, {
-    input: 'src/app.coffee',
-    output: {
-      format: 'iife',
-      file: 'assets/js/app.js'
-    }
-  }, {
-    input: 'src/app.coffee',
-    output: {
-      format: 'iife',
-      file: 'assets/js/app.min.js'
-    }
   }
 ].map(config => Object.assign({
   plugins: [
@@ -79,9 +68,15 @@ export default [
     }),
     coffeescript(),
     raw({
-      name: 'css',
+      name: 'sass',
       test (id) {
-        return id.endsWith('css')
+        return id.endsWith('sass') || id.endsWith('scss')
+      },
+      transform (code) {
+        return sass.renderSync({
+          data: code,
+          outputStyle: 'compressed'
+        }).css.toString()
       }
     }),
     raw({
