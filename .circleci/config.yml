@@ -18,3 +18,32 @@ jobs:
       - run: npm run build && git diff --exit-code -- :^package-lock.json
       - run: npm test -- --browsers ChromeHeadless,Firefox
       - run: test -z "$CIRCLE_PULL_REQUEST" && ./node_modules/.bin/codecov
+  deploy:
+    docker:
+      - image: circleci/node:latest-browsers
+    steps:
+      - checkout
+      - run: |
+          npm install
+          NODE_ENV=production npm run build
+          NODE_ENV=production npm test -- --browsers ChromeHeadless,Firefox
+      - run: |
+          echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
+          npm publish
+
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - build:
+          filters:
+            tags:
+              only: /^v.*/
+      - deploy:
+          requires:
+            - build
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
