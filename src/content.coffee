@@ -100,7 +100,7 @@ render = (root, options, func) ->
         a.href = json.html_url + "/" + href
         a.target = "_blank"
         a.className = "social-count"
-        a.setAttribute "aria-label", "#{data} #{property.replace(/_count$/, "").replace("_", " ")} on GitHub"
+        a.setAttribute "aria-label", "#{data} #{property.replace(/_count$/, "").replace("_", " ").slice(0, if data < 2 then -1)} on GitHub"
         a.appendChild createElement "b"
         a.appendChild createElement "i"
         span = a.appendChild createElement "span"

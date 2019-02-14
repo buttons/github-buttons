@@ -311,7 +311,7 @@
           a.href = json.html_url + "/" + href;
           a.target = "_blank";
           a.className = "social-count";
-          a.setAttribute("aria-label", data + " " + (property.replace(/_count$/, "").replace("_", " ")) + " on GitHub");
+          a.setAttribute("aria-label", data + " " + (property.replace(/_count$/, "").replace("_", " ").slice(0, data < 2 ? -1 : void 0)) + " on GitHub");
           a.appendChild(createElement("b"));
           a.appendChild(createElement("i"));
           span = a.appendChild(createElement("span"));

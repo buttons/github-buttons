@@ -195,7 +195,7 @@ describe "Content", ->
         expect count.lastChild.innerHTML
           .to.equal "1"
         expect count.getAttribute "aria-label"
-          .to.equal "1 open issues on GitHub"
+          .to.equal "1 open issue on GitHub"
         done()
 
     it "should append the count for issue button when it links to new issue", (done) ->
@@ -209,7 +209,7 @@ describe "Content", ->
         expect count.lastChild.innerHTML
           .to.equal "1"
         expect count.getAttribute "aria-label"
-          .to.equal "1 open issues on GitHub"
+          .to.equal "1 open issue on GitHub"
         done()
 
     it "should append the count for button whose link has a tailing slash", (done) ->
