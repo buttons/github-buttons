@@ -1,4 +1,6 @@
 import coffeescript from 'rollup-plugin-coffee-script'
+import json from 'rollup-plugin-json'
+import replace from 'rollup-plugin-replace'
 import resolve from 'rollup-plugin-node-resolve'
 import { uglify } from 'rollup-plugin-uglify'
 import sass from 'node-sass'
@@ -66,7 +68,14 @@ export default [
     resolve({
       extensions: ['.coffee', '.js', '.json']
     }),
+    json({
+      exclude: ['node_modules/octicons/**']
+    }),
     coffeescript(),
+    replace({
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
+      'process.env.DEBUG': process.env.DEBUG || false
+    }),
     raw({
       name: 'sass',
       test (id) {

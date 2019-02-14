@@ -10,7 +10,7 @@ setBaseURL "/something/else"
 describe "Config", ->
   it "should export base url", ->
     expect originalBaseURL
-      .to.match ///^https?://buttons.github.io$///
+      .to.match ///^https?://(?:buttons.github.io|unpkg.com/.*@.*/dist)$///
 
   it "should export html path", ->
     expect htmlPath

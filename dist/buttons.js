@@ -22,7 +22,7 @@
 
   /* istanbul ignore next */
 
-  baseURL = (/^http:/.test(location) ? "http" : "https") + "://buttons.github.io";
+  baseURL = (/^http:/.test(location) ? "http" : "https") + "://" + ("buttons.github.io");
 
   htmlPath = "/buttons.html";
 

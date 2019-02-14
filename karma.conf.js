@@ -54,6 +54,10 @@ module.exports = function (config) {
         ]
       },
       plugins: [
+        new webpack.EnvironmentPlugin({
+          NODE_ENV: 'development',
+          DEBUG: false
+        }),
         new webpack.SourceMapDevToolPlugin({
           filename: null,
           test: /\.(coffee|js)($|\?)/i
