@@ -443,8 +443,10 @@
   } else if (typeof exports === "object" && typeof exports.nodeName !== "string") {
     exports.render = render$2;
   } else {
-    if (currentScriptURL) {
-      setBaseURL(currentScriptURL.replace(/\/[^\/]*([?#].*)?$/, ""));
+    {
+      if (currentScriptURL) {
+        setBaseURL(currentScriptURL.replace(/\/[^\/]*([?#].*)?$/, ""));
+      }
     }
     if (location.protocol + "//" + location.host + location.pathname === baseURL + htmlPath) {
       render(document.body, parse(location.hash.replace(/^#/, "")));

@@ -31,7 +31,8 @@ if typeof define is "function" and define.amd
 else if typeof exports is "object" and typeof exports.nodeName isnt "string"
   exports.render = renderContainer
 else
-  setBaseURL currentScriptURL.replace /\/[^/]*([?#].*)?$/, "" if currentScriptURL
+  if process.env.NODE_ENV isnt "production"
+    setBaseURL currentScriptURL.replace /\/[^/]*([?#].*)?$/, "" if currentScriptURL
 
   if location.protocol + "//" + location.host + location.pathname is baseURL + htmlPath
     renderContent document.body, parseQueryString location.hash.replace /^#/, ""
