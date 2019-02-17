@@ -15,7 +15,7 @@
     return document.createElement(tag);
   };
 
-  var apiBaseURL, baseURL, buttonClass, htmlPath, setBaseURL;
+  var apiBaseURL, baseURL, buttonClass, htmlPath;
 
   buttonClass = "github-button";
 
@@ -27,19 +27,6 @@
   htmlPath = "/buttons.html";
 
   apiBaseURL = "https://api.github.com";
-
-  setBaseURL = function(url) {
-    baseURL = url;
-  };
-
-  var currentScript, currentScriptURL;
-
-  currentScript = "currentScript";
-
-
-  /* istanbul ignore next */
-
-  currentScriptURL = !{}.hasOwnProperty.call(document, currentScript) && document[currentScript] && delete document[currentScript] && document[currentScript] ? document[currentScript].src : void 0;
 
   var stringify = function(obj) {
     var name, params, value;
@@ -443,11 +430,6 @@
   } else if (typeof exports === "object" && typeof exports.nodeName !== "string") {
     exports.render = render$2;
   } else {
-    {
-      if (currentScriptURL) {
-        setBaseURL(currentScriptURL.replace(/\/[^\/]*([?#].*)?$/, ""));
-      }
-    }
     if (location.protocol + "//" + location.host + location.pathname === baseURL + htmlPath) {
       render(document.body, parse(location.hash.replace(/^#/, "")));
     } else {
