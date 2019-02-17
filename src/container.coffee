@@ -19,23 +19,20 @@ import {
   render as renderContent
 } from "./content"
 import {
-  render as batchRender
-} from "./batch"
-import {
   get as getSize
   set as setSize
 } from "./size"
 
-### istanbul ignore next ###
-render = (targetNode, options) ->
-  return batchRender() unless targetNode?
-  options = parseOptions targetNode unless options?
+render = (options, func) ->
+  return unless options? and func?
+
+  options = parseOptions options if options.getAttribute
 
   if (HTMLElement = window.HTMLElement) and HTMLElement::attachShadow and !HTMLElement::attachShadow::
     host = createElement "span"
     host.title = title if title = options.title
     renderContent (host.attachShadow mode: "closed"), options, ->
-      targetNode.parentNode.replaceChild host, targetNode
+      func host
       return
   else
     iframe = createElement "iframe"
@@ -57,7 +54,7 @@ render = (targetNode, options) ->
           return
         iframe.src = baseURL + htmlPath + "#" + stringifyQueryString options
         iframe.title = title if title = options.title
-        targetNode.parentNode.replaceChild iframe, targetNode
+        func iframe
         return
       return
     document.body.appendChild iframe

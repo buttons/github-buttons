@@ -17,7 +17,10 @@ render = ->
     for anchor in document.getElementsByTagName "a"
       if ~" #{anchor.className} ".replace(/[ \t\n\f\r]+/g, " ").indexOf(" #{buttonClass} ")
         anchors.push anchor
-  renderContainer anchor for anchor in anchors
+  for anchor in anchors
+    renderContainer anchor, (el) ->
+      anchor.parentNode.replaceChild el, anchor
+      return
   return
 
 export {

@@ -310,31 +310,6 @@
     })();
   };
 
-  var render$1;
-
-
-  /* istanbul ignore next */
-
-  render$1 = function() {
-    var anchor, anchors, i, j, len, len1, ref;
-    anchors = [];
-    if (document.querySelectorAll) {
-      anchors = document.querySelectorAll("a." + buttonClass);
-    } else {
-      ref = document.getElementsByTagName("a");
-      for (i = 0, len = ref.length; i < len; i++) {
-        anchor = ref[i];
-        if (~(" " + anchor.className + " ").replace(/[ \t\n\f\r]+/g, " ").indexOf(" " + buttonClass + " ")) {
-          anchors.push(anchor);
-        }
-      }
-    }
-    for (j = 0, len1 = anchors.length; j < len1; j++) {
-      anchor = anchors[j];
-      render$2(anchor);
-    }
-  };
-
   var ceilPixel, devicePixelRatio;
 
 
@@ -365,18 +340,15 @@
     el.style.height = size[1] + "px";
   };
 
-  var render$2;
+  var render$1;
 
-
-  /* istanbul ignore next */
-
-  render$2 = function(targetNode, options) {
+  render$1 = function(options, func) {
     var HTMLElement, host, iframe, name, ref, title, value;
-    if (targetNode == null) {
-      return render$1();
+    if (!((options != null) && (func != null))) {
+      return;
     }
-    if (options == null) {
-      options = parseOptions(targetNode);
+    if (options.getAttribute) {
+      options = parseOptions(options);
     }
     if ((HTMLElement = window.HTMLElement) && HTMLElement.prototype.attachShadow && !HTMLElement.prototype.attachShadow.prototype) {
       host = createElement("span");
@@ -386,7 +358,7 @@
       render(host.attachShadow({
         mode: "closed"
       }), options, function() {
-        targetNode.parentNode.replaceChild(host, targetNode);
+        func(host);
       });
     } else {
       iframe = createElement("iframe");
@@ -416,24 +388,51 @@
           if (title = options.title) {
             iframe.title = title;
           }
-          targetNode.parentNode.replaceChild(iframe, targetNode);
+          func(iframe);
         });
       });
       document.body.appendChild(iframe);
     }
   };
 
+  var render$2;
+
+
+  /* istanbul ignore next */
+
+  render$2 = function() {
+    var anchor, anchors, i, j, len, len1, ref;
+    anchors = [];
+    if (document.querySelectorAll) {
+      anchors = document.querySelectorAll("a." + buttonClass);
+    } else {
+      ref = document.getElementsByTagName("a");
+      for (i = 0, len = ref.length; i < len; i++) {
+        anchor = ref[i];
+        if (~(" " + anchor.className + " ").replace(/[ \t\n\f\r]+/g, " ").indexOf(" " + buttonClass + " ")) {
+          anchors.push(anchor);
+        }
+      }
+    }
+    for (j = 0, len1 = anchors.length; j < len1; j++) {
+      anchor = anchors[j];
+      render$1(anchor, function(el) {
+        anchor.parentNode.replaceChild(el, anchor);
+      });
+    }
+  };
+
   if (typeof define === "function" && define.amd) {
     define([], {
-      render: render$2
+      render: render$1
     });
   } else if (typeof exports === "object" && typeof exports.nodeName !== "string") {
-    exports.render = render$2;
+    exports.render = render$1;
   } else {
     if (location.protocol + "//" + location.host + location.pathname === baseURL + htmlPath) {
       render(document.body, parse(location.hash.replace(/^#/, "")));
     } else {
-      defer(render$1);
+      defer(render$2);
     }
   }
 

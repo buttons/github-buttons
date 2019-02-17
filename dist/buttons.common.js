@@ -16,9 +16,7 @@ var createElement = function(tag) {
   return document.createElement(tag);
 };
 
-var apiBaseURL, baseURL, buttonClass, htmlPath;
-
-buttonClass = "github-button";
+var apiBaseURL, baseURL, htmlPath;
 
 
 /* istanbul ignore next */
@@ -265,31 +263,6 @@ render = function(root, options, func) {
   })();
 };
 
-var render$1;
-
-
-/* istanbul ignore next */
-
-render$1 = function() {
-  var anchor, anchors, i, j, len, len1, ref;
-  anchors = [];
-  if (document.querySelectorAll) {
-    anchors = document.querySelectorAll("a." + buttonClass);
-  } else {
-    ref = document.getElementsByTagName("a");
-    for (i = 0, len = ref.length; i < len; i++) {
-      anchor = ref[i];
-      if (~(" " + anchor.className + " ").replace(/[ \t\n\f\r]+/g, " ").indexOf(" " + buttonClass + " ")) {
-        anchors.push(anchor);
-      }
-    }
-  }
-  for (j = 0, len1 = anchors.length; j < len1; j++) {
-    anchor = anchors[j];
-    exports.render(anchor);
-  }
-};
-
 var ceilPixel, devicePixelRatio;
 
 
@@ -320,15 +293,13 @@ set = function(el, size) {
   el.style.height = size[1] + "px";
 };
 
-/* istanbul ignore next */
-
-exports.render = function(targetNode, options) {
+exports.render = function(options, func) {
   var HTMLElement, host, iframe, name, ref, title, value;
-  if (targetNode == null) {
-    return render$1();
+  if (!((options != null) && (func != null))) {
+    return;
   }
-  if (options == null) {
-    options = parseOptions(targetNode);
+  if (options.getAttribute) {
+    options = parseOptions(options);
   }
   if ((HTMLElement = window.HTMLElement) && HTMLElement.prototype.attachShadow && !HTMLElement.prototype.attachShadow.prototype) {
     host = createElement("span");
@@ -338,7 +309,7 @@ exports.render = function(targetNode, options) {
     render(host.attachShadow({
       mode: "closed"
     }), options, function() {
-      targetNode.parentNode.replaceChild(host, targetNode);
+      func(host);
     });
   } else {
     iframe = createElement("iframe");
@@ -368,7 +339,7 @@ exports.render = function(targetNode, options) {
         if (title = options.title) {
           iframe.title = title;
         }
-        targetNode.parentNode.replaceChild(iframe, targetNode);
+        func(iframe);
       });
     });
     document.body.appendChild(iframe);
