@@ -401,7 +401,7 @@
   /* istanbul ignore next */
 
   render$2 = function() {
-    var anchor, anchors, i, j, len, len1, ref;
+    var anchor, anchors, fn, i, j, len, len1, ref;
     anchors = [];
     if (document.querySelectorAll) {
       anchors = document.querySelectorAll("a." + buttonClass);
@@ -414,11 +414,14 @@
         }
       }
     }
-    for (j = 0, len1 = anchors.length; j < len1; j++) {
-      anchor = anchors[j];
+    fn = function(anchor) {
       render$1(anchor, function(el) {
         anchor.parentNode.replaceChild(el, anchor);
       });
+    };
+    for (j = 0, len1 = anchors.length; j < len1; j++) {
+      anchor = anchors[j];
+      fn(anchor);
     }
   };
 

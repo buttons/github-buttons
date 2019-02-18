@@ -18,8 +18,10 @@ render = ->
       if ~" #{anchor.className} ".replace(/[ \t\n\f\r]+/g, " ").indexOf(" #{buttonClass} ")
         anchors.push anchor
   for anchor in anchors
-    renderContainer anchor, (el) ->
-      anchor.parentNode.replaceChild el, anchor
+    do (anchor = anchor) ->
+      renderContainer anchor, (el) ->
+        anchor.parentNode.replaceChild el, anchor
+        return
       return
   return
 
