@@ -4,10 +4,9 @@
   "description": "GitHub Buttons",
   "keywords": [
     "github",
-    "buttons",
-    "vue",
-    "react",
-    "angular"
+    "button",
+    "frontend",
+    "component"
   ],
   "license": "BSD-2-Clause",
   "homepage": "https://buttons.github.io/",
