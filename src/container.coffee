@@ -3,8 +3,7 @@ import {
   createElement
 } from "./alias"
 import {
-  baseURL
-  htmlPath
+  iframeURL
 } from "./config"
 import {
   parseOptions
@@ -52,7 +51,7 @@ render = (options, func) ->
         onceEvent iframe, "load", ->
           setSize iframe, size
           return
-        iframe.src = baseURL + htmlPath + "#" + stringifyQueryString options
+        iframe.src = iframeURL + "#" + stringifyQueryString options
         iframe.title = title if title = options.title
         func iframe
         return

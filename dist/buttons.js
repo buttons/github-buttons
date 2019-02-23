@@ -15,16 +15,14 @@
     return document.createElement(tag);
   };
 
-  var apiBaseURL, baseURL, buttonClass, htmlPath;
+  var apiBaseURL, buttonClass, iframeURL;
 
   buttonClass = "github-button";
 
 
   /* istanbul ignore next */
 
-  baseURL = (/^http:/.test(location) ? "http" : "https") + "://" + ("buttons.github.io");
-
-  htmlPath = "/buttons.html";
+  iframeURL = (/^http:/.test(location) ? "http" : "https") + "://" + ("buttons.github.io") + "/buttons.html";
 
   apiBaseURL = "https://api.github.com";
 
@@ -384,7 +382,7 @@
           onceEvent(iframe, "load", function() {
             set(iframe, size);
           });
-          iframe.src = baseURL + htmlPath + "#" + stringify(options);
+          iframe.src = iframeURL + "#" + stringify(options);
           if (title = options.title) {
             iframe.title = title;
           }
@@ -425,7 +423,7 @@
     }
   };
 
-  if (location.protocol + "//" + location.host + location.pathname === baseURL + htmlPath) {
+  if (location.protocol + "//" + location.host + location.pathname === iframeURL) {
     render(document.body, parse(location.hash.replace(/^#/, "")));
   } else {
     defer(render$2);

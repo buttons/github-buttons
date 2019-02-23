@@ -10,15 +10,9 @@ import {
 buttonClass = "github-button"
 
 ### istanbul ignore next ###
-baseURL = "#{if /^http:/.test location then "http" else "https"}://#{if process.env.NODE_ENV is "production" then "unpkg.com/" + name + "@" + version + "/dist" else "buttons.github.io"}"
-
-htmlPath = "/buttons.html"
+iframeURL = "#{if /^http:/.test location then "http" else "https"}://#{if process.env.NODE_ENV is "production" then "unpkg.com/" + name + "@" + version + "/dist" else "buttons.github.io"}/buttons.html"
 
 apiBaseURL = "https://api.github.com"
-
-setBaseURL = (url) ->
-  baseURL = url
-  return
 
 setApiBaseURL = (url) ->
   apiBaseURL = url
@@ -26,9 +20,7 @@ setApiBaseURL = (url) ->
 
 export {
   buttonClass
-  baseURL
-  htmlPath
+  iframeURL
   apiBaseURL
-  setBaseURL
   setApiBaseURL
 }

@@ -2,6 +2,7 @@ import {
   render
 } from "@/container"
 import {
+  iframeURL
   setApiBaseURL
 } from "@/config"
 import {
@@ -49,9 +50,7 @@ describe "Container", ->
     afterEach ->
       delete HTMLElement::attachShadow::
 
-    it "should render an anchor with iframe and set iframe size", (done) ->
-      @timeout 5000
-
+    it "should render an anchor with iframe and set src", (done) ->
       render a, (el) ->
         expect el
           .instanceof HTMLElement
@@ -59,13 +58,27 @@ describe "Container", ->
           .to.equal "IFRAME"
 
         onceEvent el, "load", ->
-          expect el.scrollHeight
-            .equal 20
-          expect el.scrollWidth
+          expect el.src.split('#')[0]
+            .to.equal iframeURL
+          done()
+
+        el.dispatchEvent new Event "load"
+
+    it "should render an anchor with iframe and set iframe size on load", (done) ->
+      render a, (el) ->
+        expect el
+          .instanceof HTMLElement
+        expect el.tagName
+          .to.equal "IFRAME"
+
+        onceEvent el, "load", ->
+          expect el.style.height
+            .to.equal "20px"
+          expect parseInt el.style.width
             .to.be.above 20
           done()
 
-        document.body.appendChild el
+        el.dispatchEvent new Event "load"
 
     it "should set title attribute on iframe if given", (done) ->
       a.title = "test1234"

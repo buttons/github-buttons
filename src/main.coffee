@@ -3,8 +3,7 @@ import {
   location
 } from "./alias"
 import {
-  baseURL
-  htmlPath
+  iframeURL
 } from "./config"
 import {
   parse as parseQueryString
@@ -19,7 +18,7 @@ import {
   render as batchRender
 } from "./batch"
 
-if location.protocol + "//" + location.host + location.pathname is baseURL + htmlPath
+if location.protocol + "//" + location.host + location.pathname is iframeURL
   renderContent document.body, parseQueryString location.hash.replace /^#/, ""
 else
   defer batchRender

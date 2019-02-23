@@ -12,14 +12,12 @@ var createElement = function(tag) {
   return document.createElement(tag);
 };
 
-var apiBaseURL, baseURL, htmlPath;
+var apiBaseURL, iframeURL;
 
 
 /* istanbul ignore next */
 
-baseURL = (/^http:/.test(location) ? "http" : "https") + "://" + ("buttons.github.io");
-
-htmlPath = "/buttons.html";
+iframeURL = (/^http:/.test(location) ? "http" : "https") + "://" + ("buttons.github.io") + "/buttons.html";
 
 apiBaseURL = "https://api.github.com";
 
@@ -333,7 +331,7 @@ render$1 = function(options, func) {
         onceEvent(iframe, "load", function() {
           set(iframe, size);
         });
-        iframe.src = baseURL + htmlPath + "#" + stringify(options);
+        iframe.src = iframeURL + "#" + stringify(options);
         if (title = options.title) {
           iframe.title = title;
         }
