@@ -50,6 +50,8 @@ describe "Container", ->
       delete HTMLElement::attachShadow::
 
     it "should render an anchor with iframe and set iframe size", (done) ->
+      @timeout 5000
+
       render a, (el) ->
         expect el
           .instanceof HTMLElement
