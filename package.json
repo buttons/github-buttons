@@ -51,20 +51,19 @@
     "karma-sinon-chai": "^2.0.2",
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "^3.0.5",
-    "mocha": "^5.2.0",
+    "mocha": "^6.0.1",
     "node-sass": "^4.11.0",
-    "octicons": "^8.4.1",
+    "octicons": "^8.4.2",
     "raw-loader": "^1.0.0",
-    "rollup": "^1.2.1",
+    "rollup": "^1.2.2",
     "rollup-plugin-coffee-script": "^2.0.0",
     "rollup-plugin-json": "^3.1.0",
-    "rollup-plugin-node-resolve": "^4.0.0",
+    "rollup-plugin-node-resolve": "^4.0.1",
     "rollup-plugin-replace": "^2.1.0",
     "rollup-plugin-uglify": "^6.0.2",
-    "rollup-watch": "^4.3.1",
     "sass-loader": "^7.1.0",
-    "sinon": "^7.2.3",
+    "sinon": "^7.2.4",
     "sinon-chai": "^3.3.0",
-    "webpack": "^4.29.4"
+    "webpack": "^4.29.5"
   }
 }
