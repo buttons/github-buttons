@@ -55,7 +55,7 @@
     "node-sass": "^4.11.0",
     "octicons": "^8.4.2",
     "raw-loader": "^1.0.0",
-    "rollup": "^1.2.2",
+    "rollup": "^1.2.3",
     "rollup-plugin-coffee-script": "^2.0.0",
     "rollup-plugin-json": "^3.1.0",
     "rollup-plugin-node-resolve": "^4.0.1",
