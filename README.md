@@ -9,11 +9,6 @@ Usage
 
 ### Use as a Snippet
 
-``` html
-<!-- Place this tag in your head or just before your close body tag. -->
-<script async defer src="https://buttons.github.io/buttons.js"></script>
-```
-
 Get started quickly with **[github:button configurator](https://buttons.github.io)**.
 
 The source code for the configurator is available at [ntkme/github-buttons-app](https://github.com/ntkme/github-buttons-app).
@@ -45,7 +40,7 @@ These options are the same for all the use cases described above:
 | Attribute         | Description                                                                                                           |
 | ---------         | -----------                                                                                                           |
 | `href`            | GitHub link for the button.                                                                                           |
-| `title`           | `title` attribute for the button's `<iframe>`.                                                                        |
+| `title`           | `title` attribute for the button's rendered element.                                                                  |
 | `data-icon`       | `octicon-mark-github` by default. A [subset](rollup.config.js) of [Octicons](https://octicons.github.com) is bundled. |
 | `data-size`       | _None_ by default or `large`.                                                                                         |
 | `data-show-count` | `false` by default or `true`. The dynamic count is generated based on detected button type.                           |
