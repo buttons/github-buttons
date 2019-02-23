@@ -24,7 +24,9 @@
   },
   "main": "dist/buttons.common.js",
   "module": "dist/buttons.esm.js",
-  "typings": "dist/buttons.d.ts",
+  "unpkg": "dist/buttons.js",
+  "jsdelivr": "dist/buttons.js",
+  "types": "dist/buttons.d.ts",
   "scripts": {
     "build": "rollup -c rollup.config.js",
     "pretest": "coffeelint src/ test/",
