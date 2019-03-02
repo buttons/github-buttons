@@ -1,3 +1,8 @@
+/*!
+ * github-buttons v2.0.4
+ * (c) 2019 なつき
+ * @license BSD-2-Clause
+ */
 'use strict';
 
 Object.defineProperty(exports, '__esModule', { value: true });

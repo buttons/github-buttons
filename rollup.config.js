@@ -2,8 +2,16 @@ import coffeescript from 'rollup-plugin-coffee-script'
 import json from 'rollup-plugin-json'
 import replace from 'rollup-plugin-replace'
 import resolve from 'rollup-plugin-node-resolve'
-import { uglify } from 'rollup-plugin-uglify'
+import { terser } from 'rollup-plugin-terser'
 import sass from 'node-sass'
+
+const packageJSON = require('./package.json')
+const banner =
+`/*!
+ * ${packageJSON.name} v${packageJSON.version}
+ * (c) ${new Date().getFullYear()} ${packageJSON.author.name}
+ * @license ${packageJSON.license}
+ */`
 
 const raw = function ({ name, test, transform = (code) => code }) {
   return {
@@ -63,7 +71,11 @@ export default [
       file: 'dist/buttons.common.js'
     }
   }
-].map(config => Object.assign({
+].map(config => ({
+  input: config.input,
+  output: Object.assign(config.output, {
+    banner
+  }),
   plugins: [
     resolve({
       extensions: ['.coffee', '.js', '.json']
@@ -112,6 +124,10 @@ export default [
         })))
       }
     }),
-    ...(/\.min\.js$/.test(config.output.file) ? [uglify()] : [])
+    ...(/\.min\.js$/.test(config.output.file) ? [terser({
+      output: {
+        comments: /@preserve|@license|@cc_on/i
+      }
+    })] : [])
   ]
-}, config))
+}))
