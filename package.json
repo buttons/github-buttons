@@ -28,7 +28,7 @@
   "jsdelivr": "dist/buttons.js",
   "types": "dist/buttons.d.ts",
   "scripts": {
-    "build": "rollup -c rollup.config.js && eslint dist/buttons.js dist/buttons.min.js",
+    "build": "rollup -c rollup.config.js && eslint dist",
     "pretest": "coffeelint src/ test/",
     "test": "karma start --single-run"
   },
