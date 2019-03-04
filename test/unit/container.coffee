@@ -4,6 +4,7 @@ import {
 import {
   iframeURL
   setApiBaseURL
+  setUseShadowDOM
 } from "@/config"
 import {
   onceEvent
@@ -12,6 +13,28 @@ import {
 setApiBaseURL "/base/test/fixtures/api.github.com"
 
 describe "Container", ->
+  describe "render(options, callback)", ->
+    it "should do nothing when no argument given", ->
+      render()
+
+    it "should do nothing when no callback given", ->
+      render {}
+
+    it "should render with options", (done) ->
+      render {}, (el) ->
+        expect el
+          .instanceof HTMLElement
+        expect el.tagName
+          .match /^SPAN$|^IFRAME$/
+        done()
+
+    it "should set title attribute if given", (done) ->
+      options = title: 'test1234'
+      render options, (el) ->
+        expect el.title
+          .to.equal options.title
+        done()
+
   describe "render(el, callback)", ->
     a = null
 
@@ -44,11 +67,10 @@ describe "Container", ->
 
     beforeEach ->
       a = document.createElement "a"
-      if HTMLElement::attachShadow
-        HTMLElement::attachShadow:: = '[native code] does not have .prototype'
+      setUseShadowDOM false
 
     afterEach ->
-      delete HTMLElement::attachShadow::
+      setUseShadowDOM true
 
     it "should render an anchor with iframe and set src", (done) ->
       render a, (el) ->

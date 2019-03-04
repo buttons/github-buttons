@@ -4,10 +4,9 @@ import {
   encodeURIComponent
   decodeURIComponent
   Math
-  createElement
-} from "@/alias"
+} from "@/globals"
 
-describe "Alias", ->
+describe "Globals", ->
   it "should export an alias for window.document", ->
     expect document
       .to.equal window.document
@@ -27,8 +26,3 @@ describe "Alias", ->
   it "should export an alias for window.Math", ->
     expect Math
       .to.equal window.Math
-
-  it "should create an alias for document.createElement()", ->
-    element = createElement 'div'
-    expect element.nodeType
-      .to.equal element.ELEMENT_NODE

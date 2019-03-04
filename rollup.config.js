@@ -1,4 +1,3 @@
-import coffeescript from 'rollup-plugin-coffee-script'
 import json from 'rollup-plugin-json'
 import replace from 'rollup-plugin-replace'
 import resolve from 'rollup-plugin-node-resolve'
@@ -13,11 +12,11 @@ const banner =
  * @license ${packageJSON.license}
  */`
 
-const raw = function ({ name, test, transform = (code) => code }) {
+const raw = function ({ name, filter, transform = (code) => code }) {
   return {
     name,
     transform (code, id) {
-      if (!test(id)) return null
+      if (!filter(id)) return null
 
       code = `export default ${JSON.stringify(transform(code))}`
 
@@ -47,25 +46,25 @@ const raw = function ({ name, test, transform = (code) => code }) {
 
 export default [
   {
-    input: 'src/main.coffee',
+    input: 'src/main.js',
     output: {
       format: 'iife',
       file: 'dist/buttons.js'
     }
   }, {
-    input: 'src/main.coffee',
+    input: 'src/main.js',
     output: {
       format: 'iife',
       file: 'dist/buttons.min.js'
     }
   }, {
-    input: 'src/container.coffee',
+    input: 'src/container.js',
     output: {
       format: 'es',
       file: 'dist/buttons.esm.js'
     }
   }, {
-    input: 'src/container.coffee',
+    input: 'src/container.js',
     output: {
       format: 'cjs',
       file: 'dist/buttons.common.js'
@@ -74,36 +73,18 @@ export default [
 ].map(config => ({
   input: config.input,
   output: Object.assign(config.output, {
-    banner
+    banner,
+    preferConst: false
   }),
   plugins: [
-    resolve({
-      extensions: ['.coffee', '.js', '.json']
-    }),
+    resolve(),
     json({
-      exclude: ['node_modules/octicons/**']
-    }),
-    coffeescript(),
-    replace({
-      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
-      'process.env.DEBUG': process.env.DEBUG || false
-    }),
-    raw({
-      name: 'sass',
-      test (id) {
-        return id.endsWith('sass') || id.endsWith('scss')
-      },
-      transform (code) {
-        return sass.renderSync({
-          data: code,
-          outputStyle: 'compressed'
-        }).css.toString()
-      }
+      exclude: ['node_modules/**']
     }),
     raw({
       name: 'octicons-data-json',
-      test (id) {
-        return id.endsWith('/node_modules/octicons/build/data.json')
+      filter (id) {
+        return id.endsWith('node_modules/octicons/build/data.json')
       },
       transform (code) {
         const data = JSON.parse(code)
@@ -123,6 +104,24 @@ export default [
           }
         })))
       }
+    }),
+    raw({
+      name: 'sass',
+      filter (id) {
+        return id.endsWith('sass') || id.endsWith('scss')
+      },
+      transform (code) {
+        return sass.renderSync({
+          data: code,
+          outputStyle: 'compressed'
+        }).css.toString()
+      }
+    }),
+    replace({
+      'const': 'var',
+      'let': 'var',
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
+      'process.env.DEBUG': process.env.DEBUG || false
     }),
     ...(/\.min\.js$/.test(config.output.file) ? [terser({
       output: {

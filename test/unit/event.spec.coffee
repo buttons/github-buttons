@@ -1,7 +1,7 @@
 import {
   onEvent
   onceEvent
-} from "@/event.coffee"
+} from "@/event"
 
 describe "Event", ->
   input = null

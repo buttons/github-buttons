@@ -43,7 +43,7 @@ module.exports = function (config) {
             }
           },
           {
-            test: /src\/.+\.coffee$/,
+            test: /src\/.+\.(coffee|js)$/,
             exclude: /node_modules/,
             loader: 'istanbul-instrumenter-loader',
             enforce: 'post',

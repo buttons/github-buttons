@@ -5,7 +5,7 @@ import {
   setApiBaseURL
 } from "@/config"
 
-setApiBaseURL "/base/test/fixtures/api.github.com"
+setApiBaseURL "/base/test/fixtures/xhr/api.github.com"
 
 describe "Content", ->
   root = null
@@ -18,9 +18,6 @@ describe "Content", ->
     root = null
 
   describe "render(root, config, callback)", ->
-    it "should do nothing when no option given", ->
-      render root
-
     it "should render stylesheet", ->
       render root, {}
       expect root.querySelector "style"
@@ -124,7 +121,7 @@ describe "Content", ->
         "href": "https://github.com/ntkme"
         "data-show-count": "true"
       render root, config, (widget) ->
-        expect widget.querySelector(".social-count")
+        expect widget.querySelector ".social-count"
           .be.an.instanceof HTMLElement
         done()
 
@@ -133,13 +130,13 @@ describe "Content", ->
         "href": "https://github.com/ntkme"
         "data-show-count": "true"
       render root, config, (widget) ->
-        count = widget.querySelector(".social-count")
+        count = widget.querySelector ".social-count"
         expect count.href
           .to.equal "https://github.com/ntkme/followers"
         expect count.lastChild.innerHTML
-          .to.equal "58"
+          .to.equal "78"
         expect count.getAttribute "aria-label"
-          .to.equal "58 followers on GitHub"
+          .to.equal "78 followers on GitHub"
         done()
 
     it "should append the count for watch button", (done) ->
@@ -147,13 +144,13 @@ describe "Content", ->
         "href": "https://github.com/ntkme/github-buttons/subscription"
         "data-show-count": "true"
       render root, config, (widget) ->
-        count = widget.querySelector(".social-count")
+        count = widget.querySelector ".social-count"
         expect count.href
           .to.equal "https://github.com/ntkme/github-buttons/watchers"
         expect count.lastChild.innerHTML
-          .to.equal "18"
+          .to.equal "36"
         expect count.getAttribute "aria-label"
-          .to.equal "18 subscribers on GitHub"
+          .to.equal "36 subscribers on GitHub"
         done()
 
     it "should append the count for star button", (done) ->
@@ -161,13 +158,13 @@ describe "Content", ->
         "href": "https://github.com/ntkme/github-buttons"
         "data-show-count": "true"
       render root, config, (widget) ->
-        count = widget.querySelector(".social-count")
+        count = widget.querySelector ".social-count"
         expect count.href
           .to.equal "https://github.com/ntkme/github-buttons/stargazers"
         expect count.lastChild.innerHTML
-          .to.equal "397"
+          .to.equal "546"
         expect count.getAttribute "aria-label"
-          .to.equal "397 stargazers on GitHub"
+          .to.equal "546 stargazers on GitHub"
         done()
 
     it "should append the count for fork button", (done) ->
@@ -175,13 +172,13 @@ describe "Content", ->
         "href": "https://github.com/ntkme/github-buttons/fork"
         "data-show-count": "true"
       render root, config, (widget) ->
-        count = widget.querySelector(".social-count")
+        count = widget.querySelector ".social-count"
         expect count.href
           .to.equal "https://github.com/ntkme/github-buttons/network"
         expect count.lastChild.innerHTML
-          .to.equal "60"
+          .to.equal "94"
         expect count.getAttribute "aria-label"
-          .to.equal "60 forks on GitHub"
+          .to.equal "94 forks on GitHub"
         done()
 
     it "should append the count for issue button", (done) ->
@@ -189,7 +186,7 @@ describe "Content", ->
         "href": "https://github.com/ntkme/github-buttons/issues"
         "data-show-count": "true"
       render root, config, (widget) ->
-        count = widget.querySelector(".social-count")
+        count = widget.querySelector ".social-count"
         expect count.href
           .to.equal "https://github.com/ntkme/github-buttons/issues"
         expect count.lastChild.innerHTML
@@ -203,7 +200,7 @@ describe "Content", ->
         "href": "https://github.com/ntkme/github-buttons/issues/new"
         "data-show-count": "true"
       render root, config, (widget) ->
-        count = widget.querySelector(".social-count")
+        count = widget.querySelector ".social-count"
         expect count.href
           .to.equal "https://github.com/ntkme/github-buttons/issues"
         expect count.lastChild.innerHTML
@@ -217,7 +214,7 @@ describe "Content", ->
         "href": "https://github.com/ntkme/"
         "data-show-count": "true"
       render root, config, (widget) ->
-        count = widget.querySelector(".social-count")
+        count = widget.querySelector ".social-count"
         expect count.href
           .to.equal "https://github.com/ntkme/followers"
         done()
@@ -227,7 +224,7 @@ describe "Content", ->
         "href": "https://github.com/ntkme?tab=repositories"
         "data-show-count": "true"
       render root, config, (widget) ->
-        count = widget.querySelector(".social-count")
+        count = widget.querySelector ".social-count"
         expect count.href
           .to.equal "https://github.com/ntkme/followers"
         done()
@@ -237,7 +234,7 @@ describe "Content", ->
         "href": "https://github.com/ntkme#github-buttons"
         "data-show-count": "true"
       render root, config, (widget) ->
-        count = widget.querySelector(".social-count")
+        count = widget.querySelector ".social-count"
         expect count.href
           .to.equal "https://github.com/ntkme/followers"
         done()
@@ -247,7 +244,7 @@ describe "Content", ->
         "href": "https://github.com/ntkme/?tab=repositories"
         "data-show-count": "true"
       render root, config, (widget) ->
-        count = widget.querySelector(".social-count")
+        count = widget.querySelector ".social-count"
         expect count.href
           .to.equal "https://github.com/ntkme/followers"
         done()
@@ -257,7 +254,7 @@ describe "Content", ->
         "href": "https://github.com/ntkme/#github-buttons"
         "data-show-count": "true"
       render root, config, (widget) ->
-        count = widget.querySelector(".social-count")
+        count = widget.querySelector ".social-count"
         expect count.href
           .to.equal "https://github.com/ntkme/followers"
         done()
@@ -267,7 +264,7 @@ describe "Content", ->
         "href": "https://github.com/ntkme/?tab=repositories#github-buttons"
         "data-show-count": "true"
       render root, config, (widget) ->
-        count = widget.querySelector(".social-count")
+        count = widget.querySelector ".social-count"
         expect count.href
           .to.equal "https://github.com/ntkme/followers"
         done()
@@ -277,6 +274,18 @@ describe "Content", ->
         "href": "https://github.com/"
         "data-show-count": "true"
       render root, config, (widget) ->
-        expect widget.querySelector(".social-count")
+        expect widget.querySelector ".social-count"
+          .to.be.null
+        done()
+
+    it "should append button without count when count has error", (done) ->
+      config =
+        "href": "https://github.com/404"
+        "data-show-count": "true"
+      render root, config, (widget) ->
+        btn = widget.querySelector ".btn"
+        expect btn.href
+          .to.equal config.href
+        expect widget.querySelector ".social-count"
           .to.be.null
         done()
