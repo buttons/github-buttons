@@ -17,7 +17,7 @@ jobs:
           key: node-v1-{{ .Branch }}-{{ checksum "package-lock.json" }}
       - run: npm run build && git diff --exit-code -- :^package-lock.json
       - run: npm test -- --browsers ChromeHeadless,Firefox
-      - run: test -z "$CIRCLE_PULL_REQUEST" && ./node_modules/.bin/codecov
+      - run: test -z "$CIRCLE_PULL_REQUEST" && curl -s https://codecov.io/bash | bash
   deploy:
     docker:
       - image: circleci/node:latest-browsers
