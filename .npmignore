@@ -2,6 +2,5 @@
 /coverage/
 /src/
 /test/
-/coffeelint.json
 /karma.conf.js
 /rollup.config.js
