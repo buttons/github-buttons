@@ -34,8 +34,6 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "coffee-loader": "^0.9.0",
-    "coffeescript": "^2.3.2",
     "eslint": "^5.15.1",
     "eslint-config-standard": "^12.0.0",
     "eslint-plugin-import": "^2.16.0",

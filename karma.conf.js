@@ -6,7 +6,7 @@ module.exports = function (config) {
     frameworks: ['mocha', 'chai', 'sinon', 'sinon-chai'],
     reporters: ['mocha', 'coverage-istanbul'],
     preprocessors: {
-      '**/*.coffee': ['webpack', 'sourcemap']
+      'test/unit/**/*.js': ['webpack', 'sourcemap']
     },
     webpack: {
       mode: 'none',
@@ -14,8 +14,7 @@ module.exports = function (config) {
       resolve: {
         alias: {
           '@': path.resolve(__dirname, 'src')
-        },
-        extensions: ['.coffee', '.js', '.json']
+        }
       },
       module: {
         rules: [
@@ -34,16 +33,7 @@ module.exports = function (config) {
             ]
           },
           {
-            test: /\.coffee$/,
-            use: {
-              loader: 'coffee-loader',
-              options: {
-                sourceMap: true
-              }
-            }
-          },
-          {
-            test: /src\/.+\.(coffee|js)$/,
+            test: /src\/.+\.js$/,
             exclude: /node_modules/,
             loader: 'istanbul-instrumenter-loader',
             enforce: 'post',
@@ -60,7 +50,7 @@ module.exports = function (config) {
         }),
         new webpack.SourceMapDevToolPlugin({
           filename: null,
-          test: /\.(coffee|js)($|\?)/i
+          test: /\.js($|\?)/i
         })
       ]
     },
@@ -68,7 +58,7 @@ module.exports = function (config) {
       noInfo: true
     },
     files: [
-      'test/unit/**/*.coffee',
+      'test/unit/**/*.js',
       {
         pattern: 'test/fixtures/**/*',
         included: false,
