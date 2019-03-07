@@ -91,6 +91,7 @@ describe('Util', () => {
       expect(spy)
         .to.have.been.calledOnce
     })
+
     it('should dispatch func with arguments', () => {
       const spy = sinon.spy()
       const once = dispatchOnce(spy)

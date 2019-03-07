@@ -13,7 +13,8 @@ describe('QueryString', () => {
     it('should not stringify object when key in object does not have value', () => {
       expect(stringify({
         test: null
-      })).to.equal('')
+      }))
+        .to.equal('')
     })
 
     it('should stringify object when key in object does have value', () => {
