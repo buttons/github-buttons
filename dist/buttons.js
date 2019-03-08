@@ -28,7 +28,7 @@
 
   var useShadowDOM = HTMLElement && HTMLElement.prototype.attachShadow && !HTMLElement.prototype.attachShadow.prototype;
 
-  var useXHR = XMLHttpRequest && 'withCredentials' in XMLHttpRequest.prototype;
+  var useXHR = XMLHttpRequest && XMLHttpRequest.prototype && 'withCredentials' in XMLHttpRequest.prototype;
 
   var stringify = function (obj) {
     var params = [];

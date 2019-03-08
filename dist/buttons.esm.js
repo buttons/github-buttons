@@ -59,7 +59,7 @@ var apiBaseURL = 'https://api.github.com';
 
 var useShadowDOM = HTMLElement && HTMLElement.prototype.attachShadow && !HTMLElement.prototype.attachShadow.prototype;
 
-var useXHR = XMLHttpRequest && 'withCredentials' in XMLHttpRequest.prototype;
+var useXHR = XMLHttpRequest && XMLHttpRequest.prototype && 'withCredentials' in XMLHttpRequest.prototype;
 
 var onEvent = function (target, eventName, func) {
   /* istanbul ignore else: IE lt 9 */

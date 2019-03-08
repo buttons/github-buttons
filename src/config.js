@@ -28,8 +28,8 @@ export const setUseShadowDOM = /* istanbul ignore next: test only */ function (b
   useShadowDOM = boolean && HTMLElement && HTMLElement.prototype.attachShadow && !HTMLElement.prototype.attachShadow.prototype
 }
 
-export let useXHR = XMLHttpRequest && 'withCredentials' in XMLHttpRequest.prototype
+export let useXHR = XMLHttpRequest && XMLHttpRequest.prototype && 'withCredentials' in XMLHttpRequest.prototype
 
 export const setUseXHR = /* istanbul ignore next: test only */ function (boolean) {
-  useXHR = boolean && XMLHttpRequest && 'withCredentials' in XMLHttpRequest.prototype
+  useXHR = boolean && XMLHttpRequest && XMLHttpRequest.prototype && 'withCredentials' in XMLHttpRequest.prototype
 }
