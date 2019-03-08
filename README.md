@@ -32,6 +32,7 @@ render(options, function (el) {
 ### Use as a Component
 
 - [vue-github-button](https://github.com/ntkme/vue-github-button) for [Vue](https://vuejs.org)
+- [react-github-btn](https://github.com/ntkme/react-github-btn) for [React](https://reactjs.org)
 
 ### Options 
 
