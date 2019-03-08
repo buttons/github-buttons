@@ -3,8 +3,10 @@ import replace from 'rollup-plugin-replace'
 import resolve from 'rollup-plugin-node-resolve'
 import { terser } from 'rollup-plugin-terser'
 import sass from 'node-sass'
+import path from 'path'
+import fs from 'fs'
+import packageJSON from './package.json'
 
-const packageJSON = require('./package.json')
 const banner =
 `/*!
  * ${packageJSON.name} v${packageJSON.version}
@@ -44,18 +46,27 @@ const raw = function ({ name, filter, transform = (code) => code }) {
   }
 }
 
+const html = function ({ output: { file }, title = '\u200b' } = {}) {
+  const bundle = file
+  return {
+    name: 'html',
+    generateBundle ({ file }) {
+      return new Promise((resolve, reject) => {
+        fs.writeFile(bundle, `<!DOCTYPE html><html><head><meta charset="utf-8"><title>${title}</title><meta name="robots" content="noindex, nofollow"></head><body><script src="${path.relative(path.dirname(bundle), file)}"></script></body></html>`, (error) => {
+          if (error) reject(error)
+          resolve()
+        })
+      })
+    }
+  }
+}
+
 export default [
   {
-    input: 'src/main.js',
+    input: 'src/container.js',
     output: {
-      format: 'iife',
-      file: 'dist/buttons.js'
-    }
-  }, {
-    input: 'src/main.js',
-    output: {
-      format: 'iife',
-      file: 'dist/buttons.min.js'
+      format: 'cjs',
+      file: 'dist/buttons.common.js'
     }
   }, {
     input: 'src/container.js',
@@ -64,11 +75,31 @@ export default [
       file: 'dist/buttons.esm.js'
     }
   }, {
-    input: 'src/container.js',
+    input: 'src/main.js',
     output: {
-      format: 'cjs',
-      file: 'dist/buttons.common.js'
-    }
+      format: 'iife',
+      file: 'dist/buttons.js'
+    },
+    plugins: [
+      process.env.NODE_ENV !== 'production' && html({
+        output: {
+          file: 'dist/buttons.html'
+        }
+      })
+    ]
+  }, {
+    input: 'src/main.js',
+    output: {
+      format: 'iife',
+      file: 'dist/buttons.min.js'
+    },
+    plugins: [
+      process.env.NODE_ENV === 'production' && html({
+        output: {
+          file: 'dist/buttons.html'
+        }
+      })
+    ]
   }
 ].map(config => ({
   input: config.input,
@@ -77,6 +108,7 @@ export default [
     preferConst: false
   }),
   plugins: [
+    ...(config.plugins || []),
     resolve(),
     json({
       exclude: ['node_modules/**']
