@@ -21,7 +21,7 @@ export const render = function (root, options, func) {
     className: 'btn',
     href: options.href,
     target: '_blank',
-    innerHTML: octicon(options['data-icon'], /^large$/i.test(options['data-size']) ? 18 : 14),
+    innerHTML: octicon(options['data-icon'], /^large$/i.test(options['data-size']) ? 16 : 14),
     'aria-label': options['aria-label'] || void 0
   }, [
     ' ',
@@ -35,7 +35,7 @@ export const render = function (root, options, func) {
   }
 
   const widget = root.appendChild(createElement('div', {
-    className: 'widget' + (/^large$/i.test(options['data-size']) ? ' large' : '')
+    className: 'widget' + (/^large$/i.test(options['data-size']) ? ' lg' : '')
   }, [
     btn
   ]))

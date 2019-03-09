@@ -29,7 +29,7 @@ export const render = function (options, func) {
       scrolling: 'no',
       frameBorder: 0
     })
-    setSize(iframe, [1, 0])
+    setSize(iframe, [0, 0])
     iframe.style.border = 'none'
     const callback = function () {
       const contentWindow = iframe.contentWindow

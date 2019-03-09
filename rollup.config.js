@@ -20,7 +20,7 @@ const raw = function ({ name, filter, transform = (code) => code }) {
     transform (code, id) {
       if (!filter(id)) return null
 
-      code = `export default ${JSON.stringify(transform(code))}`
+      code = `export default ${JSON.stringify(transform(code, id))}`
 
       const ast = {
         type: 'Program',
@@ -142,10 +142,10 @@ export default [
       filter (id) {
         return id.endsWith('sass') || id.endsWith('scss')
       },
-      transform (code) {
+      transform (code, id) {
         return sass.renderSync({
-          data: code,
-          outputStyle: 'compressed'
+          file: id,
+          outputStyle: process.env.DEBUG ? 'nested' : 'compressed'
         }).css.toString()
       }
     }),

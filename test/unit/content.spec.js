@@ -37,17 +37,17 @@ describe('Content', () => {
       render(root, {}, () => {
         expect(root.querySelector('.widget'))
           .to.be.an.instanceof(HTMLElement)
-        expect(root.querySelector('.widget.large'))
+        expect(root.querySelector('.widget.lg'))
           .to.be.null
         done()
       })
     })
 
-    it('should add large to widget.className when data-size is large', (done) => {
+    it('should add lg to widget.className when data-size is large', (done) => {
       render(root, {
         'data-size': 'large'
       }, () => {
-        expect(root.querySelector('.widget.large'))
+        expect(root.querySelector('.widget.lg'))
           .to.be.an.instanceof(HTMLElement)
         done()
       })

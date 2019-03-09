@@ -2,12 +2,12 @@ import { Math } from './globals'
 import { ceilPixel } from './pixel'
 
 export const get = function (el) {
-  let width = el.scrollWidth
-  let height = el.scrollHeight
+  let width = el.offsetWidth
+  let height = el.offsetHeight
   if (el.getBoundingClientRect) {
     let boundingClientRect = el.getBoundingClientRect()
-    width = Math.max(width, ceilPixel(boundingClientRect.width || boundingClientRect.right - boundingClientRect.left))
-    height = Math.max(height, ceilPixel(boundingClientRect.height || boundingClientRect.bottom - boundingClientRect.top))
+    width = Math.max(width, ceilPixel(boundingClientRect.width || 0))
+    height = Math.max(height, ceilPixel(boundingClientRect.height || 0))
   }
   return [width, height]
 }
