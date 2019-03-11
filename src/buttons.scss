@@ -76,7 +76,6 @@ a {
   vertical-align: bottom;
   cursor: pointer;
   border: 1px solid blend($btn-border-color, $btn-background-color);
-  border-color: $btn-border-color;
   border-radius: 0.25em;
 }
 
@@ -86,6 +85,7 @@ a {
   background-position: -1px -1px;
   background-repeat: repeat-x;
   background-size: 110% 110%;
+  border-color: $btn-border-color;
   @include -ms-linear-gradient($btn-background-color-start, $btn-background-color-stop);
 
   &:active {
@@ -132,10 +132,8 @@ a {
 
   b {
     margin: -3px 0 0 -4px;
-    border-right-color: blend($btn-border-color, $social-count-background-color);
-    border-right-color: $btn-border-color;
+    border-right-color: blend($btn-border-color, $btn-background-color);
     border-width: 3px 3px 3px 0;
-    *border-right-color: blend($btn-border-color, $social-count-background-color);
   }
 
   i {
