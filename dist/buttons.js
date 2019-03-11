@@ -369,7 +369,7 @@
         try {
           body = contentWindow.document.body;
         } catch (_) /* istanbul ignore next: IE 11 */ {
-          document.body.appendChild(document.body.removeChild(iframe));
+          document.body.appendChild(iframe.parentNode.removeChild(iframe));
           return
         }
         offEvent(iframe, 'load', callback);
