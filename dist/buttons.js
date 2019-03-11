@@ -81,14 +81,14 @@
   };
 
   var onceReadyStateChange = /* istanbul ignore next: IE lt 9 */ function (target, regex, func) {
-    var eventName = 'onreadystatechange';
+    var eventName = 'readystatechange';
     var callback = function (event) {
       if (regex.test(target.readyState)) {
-        target.detachEvent(eventName, callback);
+        offEvent(target, eventName, callback);
         return func(event)
       }
     };
-    target.attachEvent(eventName, callback);
+    onEvent(target, eventName, callback);
   };
 
   var createElementInDocument = function (document) {

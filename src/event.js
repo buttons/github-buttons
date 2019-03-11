@@ -25,12 +25,12 @@ export const onceEvent = function (target, eventName, func) {
 }
 
 export const onceReadyStateChange = /* istanbul ignore next: IE lt 9 */ function (target, regex, func) {
-  const eventName = 'onreadystatechange'
+  const eventName = 'readystatechange'
   const callback = function (event) {
     if (regex.test(target.readyState)) {
-      target.detachEvent(eventName, callback)
+      offEvent(target, eventName, callback)
       return func(event)
     }
   }
-  target.attachEvent(eventName, callback)
+  onEvent(target, eventName, callback)
 }
