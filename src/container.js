@@ -1,7 +1,7 @@
 import { document } from './globals'
 import { createElement } from './util'
 import { iframeURL, useShadowDOM } from './config'
-import { onceEvent } from './event'
+import { onEvent, offEvent, onceEvent } from './event'
 import { parseOptions } from './options'
 import { render as renderContent } from './content'
 import { stringify as stringifyQueryString } from './querystring'
@@ -31,18 +31,27 @@ export const render = function (options, func) {
     })
     setSize(iframe, [1, 0])
     iframe.style.border = 'none'
-    onceEvent(iframe, 'load', function () {
+    const callback = function () {
       const contentWindow = iframe.contentWindow
-      renderContent.call(contentWindow, contentWindow.document.body, options, function (widget) {
+      let body
+      try {
+        body = contentWindow.document.body
+      } catch (_) /* istanbul ignore next: IE 11 */ {
+        document.body.appendChild(document.body.removeChild(iframe))
+        return
+      }
+      offEvent(iframe, 'load', callback)
+      renderContent.call(contentWindow, body, options, function (widget) {
         const size = getSize(widget)
         iframe.parentNode.removeChild(iframe)
         onceEvent(iframe, 'load', function () {
           setSize(iframe, size)
         })
-        iframe.src = iframeURL + '#' + stringifyQueryString(options)
+        iframe.src = iframeURL + '#' + (iframe.name = stringifyQueryString(options))
         func(iframe)
       })
-    })
+    }
+    onEvent(iframe, 'load', callback)
     document.body.appendChild(iframe)
   }
 }

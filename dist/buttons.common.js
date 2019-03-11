@@ -74,14 +74,18 @@ var onEvent = function (target, eventName, func) {
   }
 };
 
+var offEvent = function (target, eventName, func) {
+  /* istanbul ignore else: IE lt 9 */
+  if (target.removeEventListener) {
+    target.removeEventListener(eventName, func);
+  } else {
+    target.detachEvent('on' + eventName, func);
+  }
+};
+
 var onceEvent = function (target, eventName, func) {
   var callback = function (event) {
-    /* istanbul ignore else: IE lt 9 */
-    if (target.removeEventListener) {
-      target.removeEventListener(eventName, callback);
-    } else {
-      target.detachEvent('on' + eventName, callback);
-    }
+    offEvent(target, eventName, callback);
     return func(event)
   };
   onEvent(target, eventName, callback);
@@ -330,18 +334,27 @@ var render$1 = function (options, func) {
     });
     set(iframe, [1, 0]);
     iframe.style.border = 'none';
-    onceEvent(iframe, 'load', function () {
+    var callback = function () {
       var contentWindow = iframe.contentWindow;
-      render.call(contentWindow, contentWindow.document.body, options, function (widget) {
+      var body;
+      try {
+        body = contentWindow.document.body;
+      } catch (_) /* istanbul ignore next: IE 11 */ {
+        document.body.appendChild(document.body.removeChild(iframe));
+        return
+      }
+      offEvent(iframe, 'load', callback);
+      render.call(contentWindow, body, options, function (widget) {
         var size = get(widget);
         iframe.parentNode.removeChild(iframe);
         onceEvent(iframe, 'load', function () {
           set(iframe, size);
         });
-        iframe.src = iframeURL + '#' + stringify(options);
+        iframe.src = iframeURL + '#' + (iframe.name = stringify(options));
         func(iframe);
       });
-    });
+    };
+    onEvent(iframe, 'load', callback);
     document.body.appendChild(iframe);
   }
 };

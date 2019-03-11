@@ -7,14 +7,18 @@ export const onEvent = function (target, eventName, func) {
   }
 }
 
+export const offEvent = function (target, eventName, func) {
+  /* istanbul ignore else: IE lt 9 */
+  if (target.removeEventListener) {
+    target.removeEventListener(eventName, func)
+  } else {
+    target.detachEvent('on' + eventName, func)
+  }
+}
+
 export const onceEvent = function (target, eventName, func) {
   const callback = function (event) {
-    /* istanbul ignore else: IE lt 9 */
-    if (target.removeEventListener) {
-      target.removeEventListener(eventName, callback)
-    } else {
-      target.detachEvent('on' + eventName, callback)
-    }
+    offEvent(target, eventName, callback)
     return func(event)
   }
   onEvent(target, eventName, callback)
