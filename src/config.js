@@ -4,13 +4,12 @@ import {
 } from '../package'
 import {
   HTMLElement,
-  XMLHttpRequest,
-  location
+  XMLHttpRequest
 } from './globals'
 
 export const buttonClass = 'github-button'
 
-export let iframeURL = (/* istanbul ignore next */ /^http:/.test(location) ? 'http' : 'https') + '://' + (/* istanbul ignore next */ process.env.NODE_ENV === 'production' ? 'unpkg.com/' + name + '@' + version + '/dist' : 'buttons.github.io') + '/buttons.html'
+export let iframeURL = 'https://' + (/* istanbul ignore next */ process.env.NODE_ENV === 'production' ? 'unpkg.com/' + name + '@' + version + '/dist' : 'buttons.github.io') + '/buttons.html'
 
 export const setIframeURL = /* istanbul ignore next: test only */ function (url) {
   iframeURL = url

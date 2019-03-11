@@ -22,7 +22,7 @@
 
   var buttonClass = 'github-button';
 
-  var iframeURL = (/* istanbul ignore next */ /^http:/.test(location) ? 'http' : 'https') + '://' + (/* istanbul ignore next */ 'buttons.github.io') + '/buttons.html';
+  var iframeURL = 'https://' + (/* istanbul ignore next */ 'buttons.github.io') + '/buttons.html';
 
   var apiBaseURL = 'https://api.github.com';
 
