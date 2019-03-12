@@ -52,7 +52,7 @@ const html = function ({ output: { file }, title = '\u200b' } = {}) {
     name: 'html',
     generateBundle ({ file }) {
       return new Promise((resolve, reject) => {
-        fs.writeFile(bundle, `<!DOCTYPE html><html><head><meta charset="utf-8"><title>${title}</title><meta name="robots" content="noindex, nofollow"></head><body><script src="${path.relative(path.dirname(bundle), file)}"></script></body></html>`, (error) => {
+        fs.writeFile(bundle, `<!doctype html><meta charset=utf-8><title>${title}</title><meta content="noindex, nofollow" name=robots><body><script src=${path.relative(path.dirname(bundle), file)}></script>`, (error) => {
           if (error) reject(error)
           resolve()
         })
