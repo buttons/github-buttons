@@ -122,7 +122,9 @@ a {
     display: block;
     width: 0;
     height: 0;
+    margin: -4px 0 0 -4px;
     border: solid transparent;
+    border-width: 4px 4px 4px 0;
     _line-height: 0;
     _border-top-color: red!important;
     _border-bottom-color: red!important;
@@ -131,15 +133,12 @@ a {
   }
 
   b {
-    margin: -3px 0 0 -4px;
     border-right-color: blend($btn-border-color, $btn-background-color);
-    border-width: 3px 3px 3px 0;
   }
 
   i {
-    margin: -4px 0 0 -3px;
+    margin-left: -3px;
     border-right-color: $social-count-background-color;
-    border-width: 4px 4px 4px 0;
   }
 }
 
@@ -155,14 +154,14 @@ a {
   .social-count {
     margin-left: 6px;
 
-    b {
-      margin: -4px 0 0 -5px;
-      border-width: 4px 4px 4px 0;
+    b,
+    i {
+      margin: -5px 0 0 -5px;
+      border-width: 5px 5px 5px 0;
     }
 
     i {
-      margin: -5px 0 0 -4px;
-      border-width: 5px 5px 5px 0;
+      margin-left: -4px;
     }
   }
 }
