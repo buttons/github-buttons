@@ -151,7 +151,9 @@ var fetch = function (url, func) {
       callback(xhr.status !== 200, (function () {
         try {
           return JSON.parse(xhr.responseText)
-        } catch (_) {}
+        } catch (error) {
+          callback(error);
+        }
       })());
     });
     xhr.open('GET', url);

@@ -32,6 +32,14 @@ describe('Fetch', () => {
       })
     })
 
+    it('should handle http 200 with corrupted json via xhr', (done) => {
+      fetch('/base/test/fixtures/jsonp/api.github.com/users/ntkme', (error, data) => {
+        expect(error)
+          .to.be.ok
+        done()
+      })
+    })
+
     it('should combine identical pending requests via xhr', (done) => {
       Promise.all([
         new Promise((resolve, reject) => {
