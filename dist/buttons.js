@@ -254,7 +254,9 @@
     var match;
     if (!(/^(true|1)$/i.test(options['data-show-count']) && btn.hostname === 'github.com') ||
         !((match = btn.pathname.replace(/^(?!\/)/, '/').match(/^\/([^/?#]+)(?:\/([^/?#]+)(?:\/(?:(subscription)|(fork)|(issues)|([^/?#]+)))?)?(?:[/?#]|$)/)) && !match[6])) {
-      func(widget);
+      if (func) {
+        func(widget);
+      }
       return
     }
 
@@ -292,7 +294,9 @@
           createElement('span', {}, [('' + data).replace(/\B(?=(\d{3})+(?!\d))/g, ',')])
         ]));
       }
-      func(widget);
+      if (func) {
+        func(widget);
+      }
     });
   };
 
