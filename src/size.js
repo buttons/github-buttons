@@ -6,8 +6,8 @@ export const get = function (el) {
   let height = el.offsetHeight
   if (el.getBoundingClientRect) {
     let boundingClientRect = el.getBoundingClientRect()
-    width = Math.max(width, ceilPixel(boundingClientRect.width || 0))
-    height = Math.max(height, ceilPixel(boundingClientRect.height || 0))
+    width = Math.max(width, ceilPixel(boundingClientRect.width))
+    height = Math.max(height, ceilPixel(boundingClientRect.height))
   }
   return [width, height]
 }

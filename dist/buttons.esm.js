@@ -45,9 +45,10 @@ var createElementInDocument = function (document) {
 var createElement = createElementInDocument(document);
 
 var dispatchOnce = function (func) {
-  var onceToken = 0;
+  var onceToken;
   return function () {
-    if (!onceToken && (onceToken = 1)) {
+    if (!onceToken) {
+      onceToken = 1;
       func.apply(this, arguments);
     }
   }
@@ -57,9 +58,9 @@ var iframeURL = 'https://' + (/* istanbul ignore next */ 'buttons.github.io') + 
 
 var apiBaseURL = 'https://api.github.com';
 
-var useShadowDOM = HTMLElement && HTMLElement.prototype.attachShadow && !HTMLElement.prototype.attachShadow.prototype;
-
 var useXHR = XMLHttpRequest && XMLHttpRequest.prototype && 'withCredentials' in XMLHttpRequest.prototype;
+
+var useShadowDOM = useXHR && HTMLElement && HTMLElement.prototype.attachShadow && !HTMLElement.prototype.attachShadow.prototype;
 
 var onEvent = function (target, eventName, func) {
   /* istanbul ignore else: IE lt 9 */
@@ -147,14 +148,15 @@ var fetch = function (url, func) {
     onEvent(xhr, 'abort', callback);
     onEvent(xhr, 'error', callback);
     onEvent(xhr, 'load', function () {
+      var data;
+      try {
+        data = JSON.parse(xhr.responseText);
+      } catch (error) {
+        callback(error);
+        return
+      }
       // eslint-disable-next-line standard/no-callback-literal
-      callback(xhr.status !== 200, (function () {
-        try {
-          return JSON.parse(xhr.responseText)
-        } catch (error) {
-          callback(error);
-        }
-      })());
+      callback(xhr.status !== 200, data);
     });
     xhr.open('GET', url);
     xhr.send();
@@ -222,21 +224,13 @@ var render = function (root, options, func) {
     btn
   ]));
 
-  var callback = function () {
-    if (func) {
-      func(widget);
-    }
-  };
+  var match;
+  if (!(/^(true|1)$/i.test(options['data-show-count']) && btn.hostname === 'github.com') ||
+      !((match = btn.pathname.replace(/^(?!\/)/, '/').match(/^\/([^/?#]+)(?:\/([^/?#]+)(?:\/(?:(subscription)|(fork)|(issues)|([^/?#]+)))?)?(?:[/?#]|$)/)) && !match[6])) {
+    func(widget);
+    return
+  }
 
-  if (!(/^(true|1)$/i.test(options['data-show-count']) && btn.hostname === 'github.com')) {
-    callback();
-    return
-  }
-  var match = btn.pathname.replace(/^(?!\/)/, '/').match(/^\/([^/?#]+)(?:\/([^/?#]+)(?:\/(?:(subscription)|(fork)|(issues)|([^/?#]+)))?)?(?:[/?#]|$)/);
-  if (!(match && !match[6])) {
-    callback();
-    return
-  }
   var api, href, property;
   if (match[2]) {
     api = '/repos/' + match[1] + '/' + match[2];
@@ -271,7 +265,7 @@ var render = function (root, options, func) {
         createElement('span', {}, [('' + data).replace(/\B(?=(\d{3})+(?!\d))/g, ',')])
       ]));
     }
-    callback();
+    func(widget);
   });
 };
 
@@ -297,8 +291,8 @@ var get = function (el) {
   var height = el.offsetHeight;
   if (el.getBoundingClientRect) {
     var boundingClientRect = el.getBoundingClientRect();
-    width = Math.max(width, ceilPixel(boundingClientRect.width || 0));
-    height = Math.max(height, ceilPixel(boundingClientRect.height || 0));
+    width = Math.max(width, ceilPixel(boundingClientRect.width));
+    height = Math.max(height, ceilPixel(boundingClientRect.height));
   }
   return [width, height]
 };

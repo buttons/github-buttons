@@ -28,9 +28,10 @@ export const createElementInDocument = function (document) {
 export const createElement = createElementInDocument(document)
 
 export const dispatchOnce = function (func) {
-  let onceToken = 0
+  let onceToken
   return function () {
-    if (!onceToken && (onceToken = 1)) {
+    if (!onceToken) {
+      onceToken = 1
       func.apply(this, arguments)
     }
   }

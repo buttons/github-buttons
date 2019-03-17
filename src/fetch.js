@@ -29,14 +29,15 @@ export const fetch = function (url, func) {
     onEvent(xhr, 'abort', callback)
     onEvent(xhr, 'error', callback)
     onEvent(xhr, 'load', function () {
+      let data
+      try {
+        data = JSON.parse(xhr.responseText)
+      } catch (error) {
+        callback(error)
+        return
+      }
       // eslint-disable-next-line standard/no-callback-literal
-      callback(xhr.status !== 200, (function () {
-        try {
-          return JSON.parse(xhr.responseText)
-        } catch (error) {
-          callback(error)
-        }
-      })())
+      callback(xhr.status !== 200, data)
     })
     xhr.open('GET', url)
     xhr.send()

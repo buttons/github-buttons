@@ -40,21 +40,13 @@ export const render = function (root, options, func) {
     btn
   ]))
 
-  const callback = function () {
-    if (func) {
-      func(widget)
-    }
+  let match
+  if (!(/^(true|1)$/i.test(options['data-show-count']) && btn.hostname === 'github.com') ||
+      !((match = btn.pathname.replace(/^(?!\/)/, '/').match(/^\/([^/?#]+)(?:\/([^/?#]+)(?:\/(?:(subscription)|(fork)|(issues)|([^/?#]+)))?)?(?:[/?#]|$)/)) && !match[6])) {
+    func(widget)
+    return
   }
 
-  if (!(/^(true|1)$/i.test(options['data-show-count']) && btn.hostname === 'github.com')) {
-    callback()
-    return
-  }
-  const match = btn.pathname.replace(/^(?!\/)/, '/').match(/^\/([^/?#]+)(?:\/([^/?#]+)(?:\/(?:(subscription)|(fork)|(issues)|([^/?#]+)))?)?(?:[/?#]|$)/)
-  if (!(match && !match[6])) {
-    callback()
-    return
-  }
   let api, href, property
   if (match[2]) {
     api = '/repos/' + match[1] + '/' + match[2]
@@ -89,6 +81,6 @@ export const render = function (root, options, func) {
         createElement('span', {}, [('' + data).replace(/\B(?=(\d{3})+(?!\d))/g, ',')])
       ]))
     }
-    callback()
+    func(widget)
   })
 }

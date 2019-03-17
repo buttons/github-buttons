@@ -21,10 +21,6 @@ describe('Content', () => {
   })
 
   describe('render(root, config, callback)', () => {
-    it('should work', () => {
-      render(root, {})
-    })
-
     it('should render stylesheet', (done) => {
       render(root, {}, () => {
         expect(root.querySelector('style'))
