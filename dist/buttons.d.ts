@@ -1,4 +1,4 @@
-export interface GitHubButtonOptions {
+export interface GitHubButtonProps {
   "href": string;
   "aria-label"?: string;
   "title"?: string;
@@ -8,4 +8,4 @@ export interface GitHubButtonOptions {
   "data-text"?: string;
 }
 
-export function render(options: GitHubButtonOptions | HTMLAnchorElement, callback: (el: HTMLIFrameElement | HTMLSpanElement) => void): void;
+export function render(props: GitHubButtonProps | HTMLAnchorElement, callback: (el: HTMLIFrameElement | HTMLSpanElement) => void): void;
