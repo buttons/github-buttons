@@ -5,7 +5,7 @@ import {
 
 export const stringify = function (obj) {
   const params = []
-  for (let name in obj) {
+  for (const name in obj) {
     const value = obj[name]
     if (value != null) {
       params.push(encodeURIComponent(name) + '=' + encodeURIComponent(value))

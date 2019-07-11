@@ -36,7 +36,6 @@ export const fetch = function (url, func) {
         callback(error)
         return
       }
-      // eslint-disable-next-line standard/no-callback-literal
       callback(xhr.status !== 200, data)
     })
     xhr.open('GET', url)
@@ -45,7 +44,6 @@ export const fetch = function (url, func) {
     const contentWindow = this || window
     contentWindow._ = function (json) {
       contentWindow._ = null
-      // eslint-disable-next-line standard/no-callback-literal
       callback(json.meta.status !== 200, json.data)
     }
     const script = createElementInDocument(contentWindow.document)('script', {

@@ -4,7 +4,7 @@ export const createElementInDocument = function (document) {
   return function (tag, props, children) {
     const el = document.createElement(tag)
     if (props) {
-      for (let prop in props) {
+      for (const prop in props) {
         const val = props[prop]
         if (val != null) {
           if (el[prop] != null) {

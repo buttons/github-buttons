@@ -3,5 +3,8 @@
   "extends": "standard",
   "env": {
     "browser": true
+  },
+  "rules": {
+    "standard/no-callback-literal": "off"
   }
 }

@@ -13,8 +13,8 @@ describe('Options', () => {
     it('should parse the anchor without attribute', () => {
       expect(parseOptions(a))
         .to.deep.equal({
-          'href': '',
-          'title': '',
+          href: '',
+          title: '',
           'data-text': '',
           'aria-label': null,
           'data-icon': null,

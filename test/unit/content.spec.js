@@ -71,7 +71,7 @@ describe('Content', () => {
 
     it('should append the button with given href', (done) => {
       const config = {
-        'href': 'https://ntkme.github.com/'
+        href: 'https://ntkme.github.com/'
       }
       render(root, config, () => {
         expect(root.querySelector('.btn').getAttribute('href'))
@@ -82,7 +82,7 @@ describe('Content', () => {
 
     it('should create a button with href # if domain is not github', (done) => {
       render(root, {
-        'href': 'https://twitter/ntkme'
+        href: 'https://twitter/ntkme'
       }, () => {
         expect(root.querySelector('.btn').href)
           .to.equal(document.location.href + '#')
@@ -188,7 +188,7 @@ describe('Content', () => {
 
     it('should append the count when a known button type is given', (done) => {
       const config = {
-        'href': 'https://github.com/ntkme',
+        href: 'https://github.com/ntkme',
         'data-show-count': 'true'
       }
       render(root, config, (widget) => {
@@ -200,7 +200,7 @@ describe('Content', () => {
 
     it('should append the count for follow button', (done) => {
       const config = {
-        'href': 'https://github.com/ntkme',
+        href: 'https://github.com/ntkme',
         'data-show-count': 'true'
       }
       render(root, config, (widget) => {
@@ -217,7 +217,7 @@ describe('Content', () => {
 
     it('should append the count for watch button', (done) => {
       const config = {
-        'href': 'https://github.com/ntkme/github-buttons/subscription',
+        href: 'https://github.com/ntkme/github-buttons/subscription',
         'data-show-count': 'true'
       }
       render(root, config, (widget) => {
@@ -234,7 +234,7 @@ describe('Content', () => {
 
     it('should append the count for star button', (done) => {
       const config = {
-        'href': 'https://github.com/ntkme/github-buttons',
+        href: 'https://github.com/ntkme/github-buttons',
         'data-show-count': 'true'
       }
       render(root, config, (widget) => {
@@ -251,7 +251,7 @@ describe('Content', () => {
 
     it('should append the count for fork button', (done) => {
       const config = {
-        'href': 'https://github.com/ntkme/github-buttons/fork',
+        href: 'https://github.com/ntkme/github-buttons/fork',
         'data-show-count': 'true'
       }
       render(root, config, (widget) => {
@@ -268,7 +268,7 @@ describe('Content', () => {
 
     it('should append the count for issue button', (done) => {
       const config = {
-        'href': 'https://github.com/ntkme/github-buttons/issues',
+        href: 'https://github.com/ntkme/github-buttons/issues',
         'data-show-count': 'true'
       }
       render(root, config, (widget) => {
@@ -285,7 +285,7 @@ describe('Content', () => {
 
     it('should append the count for issue button when it links to new issue', (done) => {
       const config = {
-        'href': 'https://github.com/ntkme/github-buttons/issues/new',
+        href: 'https://github.com/ntkme/github-buttons/issues/new',
         'data-show-count': 'true'
       }
       render(root, config, (widget) => {
@@ -302,7 +302,7 @@ describe('Content', () => {
 
     it('should append the count for button whose link has a tailing slash', (done) => {
       const config = {
-        'href': 'https://github.com/ntkme/',
+        href: 'https://github.com/ntkme/',
         'data-show-count': 'true'
       }
       render(root, config, (widget) => {
@@ -315,7 +315,7 @@ describe('Content', () => {
 
     it('should append the count for button whose link has a query', (done) => {
       const config = {
-        'href': 'https://github.com/ntkme?tab=repositories',
+        href: 'https://github.com/ntkme?tab=repositories',
         'data-show-count': 'true'
       }
       render(root, config, (widget) => {
@@ -328,7 +328,7 @@ describe('Content', () => {
 
     it('should append the count for button whose link has a hash', (done) => {
       const config = {
-        'href': 'https://github.com/ntkme#github-buttons',
+        href: 'https://github.com/ntkme#github-buttons',
         'data-show-count': 'true'
       }
       render(root, config, (widget) => {
@@ -341,7 +341,7 @@ describe('Content', () => {
 
     it('should append the count for button whose link has both a tailing slash and a query', (done) => {
       const config = {
-        'href': 'https://github.com/ntkme/?tab=repositories',
+        href: 'https://github.com/ntkme/?tab=repositories',
         'data-show-count': 'true'
       }
       render(root, config, (widget) => {
@@ -354,7 +354,7 @@ describe('Content', () => {
 
     it('should append the count for button whose link has both a tailing slash and a hash', (done) => {
       const config = {
-        'href': 'https://github.com/ntkme/#github-buttons',
+        href: 'https://github.com/ntkme/#github-buttons',
         'data-show-count': 'true'
       }
       render(root, config, (widget) => {
@@ -367,7 +367,7 @@ describe('Content', () => {
 
     it('should append the count for button whose link has a tailing slash, a query, and a hash', (done) => {
       const config = {
-        'href': 'https://github.com/ntkme/?tab=repositories#github-buttons',
+        href: 'https://github.com/ntkme/?tab=repositories#github-buttons',
         'data-show-count': 'true'
       }
       render(root, config, (widget) => {
@@ -380,7 +380,7 @@ describe('Content', () => {
 
     it('should not append the count for unknown button type', (done) => {
       const config = {
-        'href': 'https://github.com/',
+        href: 'https://github.com/',
         'data-show-count': 'true'
       }
       render(root, config, (widget) => {
@@ -392,7 +392,7 @@ describe('Content', () => {
 
     it('should append button without count when count has error', (done) => {
       const config = {
-        'href': 'https://github.com/404',
+        href: 'https://github.com/404',
         'data-show-count': 'true'
       }
       render(root, config, (widget) => {
