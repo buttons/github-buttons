@@ -58,7 +58,7 @@ var dispatchOnce = function (func) {
   }
 };
 
-var iframeURL = 'https://' + (/* istanbul ignore next */ 'buttons.github.io') + '/buttons.html';
+var iframeURL = 'https://' + (/* istanbul ignore next */  'buttons.github.io') + '/buttons.html';
 
 var apiBaseURL = 'https://api.github.com';
 
