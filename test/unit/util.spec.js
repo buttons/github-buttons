@@ -1,7 +1,8 @@
 import {
   createElementInDocument,
   createElement,
-  dispatchOnce
+  dispatchOnce,
+  hasOwnProperty
 } from '@/util'
 
 describe('Util', () => {
@@ -107,6 +108,20 @@ describe('Util', () => {
     it('should discard func return', () => {
       expect(dispatchOnce(() => true)())
         .to.be.undefined
+    })
+  })
+
+  describe('hasOwnProperty(obj, prop)', () => {
+    it('should work', () => {
+      const obj = { hello: 'world' }
+      expect(hasOwnProperty(obj, 'hello'))
+        .to.be.true
+      expect(hasOwnProperty(obj, 'world'))
+        .to.be.false
+      expect(hasOwnProperty(obj, 'constructor'))
+        .to.be.false
+      expect(hasOwnProperty(obj, '__proto__'))
+        .to.be.false
     })
   })
 })

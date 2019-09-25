@@ -1,5 +1,8 @@
-import cssText from './buttons.scss'
 import { createElementInDocument } from './util'
+import {
+  buttons as buttonsCssText,
+  getColorScheme as getColorSchemeCssText
+} from './css'
 import { apiBaseURL } from './config'
 import { octicon } from './octicons'
 import { fetch } from './fetch'
@@ -10,6 +13,9 @@ export const render = function (root, options, func) {
   const style = root.appendChild(createElement('style', {
     type: 'text/css'
   }))
+
+  const cssText = buttonsCssText + getColorSchemeCssText(options['data-color-scheme'])
+
   /* istanbul ignore if: IE lt 9 */
   if (style.styleSheet) {
     style.styleSheet.cssText = cssText
@@ -22,7 +28,7 @@ export const render = function (root, options, func) {
     href: options.href,
     target: '_blank',
     innerHTML: octicon(options['data-icon'], /^large$/i.test(options['data-size']) ? 16 : 14),
-    'aria-label': options['aria-label'] || void 0
+    'aria-label': options['aria-label'] || undefined
   }, [
     ' ',
     createElement('span', {}, [options['data-text'] || ''])
@@ -35,7 +41,7 @@ export const render = function (root, options, func) {
   }
 
   const widget = root.appendChild(createElement('div', {
-    className: 'widget' + (/^large$/i.test(options['data-size']) ? ' lg' : '')
+    className: 'widget' + (/^large$/i.test(options['data-size']) ? ' widget-lg' : '')
   }, [
     btn
   ]))
@@ -76,7 +82,7 @@ export const render = function (root, options, func) {
         className: 'social-count',
         href: json.html_url + '/' + href,
         target: '_blank',
-        'aria-label': data + ' ' + property.replace(/_count$/, '').replace('_', ' ').slice(0, data < 2 ? -1 : void 0) + ' on GitHub'
+        'aria-label': data + ' ' + property.replace(/_count$/, '').replace('_', ' ').slice(0, data < 2 ? -1 : undefined) + ' on GitHub'
       }, [
         createElement('b'),
         createElement('i'),

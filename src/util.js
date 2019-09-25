@@ -36,3 +36,7 @@ export const dispatchOnce = function (func) {
     }
   }
 }
+
+export const hasOwnProperty = function (obj, prop) {
+  return {}.hasOwnProperty.call(obj, prop)
+}

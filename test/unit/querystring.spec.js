@@ -57,7 +57,7 @@ describe('QueryString', () => {
     it('should parse string when a key does not have value or have empty value', () => {
       expect(parse('hello&test='))
         .to.deep.equal({
-          hello: void 0,
+          hello: undefined,
           test: ''
         })
     })

@@ -27,7 +27,9 @@ module.exports = function (config) {
               {
                 loader: 'sass-loader',
                 options: {
-                  outputStyle: 'compressed'
+                  sassOptions: {
+                    outputStyle: 'compressed'
+                  }
                 }
               }
             ]
