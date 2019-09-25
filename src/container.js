@@ -16,7 +16,7 @@ export const render = function (options, func) {
   }
   if (useShadowDOM) {
     const host = createElement('span', {
-      title: options.title || void 0
+      title: options.title || undefined
     })
     renderContent(host.attachShadow({ mode: 'closed' }), options, function () {
       func(host)
@@ -24,7 +24,7 @@ export const render = function (options, func) {
   } else {
     const iframe = createElement('iframe', {
       src: 'javascript:0',
-      title: options.title || void 0,
+      title: options.title || undefined,
       allowtransparency: true,
       scrolling: 'no',
       frameBorder: 0

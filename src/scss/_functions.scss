@@ -1,0 +1,6 @@
+@function blend($color, $background-color: #fff) {
+  $red: ((1 - alpha($color)) * red($background-color)) + (alpha($color) * red($color));
+  $green: ((1 - alpha($color)) * green($background-color)) + (alpha($color) * green($color));
+  $blue: ((1 - alpha($color)) * blue($background-color)) + (alpha($color) * blue($color));
+  @return rgb($red, $green, $blue);
+}

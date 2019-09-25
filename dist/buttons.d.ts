@@ -3,6 +3,7 @@ export interface GitHubButtonProps {
   "aria-label"?: string;
   "title"?: string;
   "data-icon"?: string;
+  "data-color-scheme"?: string;
   "data-size"?: string;
   "data-show-count"?: boolean;
   "data-text"?: string;

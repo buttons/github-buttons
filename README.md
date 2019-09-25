@@ -3,6 +3,7 @@ github-buttons
 
 [![CircleCI](https://img.shields.io/circleci/project/github/ntkme/github-buttons/master.svg)](https://circleci.com/gh/ntkme/github-buttons)
 [![Codecov](https://img.shields.io/codecov/c/github/ntkme/github-buttons.svg)](https://codecov.io/gh/ntkme/github-buttons)
+[![npm](https://img.shields.io/npm/v/github-buttons)](https://www.npmjs.com/github-buttons)
 
 Usage
 -----
@@ -13,44 +14,89 @@ Get started quickly with **[github:button configurator](https://buttons.github.i
 
 The source code for the configurator is available at [ntkme/github-buttons-app](https://github.com/ntkme/github-buttons-app).
 
-### Use as a Module
-
-``` javascript
-import { render } from 'github-buttons'
-
-// export function render(anchor: HTMLAnchorElement, callback: (el: HTMLElement) => void): void;
-render(anchor, function (el) {
-  anchor.parentNode.replaceChild(el, anchor)
-})
-
-// export function render(options: object, callback: (el: HTMLElement) => void): void;
-render(options, function (el) {
-  document.body.appendChild(el) 
-})
-```
-
 ### Use as a Component
 
 - [vue-github-button](https://github.com/ntkme/vue-github-button) for [Vue](https://vuejs.org)
 - [react-github-btn](https://github.com/ntkme/react-github-btn) for [React](https://reactjs.org)
 
-### Options 
+### Use as a Module
 
-These options are the same for all the use cases described above:
+``` javascript
+import { render } from 'github-buttons'
 
-| Attribute         | Description                                                                                                           |
-| ---------         | -----------                                                                                                           |
-| `href`            | GitHub link for the button.                                                                                           |
-| `title`           | `title` attribute for the button's rendered element.                                                                  |
-| `data-icon`       | `octicon-mark-github` by default. A [subset](rollup.config.js) of [Octicons](https://octicons.github.com) is bundled. |
-| `data-size`       | _None_ by default or `large`.                                                                                         |
-| `data-show-count` | `false` by default or `true`. The dynamic count is generated based on detected button type.                           |
-| `data-text`       | Text displayed on the button. It defaults to the text content within the link.                                        |
-| `aria-label`      | Aira label for the button link.                                                                                       |
+// export function render(options: object, callback: (el: HTMLElement) => void): void;
+render(options, function (el) {
+  document.body.appendChild(el) 
+})
 
-##### Built-in Button Types
+// export function render(anchor: HTMLAnchorElement, callback: (el: HTMLElement) => void): void;
+render(anchor, function (el) {
+  anchor.parentNode.replaceChild(el, anchor)
+})
+```
 
-Button type is detected from `href`.
+### Options
+
+- For snippet usage, an option is an attribute on anchor element.
+- For component usage, an option is a prop on component.
+- For module usage, an option is property on `options` object.
+
+##### `href`
+
+- Type: `string` 
+- Default: `'#'`
+
+Assign `href` attribute (GitHub link) for button.
+
+##### `title`
+
+- Type: `string`
+- Default: `undefined`
+
+Assign `title` attribute for button.
+
+##### `data-icon`
+
+- Type: `string`
+- Default: `'octicon-mark-github'`
+
+Set the icon on the button. A [subset](rollup.config.js) of [Octicons](https://octicons.github.com) is bundled.
+
+##### `data-color-scheme`
+
+- Type: `string`
+- Default: `undefined`
+
+Define a mapping from system color scheme to widget color scheme in css-like syntax.
+
+This is an _opt-in_ feature in version `>=2.3.0`. _Opt-in_ means if the `data-color-scheme` is `undefined`, it would still behave like version `<2.3.0`, where light color scheme is used under all conditions.
+
+Once `data-color-scheme` is set to a string, it will inherit the default: `no-preference: light; light: light; dark: dark;`.
+
+- `no-preference: light;` means when system has no preference on color scheme, light color scheme will be used.
+- `light: light;` means when system prefers light color scheme, light color scheme will be used.
+- `dark: dark;` means when system prefers dark color scheme, dark color scheme will be used.
+
+User declarations would override the default. For example:
+
+- To enable color scheme using default, set `data-color-scheme=""`.
+- To use dark color scheme when system has no preference, set `data-color-scheme="no-preference: dark;"`.
+- To force light color scheme everywhere, set `data-color-scheme="dark: light;"`.
+- To force dark color scheme everywhere, set `data-color-scheme="no-preference: dark; light: dark;"`.
+
+##### `data-size`
+
+- Type: `string`
+- Default: `undefined`
+
+Set button size. Set value `large` to make large buttons, any other value will be treated default size.
+
+##### `data-show-count`
+
+- Type: `boolean`
+- Default: `false`
+
+Show a dynamic count based on button type (detected from `href`):
 
 - `https://github.com/:user` (follow)
 - `https://github.com/:user/:repo` (star)
@@ -59,47 +105,35 @@ Button type is detected from `href`.
 - `https://github.com/:user/:repo/issues` (issues)
 - `https://github.com/:user/:repo/issues/new` (issues)
 
-Tailing slash, query string, and hash in the `href` won't affect type detection.
+Tailing slash, query string, and hash in the `href` won't affect type detection:
 
 - `https://github.com/:user/` (follow)
 - `https://github.com/:user?tab=repositories` (follow)
 - `https://github.com/:user/:repo#readme` (star)
 - `https://github.com/:user/:repo/#readme` (star)
 
+##### `data-text`
 
-Development
------------
+- Type: `string`
+- Default: `undefined`
 
-### Clone
+Set button text. When button is generated from an anchor and `data-text` is `undefined`, the button text will be anchor's `textContent`.
 
-``` sh
-git clone https://github.com/ntkme/github-buttons.git
-```
+##### `aria-label`
 
-``` sh
-cd github-buttons && npm install
-```
+- Type: `string`
+- Default: `undefined`
 
-### Build
+Set `aira-label` for button.
 
-``` sh
-npm run build
-```
-
-### Test
-
-``` sh
-npm test
-```
-
-
+---
 
 See also
 --------
 
 - [mdo/github-buttons](https://ghbtns.com)
 
-
+---
 
 License
 -------

@@ -51,7 +51,7 @@ describe('Pixel', () => {
     it('should 0 for NaN', () => {
       expect(ceilPixel(NaN)).to.equal(0)
       expect(ceilPixel(null)).to.equal(0)
-      expect(ceilPixel(void 0)).to.equal(0)
+      expect(ceilPixel(undefined)).to.equal(0)
     })
   })
 })

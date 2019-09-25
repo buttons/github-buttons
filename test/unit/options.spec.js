@@ -18,6 +18,7 @@ describe('Options', () => {
           'data-text': '',
           'aria-label': null,
           'data-icon': null,
+          'data-color-scheme': null,
           'data-size': null,
           'data-show-count': null
         })

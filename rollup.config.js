@@ -2,7 +2,7 @@ import json from 'rollup-plugin-json'
 import replace from 'rollup-plugin-replace'
 import resolve from 'rollup-plugin-node-resolve'
 import { terser } from 'rollup-plugin-terser'
-import sass from 'node-sass'
+import sass from 'sass'
 import path from 'path'
 import fs from 'fs'
 import packageJSON from './package.json'
@@ -142,7 +142,7 @@ export default [
       filter (id) {
         return id.endsWith('sass') || id.endsWith('scss')
       },
-      transform (code, id) {
+      transform (_, id) {
         return sass.renderSync({
           file: id,
           outputStyle: process.env.DEBUG ? 'nested' : 'compressed'
