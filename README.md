@@ -12,8 +12,6 @@ Usage
 
 Get started quickly with **[github:button configurator](https://buttons.github.io)**.
 
-The source code for the configurator is available at [ntkme/github-buttons-app](https://github.com/ntkme/github-buttons-app).
-
 ### Use as a Component
 
 - [vue-github-button](https://github.com/ntkme/vue-github-button) for [Vue](https://vuejs.org)
@@ -37,9 +35,9 @@ render(anchor, function (el) {
 
 ### Options
 
-- For snippet usage, an option is an attribute on anchor element.
+- For snippet usage, an option is an attribute on `<a>` element.
 - For component usage, an option is a prop on component.
-- For module usage, an option is property on `options` object.
+- For module usage, an option is a property on `options` object.
 
 ##### `href`
 
@@ -60,18 +58,18 @@ Assign `title` attribute for button.
 - Type: `string`
 - Default: `'octicon-mark-github'`
 
-Set the icon on the button. A [subset](rollup.config.js) of [Octicons](https://octicons.github.com) is bundled.
+Set icon on button. A [subset](rollup.config.js) of [Octicons](https://octicons.github.com) is bundled.
 
 ##### `data-color-scheme`
 
 - Type: `string`
 - Default: `undefined`
 
-Define a mapping from system color scheme to widget color scheme in css-like syntax.
+Define a mapping of system color scheme to widget color scheme in css-like syntax.
 
-This is an _opt-in_ feature in version `>=2.3.0`. _Opt-in_ means if the `data-color-scheme` is `undefined`, it would still behave like version `<2.3.0`, where light color scheme is used under all conditions.
+This is an _opt-in_ feature in version `>=2.3.0`. It means if `data-color-scheme` is `undefined`, it would still behave like version `<2.3.0`, where light color scheme is used under all conditions.
 
-Once `data-color-scheme` is set to a string, it will inherit the default: `no-preference: light; light: light; dark: dark;`.
+Once `data-color-scheme` is set to a string, it will inherit the default mapping: `no-preference: light; light: light; dark: dark;`.
 
 - `no-preference: light;` means when system has no preference on color scheme, light color scheme will be used.
 - `light: light;` means when system prefers light color scheme, light color scheme will be used.
@@ -89,7 +87,7 @@ User declarations would override the default. For example:
 - Type: `string`
 - Default: `undefined`
 
-Set button size. Set value `large` to make large buttons, any other value will be treated default size.
+Set button size. Possible values are `undefined` and `'large'`.
 
 ##### `data-show-count`
 
@@ -117,7 +115,7 @@ Tailing slash, query string, and hash in the `href` won't affect type detection:
 - Type: `string`
 - Default: `undefined`
 
-Set button text. When button is generated from an anchor and `data-text` is `undefined`, the button text will be anchor's `textContent`.
+Set button text. When button is generated from `<a>` element and `data-text` is `undefined`, the button text will be anchor's `textContent`.
 
 ##### `aria-label`
 
