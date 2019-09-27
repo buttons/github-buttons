@@ -49,9 +49,7 @@ export const render = function (root, options, func) {
   let match
   if (!(/^(true|1)$/i.test(options['data-show-count']) && btn.hostname === 'github.com') ||
       !((match = btn.pathname.replace(/^(?!\/)/, '/').match(/^\/([^/?#]+)(?:\/([^/?#]+)(?:\/(?:(subscription)|(fork)|(issues)|([^/?#]+)))?)?(?:[/?#]|$)/)) && !match[6])) {
-    if (func) {
-      func(widget)
-    }
+    func(widget)
     return
   }
 
@@ -89,8 +87,6 @@ export const render = function (root, options, func) {
         createElement('span', {}, [('' + data).replace(/\B(?=(\d{3})+(?!\d))/g, ',')])
       ]))
     }
-    if (func) {
-      func(widget)
-    }
+    func(widget)
   })
 }
