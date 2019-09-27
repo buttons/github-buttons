@@ -7,7 +7,7 @@ a {
 
 .btn,
 .social-count {
-  border: 1px solid blend($btn-border-color, $btn-background-color);
+  border-color: blend($btn-border-color, $btn-background-color);
 }
 
 .btn {
