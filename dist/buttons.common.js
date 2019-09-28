@@ -181,7 +181,7 @@ var getColorScheme = function (declarations) {
   }
 
   var colorSchemes = parse(declarations, ';', ':', function (str) {
-    return str.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, '')
+    return str.replace(/^[ \t\n\f\r]+|[ \t\n\f\r]+$/g, '')
   });
 
   return widgetColorSchemes[hasOwnProperty(widgetColorSchemes, colorSchemes['no-preference']) ? colorSchemes['no-preference'] : 'light'] +
