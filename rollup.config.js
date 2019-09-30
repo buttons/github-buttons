@@ -123,6 +123,7 @@ export default [
 
         return Object.assign({}, ...[
           'mark-github',
+          'heart',
           'eye',
           'star',
           'repo-forked',
