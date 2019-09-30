@@ -273,6 +273,7 @@ var render = function (root, options, func) {
     className: 'btn',
     href: options.href,
     target: '_blank',
+    rel: 'noopener',
     innerHTML: octicon(options['data-icon'], /^large$/i.test(options['data-size']) ? 16 : 14),
     'aria-label': options['aria-label'] || undefined
   }, [
@@ -326,6 +327,7 @@ var render = function (root, options, func) {
         className: 'social-count',
         href: json.html_url + '/' + href,
         target: '_blank',
+        rel: 'noopener',
         'aria-label': data + ' ' + property.replace(/_count$/, '').replace('_', ' ').slice(0, data < 2 ? -1 : undefined) + ' on GitHub'
       }, [
         createElement('b'),
