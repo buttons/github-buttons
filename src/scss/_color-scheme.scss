@@ -1,12 +1,9 @@
-@import '_functions';
-@import '_mixins';
-
-a {
-  color: $color;
-}
+@import 'functions';
+@import 'mixins';
 
 .btn,
 .social-count {
+  color: $color;
   border-color: blend($btn-border-color, $btn-background-color);
 }
 
