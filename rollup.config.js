@@ -116,7 +116,7 @@ export default [
     raw({
       name: 'octicons-data-json',
       filter (id) {
-        return id.endsWith('node_modules/octicons/build/data.json')
+        return id.endsWith('node_modules/@primer/octicons/build/data.json')
       },
       transform (code) {
         const data = JSON.parse(code)

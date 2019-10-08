@@ -1,4 +1,4 @@
-import data from 'octicons/build/data'
+import data from '@primer/octicons/build/data'
 import { hasOwnProperty } from './util'
 
 export const octicon = function (icon, height) {
