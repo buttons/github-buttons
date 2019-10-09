@@ -313,7 +313,7 @@
         href = 'watchers';
       } else if (match[4]) {
         property = 'forks_count';
-        href = 'network';
+        href = 'network/members';
       } else if (match[5]) {
         property = 'open_issues_count';
         href = 'issues';

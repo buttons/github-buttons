@@ -257,7 +257,7 @@ describe('Content', () => {
       render(root, config, (widget) => {
         const count = widget.querySelector('.social-count')
         expect(count.href)
-          .to.equal('https://github.com/ntkme/github-buttons/network')
+          .to.equal('https://github.com/ntkme/github-buttons/network/members')
         expect(count.lastChild.innerHTML)
           .to.equal('94')
         expect(count.getAttribute('aria-label'))
