@@ -80,9 +80,20 @@ describe('Content', () => {
       })
     })
 
-    it('should create a button with href # if domain is not github', (done) => {
+    it('should append the button with given href if hostname is FQDN', (done) => {
+      const config = {
+        href: 'https://github.com./ntkme'
+      }
+      render(root, config, () => {
+        expect(root.querySelector('.btn').getAttribute('href'))
+          .to.equal(config.href)
+        done()
+      })
+    })
+
+    it('should create an anchor with href # if hostname is not under github.com', (done) => {
       render(root, {
-        href: 'https://twitter/ntkme'
+        href: 'https://twitter.com/ntkme'
       }, () => {
         expect(root.querySelector('.btn').href)
           .to.equal(document.location.href + '#')

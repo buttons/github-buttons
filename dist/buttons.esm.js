@@ -280,12 +280,6 @@ var render = function (root, options, func) {
     ' ',
     createElement('span', {}, [options['data-text'] || ''])
   ]);
-  if (!/\.github\.com$/.test('.' + btn.hostname)) {
-    btn.href = '#';
-    btn.target = '_self';
-  } else if (/^https?:\/\/((gist\.)?github\.com\/[^/?#]+\/[^/?#]+\/archive\/|github\.com\/[^/?#]+\/[^/?#]+\/releases\/download\/|codeload\.github\.com\/)/.test(btn.href)) {
-    btn.target = '_top';
-  }
 
   var widget = root.appendChild(createElement('div', {
     className: 'widget' + (/^large$/i.test(options['data-size']) ? ' widget-lg' : '')
@@ -293,33 +287,51 @@ var render = function (root, options, func) {
     btn
   ]));
 
-  var match;
-  if (!(/^(true|1)$/i.test(options['data-show-count']) && btn.hostname === 'github.com') ||
-      !((match = btn.pathname.replace(/^(?!\/)/, '/').match(/^\/([^/?#]+)(?:\/([^/?#]+)(?:\/(?:(subscription)|(fork)|(issues)|([^/?#]+)))?)?(?:[/?#]|$)/)) && !match[6])) {
+  var domain = btn.hostname.split('.').reverse();
+  if (domain[0] === '') {
+    domain.shift();
+  }
+  if (domain[0] !== 'com' || domain[1] !== 'github') {
+    btn.href = '#';
+    btn.target = '_self';
     func(widget);
     return
   }
 
-  var api, href, property;
-  if (match[2]) {
-    api = '/repos/' + match[1] + '/' + match[2];
-    if (match[3]) {
-      property = 'subscribers_count';
-      href = 'watchers';
-    } else if (match[4]) {
-      property = 'forks_count';
-      href = 'network/members';
-    } else if (match[5]) {
-      property = 'open_issues_count';
-      href = 'issues';
-    } else {
-      property = 'stargazers_count';
-      href = 'stargazers';
-    }
-  } else {
-    api = '/users/' + match[1];
-    href = property = 'followers';
+  var len = domain.length;
+  var path = ('/' + btn.pathname).split(/\/+/);
+  if (((len === 2 || (len === 3 && domain[2] === 'gist')) && path[3] === 'archive') ||
+    (len === 2 && path[3] === 'releases' && path[4] === 'download') ||
+    (len === 3 && domain[2] === 'codeload')) {
+    btn.target = '_top';
   }
+
+  if (!/^true$/i.test(options['data-show-count']) || len !== 2) {
+    func(widget);
+    return
+  }
+
+  var href, property;
+  if (!path[2] && path[1]) {
+    href = property = 'followers';
+  } else if (!path[3] && path[2]) {
+    property = 'stargazers_count';
+    href = 'stargazers';
+  } else if (!path[4] && path[3] === 'subscription') {
+    property = 'subscribers_count';
+    href = 'watchers';
+  } else if (!path[4] && path[3] === 'fork') {
+    property = 'forks_count';
+    href = 'network/members';
+  } else if (path[3] === 'issues') {
+    property = 'open_issues_count';
+    href = 'issues';
+  } else {
+    func(widget);
+    return
+  }
+
+  var api = path[2] ? '/repos/' + path[1] + '/' + path[2] : '/users/' + path[1];
   fetch.call(this, apiBaseURL + api, function (error, json) {
     if (!error) {
       var data = json[property];
