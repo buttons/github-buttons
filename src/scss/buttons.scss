@@ -7,8 +7,6 @@ a {
   outline: 0;
 }
 
-@import '../../node_modules/@primer/octicons';
-
 .widget {
   display: inline-block;
   overflow: hidden;
@@ -23,20 +21,23 @@ a {
 
 .btn,
 .social-count {
+  position: relative;
   display: inline-block;
   height: 14px;
   padding: 2px 5px;
   font-size: 11px;
   font-weight: 600;
   line-height: 14px;
-  vertical-align: bottom;
+  vertical-align: middle;
   cursor: pointer;
+  background-repeat: repeat-x;
+  background-position: -1px -1px;
+  background-size: 110% 110%;
   border: 1px solid;
   border-radius: 0.25em;
 }
 
 .social-count {
-  position: relative;
   margin-left: 5px;
 
   b,
@@ -65,10 +66,10 @@ a {
 .widget-lg {
   .btn,
   .social-count {
-    height: 16px;
-    padding: 5px 10px;
+    height: 20px;
+    padding: 3px 10px;
     font-size: 12px;
-    line-height: 16px;
+    line-height: 20px;
   }
 
   .social-count {
@@ -85,3 +86,5 @@ a {
     }
   }
 }
+
+@import '../../node_modules/@primer/octicons';

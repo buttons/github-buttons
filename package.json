@@ -33,16 +33,16 @@
     "test": "karma start --single-run"
   },
   "devDependencies": {
-    "@primer/css": "^13.0.2",
+    "@primer/css": "^13.2.0",
     "chai": "^4.2.0",
-    "eslint": "^6.5.1",
+    "eslint": "^6.6.0",
     "eslint-config-standard": "^14.1.0",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-node": "^10.0.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
     "istanbul-instrumenter-loader": "^3.0.1",
-    "karma": "^4.3.0",
+    "karma": "^4.4.1",
     "karma-chai": "^0.1.0",
     "karma-chrome-launcher": "^3.1.0",
     "karma-coverage-istanbul-reporter": "^2.1.0",
@@ -54,17 +54,17 @@
     "karma-sinon-chai": "^2.0.2",
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "^4.0.2",
-    "mocha": "^6.2.1",
+    "mocha": "^6.2.2",
     "raw-loader": "^3.1.0",
-    "rollup": "^1.23.1",
+    "rollup": "^1.26.2",
     "rollup-plugin-json": "^4.0.0",
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-replace": "^2.2.0",
     "rollup-plugin-terser": "^5.1.2",
-    "sass": "^1.23.0",
+    "sass": "^1.23.2",
     "sass-loader": "^8.0.0",
     "sinon": "^7.5.0",
     "sinon-chai": "^3.3.0",
-    "webpack": "^4.41.0"
+    "webpack": "^4.41.2"
   }
 }
