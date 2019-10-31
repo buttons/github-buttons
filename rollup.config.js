@@ -146,7 +146,7 @@ export default [
       transform (_, id) {
         return sass.renderSync({
           file: id,
-          outputStyle: process.env.DEBUG ? 'nested' : 'compressed'
+          outputStyle: process.env.DEBUG ? 'expanded' : 'compressed'
         }).css.toString()
       }
     }),

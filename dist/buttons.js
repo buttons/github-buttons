@@ -394,7 +394,7 @@
       var host = createElement('span', {
         title: options.title || undefined
       });
-      render(host.attachShadow({ mode: 'closed' }), options, function () {
+      render(host.attachShadow({ mode:  'closed' }), options, function () {
         func(host);
       });
     } else {

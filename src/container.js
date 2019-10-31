@@ -18,7 +18,7 @@ export const render = function (options, func) {
     const host = createElement('span', {
       title: options.title || undefined
     })
-    renderContent(host.attachShadow({ mode: 'closed' }), options, function () {
+    renderContent(host.attachShadow({ mode: process.env.DEBUG ? 'open' : 'closed' }), options, function () {
       func(host)
     })
   } else {
