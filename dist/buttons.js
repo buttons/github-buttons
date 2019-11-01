@@ -445,7 +445,7 @@
   };
 
   if (location.protocol + '//' + location.host + location.pathname === iframeURL) {
-    render(document.body, parse(window.name || location.hash.replace(/^#/, '')));
+    render(document.body, parse(window.name || location.hash.replace(/^#/, '')), function () {});
   } else {
     defer(function () {
       var ref = document.querySelectorAll

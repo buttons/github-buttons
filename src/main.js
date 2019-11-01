@@ -20,7 +20,7 @@ import {
 } from './container'
 
 if (location.protocol + '//' + location.host + location.pathname === iframeURL) {
-  renderContent(document.body, parseQueryString(window.name || location.hash.replace(/^#/, '')))
+  renderContent(document.body, parseQueryString(window.name || location.hash.replace(/^#/, '')), function () {})
 } else {
   defer(function () {
     const ref = document.querySelectorAll
