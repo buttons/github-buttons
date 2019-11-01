@@ -304,7 +304,7 @@
     }
 
     var len = domain.length;
-    var path = ('/' + btn.pathname).split(/\/+/);
+    var path = (' /' + btn.pathname).split(/\/+/);
     if (((len === 2 || (len === 3 && domain[2] === 'gist')) && path[3] === 'archive') ||
       (len === 2 && path[3] === 'releases' && path[4] === 'download') ||
       (len === 3 && domain[2] === 'codeload')) {

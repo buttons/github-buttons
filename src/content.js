@@ -53,7 +53,7 @@ export const render = function (root, options, func) {
   }
 
   const len = domain.length
-  const path = ('/' + btn.pathname).split(/\/+/)
+  const path = (' /' + btn.pathname).split(/\/+/)
   if (((len === 2 || (len === 3 && domain[2] === 'gist')) && path[3] === 'archive') ||
     (len === 2 && path[3] === 'releases' && path[4] === 'download') ||
     (len === 3 && domain[2] === 'codeload')) {
