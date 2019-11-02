@@ -1,7 +1,7 @@
 export const onEvent = function (target, eventName, func) {
   /* istanbul ignore else: IE lt 9 */
   if (target.addEventListener) {
-    target.addEventListener(eventName, func)
+    target.addEventListener(eventName, func, false)
   } else {
     target.attachEvent('on' + eventName, func)
   }
@@ -10,7 +10,7 @@ export const onEvent = function (target, eventName, func) {
 export const offEvent = function (target, eventName, func) {
   /* istanbul ignore else: IE lt 9 */
   if (target.removeEventListener) {
-    target.removeEventListener(eventName, func)
+    target.removeEventListener(eventName, func, false)
   } else {
     target.detachEvent('on' + eventName, func)
   }

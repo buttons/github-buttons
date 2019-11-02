@@ -3,6 +3,7 @@ import replace from 'rollup-plugin-replace'
 import resolve from 'rollup-plugin-node-resolve'
 import { terser } from 'rollup-plugin-terser'
 import sass from 'sass'
+import sassFunctions from './src/scss/functions'
 import path from 'path'
 import fs from 'fs'
 import packageJSON from './package.json'
@@ -146,6 +147,7 @@ export default [
       transform (_, id) {
         return sass.renderSync({
           file: id,
+          functions: sassFunctions,
           outputStyle: process.env.DEBUG ? 'expanded' : 'compressed'
         }).css.toString()
       }
