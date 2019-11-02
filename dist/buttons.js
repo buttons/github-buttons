@@ -197,7 +197,7 @@
     if (!hasOwnProperty(data, icon)) {
       icon = 'mark-github';
     }
-    return '<svg version="1.1" width="' + (height * data[icon].width / data[icon].height) + '" height="' + height + '" viewBox="0 0 ' + data[icon].width + ' ' + data[icon].height + '" class="octicon octicon-' + icon + '" aria-hidden="true">' + data[icon].path + '</svg>'
+    return '<svg viewBox="0 0 ' + data[icon].width + ' ' + data[icon].height + '" class="octicon octicon-' + icon + '" style="width: ' + (height * data[icon].width / data[icon].height) + 'px; height: ' + height + 'px;" aria-hidden="true">' + data[icon].path + '</svg>'
   };
 
   var queues = {};
