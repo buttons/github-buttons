@@ -10,7 +10,7 @@ a {
 .widget {
   display: inline-block;
   overflow: hidden;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif;
   font-size: 0;
   white-space: nowrap;
 }
@@ -34,33 +34,19 @@ a {
   background-position: -1px -1px;
   background-size: 110% 110%;
   border: 1px solid;
+}
+
+.btn {
   border-radius: 0.25em;
+
+  &:not(:last-child) {
+    border-radius: 0.25em 0 0 0.25em;
+  }
 }
 
 .social-count {
-  margin-left: 5px;
-
-  b,
-  i {
-    position: absolute;
-    top: 50%;
-    left: 0;
-    display: block;
-    width: 0;
-    height: 0;
-    margin: -4px 0 0 -4px;
-    border: solid transparent;
-    border-width: 4px 4px 4px 0;
-    _line-height: 0;
-    _border-top-color: red!important;
-    _border-bottom-color: red!important;
-    _border-left-color: red!important;
-    _filter: chroma(color=red);
-  }
-
-  i {
-    margin-left: -3px;
-  }
+  border-left: 0;
+  border-radius: 0 0.25em 0.25em 0;
 }
 
 .widget-lg {
@@ -70,20 +56,6 @@ a {
     padding: 3px 10px;
     font-size: 12px;
     line-height: 20px;
-  }
-
-  .social-count {
-    margin-left: 6px;
-
-    b,
-    i {
-      margin: -5px 0 0 -5px;
-      border-width: 5px 5px 5px 0;
-    }
-
-    i {
-      margin-left: -4px;
-    }
   }
 }
 

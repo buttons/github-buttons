@@ -96,9 +96,7 @@ export const render = function (root, options, func) {
         rel: 'noopener',
         'aria-label': data + ' ' + property.replace(/_count$/, '').replace('_', ' ').slice(0, data < 2 ? -1 : undefined) + ' on GitHub'
       }, [
-        createElement('b'),
-        createElement('i'),
-        createElement('span', {}, [('' + data).replace(/\B(?=(\d{3})+(?!\d))/g, ',')])
+        ('' + data).replace(/\B(?=(\d{3})+(?!\d))/g, ',')
       ]))
     }
     func(widget)

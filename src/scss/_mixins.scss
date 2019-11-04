@@ -75,14 +75,7 @@
   color: $color;
   background-color: $bg;
   border-color: blend(transparentize($black, 0.8), $bg);
-
-  b {
-    border-right-color: blend(transparentize($black, 0.8), $bg);
-  }
-
-  i {
-    border-right-color: $bg;
-  }
+  border-color: transparentize($black, 0.8);
 
   @if $bg == $white {
     &:focus,
