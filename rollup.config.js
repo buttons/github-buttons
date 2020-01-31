@@ -128,6 +128,7 @@ export default [
           'eye',
           'star',
           'repo-forked',
+          'repo-template',
           'issue-opened',
           'cloud-download'
         ].map(key => ({
