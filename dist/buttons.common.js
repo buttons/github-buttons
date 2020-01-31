@@ -1,5 +1,5 @@
 /*!
- * github-buttons v2.6.0
+ * github-buttons v2.7.0
  * (c) 2020 なつき
  * @license BSD-2-Clause
  */
