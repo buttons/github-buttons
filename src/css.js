@@ -1,4 +1,4 @@
-import buttons from './scss/buttons.scss'
+import main from './scss/main.scss'
 import light from './scss/light.scss'
 import dark from './scss/dark.scss'
 
@@ -29,7 +29,7 @@ const getColorScheme = function (declarations) {
 }
 
 export {
-  buttons,
+  main,
   getColorScheme,
   widgetColorSchemes
 }

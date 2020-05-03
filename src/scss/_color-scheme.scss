@@ -1,0 +1,67 @@
+@use "../../node_modules/@primer/css/support" as *;
+@use "mixins" as *;
+
+$btn-color: $gray-900 !default;
+$btn-background-color-start: $gray-000 !default;
+$btn-background-color-stop: darken($gray-100, 2%) !default;
+$btn-border-color: transparentize($black, 0.8) !default;
+$btn-focus-background-color-start: darken($btn-background-color-start, 3%) !default;
+$btn-focus-background-color-stop: darken($btn-background-color-stop, 3%) !default;
+$btn-focus-border-color: rgba($black, 0.35) !default;
+$btn-active-background-color: darken(desaturate($btn-background-color-start, 10%), 6%) !default;
+$social-count-color: $gray-900 !default;
+$social-count-background-color: $white !default;
+$social-count-border-color: $btn-border-color !default;
+$social-count-focus-color: $blue-500 !default;
+$octicon-heart-color: $pink-500 !default;
+
+.btn {
+  @include blend(
+    $color: $btn-color,
+    $background-color: $btn-background-color-stop,
+    $border-color: $btn-border-color,
+  );
+  @include background-image-linear-gradient(
+    $btn-background-color-start,
+    $btn-background-color-stop,
+  );
+
+  &:focus,
+  &:hover {
+    @include blend(
+      $background-color: $btn-focus-background-color-stop,
+      $background-position: 0 -$em-spacer-5,
+      $border-color: $btn-focus-border-color,
+    );
+    @include background-image-linear-gradient(
+      $btn-focus-background-color-start,
+      $btn-focus-background-color-stop,
+    );
+  }
+
+  &:active {
+    @include blend(
+      $background-color: $btn-active-background-color,
+      $border-color: $btn-focus-border-color,
+      $box-shadow: $btn-active-shadow,
+    );
+    @include background-image-none;
+  }
+}
+
+.social-count {
+  @include blend(
+    $color: $social-count-color,
+    $background-color: $social-count-background-color,
+    $border-color: $social-count-border-color,
+  );
+
+  &:focus,
+  &:hover {
+    color: $social-count-focus-color;
+  }
+}
+
+.octicon-heart {
+  color: $octicon-heart-color;
+}

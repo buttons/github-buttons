@@ -1,6 +1,6 @@
 import { createElementInDocument } from './util'
 import {
-  buttons as buttonsCssText,
+  main as buttonsCssText,
   getColorScheme as getColorSchemeCssText
 } from './css'
 import { apiBaseURL } from './config'

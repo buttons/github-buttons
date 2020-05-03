@@ -1,13 +1,21 @@
-@import '../../node_modules/@primer/css/support';
+@mixin blend($args...) {
+  $declarations: keywords($args);
+  $background-color: map-get($declarations, "background-color");
 
-@function blend($color, $background-color: #fff) {
-  $red: ((1 - alpha($color)) * red($background-color)) + (alpha($color) * red($color));
-  $green: ((1 - alpha($color)) * green($background-color)) + (alpha($color) * green($color));
-  $blue: ((1 - alpha($color)) * blue($background-color)) + (alpha($color) * blue($color));
-  @return rgb($red, $green, $blue);
+  @each $property, $value in $declarations {
+    @if type-of($value) == color and alpha($value) != 1 {
+      $color: $value;
+      $red:   (1 - alpha($color)) * red($background-color) + alpha($color) * red($color);
+      $green: (1 - alpha($color)) * green($background-color) + alpha($color) * green($color);
+      $blue:  (1 - alpha($color)) * blue($background-color) + alpha($color) * blue($color);
+      #{$property}: rgb($red, $green, $blue);
+    }
+
+    #{$property}: $value;
+  }
 }
 
-@mixin linear-gradient($color-start, $color-stop, $color-stop-percentage: 90%) {
+@mixin background-image-linear-gradient($color-start, $color-stop, $color-stop-percentage: 90%) {
   $data: encodeURIData("<svg xmlns='http://www.w3.org/2000/svg'><linearGradient id='o' x2='0' y2='1'><stop stop-color='#{$color-start}'/><stop offset='#{$color-stop-percentage}' stop-color='#{$color-stop}'/></linearGradient><rect width='100%' height='100%' fill='url(#o)'/></svg>");
   background-image: url("data:image/svg+xml,#{$data}");
   background-image: -moz-linear-gradient(top, $color-start, $color-stop $color-stop-percentage);
@@ -17,6 +25,7 @@
   $green: green($color-start) + (green($color-stop) - green($color-start)) / $color-stop-percentage * 100%;
   $blue: blue($color-start) + (blue($color-stop) - blue($color-start)) / $color-stop-percentage * 100%;
   $color-stop: rgb($red, $green, $blue);
+
   filter: unquote("progid:DXImageTransform.Microsoft.Gradient(startColorstr='#{ie-hex-str($color-start)}', endColorstr='#{ie-hex-str($color-stop)}')");
 
   :root & {
@@ -24,69 +33,7 @@
   }
 }
 
-@mixin btn($color, $bg, $bg2) {
-  color: $color;
-  background-color: $bg2;
-  @include linear-gradient($bg, $bg2);
-  border-color: blend(transparentize($black, 0.8), $bg);
-  border-color: transparentize($black, 0.8);
-
-  @if $bg == $gray-000 {
-    &:focus,
-    &:hover {
-      background-color: darken($bg2, 3%);
-      @include linear-gradient(darken($bg, 3%), darken($bg2, 3%));
-      background-position: 0 -$em-spacer-5;
-      border-color: blend(rgba($black, 0.35), $bg);
-      border-color: rgba($black, 0.35);
-    }
-
-    &:active {
-      background-color: darken(desaturate($bg, 10%), 6%);
-      background-image: none;
-      border-color: blend(rgba($black, 0.35), $bg);
-      border-color: rgba($black, 0.35);
-      box-shadow: $btn-active-shadow;
-      filter: none;
-    }
-  }
-  @else {
-    &:focus,
-    &:hover {
-      background-color: darken($bg2, 2%);
-      @include linear-gradient(darken($bg, 2%), darken($bg2, 2%));
-      background-position: 0 -$em-spacer-5;
-      border-color: blend(rgba($black, 0.5), $bg);
-      border-color: rgba($black, 0.5);
-    }
-
-    &:active {
-      background-color: darken(mix($bg, $bg2, 50%), 7%);
-      background-image: none;
-      border-color: blend(rgba($black, 0.5), $bg);
-      border-color: rgba($black, 0.5);
-      box-shadow: $btn-active-shadow;
-      filter: none;
-    }
-  }
-}
-
-@mixin social-count($color, $bg) {
-  color: $color;
-  background-color: $bg;
-  border-color: blend(transparentize($black, 0.8), $bg);
-  border-color: transparentize($black, 0.8);
-
-  @if $bg == $white {
-    &:focus,
-    &:hover {
-      color: $blue-500;
-    }
-  }
-  @else {
-    &:focus,
-    &:hover {
-      color: $blue-400;
-    }
-  }
+@mixin background-image-none {
+  background-image: none;
+  filter: none;
 }
