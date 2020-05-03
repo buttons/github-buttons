@@ -15,9 +15,7 @@ export const render = function (options, func) {
     options = parseOptions(options)
   }
   if (useShadowDOM) {
-    const host = createElement('span', {
-      title: options.title || undefined
-    })
+    const host = createElement('span')
     renderContent(host.attachShadow({ mode: process.env.DEBUG ? 'open' : 'closed' }), options, function () {
       func(host)
     })

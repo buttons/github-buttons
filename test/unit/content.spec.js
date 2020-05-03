@@ -20,7 +20,7 @@ describe('Content', () => {
     root = null
   })
 
-  describe('render(root, config, callback)', () => {
+  describe('render(root, options, callback)', () => {
     it('should work', (done) => {
       render(root, {}, () => done())
     })
@@ -53,7 +53,7 @@ describe('Content', () => {
       })
     })
 
-    it('should append the button to widget when the necessary config is given', (done) => {
+    it('should append the button to widget when the necessary options are given', (done) => {
       render(root, {}, () => {
         expect(root.querySelector('.btn'))
           .to.be.an.instanceof(HTMLElement)
@@ -70,23 +70,23 @@ describe('Content', () => {
     })
 
     it('should append the button with given href', (done) => {
-      const config = {
+      const options = {
         href: 'https://ntkme.github.com/'
       }
-      render(root, config, () => {
+      render(root, options, () => {
         expect(root.querySelector('.btn').getAttribute('href'))
-          .to.equal(config.href)
+          .to.equal(options.href)
         done()
       })
     })
 
     it('should append the button with given href if hostname is FQDN', (done) => {
-      const config = {
+      const options = {
         href: 'https://github.com./ntkme'
       }
-      render(root, config, () => {
+      render(root, options, () => {
         expect(root.querySelector('.btn').getAttribute('href'))
-          .to.equal(config.href)
+          .to.equal(options.href)
         done()
       })
     })
@@ -176,33 +176,44 @@ describe('Content', () => {
     })
 
     it('should append the button with given text', (done) => {
-      const config = {
+      const options = {
         'data-text': 'Follow'
       }
-      render(root, config, () => {
+      render(root, options, () => {
         expect(root.querySelector('.btn').lastChild.textContent)
-          .to.equal(config['data-text'])
+          .to.equal(options['data-text'])
+        done()
+      })
+    })
+
+    it('should append the button with given title', (done) => {
+      const options = {
+        title: 'test1234'
+      }
+      render(root, options, () => {
+        expect(root.querySelector('.btn').title)
+          .to.equal(options.title)
         done()
       })
     })
 
     it('should append the button with given aria label', (done) => {
-      const config = {
+      const options = {
         'aria-label': 'GitHub'
       }
-      render(root, config, () => {
+      render(root, options, () => {
         expect(root.querySelector('.btn').getAttribute('aria-label'))
-          .to.equal(config['aria-label'])
+          .to.equal(options['aria-label'])
         done()
       })
     })
 
     it('should append the count when a known button type is given', (done) => {
-      const config = {
+      const options = {
         href: 'https://github.com/ntkme',
         'data-show-count': 'true'
       }
-      render(root, config, (widget) => {
+      render(root, options, (widget) => {
         expect(widget.querySelector('.social-count'))
           .to.be.an.instanceof(HTMLElement)
         done()
@@ -210,11 +221,11 @@ describe('Content', () => {
     })
 
     it('should append the count for follow button', (done) => {
-      const config = {
+      const options = {
         href: 'https://github.com/ntkme',
         'data-show-count': 'true'
       }
-      render(root, config, (widget) => {
+      render(root, options, (widget) => {
         const count = widget.querySelector('.social-count')
         expect(count.href)
           .to.equal('https://github.com/ntkme/followers')
@@ -227,11 +238,11 @@ describe('Content', () => {
     })
 
     it('should append the count for watch button', (done) => {
-      const config = {
+      const options = {
         href: 'https://github.com/ntkme/github-buttons/subscription',
         'data-show-count': 'true'
       }
-      render(root, config, (widget) => {
+      render(root, options, (widget) => {
         const count = widget.querySelector('.social-count')
         expect(count.href)
           .to.equal('https://github.com/ntkme/github-buttons/watchers')
@@ -244,11 +255,11 @@ describe('Content', () => {
     })
 
     it('should append the count for star button', (done) => {
-      const config = {
+      const options = {
         href: 'https://github.com/ntkme/github-buttons',
         'data-show-count': 'true'
       }
-      render(root, config, (widget) => {
+      render(root, options, (widget) => {
         const count = widget.querySelector('.social-count')
         expect(count.href)
           .to.equal('https://github.com/ntkme/github-buttons/stargazers')
@@ -261,11 +272,11 @@ describe('Content', () => {
     })
 
     it('should append the count for fork button', (done) => {
-      const config = {
+      const options = {
         href: 'https://github.com/ntkme/github-buttons/fork',
         'data-show-count': 'true'
       }
-      render(root, config, (widget) => {
+      render(root, options, (widget) => {
         const count = widget.querySelector('.social-count')
         expect(count.href)
           .to.equal('https://github.com/ntkme/github-buttons/network/members')
@@ -278,11 +289,11 @@ describe('Content', () => {
     })
 
     it('should append the count for issue button', (done) => {
-      const config = {
+      const options = {
         href: 'https://github.com/ntkme/github-buttons/issues',
         'data-show-count': 'true'
       }
-      render(root, config, (widget) => {
+      render(root, options, (widget) => {
         const count = widget.querySelector('.social-count')
         expect(count.href)
           .to.equal('https://github.com/ntkme/github-buttons/issues')
@@ -295,11 +306,11 @@ describe('Content', () => {
     })
 
     it('should append the count for issue button when it links to new issue', (done) => {
-      const config = {
+      const options = {
         href: 'https://github.com/ntkme/github-buttons/issues/new',
         'data-show-count': 'true'
       }
-      render(root, config, (widget) => {
+      render(root, options, (widget) => {
         const count = widget.querySelector('.social-count')
         expect(count.href)
           .to.equal('https://github.com/ntkme/github-buttons/issues')
@@ -312,11 +323,11 @@ describe('Content', () => {
     })
 
     it('should append the count for button whose link has a tailing slash', (done) => {
-      const config = {
+      const options = {
         href: 'https://github.com/ntkme/',
         'data-show-count': 'true'
       }
-      render(root, config, (widget) => {
+      render(root, options, (widget) => {
         const count = widget.querySelector('.social-count')
         expect(count.href)
           .to.equal('https://github.com/ntkme/followers')
@@ -325,11 +336,11 @@ describe('Content', () => {
     })
 
     it('should append the count for button whose link has a query', (done) => {
-      const config = {
+      const options = {
         href: 'https://github.com/ntkme?tab=repositories',
         'data-show-count': 'true'
       }
-      render(root, config, (widget) => {
+      render(root, options, (widget) => {
         const count = widget.querySelector('.social-count')
         expect(count.href)
           .to.equal('https://github.com/ntkme/followers')
@@ -338,11 +349,11 @@ describe('Content', () => {
     })
 
     it('should append the count for button whose link has a hash', (done) => {
-      const config = {
+      const options = {
         href: 'https://github.com/ntkme#github-buttons',
         'data-show-count': 'true'
       }
-      render(root, config, (widget) => {
+      render(root, options, (widget) => {
         const count = widget.querySelector('.social-count')
         expect(count.href)
           .to.equal('https://github.com/ntkme/followers')
@@ -351,11 +362,11 @@ describe('Content', () => {
     })
 
     it('should append the count for button whose link has both a tailing slash and a query', (done) => {
-      const config = {
+      const options = {
         href: 'https://github.com/ntkme/?tab=repositories',
         'data-show-count': 'true'
       }
-      render(root, config, (widget) => {
+      render(root, options, (widget) => {
         const count = widget.querySelector('.social-count')
         expect(count.href)
           .to.equal('https://github.com/ntkme/followers')
@@ -364,11 +375,11 @@ describe('Content', () => {
     })
 
     it('should append the count for button whose link has both a tailing slash and a hash', (done) => {
-      const config = {
+      const options = {
         href: 'https://github.com/ntkme/#github-buttons',
         'data-show-count': 'true'
       }
-      render(root, config, (widget) => {
+      render(root, options, (widget) => {
         const count = widget.querySelector('.social-count')
         expect(count.href)
           .to.equal('https://github.com/ntkme/followers')
@@ -377,11 +388,11 @@ describe('Content', () => {
     })
 
     it('should append the count for button whose link has a tailing slash, a query, and a hash', (done) => {
-      const config = {
+      const options = {
         href: 'https://github.com/ntkme/?tab=repositories#github-buttons',
         'data-show-count': 'true'
       }
-      render(root, config, (widget) => {
+      render(root, options, (widget) => {
         const count = widget.querySelector('.social-count')
         expect(count.href)
           .to.equal('https://github.com/ntkme/followers')
@@ -390,11 +401,11 @@ describe('Content', () => {
     })
 
     it('should not append the count for unknown button type', (done) => {
-      const config = {
+      const options = {
         href: 'https://github.com/',
         'data-show-count': 'true'
       }
-      render(root, config, (widget) => {
+      render(root, options, (widget) => {
         expect(widget.querySelector('.social-count'))
           .to.be.null
         done()
@@ -402,14 +413,14 @@ describe('Content', () => {
     })
 
     it('should append button without count when count has error', (done) => {
-      const config = {
+      const options = {
         href: 'https://github.com/404',
         'data-show-count': 'true'
       }
-      render(root, config, (widget) => {
+      render(root, options, (widget) => {
         const btn = widget.querySelector('.btn')
         expect(btn.href)
-          .to.equal(config.href)
+          .to.equal(options.href)
         expect(widget.querySelector('.social-count'))
           .to.be.null
         done()

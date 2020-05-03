@@ -27,17 +27,6 @@ describe('Container', () => {
         done()
       })
     })
-
-    it('should set title attribute if given', (done) => {
-      const options = {
-        title: 'test1234'
-      }
-      render(options, (el) => {
-        expect(el.title)
-          .to.equal(options.title)
-        done()
-      })
-    })
   })
 
   describe('render(el, callback)', () => {
@@ -61,15 +50,6 @@ describe('Container', () => {
           .to.be.an.instanceof(HTMLElement)
         expect(el.tagName)
           .to.match(/^SPAN$|^IFRAME$/)
-        done()
-      })
-    })
-
-    it('should set title attribute if given', (done) => {
-      a.title = 'test1234'
-      render(a, (el) => {
-        expect(el.title)
-          .to.equal(a.title)
         done()
       })
     })

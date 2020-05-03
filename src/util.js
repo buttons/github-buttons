@@ -3,7 +3,7 @@ import { document } from './globals'
 export const createElementInDocument = function (document) {
   return function (tag, props, children) {
     const el = document.createElement(tag)
-    if (props) {
+    if (props != null) {
       for (const prop in props) {
         const val = props[prop]
         if (val != null) {
@@ -15,7 +15,7 @@ export const createElementInDocument = function (document) {
         }
       }
     }
-    if (children) {
+    if (children != null) {
       for (let i = 0, len = children.length; i < len; i++) {
         const child = children[i]
         el.appendChild(typeof child === 'string' ? document.createTextNode(child) : child)

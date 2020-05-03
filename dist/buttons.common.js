@@ -18,7 +18,7 @@ var XMLHttpRequest = window.XMLHttpRequest;
 var createElementInDocument = function (document) {
   return function (tag, props, children) {
     var el = document.createElement(tag);
-    if (props) {
+    if (props != null) {
       for (var prop in props) {
         var val = props[prop];
         if (val != null) {
@@ -30,7 +30,7 @@ var createElementInDocument = function (document) {
         }
       }
     }
-    if (children) {
+    if (children != null) {
       for (var i = 0, len = children.length; i < len; i++) {
         var child = children[i];
         el.appendChild(typeof child === 'string' ? document.createTextNode(child) : child);
@@ -276,10 +276,11 @@ var render = function (root, options, func) {
   var btn = createElement('a', {
     className: 'btn',
     href: options.href,
-    target: '_blank',
     rel: 'noopener',
-    innerHTML: octicon(options['data-icon'], /^large$/i.test(options['data-size']) ? 16 : 14),
-    'aria-label': options['aria-label'] || undefined
+    target: '_blank',
+    title: options.title || undefined,
+    'aria-label': options['aria-label'] || undefined,
+    innerHTML: octicon(options['data-icon'], /^large$/i.test(options['data-size']) ? 16 : 14)
   }, [
     ' ',
     createElement('span', {}, [options['data-text'] || ''])
@@ -342,8 +343,8 @@ var render = function (root, options, func) {
       widget.appendChild(createElement('a', {
         className: 'social-count',
         href: json.html_url + '/' + href,
-        target: '_blank',
         rel: 'noopener',
+        target: '_blank',
         'aria-label': data + ' ' + property.replace(/_count$/, '').replace('_', ' ').slice(0, data < 2 ? -1 : undefined) + ' on GitHub'
       }, [
         ('' + data).replace(/\B(?=(\d{3})+(?!\d))/g, ',')
@@ -383,9 +384,7 @@ var render$1 = function (options, func) {
     options = parseOptions(options);
   }
   if (useShadowDOM) {
-    var host = createElement('span', {
-      title: options.title || undefined
-    });
+    var host = createElement('span');
     render(host.attachShadow({ mode:  'closed' }), options, function () {
       func(host);
     });
