@@ -1,8 +1,8 @@
 github-buttons
 ==============
 
-[![CircleCI](https://img.shields.io/circleci/project/github/ntkme/github-buttons/master.svg)](https://circleci.com/gh/ntkme/github-buttons)
-[![Codecov](https://img.shields.io/codecov/c/github/ntkme/github-buttons.svg)](https://codecov.io/gh/ntkme/github-buttons)
+![build](https://github.com/ntkme/github-buttons/workflows/build/badge.svg)
+[![Coverage Status](https://coveralls.io/repos/github/ntkme/github-buttons/badge.svg)](https://coveralls.io/github/ntkme/github-buttons)
 [![npm](https://img.shields.io/npm/v/github-buttons)](https://www.npmjs.com/github-buttons)
 
 Usage

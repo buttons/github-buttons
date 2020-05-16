@@ -1,0 +1,35 @@
+name: build
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    name: Build
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Diff
+        run: git diff --exit-code
+
+      - name: Test
+        run: npm test
+
+      - name: Upload Coverage
+        uses: coverallsapp/github-action@v1.1.1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}

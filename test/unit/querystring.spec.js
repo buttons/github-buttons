@@ -46,6 +46,14 @@ describe('QueryString', () => {
       }))
         .to.equal('hello=world')
     })
+
+    it('should stringify object with custom sep, eq, and encodeURIComponent', () => {
+      expect(stringify({
+        position: 'sticky',
+        top: 0
+      }, ';', ':', value => value))
+        .to.equal('position:sticky;top:0')
+    })
   })
 
   describe('parse(str)', () => {
@@ -75,6 +83,14 @@ describe('QueryString', () => {
         .to.deep.equal({
           hello: 'world',
           test: '1234'
+        })
+    })
+
+    it('should parse string with custom sep, eq, and decodeURIComponent', () => {
+      expect(parse('position:sticky;top:0', ';', ':', value => value))
+        .to.deep.equal({
+          position: 'sticky',
+          top: '0'
         })
     })
   })

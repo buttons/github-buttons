@@ -16,7 +16,7 @@ export const render = function (options, func) {
   }
   if (useShadowDOM) {
     const host = createElement('span')
-    renderContent(host.attachShadow({ mode: process.env.DEBUG ? 'open' : 'closed' }), options, function () {
+    renderContent(host.attachShadow({ mode: process.env.DEBUG ? /* istanbul ignore next */ 'open' : 'closed' }), options, function () {
       func(host)
     })
   } else {
