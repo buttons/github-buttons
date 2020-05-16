@@ -35,6 +35,8 @@ jobs:
   publish:
     name: Publish
 
+    needs: build
+
     runs-on: ubuntu-latest
 
     env:
