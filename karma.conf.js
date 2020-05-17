@@ -34,9 +34,9 @@ module.exports = config => config.set({
           ]
         },
         {
-          test: /src\/.+\.js$/,
-          exclude: /node_modules/,
+          test: /\.js$/,
           loader: 'istanbul-instrumenter-loader',
+          exclude: /node_modules|\.spec\.js$/,
           enforce: 'post',
           options: {
             esModules: true
