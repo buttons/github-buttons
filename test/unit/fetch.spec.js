@@ -128,10 +128,11 @@ describe('Fetch', () => {
       head.appendChild.restore()
     })
 
-    it('should set up the callback function for json-p', () => {
-      fetch('hello', () => {})
+    it('should set up the callback function for json-p', (done) => {
+      fetch('hello', done)
       expect(window._)
         .to.be.a('function')
+      window._({ meta: { status: 200 } })
     })
 
     it('should setup the script and add callback query to request url for json-p', () => {
