@@ -5,7 +5,7 @@ module.exports = config => config.set({
   frameworks: ['mocha', 'chai', 'sinon', 'sinon-chai'],
   reporters: ['mocha', 'coverage-istanbul'],
   preprocessors: {
-    'test/unit/**/*.js': ['webpack', 'sourcemap']
+    'test/unit/**/*.js': ['sourcemap', 'webpack']
   },
   webpack: {
     mode: 'none',
