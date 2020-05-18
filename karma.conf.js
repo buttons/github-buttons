@@ -70,5 +70,5 @@ module.exports = config => config.set({
       served: true
     }
   ],
-  browsers: ['ChromeHeadless', 'FirefoxHeadless']
+  browsers: ['ChromeHeadless', 'FirefoxHeadless'].concat(process.platform === 'darwin' ? ['Safari'] : [])
 })
