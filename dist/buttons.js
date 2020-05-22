@@ -60,7 +60,7 @@
     }
     var obj = {};
     var params = str.split(sep);
-    for (var i = 0, len = params.length; i < len; ++i) {
+    for (var i = 0, len = params.length; i < len; i++) {
       var entry = params[i];
       if (entry !== '') {
         var ref = entry.split(eq);

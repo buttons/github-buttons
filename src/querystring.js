@@ -30,7 +30,7 @@ export const parse = function (str, sep, eq, decodeURIComponent) {
   }
   const obj = {}
   const params = str.split(sep)
-  for (let i = 0, len = params.length; i < len; ++i) {
+  for (let i = 0, len = params.length; i < len; i++) {
     const entry = params[i]
     if (entry !== '') {
       const ref = entry.split(eq)
