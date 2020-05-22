@@ -54,7 +54,9 @@ var hasOwnProperty = function (obj, prop) {
 
 var iframeURL = 'https://' + (/* istanbul ignore next */  'buttons.github.io') + '/buttons.html';
 
-var apiBaseURL = 'https://api.github.com';
+var domain = 'github.com';
+
+var apiBaseURL = 'https://api.' + domain;
 
 var useXHR = XMLHttpRequest && XMLHttpRequest.prototype && 'withCredentials' in XMLHttpRequest.prototype;
 
@@ -288,26 +290,22 @@ var render = function (root, options, func) {
     btn
   ]));
 
-  var domain = btn.hostname.split('.').reverse();
-  if (domain[0] === '') {
-    domain.shift();
-  }
-  if (domain[0] !== 'com' || domain[1] !== 'github') {
+  var hostname = btn.hostname.replace(/\.$/, '');
+  if (hostname.length < domain.length || ('.' + hostname).substring(hostname.length - domain.length) !== ('.' + domain)) {
     btn.href = '#';
     btn.target = '_self';
     func(widget);
     return
   }
 
-  var len = domain.length;
   var path = (' /' + btn.pathname).split(/\/+/);
-  if (((len === 2 || (len === 3 && domain[2] === 'gist')) && path[3] === 'archive') ||
-    (len === 2 && path[3] === 'releases' && path[4] === 'download') ||
-    (len === 3 && domain[2] === 'codeload')) {
+  if (((hostname === domain || hostname === 'gist.' + domain) && path[3] === 'archive') ||
+    (hostname === domain && path[3] === 'releases' && path[4] === 'download') ||
+    (hostname === 'codeload.' + domain)) {
     btn.target = '_top';
   }
 
-  if (!/^true$/i.test(options['data-show-count']) || len !== 2) {
+  if (!/^true$/i.test(options['data-show-count']) || hostname !== domain) {
     func(widget);
     return
   }

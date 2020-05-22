@@ -3,7 +3,10 @@ import {
   main as buttonsCssText,
   getColorScheme as getColorSchemeCssText
 } from './css'
-import { apiBaseURL } from './config'
+import {
+  domain,
+  apiBaseURL
+} from './config'
 import { octicon } from './octicons'
 import { fetch } from './fetch'
 
@@ -42,26 +45,22 @@ export const render = function (root, options, func) {
     btn
   ]))
 
-  const domain = btn.hostname.split('.').reverse()
-  if (domain[0] === '') {
-    domain.shift()
-  }
-  if (domain[0] !== 'com' || domain[1] !== 'github') {
+  const hostname = btn.hostname.replace(/\.$/, '')
+  if (hostname.length < domain.length || ('.' + hostname).substring(hostname.length - domain.length) !== ('.' + domain)) {
     btn.href = '#'
     btn.target = '_self'
     func(widget)
     return
   }
 
-  const len = domain.length
   const path = (' /' + btn.pathname).split(/\/+/)
-  if (((len === 2 || (len === 3 && domain[2] === 'gist')) && path[3] === 'archive') ||
-    (len === 2 && path[3] === 'releases' && path[4] === 'download') ||
-    (len === 3 && domain[2] === 'codeload')) {
+  if (((hostname === domain || hostname === 'gist.' + domain) && path[3] === 'archive') ||
+    (hostname === domain && path[3] === 'releases' && path[4] === 'download') ||
+    (hostname === 'codeload.' + domain)) {
     btn.target = '_top'
   }
 
-  if (!/^true$/i.test(options['data-show-count']) || len !== 2) {
+  if (!/^true$/i.test(options['data-show-count']) || hostname !== domain) {
     func(widget)
     return
   }

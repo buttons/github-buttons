@@ -15,7 +15,13 @@ export const setIframeURL = /* istanbul ignore next */ function (url) {
   iframeURL = url
 }
 
-export let apiBaseURL = 'https://api.github.com'
+export let domain = 'github.com'
+
+export const setDomain = /* istanbul ignore next */ function (hostname) {
+  domain = hostname
+}
+
+export let apiBaseURL = 'https://api.' + domain
 
 export const setApiBaseURL = /* istanbul ignore next */ function (url) {
   apiBaseURL = url

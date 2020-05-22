@@ -126,11 +126,13 @@ describe('Content', () => {
         })
       })))
         .then(() => done())
+        .catch(done)
     })
 
     it('should create an anchor with target _top if url is a download link', (done) => {
       Promise.all([
         'https://github.com/ntkme/github-buttons/archive/master.zip',
+        'https://gist.github.com/schacon/1/archive/3a641566d0a49014cea6f395e8be68c42b9e46d9.zip',
         'https://codeload.github.com/ntkme/github-buttons/zip/master',
         'https://github.com/octocat/Hello-World/releases/download/v1.0.0/example.zip'
       ].map(href => new Promise(resolve => {
@@ -145,6 +147,7 @@ describe('Content', () => {
         })
       })))
         .then(() => done())
+        .catch(done)
     })
 
     it('should append the button with the default icon', (done) => {

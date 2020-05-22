@@ -25,7 +25,7 @@ describe('Fetch', () => {
     })
 
     it('should handle error via xhr', (done) => {
-      fetch('/404', (error, data) => {
+      fetch('/404', (error, _) => {
         expect(error)
           .to.be.ok
         done()
@@ -33,7 +33,7 @@ describe('Fetch', () => {
     })
 
     it('should handle http 200 with corrupted json via xhr', (done) => {
-      fetch('/base/test/fixtures/jsonp/api.github.com/users/ntkme', (error, data) => {
+      fetch('/base/test/fixtures/jsonp/api.github.com/users/ntkme', (error, _) => {
         expect(error)
           .to.be.ok
         done()
@@ -42,24 +42,26 @@ describe('Fetch', () => {
 
     it('should combine identical pending requests via xhr', (done) => {
       Promise.all([
-        new Promise((resolve, reject) => {
-          fetch('/base/test/fixtures/xhr/api.github.com/users/ntkme', (error, data) => {
+        new Promise(resolve => {
+          fetch('/base/test/fixtures/xhr/api.github.com/users/ntkme', (_, data) => {
             expect(data.login)
               .to.equal('ntkme')
             resolve()
           })
         }),
-        new Promise((resolve, reject) => {
-          fetch('/base/test/fixtures/xhr/api.github.com/users/ntkme', (error, data) => {
+        new Promise(resolve => {
+          fetch('/base/test/fixtures/xhr/api.github.com/users/ntkme', (_, data) => {
             expect(data.login)
               .to.equal('ntkme')
             resolve()
           })
         })
-      ]).then(() => {
-        expect(JSON.parse).to.be.calledOnce
-        done()
-      })
+      ])
+        .then(() => {
+          expect(JSON.parse).to.be.calledOnce
+          done()
+        })
+        .catch(done)
     })
   })
 
@@ -86,7 +88,7 @@ describe('Fetch', () => {
     })
 
     it('should handle error via json-p', (done) => {
-      fetch('/404', (error, data) => {
+      fetch('/404', (error, _) => {
         expect(error)
           .to.be.ok
         done()
@@ -95,25 +97,27 @@ describe('Fetch', () => {
 
     it('should combine identical pending requests via json-p', (done) => {
       Promise.all([
-        new Promise((resolve, reject) => {
-          fetch('/base/test/fixtures/jsonp/api.github.com/users/ntkme', (error, data) => {
+        new Promise(resolve => {
+          fetch('/base/test/fixtures/jsonp/api.github.com/users/ntkme', (_, data) => {
             expect(data.login)
               .to.equal('ntkme')
             resolve()
           })
         }),
-        new Promise((resolve, reject) => {
-          fetch('/base/test/fixtures/jsonp/api.github.com/users/ntkme', (error, data) => {
+        new Promise(resolve => {
+          fetch('/base/test/fixtures/jsonp/api.github.com/users/ntkme', (_, data) => {
             expect(data.login)
               .to.equal('ntkme')
             resolve()
           })
         })
-      ]).then(() => {
-        expect(head.appendChild)
-          .to.be.calledOnce
-        done()
-      })
+      ])
+        .then(() => {
+          expect(head.appendChild)
+            .to.be.calledOnce
+          done()
+        })
+        .catch(done)
     })
   })
 
