@@ -60,7 +60,7 @@ module.exports = config => config.set({
   },
   coverageIstanbulReporter: {
     fixWebpackSourcePaths: true,
-    reports: [process.env.CI ? 'lcovonly' : 'html', 'text-summary']
+    reports: ['text-summary'].concat(process.env.CI ? ['lcovonly'] : ['html'])
   },
   files: [
     'test/unit/**/*.js',
