@@ -29,7 +29,7 @@ if (location.protocol + '//' + location.host + location.pathname === iframeURL) 
         const results = []
         const ref = document.getElementsByTagName('a')
         for (let i = 0, len = ref.length; i < len; i++) {
-          if (~(' ' + ref[i].className + ' ').replace(/[ \t\n\f\r]+/g, ' ').indexOf(' ' + buttonClass + ' ')) {
+          if ((' ' + ref[i].className + ' ').replace(/[ \t\n\f\r]+/g, ' ').indexOf(' ' + buttonClass + ' ') !== -1) {
             results.push(ref[i])
           }
         }
