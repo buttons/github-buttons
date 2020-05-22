@@ -27,14 +27,14 @@ export const setApiBaseURL = /* istanbul ignore next */ function (url) {
   apiBaseURL = url
 }
 
-export let useXHR = XMLHttpRequest && XMLHttpRequest.prototype && 'withCredentials' in XMLHttpRequest.prototype
+export let useXHR = XMLHttpRequest && 'prototype' in XMLHttpRequest && 'withCredentials' in XMLHttpRequest.prototype
 
 export const setUseXHR = /* istanbul ignore next */ function (boolean) {
-  useXHR = boolean && XMLHttpRequest && XMLHttpRequest.prototype && 'withCredentials' in XMLHttpRequest.prototype
+  useXHR = boolean && XMLHttpRequest && 'prototype' in XMLHttpRequest && 'withCredentials' in XMLHttpRequest.prototype
 }
 
-export let useShadowDOM = useXHR && HTMLElement && HTMLElement.prototype.attachShadow && !HTMLElement.prototype.attachShadow.prototype
+export let useShadowDOM = useXHR && HTMLElement && 'attachShadow' in HTMLElement.prototype && !('prototype' in HTMLElement.prototype.attachShadow)
 
 export const setUseShadowDOM = /* istanbul ignore next */ function (boolean) {
-  useShadowDOM = boolean && HTMLElement && HTMLElement.prototype.attachShadow && !HTMLElement.prototype.attachShadow.prototype
+  useShadowDOM = boolean && HTMLElement && 'attachShadow' in HTMLElement.prototype && !('prototype' in HTMLElement.prototype.attachShadow)
 }
