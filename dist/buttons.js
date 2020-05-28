@@ -200,7 +200,7 @@
       icon = 'mark-github';
     }
 
-    var defaultHeight = height < 24 ? 16 : /* istanbul ignore next */ 24;
+    var defaultHeight = height >= 24 && /* istanbul ignore next */ 24 in data[icon].heights ? /* istanbul ignore next */ 24 : 16;
 
     var svg = data[icon].heights[defaultHeight];
 

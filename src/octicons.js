@@ -8,7 +8,7 @@ export const octicon = function (icon, height) {
     icon = 'mark-github'
   }
 
-  const defaultHeight = height < 24 ? 16 : /* istanbul ignore next */ 24
+  const defaultHeight = height >= 24 && /* istanbul ignore next */ 24 in data[icon].heights ? /* istanbul ignore next */ 24 : 16
 
   const svg = data[icon].heights[defaultHeight]
 
