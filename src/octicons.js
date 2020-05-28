@@ -1,4 +1,5 @@
-import data from '@primer/octicons/build/data'
+import data from '@primer/octicons-v2/build/data'
+
 import { hasOwnProperty } from './util'
 
 export const octicon = function (icon, height) {
@@ -6,5 +7,10 @@ export const octicon = function (icon, height) {
   if (!hasOwnProperty(data, icon)) {
     icon = 'mark-github'
   }
-  return '<svg viewBox="0 0 ' + data[icon].width + ' ' + data[icon].height + '" class="octicon octicon-' + icon + '" style="width: ' + (height * data[icon].width / data[icon].height) + 'px; height: ' + height + 'px;" aria-hidden="true">' + data[icon].path + '</svg>'
+
+  const defaultHeight = height < 24 ? 16 : /* istanbul ignore next */ 24
+
+  const svg = data[icon].heights[defaultHeight]
+
+  return '<svg viewBox="0 0 ' + svg.width + ' ' + defaultHeight + '" width="' + (height * svg.width / defaultHeight) + '" height="' + height + '" class="octicon octicon-' + icon + '" aria-hidden="true">' + svg.path + '</svg>'
 }

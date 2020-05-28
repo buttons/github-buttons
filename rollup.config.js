@@ -117,7 +117,7 @@ export default [
     raw({
       name: 'octicons-data-json',
       filter (id) {
-        return id.endsWith('node_modules/@primer/octicons/build/data.json')
+        return id.endsWith('node_modules/@primer/octicons-v2/build/data.json')
       },
       transform (code) {
         const data = JSON.parse(code)
@@ -130,12 +130,15 @@ export default [
           'repo-forked',
           'repo-template',
           'issue-opened',
-          'cloud-download'
+          'download'
         ].map(key => ({
           [key]: {
-            width: data[key].width,
-            height: data[key].height,
-            path: data[key].path
+            heights: {
+              16: {
+                width: data[key].heights[16].width,
+                path: data[key].heights[16].path
+              }
+            }
           }
         })))
       }
