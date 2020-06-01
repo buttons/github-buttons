@@ -67,7 +67,7 @@ Set icon on button. A [subset](rollup.config.js) of [Octicons](https://primer.st
 
 Define a mapping of system color scheme to widget color scheme in css-like syntax.
 
-This is an _opt-in_ feature in version `>=2.3.0`. It means if `data-color-scheme` is `undefined`, it would still behave like version `<2.3.0`, where light color scheme is used under all conditions.
+This is an _opt-in_ feature since version `>=2.3.0`. It means if `data-color-scheme` is `undefined`, it would still behave like version `<2.3.0`, where light color scheme is used under all conditions.
 
 Once `data-color-scheme` is set to a string, it will inherit the default mapping: `no-preference: light; light: light; dark: dark;`.
 
@@ -81,6 +81,11 @@ User declarations would override the default. For example:
 - To use dark color scheme when system has no preference, set `data-color-scheme="no-preference: dark;"`.
 - To force light color scheme everywhere, set `data-color-scheme="dark: light;"`.
 - To force dark color scheme everywhere, set `data-color-scheme="no-preference: dark; light: dark;"`.
+
+A single word can be used to force the color scheme everywhere since version `>=2.11.0`. For example:
+
+- To force light color scheme everywhere, set `data-color-scheme="light"`.
+- To force dark color scheme everywhere, set `data-color-scheme="dark"`.
 
 ##### `data-size`
 

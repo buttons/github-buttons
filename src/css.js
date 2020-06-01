@@ -19,6 +19,10 @@ const getColorScheme = function (declarations) {
     return widgetColorSchemes.light
   }
 
+  if (hasOwnProperty(widgetColorSchemes, declarations)) {
+    return widgetColorSchemes[declarations]
+  }
+
   const colorSchemes = parse(declarations, ';', ':', function (str) {
     return str.replace(/^[ \t\n\f\r]+|[ \t\n\f\r]+$/g, '')
   })

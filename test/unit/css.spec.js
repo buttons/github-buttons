@@ -19,6 +19,16 @@ describe('CSS', () => {
         .to.equal(getCss())
     })
 
+    it('should return the light with light', () => {
+      expect(getColorScheme('light'))
+        .to.equal(widgetColorSchemes.light)
+    })
+
+    it('should return the dark with dark', () => {
+      expect(getColorScheme('dark'))
+        .to.equal(widgetColorSchemes.dark)
+    })
+
     it('should return the dark/light/dark with no-preference: dark', () => {
       expect(getColorScheme('no-preference: dark'))
         .to.equal(getCss('dark'))
