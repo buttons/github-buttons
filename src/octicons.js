@@ -1,4 +1,4 @@
-import data from '@primer/octicons-v2/build/data'
+import data from '@primer/octicons/build/data'
 
 import { hasOwnProperty } from './util'
 
