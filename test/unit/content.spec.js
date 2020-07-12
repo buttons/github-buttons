@@ -231,7 +231,7 @@ describe('Content', () => {
       render(root, options, (widget) => {
         const count = widget.querySelector('.social-count')
         expect(count.href)
-          .to.equal('https://github.com/ntkme/followers')
+          .to.equal('https://github.com/ntkme?tab=followers')
         expect(count.textContent)
           .to.equal('78')
         expect(count.getAttribute('aria-label'))
@@ -333,7 +333,7 @@ describe('Content', () => {
       render(root, options, (widget) => {
         const count = widget.querySelector('.social-count')
         expect(count.href)
-          .to.equal('https://github.com/ntkme/followers')
+          .to.equal('https://github.com/ntkme?tab=followers')
         done()
       })
     })
@@ -346,7 +346,7 @@ describe('Content', () => {
       render(root, options, (widget) => {
         const count = widget.querySelector('.social-count')
         expect(count.href)
-          .to.equal('https://github.com/ntkme/followers')
+          .to.equal('https://github.com/ntkme?tab=followers')
         done()
       })
     })
@@ -359,7 +359,7 @@ describe('Content', () => {
       render(root, options, (widget) => {
         const count = widget.querySelector('.social-count')
         expect(count.href)
-          .to.equal('https://github.com/ntkme/followers')
+          .to.equal('https://github.com/ntkme?tab=followers')
         done()
       })
     })
@@ -372,7 +372,7 @@ describe('Content', () => {
       render(root, options, (widget) => {
         const count = widget.querySelector('.social-count')
         expect(count.href)
-          .to.equal('https://github.com/ntkme/followers')
+          .to.equal('https://github.com/ntkme?tab=followers')
         done()
       })
     })
@@ -385,7 +385,7 @@ describe('Content', () => {
       render(root, options, (widget) => {
         const count = widget.querySelector('.social-count')
         expect(count.href)
-          .to.equal('https://github.com/ntkme/followers')
+          .to.equal('https://github.com/ntkme?tab=followers')
         done()
       })
     })
@@ -398,7 +398,7 @@ describe('Content', () => {
       render(root, options, (widget) => {
         const count = widget.querySelector('.social-count')
         expect(count.href)
-          .to.equal('https://github.com/ntkme/followers')
+          .to.equal('https://github.com/ntkme?tab=followers')
         done()
       })
     })

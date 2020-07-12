@@ -325,19 +325,20 @@ var render = function (root, options, func) {
 
   var href, property;
   if (!path[2] && path[1]) {
-    href = property = 'followers';
+    property = 'followers';
+    href = '?tab=followers';
   } else if (!path[3] && path[2]) {
     property = 'stargazers_count';
-    href = 'stargazers';
+    href = '/stargazers';
   } else if (!path[4] && path[3] === 'subscription') {
     property = 'subscribers_count';
-    href = 'watchers';
+    href = '/watchers';
   } else if (!path[4] && path[3] === 'fork') {
     property = 'forks_count';
-    href = 'network/members';
+    href = '/network/members';
   } else if (path[3] === 'issues') {
     property = 'open_issues_count';
-    href = 'issues';
+    href = '/issues';
   } else {
     func(widget);
     return
@@ -349,7 +350,7 @@ var render = function (root, options, func) {
       var data = json[property];
       widget.appendChild(createElement('a', {
         className: 'social-count',
-        href: json.html_url + '/' + href,
+        href: json.html_url + href,
         rel: 'noopener',
         target: '_blank',
         'aria-label': data + ' ' + property.replace(/_count$/, '').replace('_', ' ').slice(0, data < 2 ? -1 : undefined) + ' on GitHub'
