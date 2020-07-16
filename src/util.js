@@ -40,3 +40,7 @@ export const dispatchOnce = function (func) {
 export const hasOwnProperty = function (obj, prop) {
   return {}.hasOwnProperty.call(obj, prop)
 }
+
+export const toLowerCase = function (obj) {
+  return ('' + obj).toLowerCase()
+}

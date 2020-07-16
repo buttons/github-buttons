@@ -1,4 +1,7 @@
-import { createElementInDocument } from './util'
+import {
+  createElementInDocument,
+  toLowerCase
+} from './util'
 import {
   main as buttonsCssText,
   getColorScheme as getColorSchemeCssText
@@ -26,6 +29,8 @@ export const render = function (root, options, func) {
     style.appendChild(root.ownerDocument.createTextNode(cssText))
   }
 
+  const isLarge = toLowerCase(options['data-size']) === 'large'
+
   const btn = createElement('a', {
     className: 'btn',
     href: options.href,
@@ -33,14 +38,14 @@ export const render = function (root, options, func) {
     target: '_blank',
     title: options.title || undefined,
     'aria-label': options['aria-label'] || undefined,
-    innerHTML: octicon(options['data-icon'], /^large$/i.test(options['data-size']) ? 16 : 14)
+    innerHTML: octicon(options['data-icon'], isLarge ? 16 : 14)
   }, [
     ' ',
     createElement('span', {}, [options['data-text'] || ''])
   ])
 
   const widget = root.appendChild(createElement('div', {
-    className: 'widget' + (/^large$/i.test(options['data-size']) ? ' widget-lg' : '')
+    className: 'widget' + (isLarge ? ' widget-lg' : '')
   }, [
     btn
   ]))
@@ -60,7 +65,7 @@ export const render = function (root, options, func) {
     btn.target = '_top'
   }
 
-  if (!/^true$/i.test(options['data-show-count']) || hostname !== domain) {
+  if (toLowerCase(options['data-show-count']) !== 'true' || hostname !== domain) {
     func(widget)
     return
   }

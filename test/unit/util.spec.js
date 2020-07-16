@@ -2,7 +2,8 @@ import {
   createElementInDocument,
   createElement,
   dispatchOnce,
-  hasOwnProperty
+  hasOwnProperty,
+  toLowerCase
 } from '@/util'
 
 describe('Util', () => {
@@ -122,6 +123,19 @@ describe('Util', () => {
         .to.be.false
       expect(hasOwnProperty(obj, '__proto__'))
         .to.be.false
+    })
+  })
+
+  describe('toLowerCase(obj)', () => {
+    it('should work', () => {
+      expect(toLowerCase(null))
+        .to.equal('null')
+      expect(toLowerCase(true))
+        .to.equal('true')
+      expect(toLowerCase('Hello'))
+        .to.equal('hello')
+      expect(toLowerCase({}))
+        .to.equal('[object object]')
     })
   })
 })

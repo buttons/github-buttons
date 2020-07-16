@@ -1,9 +1,12 @@
 import data from '@primer/octicons/build/data'
 
-import { hasOwnProperty } from './util'
+import {
+  hasOwnProperty,
+  toLowerCase
+} from './util'
 
 export const octicon = function (icon, height) {
-  icon = ('' + icon).toLowerCase().replace(/^octicon-/, '')
+  icon = toLowerCase(icon).replace(/^octicon-/, '')
   if (!hasOwnProperty(data, icon)) {
     icon = 'mark-github'
   }

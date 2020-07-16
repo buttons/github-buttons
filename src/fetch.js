@@ -48,7 +48,7 @@ export const fetch = function (url, func) {
     }
     const script = createElementInDocument(contentWindow.document)('script', {
       async: true,
-      src: url + (/\?/.test(url) ? '&' : '?') + 'callback=_'
+      src: url + (url.indexOf('?') !== -1 ? '&' : '?') + 'callback=_'
     })
     const onloadend = /* istanbul ignore next: IE lt 9 */ function () {
       if (contentWindow._) {
