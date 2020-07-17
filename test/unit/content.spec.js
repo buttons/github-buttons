@@ -91,19 +91,17 @@ describe('Content', () => {
       })
     })
 
-    it('should create an anchor with href # if hostname is not under github.com', (done) => {
+    it('should create an anchor without href if hostname is not under github.com', (done) => {
       render(root, {
         href: 'https://twitter.com/ntkme'
       }, () => {
-        expect(root.querySelector('.btn').href)
-          .to.equal(document.location.href + '#')
-        expect(root.querySelector('.btn').target)
-          .to.equal('_self')
+        expect(root.querySelector('.btn').hasAttribute('href'))
+          .to.be.false
         done()
       })
     })
 
-    it('should create an anchor with href # if url contains javascript', (done) => {
+    it('should create an anchor without href if url contains javascript', (done) => {
       Promise.all([
         'javascript:',
         'JAVASCRIPT:',
@@ -118,10 +116,8 @@ describe('Content', () => {
         render(root, {
           href
         }, (widget) => {
-          expect(widget.querySelector('.btn').href)
-            .to.equal(document.location.href + '#')
-          expect(widget.querySelector('.btn').target)
-            .to.equal('_self')
+          expect(widget.querySelector('.btn').hasAttribute('href'))
+            .to.be.false
           resolve()
         })
       })))

@@ -312,8 +312,7 @@
 
     var hostname = btn.hostname.replace(/\.$/, '');
     if (hostname.length < domain.length || ('.' + hostname).substring(hostname.length - domain.length) !== ('.' + domain)) {
-      btn.href = '#';
-      btn.target = '_self';
+      btn.removeAttribute('href');
       func(widget);
       return
     }
