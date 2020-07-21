@@ -319,7 +319,7 @@
 
     var path = (' /' + btn.pathname).split(/\/+/);
     if (((hostname === domain || hostname === 'gist.' + domain) && path[3] === 'archive') ||
-      (hostname === domain && path[3] === 'releases' && path[4] === 'download') ||
+      (hostname === domain && path[3] === 'releases' && (path[4] === 'download' || (path[4] === 'latest' && path[5] === 'download'))) ||
       (hostname === 'codeload.' + domain)) {
       btn.target = '_top';
     }
