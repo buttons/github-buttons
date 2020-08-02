@@ -31,12 +31,12 @@ export const fetch = function (url, func) {
     onEvent(xhr, 'load', function () {
       let data
       try {
-        data = JSON.parse(xhr.responseText)
+        data = JSON.parse(this.responseText)
       } catch (error) {
         callback(error)
         return
       }
-      callback(xhr.status !== 200, data)
+      callback(this.status !== 200, data)
     })
     xhr.open('GET', url)
     xhr.send()

@@ -85,19 +85,19 @@ var offEvent = function (target, eventName, func) {
 };
 
 var onceEvent = function (target, eventName, func) {
-  var callback = function (event) {
+  var callback = function () {
     offEvent(target, eventName, callback);
-    return func(event)
+    return func.apply(this, arguments)
   };
   onEvent(target, eventName, callback);
 };
 
 var onceReadyStateChange = /* istanbul ignore next: IE lt 9 */ function (target, regex, func) {
   var eventName = 'readystatechange';
-  var callback = function (event) {
+  var callback = function () {
     if (regex.test(target.readyState)) {
       offEvent(target, eventName, callback);
-      return func(event)
+      return func.apply(this, arguments)
     }
   };
   onEvent(target, eventName, callback);
@@ -232,12 +232,12 @@ var fetch = function (url, func) {
     onEvent(xhr, 'load', function () {
       var data;
       try {
-        data = JSON.parse(xhr.responseText);
+        data = JSON.parse(this.responseText);
       } catch (error) {
         callback(error);
         return
       }
-      callback(xhr.status !== 200, data);
+      callback(this.status !== 200, data);
     });
     xhr.open('GET', url);
     xhr.send();
