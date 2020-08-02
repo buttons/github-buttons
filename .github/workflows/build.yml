@@ -21,11 +21,11 @@ jobs:
       - name: Build
         run: npm run build --if-present
 
-      - name: Diff
-        run: git diff --exit-code
-
       - name: Test
         run: npm test
+
+      - name: Diff
+        run: git diff --exit-code
 
       - name: Upload Coverage
         uses: coverallsapp/github-action@v1.1.1
