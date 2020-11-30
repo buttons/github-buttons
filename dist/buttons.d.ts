@@ -5,7 +5,7 @@ export interface GitHubButtonProps {
   "data-icon"?: string;
   "data-color-scheme"?: string;
   "data-size"?: string;
-  "data-show-count"?: boolean;
+  "data-show-count"?: boolean | string;
   "data-text"?: string;
 }
 
