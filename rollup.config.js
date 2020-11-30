@@ -162,10 +162,12 @@ export default [
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
       'process.env.DEBUG': process.env.DEBUG || false
     }),
-    ...(/\.min\.js$/.test(config.output.file) ? [terser({
-      output: {
-        comments: /@preserve|@license|@cc_on/i
-      }
-    })] : [])
+    ...(/\.min\.js$/.test(config.output.file)
+      ? [terser({
+          output: {
+            comments: /@preserve|@license|@cc_on/i
+          }
+        })]
+      : [])
   ]
 }))

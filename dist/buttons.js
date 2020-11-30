@@ -461,15 +461,15 @@
       var ref = document.querySelectorAll
         ? document.querySelectorAll('a.' + buttonClass)
         : (function () {
-          var results = [];
-          var ref = document.getElementsByTagName('a');
-          for (var i = 0, len = ref.length; i < len; i++) {
-            if ((' ' + ref[i].className + ' ').replace(/[ \t\n\f\r]+/g, ' ').indexOf(' ' + buttonClass + ' ') !== -1) {
-              results.push(ref[i]);
+            var results = [];
+            var ref = document.getElementsByTagName('a');
+            for (var i = 0, len = ref.length; i < len; i++) {
+              if ((' ' + ref[i].className + ' ').replace(/[ \t\n\f\r]+/g, ' ').indexOf(' ' + buttonClass + ' ') !== -1) {
+                results.push(ref[i]);
+              }
             }
-          }
-          return results
-        })();
+            return results
+          })();
       for (var i = 0, len = ref.length; i < len; i++) {
         (function (anchor) {
           render$1(anchor, function (el) {
