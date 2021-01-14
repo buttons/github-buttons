@@ -62,10 +62,10 @@
     "raw-loader": "^4.0.2",
     "rollup": "^2.36.1",
     "rollup-plugin-terser": "^7.0.2",
-    "sass": "^1.32.2",
-    "sass-loader": "^10.1.0",
+    "sass": "^1.32.4",
+    "sass-loader": "^10.1.1",
     "sinon": "^9.2.3",
     "sinon-chai": "^3.5.0",
-    "webpack": "^4.44.2"
+    "webpack": "^4.46.0"
   }
 }
