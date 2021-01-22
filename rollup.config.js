@@ -44,13 +44,13 @@ const plugins = {
       }
     }
   },
-  sass ({ include, exclude } = {}) {
+  sass ({ include, exclude, extensions = ['.sass', '.scss'] } = {}) {
     const filter = createFilter(include, exclude)
 
     return {
       name: 'sass',
       load (id) {
-        if ((!id.endsWith('.sass') && !id.endsWith('.scss')) || !filter(id)) return
+        if (!extensions.includes(path.extname(id)) || !filter(id)) return
 
         return {
           code: 'export default ' + JSON.stringify(sass.renderSync({
