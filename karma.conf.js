@@ -1,4 +1,4 @@
-import { configure } from './rollup.config'
+import { plugins } from './rollup.config'
 import istanbul from 'rollup-plugin-istanbul'
 
 export default config => config.set({
@@ -19,8 +19,9 @@ export default config => config.set({
       served: true
     }
   ],
-  rollupPreprocessor: configure({
+  rollupPreprocessor: {
     plugins: [
+      ...plugins,
       istanbul({
         include: ['**/*.js'],
         exclude: ['node_modules/**', 'test/**']
@@ -30,7 +31,7 @@ export default config => config.set({
       format: 'iife',
       sourcemap: 'inline'
     }
-  }),
+  },
   coverageReporter: {
     reporters: [
       process.env.CI
