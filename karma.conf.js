@@ -32,7 +32,9 @@ export default config => config.set({
   }),
   coverageReporter: {
     reporters: [
-      { type: process.env.CI ? 'lcovonly' : 'html' },
+      process.env.CI
+        ? { type: 'lcovonly', subdir: '.' }
+        : { type: 'html' },
       { type: 'text-summary' }
     ]
   }
