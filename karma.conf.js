@@ -22,7 +22,8 @@ export default config => config.set({
   rollupPreprocessor: configure({
     plugins: [
       istanbul({
-        include: ['src/**/*.js']
+        include: ['**/*.js'],
+        exclude: ['node_modules/**', 'test/**']
       })
     ],
     output: {

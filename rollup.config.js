@@ -3,6 +3,7 @@ import html from '@rollup/plugin-html'
 import json from '@rollup/plugin-json'
 import replace from '@rollup/plugin-replace'
 import resolve from '@rollup/plugin-node-resolve'
+import { createFilter } from '@rollup/pluginutils'
 import { terser } from 'rollup-plugin-terser'
 import sass from 'sass'
 import sassFunctions from './src/scss/_functions'
@@ -16,34 +17,50 @@ const banner =
  * @license ${packageJSON.license}
  */`
 
-const raw = function ({ name, filter, transform = (code) => code }) {
-  return {
-    name,
-    transform (code, id) {
-      if (!filter(id)) return null
+const plugins = {
+  octicons ({ include = '**', exclude, heights = [16, 24] } = {}) {
+    const filter = createFilter(include, exclude, false)
 
-      code = `export default ${JSON.stringify(transform(code, id))}`
+    return {
+      name: 'octicons-data-json',
+      transform (code, id) {
+        if (!id.endsWith('node_modules/@primer/octicons/build/data.json')) return
 
-      const ast = {
-        type: 'Program',
-        sourceType: 'module',
-        start: 0,
-        end: code.length,
-        body: [{
-          type: 'ExportDefaultDeclaration',
-          start: 0,
-          end: code.length,
-          declaration: {
-            type: 'Literal',
-            start: 15,
-            end: code.length,
-            value: null,
-            raw: 'null'
-          }
-        }]
+        const data = JSON.parse(code)
+
+        return {
+          code: JSON.stringify(Object.assign({}, ...Object.keys(data).filter(key => filter(key)).map(key => ({
+            [key]: {
+              heights: Object.assign({}, ...heights.filter(height => ({}).hasOwnProperty.call(data[key].heights, height)).map(height => ({
+                [height]: {
+                  width: data[key].heights[height].width,
+                  path: data[key].heights[height].path
+                }
+              })))
+            }
+          })))),
+          map: { mappings: '' }
+        }
       }
+    }
+  },
+  sass ({ include, exclude } = {}) {
+    const filter = createFilter(include, exclude)
 
-      return { ast, code, map: { mappings: '' } }
+    return {
+      name: 'sass',
+      load (id) {
+        if ((!id.endsWith('.sass') && !id.endsWith('.scss')) || !filter(id)) return
+
+        return {
+          code: 'export default ' + JSON.stringify(sass.renderSync({
+            file: id,
+            functions: sassFunctions,
+            outputStyle: process.env.DEBUG ? 'expanded' : 'compressed'
+          }).css.toString()),
+          map: { mappings: '' }
+        }
+      }
     }
   }
 }
@@ -56,58 +73,31 @@ const configure = config => Object.assign(config, {
     banner,
     preferConst: false
   }),
-  plugins: (config.plugins || []).concat([
+  plugins: [
     alias({
       entries: [
         { find: '@', replacement: path.resolve(__dirname, 'src') }
       ]
     }),
     resolve(),
+    plugins.octicons({
+      include: [
+        'download',
+        'eye',
+        'heart',
+        'issue-opened',
+        'mark-github',
+        'repo-forked',
+        'repo-template',
+        'star'
+      ],
+      heights: [16]
+    }),
     json({
-      exclude: ['node_modules/**']
+      compact: true,
+      preferConst: true
     }),
-    raw({
-      name: 'octicons-data-json',
-      filter (id) {
-        return id.endsWith('node_modules/@primer/octicons/build/data.json')
-      },
-      transform (code) {
-        const data = JSON.parse(code)
-
-        return Object.assign({}, ...[
-          'mark-github',
-          'heart',
-          'eye',
-          'star',
-          'repo-forked',
-          'repo-template',
-          'issue-opened',
-          'download'
-        ].map(key => ({
-          [key]: {
-            heights: {
-              16: {
-                width: data[key].heights[16].width,
-                path: data[key].heights[16].path
-              }
-            }
-          }
-        })))
-      }
-    }),
-    raw({
-      name: 'sass',
-      filter (id) {
-        return id.endsWith('.sass') || id.endsWith('.scss')
-      },
-      transform (_, id) {
-        return sass.renderSync({
-          file: id,
-          functions: sassFunctions,
-          outputStyle: process.env.DEBUG ? 'expanded' : 'compressed'
-        }).css.toString()
-      }
-    }),
+    plugins.sass(),
     replace({
       const: 'var',
       let: 'var',
@@ -120,7 +110,7 @@ const configure = config => Object.assign(config, {
         comments: /@preserve|@license|@cc_on/i
       }
     })
-  ])
+  ].concat(config.plugins || [])
 })
 
 export { configure }
