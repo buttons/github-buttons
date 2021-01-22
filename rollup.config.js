@@ -18,7 +18,7 @@ const banner =
  */`
 
 const plugins = {
-  octicons ({ include = '**', exclude, heights = [16, 24] } = {}) {
+  octicons ({ include, exclude, heights = [16, 24] } = {}) {
     const filter = createFilter(include, exclude, false)
 
     return {
