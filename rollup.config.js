@@ -118,16 +118,16 @@ export { configure }
 export default [
   {
     input: 'src/container.js',
-    output: {
-      format: 'cjs',
-      file: 'dist/buttons.common.js'
-    }
-  }, {
-    input: 'src/container.js',
-    output: {
-      format: 'es',
-      file: 'dist/buttons.esm.js'
-    }
+    output: [
+      {
+        format: 'cjs',
+        file: 'dist/buttons.common.js'
+      },
+      {
+        format: 'es',
+        file: 'dist/buttons.esm.js'
+      }
+    ]
   }, {
     input: 'src/main.js',
     output: [
