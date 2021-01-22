@@ -69,10 +69,16 @@ const template = ({ files }) => `<!doctype html><meta charset=utf-8><title>\u200
 
 const configure = config => Object.assign(config, {
   input: config.input,
-  output: Object.assign(config.output, {
-    banner,
-    preferConst: false
-  }),
+  output: ((output) => {
+    const options = {
+      banner,
+      preferConst: false
+    }
+    if (Array.isArray(output)) {
+      return output.map(output => Object.assign(output, options))
+    }
+    return Object.assign(output, options)
+  })(config.output),
   plugins: [
     alias({
       entries: [
@@ -103,12 +109,6 @@ const configure = config => Object.assign(config, {
       let: 'var',
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
       'process.env.DEBUG': process.env.DEBUG || false
-    }),
-    /\.min\.js$/.test(config.output.file) &&
-    terser({
-      output: {
-        comments: /@preserve|@license|@cc_on/i
-      }
     })
   ].concat(config.plugins || [])
 })
@@ -130,27 +130,34 @@ export default [
     }
   }, {
     input: 'src/main.js',
-    output: {
-      format: 'iife',
-      file: 'dist/buttons.js'
-    },
-    plugins: [
-      process.env.NODE_ENV !== 'production' && html({
-        fileName: 'buttons.html',
-        template: template
-      })
-    ]
-  }, {
-    input: 'src/main.js',
-    output: {
-      format: 'iife',
-      file: 'dist/buttons.min.js'
-    },
-    plugins: [
-      process.env.NODE_ENV === 'production' && html({
-        fileName: 'buttons.html',
-        template: template
-      })
+    output: [
+      {
+        format: 'iife',
+        file: 'dist/buttons.js',
+        plugins: [
+          process.env.NODE_ENV !== 'production' &&
+          html({
+            fileName: 'buttons.html',
+            template: template
+          })
+        ]
+      },
+      {
+        format: 'iife',
+        file: 'dist/buttons.min.js',
+        plugins: [
+          terser({
+            output: {
+              comments: /@preserve|@license|@cc_on/i
+            }
+          }),
+          process.env.NODE_ENV === 'production' &&
+          html({
+            fileName: 'buttons.html',
+            template: template
+          })
+        ]
+      }
     ]
   }
 ].map(config => configure(config))

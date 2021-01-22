@@ -24,8 +24,8 @@
   },
   "main": "dist/buttons.common.js",
   "module": "dist/buttons.esm.js",
-  "unpkg": "dist/buttons.js",
-  "jsdelivr": "dist/buttons.js",
+  "unpkg": "dist/buttons.min.js",
+  "jsdelivr": "dist/buttons.min.js",
   "types": "dist/buttons.d.ts",
   "scripts": {
     "build": "rollup -c rollup.config.js",
