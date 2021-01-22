@@ -23,7 +23,7 @@ const octicons = ({ include, exclude, heights = [16, 24] } = {}) => {
   return {
     name: 'octicons-data-json',
     transform (code, id) {
-      if (!id.endsWith('node_modules/@primer/octicons/build/data.json')) return
+      if (!id.split(path.sep).join(path.posix.sep).endsWith('node_modules/@primer/octicons/build/data.json')) return
 
       const data = JSON.parse(code)
 

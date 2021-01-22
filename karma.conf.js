@@ -2,7 +2,6 @@ import { plugins } from './rollup.config'
 import istanbul from 'rollup-plugin-istanbul'
 
 export default config => config.set({
-  browsers: ['ChromeHeadless', 'FirefoxHeadless'].concat(process.platform === 'darwin' ? ['Safari'] : []),
   frameworks: ['mocha', 'chai', 'sinon', 'sinon-chai'],
   reporters: ['mocha', 'coverage'],
   preprocessors: {

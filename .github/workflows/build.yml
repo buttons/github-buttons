@@ -6,7 +6,17 @@ jobs:
   build:
     name: Build
 
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os:
+          - macos-latest
+          - ubuntu-latest
+          - windows-latest
+        browser:
+          - ChromeHeadless
+          - FirefoxHeadless
+
+    runs-on: ${{ matrix.os }}
 
     steps:
       - name: Checkout Code
@@ -22,7 +32,7 @@ jobs:
         run: npm run build --if-present
 
       - name: Test
-        run: npm test
+        run: npm test -- --browsers ${{ matrix.browser }}
 
       - name: Diff
         run: git diff --exit-code
@@ -30,4 +40,20 @@ jobs:
       - name: Upload Coverage
         uses: coverallsapp/github-action@v1.1.2
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.github_token }}
+          flag-name: ${{ matrix.os }}-${{ matrix.browser }}
+          parallel: true
+
+  post-build:
+    name: Post Build
+
+    needs: build
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Post Upload Coverage
+        uses: coverallsapp/github-action@v1.1.2
+        with:
+          github-token: ${{ secrets.github_token }}
+          parallel-finished: true
