@@ -1,4 +1,5 @@
 import alias from '@rollup/plugin-alias'
+import html from '@rollup/plugin-html'
 import json from '@rollup/plugin-json'
 import replace from '@rollup/plugin-replace'
 import resolve from '@rollup/plugin-node-resolve'
@@ -6,7 +7,6 @@ import { terser } from 'rollup-plugin-terser'
 import sass from 'sass'
 import sassFunctions from './src/scss/_functions'
 import path from 'path'
-import fs from 'fs'
 import packageJSON from './package.json'
 
 const banner =
@@ -48,20 +48,7 @@ const raw = function ({ name, filter, transform = (code) => code }) {
   }
 }
 
-const html = function ({ output: { file }, title = '\u200b' } = {}) {
-  const bundle = file
-  return {
-    name: 'html',
-    generateBundle ({ file }) {
-      return new Promise((resolve, reject) => {
-        fs.writeFile(bundle, `<!doctype html><meta charset=utf-8><title>${title}</title><meta name=robots content=noindex><body><script src=${path.relative(path.dirname(bundle), file)}></script>`, (error) => {
-          if (error) reject(error)
-          resolve()
-        })
-      })
-    }
-  }
-}
+const template = ({ files }) => `<!doctype html><meta charset=utf-8><title>\u200b</title><meta name=robots content=noindex><body>${files.js.map(({ fileName }) => `<script src=${fileName}></script>`).join('')}`
 
 const configure = config => Object.assign(config, {
   input: config.input,
@@ -111,7 +98,7 @@ const configure = config => Object.assign(config, {
     raw({
       name: 'sass',
       filter (id) {
-        return id.endsWith('sass') || id.endsWith('scss')
+        return id.endsWith('.sass') || id.endsWith('.scss')
       },
       transform (_, id) {
         return sass.renderSync({
@@ -159,9 +146,8 @@ export default [
     },
     plugins: [
       process.env.NODE_ENV !== 'production' && html({
-        output: {
-          file: 'dist/buttons.html'
-        }
+        fileName: 'buttons.html',
+        template: template
       })
     ]
   }, {
@@ -172,9 +158,8 @@ export default [
     },
     plugins: [
       process.env.NODE_ENV === 'production' && html({
-        output: {
-          file: 'dist/buttons.html'
-        }
+        fileName: 'buttons.html',
+        template: template
       })
     ]
   }
