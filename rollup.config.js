@@ -1,3 +1,4 @@
+import alias from '@rollup/plugin-alias'
 import json from '@rollup/plugin-json'
 import replace from '@rollup/plugin-replace'
 import resolve from '@rollup/plugin-node-resolve'
@@ -62,54 +63,18 @@ const html = function ({ output: { file }, title = '\u200b' } = {}) {
   }
 }
 
-export default [
-  {
-    input: 'src/container.js',
-    output: {
-      format: 'cjs',
-      file: 'dist/buttons.common.js'
-    }
-  }, {
-    input: 'src/container.js',
-    output: {
-      format: 'es',
-      file: 'dist/buttons.esm.js'
-    }
-  }, {
-    input: 'src/main.js',
-    output: {
-      format: 'iife',
-      file: 'dist/buttons.js'
-    },
-    plugins: [
-      process.env.NODE_ENV !== 'production' && html({
-        output: {
-          file: 'dist/buttons.html'
-        }
-      })
-    ]
-  }, {
-    input: 'src/main.js',
-    output: {
-      format: 'iife',
-      file: 'dist/buttons.min.js'
-    },
-    plugins: [
-      process.env.NODE_ENV === 'production' && html({
-        output: {
-          file: 'dist/buttons.html'
-        }
-      })
-    ]
-  }
-].map(config => ({
+const configure = config => Object.assign(config, {
   input: config.input,
   output: Object.assign(config.output, {
     banner,
     preferConst: false
   }),
-  plugins: [
-    ...(config.plugins || []),
+  plugins: (config.plugins || []).concat([
+    alias({
+      entries: [
+        { find: '@', replacement: path.resolve(__dirname, 'src') }
+      ]
+    }),
     resolve(),
     json({
       exclude: ['node_modules/**']
@@ -162,12 +127,55 @@ export default [
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
       'process.env.DEBUG': process.env.DEBUG || false
     }),
-    ...(/\.min\.js$/.test(config.output.file)
-      ? [terser({
-          output: {
-            comments: /@preserve|@license|@cc_on/i
-          }
-        })]
-      : [])
-  ]
-}))
+    /\.min\.js$/.test(config.output.file) &&
+    terser({
+      output: {
+        comments: /@preserve|@license|@cc_on/i
+      }
+    })
+  ])
+})
+
+export { configure }
+
+export default [
+  {
+    input: 'src/container.js',
+    output: {
+      format: 'cjs',
+      file: 'dist/buttons.common.js'
+    }
+  }, {
+    input: 'src/container.js',
+    output: {
+      format: 'es',
+      file: 'dist/buttons.esm.js'
+    }
+  }, {
+    input: 'src/main.js',
+    output: {
+      format: 'iife',
+      file: 'dist/buttons.js'
+    },
+    plugins: [
+      process.env.NODE_ENV !== 'production' && html({
+        output: {
+          file: 'dist/buttons.html'
+        }
+      })
+    ]
+  }, {
+    input: 'src/main.js',
+    output: {
+      format: 'iife',
+      file: 'dist/buttons.min.js'
+    },
+    plugins: [
+      process.env.NODE_ENV === 'production' && html({
+        output: {
+          file: 'dist/buttons.html'
+        }
+      })
+    ]
+  }
+].map(config => configure(config))
