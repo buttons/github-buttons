@@ -2,7 +2,7 @@ github-buttons
 ==============
 
 ![build](https://github.com/ntkme/github-buttons/workflows/build/badge.svg)
-[![Coverage Status](https://coveralls.io/repos/github/ntkme/github-buttons/badge.svg)](https://coveralls.io/github/ntkme/github-buttons)
+[![Coverage Status](https://coveralls.io/repos/github/ntkme/github-buttons/badge.svg?branch=main)](https://coveralls.io/github/ntkme/github-buttons?branch=main)
 [![npm](https://img.shields.io/npm/v/github-buttons)](https://www.npmjs.com/github-buttons)
 
 Usage
