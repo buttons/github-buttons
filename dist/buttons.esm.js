@@ -56,7 +56,7 @@ var toLowerCase = function (obj) {
   return ('' + obj).toLowerCase()
 };
 
-var iframeURL = 'https://' + (/* istanbul ignore next */  'buttons.github.io') + '/buttons.html';
+var iframeURL = 'https://' + (/* istanbul ignore next */ 'buttons.github.io') + '/buttons.html';
 
 var domain = 'github.com';
 
@@ -394,7 +394,7 @@ var render$1 = function (options, func) {
   }
   if (useShadowDOM) {
     var host = createElement('span');
-    render(host.attachShadow({ mode:  'closed' }), options, function () {
+    render(host.attachShadow({ mode: 'closed' }), options, function () {
       func(host);
     });
   } else {

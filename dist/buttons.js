@@ -18,7 +18,7 @@
 
   var buttonClass = 'github-button';
 
-  var iframeURL = 'https://' + (/* istanbul ignore next */  'buttons.github.io') + '/buttons.html';
+  var iframeURL = 'https://' + (/* istanbul ignore next */ 'buttons.github.io') + '/buttons.html';
 
   var domain = 'github.com';
 
@@ -416,7 +416,7 @@
     }
     if (useShadowDOM) {
       var host = createElement('span');
-      render(host.attachShadow({ mode:  'closed' }), options, function () {
+      render(host.attachShadow({ mode: 'closed' }), options, function () {
         func(host);
       });
     } else {
