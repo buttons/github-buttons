@@ -92,10 +92,13 @@ const plugins = [
   }),
   sass(),
   replace({
-    const: 'var',
-    let: 'var',
-    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
-    'process.env.DEBUG': process.env.DEBUG || false
+    preventAssignment: true,
+    values: {
+      const: 'var',
+      let: 'var',
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
+      'process.env.DEBUG': process.env.DEBUG || false
+    }
   })
 ]
 
