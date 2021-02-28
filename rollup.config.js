@@ -17,13 +17,15 @@ const banner =
  * @license ${packageJSON.license}
  */`
 
+const octiconsDataJSON = 'node_modules/@primer/octicons/build/data.json'
+
 const octicons = ({ include, exclude, heights = [16, 24] } = {}) => {
   const filter = createFilter(include, exclude, false)
 
   return {
     name: 'octicons-data-json',
     transform (code, id) {
-      if (!id.split(path.sep).join(path.posix.sep).endsWith('node_modules/@primer/octicons/build/data.json')) return
+      if (!id.split(path.sep).join(path.posix.sep).endsWith(octiconsDataJSON)) return
 
       const data = JSON.parse(code)
 
@@ -87,7 +89,15 @@ const plugins = [
     heights: [16]
   }),
   json({
-    compact: true,
+    include: [octiconsDataJSON],
+    indent: '  ',
+    namedExports: false,
+    preferConst: true
+  }),
+  json({
+    exclude: [octiconsDataJSON],
+    indent: '  ',
+    namedExports: true,
     preferConst: true
   }),
   sass(),
