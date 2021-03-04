@@ -337,7 +337,7 @@ var fetch = function (url, func) {
   }
 };
 
-var render = function (root, options, func) {
+var render$1 = function (root, options, func) {
   var createElement = createElementInDocument(root.ownerDocument);
 
   var style = root.appendChild(createElement('style', {
@@ -454,7 +454,7 @@ var set = function (el, size) {
   el.style.height = size[1] + 'px';
 };
 
-var render$1 = function (options, func) {
+var render = function (options, func) {
   if (options == null || func == null) {
     return
   }
@@ -463,7 +463,7 @@ var render$1 = function (options, func) {
   }
   if (useShadowDOM) {
     var host = createElement('span');
-    render(host.attachShadow({ mode: 'closed' }), options, function () {
+    render$1(host.attachShadow({ mode: 'closed' }), options, function () {
       func(host);
     });
   } else {
@@ -486,7 +486,7 @@ var render$1 = function (options, func) {
         return
       }
       offEvent(iframe, 'load', callback);
-      render.call(contentWindow, body, options, function (widget) {
+      render$1.call(contentWindow, body, options, function (widget) {
         var size = get(widget);
         iframe.parentNode.removeChild(iframe);
         onceEvent(iframe, 'load', function () {
@@ -501,4 +501,4 @@ var render$1 = function (options, func) {
   }
 };
 
-exports.render = render$1;
+exports.render = render;

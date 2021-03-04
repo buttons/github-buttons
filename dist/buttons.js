@@ -338,7 +338,7 @@
     }
   };
 
-  var render = function (root, options, func) {
+  var render$1 = function (root, options, func) {
     var createElement = createElementInDocument(root.ownerDocument);
 
     var style = root.appendChild(createElement('style', {
@@ -472,7 +472,7 @@
     el.style.height = size[1] + 'px';
   };
 
-  var render$1 = function (options, func) {
+  var render = function (options, func) {
     if (options == null || func == null) {
       return
     }
@@ -481,7 +481,7 @@
     }
     if (useShadowDOM) {
       var host = createElement('span');
-      render(host.attachShadow({ mode: 'closed' }), options, function () {
+      render$1(host.attachShadow({ mode: 'closed' }), options, function () {
         func(host);
       });
     } else {
@@ -504,7 +504,7 @@
           return
         }
         offEvent(iframe, 'load', callback);
-        render.call(contentWindow, body, options, function (widget) {
+        render$1.call(contentWindow, body, options, function (widget) {
           var size = get(widget);
           iframe.parentNode.removeChild(iframe);
           onceEvent(iframe, 'load', function () {
@@ -520,7 +520,7 @@
   };
 
   if (location.protocol + '//' + location.host + location.pathname === iframeURL) {
-    render(document.body, parse(window.name || location.hash.replace(/^#/, '')), function () {});
+    render$1(document.body, parse(window.name || location.hash.replace(/^#/, '')), function () {});
   } else {
     defer(function () {
       var ref = document.querySelectorAll
@@ -537,7 +537,7 @@
           })();
       for (var i = 0, len = ref.length; i < len; i++) {
         (function (anchor) {
-          render$1(anchor, function (el) {
+          render(anchor, function (el) {
             anchor.parentNode.replaceChild(el, anchor);
           });
         })(ref[i]);
