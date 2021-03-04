@@ -388,7 +388,7 @@ var render = function (root, options, func) {
     btn.target = '_top';
   }
 
-  if (toLowerCase(options['data-show-count']) !== 'true' || hostname !== domain) {
+  if (toLowerCase(options['data-show-count']) !== 'true' || hostname !== domain || path[1] === 'sponsors') {
     func(widget);
     return
   }

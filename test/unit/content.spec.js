@@ -412,6 +412,30 @@ describe('Content', () => {
       })
     })
 
+    it('should not append the count for sponsors button type', (done) => {
+      const options = {
+        href: 'https://github.com/sponsors',
+        'data-show-count': 'true'
+      }
+      render(root, options, (widget) => {
+        expect(widget.querySelector('.social-count'))
+          .to.be.null
+        done()
+      })
+    })
+
+    it('should not append the count for sponsors button type', (done) => {
+      const options = {
+        href: 'https://github.com/sponsors/ntkme',
+        'data-show-count': 'true'
+      }
+      render(root, options, (widget) => {
+        expect(widget.querySelector('.social-count'))
+          .to.be.null
+        done()
+      })
+    })
+
     it('should append button without count when count has error', (done) => {
       const options = {
         href: 'https://github.com/404',
