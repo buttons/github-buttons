@@ -1,14 +1,1 @@
-@use "../../node_modules/@primer/css/support" as *;
-@use "color-scheme" with (
-  $btn-color: $gray-000,
-  $btn-background-color-start: $gray-800,
-  $btn-background-color-stop: darken($gray-900, 2%),
-  $btn-focus-background-color-start: darken($gray-800, 2%),
-  $btn-focus-background-color-stop: darken(darken($gray-900, 2%), 2%),
-  $btn-focus-border-color: rgba($black, 0.5),
-  $btn-active-background-color: darken(mix($gray-800, darken($gray-900, 2%), 50%), 7%),
-  $social-count-color: $gray-000,
-  $social-count-background-color: $black,
-  $social-count-focus-color: $blue-400,
-  $octicon-heart-color: $pink-400,
-);
+@use "color-scheme" with ($scheme: dark);
