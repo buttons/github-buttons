@@ -389,7 +389,12 @@
       btn.target = '_top';
     }
 
-    if (toLowerCase(options['data-show-count']) !== 'true' || hostname !== domain || path[1] === 'sponsors') {
+    if (toLowerCase(options['data-show-count']) !== 'true' ||
+      hostname !== domain ||
+      path[1] === 'sponsors' ||
+      path[1] === 'orgs' ||
+      path[1] === 'users' ||
+      path[1] === '-') {
       func(widget);
       return
     }
