@@ -9,10 +9,12 @@ $btn-hover-background-color-start: primitive(colors, $scheme, btn, hoverBg) !def
 $btn-hover-background-color-stop: darken($btn-hover-background-color-start, 3.3333333333%) !default;
 $btn-hover-border-color: primitive(colors, $scheme, btn, hoverBorder) !default;
 $btn-active-background-color: darken(desaturate($btn-background-color-start, 10%), 6%) !default;
+$btn-active-border-color: $btn-hover-border-color !default;
+$btn-active-shadow: primitive(colors, $scheme, btn, shadowActive) !default;
 $social-count-color:  primitive(colors, $scheme, btn, text) !default;
 $social-count-background-color: primitive(colors, $scheme, socialCount, bg) !default;
 $social-count-border-color: $btn-border-color !default;
-$social-count-focus-color: primitive(colors, $scheme, text, link) !default;
+$social-count-hover-color: primitive(colors, $scheme, text, link) !default;
 $octicon-heart-color: primitive(colors, $scheme, scale, pink, 5) !default;
 
 .btn {
@@ -42,8 +44,8 @@ $octicon-heart-color: primitive(colors, $scheme, scale, pink, 5) !default;
   &:active {
     @include blend(
       $background-color: $btn-active-background-color,
-      $border-color: $btn-hover-border-color,
-      $box-shadow: primitive(colors, $scheme, btn, shadowActive),
+      $border-color: $btn-active-border-color,
+      $box-shadow: $btn-active-shadow,
     );
     @include background-image-none;
   }
@@ -58,7 +60,7 @@ $octicon-heart-color: primitive(colors, $scheme, scale, pink, 5) !default;
 
   &:focus,
   &:hover {
-    color: $social-count-focus-color;
+    color: $social-count-hover-color;
   }
 }
 
