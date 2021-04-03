@@ -1,5 +1,5 @@
 import sass from 'sass'
-import primitives from '@primer/primitives/dist/js'
+import primitives from '@primer/primitives'
 
 // https://tools.ietf.org/html/rfc3986#section-2.2
 const reservedCharacters = ":/?#[]@!$&'()*+,;=".split('')
