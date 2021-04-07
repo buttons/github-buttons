@@ -20,17 +20,18 @@ const banner =
 const octiconsDataJSON = 'node_modules/@primer/octicons/build/data.json'
 
 const octicons = ({ include, exclude, heights = [16, 24] } = {}) => {
-  const filter = createFilter(include, exclude, false)
+  const filter = createFilter([octiconsDataJSON])
+  const octiconsFilter = createFilter(include, exclude, false)
 
   return {
     name: 'octicons-data-json',
     transform (code, id) {
-      if (!id.split(path.sep).join(path.posix.sep).endsWith(octiconsDataJSON)) return
+      if (!filter(id)) return
 
       const data = JSON.parse(code)
 
       return {
-        code: JSON.stringify(Object.assign({}, ...Object.keys(data).filter(key => filter(key)).map(key => ({
+        code: JSON.stringify(Object.assign({}, ...Object.keys(data).filter(key => octiconsFilter(key)).map(key => ({
           [key]: {
             heights: Object.assign({}, ...heights.filter(height => ({}).hasOwnProperty.call(data[key].heights, height)).map(height => ({
               [height]: {
