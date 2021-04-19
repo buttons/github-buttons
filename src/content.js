@@ -66,6 +66,7 @@ export const render = function (root, options, func) {
 
   if (toLowerCase(options['data-show-count']) !== 'true' ||
     hostname !== domain ||
+    path[1] === 'marketplace' ||
     path[1] === 'sponsors' ||
     path[1] === 'orgs' ||
     path[1] === 'users' ||

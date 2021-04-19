@@ -85,6 +85,7 @@ const plugins = [
       'issue-opened',
       'mark-github',
       'package',
+      'play',
       'repo-forked',
       'repo-template',
       'star'
