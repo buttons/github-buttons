@@ -78,11 +78,13 @@ const plugins = [
   resolve(),
   octicons({
     include: [
+      'comment-discussion',
       'download',
       'eye',
       'heart',
       'issue-opened',
       'mark-github',
+      'package',
       'repo-forked',
       'repo-template',
       'star'
