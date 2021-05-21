@@ -1,3 +1,5 @@
+@use "sass:math";
+
 @mixin blend($args...) {
   $declarations: keywords($args);
   $background-color: map-get($declarations, "background-color");
@@ -21,9 +23,9 @@
   background-image: -moz-linear-gradient(top, $color-start, $color-stop $color-stop-percentage);
   background-image: linear-gradient(180deg, $color-start, $color-stop $color-stop-percentage);
 
-  $red: red($color-start) + (red($color-stop) - red($color-start)) / $color-stop-percentage * 100%;
-  $green: green($color-start) + (green($color-stop) - green($color-start)) / $color-stop-percentage * 100%;
-  $blue: blue($color-start) + (blue($color-stop) - blue($color-start)) / $color-stop-percentage * 100%;
+  $red: red($color-start) + math.div(red($color-stop) - red($color-start), $color-stop-percentage) * 100%;
+  $green: green($color-start) + math.div(green($color-stop) - green($color-start), $color-stop-percentage) * 100%;
+  $blue: blue($color-start) + math.div(blue($color-stop) - blue($color-start), $color-stop-percentage) * 100%;
   $color-stop: rgb($red, $green, $blue);
 
   filter: unquote("progid:DXImageTransform.Microsoft.Gradient(startColorstr='#{ie-hex-str($color-start)}', endColorstr='#{ie-hex-str($color-stop)}')");
