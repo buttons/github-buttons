@@ -20,6 +20,7 @@ a {
 .social-count {
   position: relative;
   display: inline-block;
+  display: inline-flex;
   height: 14px;
   padding: 2px 5px;
   font-size: 11px;
@@ -53,9 +54,9 @@ a {
 .widget-lg {
   .btn,
   .social-count {
-    height: 20px;
-    padding: 3px 10px;
+    height: 16px;
+    padding: 5px 10px;
     font-size: 12px;
-    line-height: 20px;
+    line-height: 16px;
   }
 }

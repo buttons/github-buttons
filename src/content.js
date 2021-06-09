@@ -38,9 +38,8 @@ export const render = function (root, options, func) {
     target: '_blank',
     title: options.title || undefined,
     'aria-label': options['aria-label'] || undefined,
-    innerHTML: octicon(options['data-icon'], isLarge ? 16 : 14)
+    innerHTML: octicon(options['data-icon'], isLarge ? 16 : 14) + '&nbsp;'
   }, [
-    ' ',
     createElement('span', {}, [options['data-text'] || ''])
   ])
 
