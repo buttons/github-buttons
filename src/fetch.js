@@ -59,10 +59,7 @@ export const fetch = function (url, func) {
     }
     onEvent(script, 'load', onloadend)
     onEvent(script, 'error', onloadend)
-    /* istanbul ignore if: IE lt 9 */
-    if (script.readyState) {
-      onceReadyStateChange(script, /de|m/, onloadend)
-    }
+    onceReadyStateChange(script, /de|m/, onloadend)
     contentWindow.document.getElementsByTagName('head')[0].appendChild(script)
   }
 }

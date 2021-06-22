@@ -97,14 +97,16 @@
   };
 
   var onceReadyStateChange = /* istanbul ignore next: IE lt 9 */ function (target, regex, func) {
-    var eventName = 'readystatechange';
-    var callback = function () {
-      if (regex.test(target.readyState)) {
-        offEvent(target, eventName, callback);
-        return func.apply(this, arguments)
-      }
-    };
-    onEvent(target, eventName, callback);
+    if (target.readyState) {
+      var eventName = 'readystatechange';
+      var callback = function () {
+        if (regex.test(target.readyState)) {
+          offEvent(target, eventName, callback);
+          return func.apply(this, arguments)
+        }
+      };
+      onEvent(target, eventName, callback);
+    }
   };
 
   var createElementInDocument = function (document) {
@@ -357,10 +359,7 @@
       };
       onEvent(script, 'load', onloadend);
       onEvent(script, 'error', onloadend);
-      /* istanbul ignore if: IE lt 9 */
-      if (script.readyState) {
-        onceReadyStateChange(script, /de|m/, onloadend);
-      }
+      onceReadyStateChange(script, /de|m/, onloadend);
       contentWindow.document.getElementsByTagName('head')[0].appendChild(script);
     }
   };
