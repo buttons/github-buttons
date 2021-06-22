@@ -25,7 +25,7 @@ export const onceEvent = function (target, eventName, func) {
 }
 
 export const onceReadyStateChange = /* istanbul ignore next: IE lt 9 */ function (target, regex, func) {
-  if (target.readyState) {
+  if (target.readyState != null) {
     const eventName = 'readystatechange'
     const callback = function () {
       if (regex.test(target.readyState)) {

@@ -93,7 +93,7 @@ var onceEvent = function (target, eventName, func) {
 };
 
 var onceReadyStateChange = /* istanbul ignore next: IE lt 9 */ function (target, regex, func) {
-  if (target.readyState) {
+  if (target.readyState != null) {
     var eventName = 'readystatechange';
     var callback = function () {
       if (regex.test(target.readyState)) {
