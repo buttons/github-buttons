@@ -1,21 +1,21 @@
 @use "mixins" as *;
 
 $scheme: light !default;
-$btn-color: primitive(colors, $scheme, btn, text) !default;
-$btn-background-color-start: primitive(colors, $scheme, btn, bg) !default;
+$btn-color: primitive(colors_v2, $scheme, btn, text) !default;
+$btn-background-color-start: primitive(colors_v2, $scheme, btn, bg) !default;
 $btn-background-color-stop: darken($btn-background-color-start, 3.3333333333%) !default;
-$btn-border-color: primitive(colors, $scheme, btn, border) !default;
-$btn-hover-background-color-start: primitive(colors, $scheme, btn, hoverBg) !default;
+$btn-border-color: primitive(colors_v2, $scheme, btn, border) !default;
+$btn-hover-background-color-start: primitive(colors_v2, $scheme, btn, hoverBg) !default;
 $btn-hover-background-color-stop: darken($btn-hover-background-color-start, 3.3333333333%) !default;
-$btn-hover-border-color: primitive(colors, $scheme, btn, hoverBorder) !default;
+$btn-hover-border-color: primitive(colors_v2, $scheme, btn, hoverBorder) !default;
 $btn-active-background-color: darken(desaturate($btn-background-color-start, 10%), 6%) !default;
 $btn-active-border-color: $btn-hover-border-color !default;
-$btn-active-shadow: primitive(colors, $scheme, btn, shadowActive) !default;
-$social-count-color:  primitive(colors, $scheme, btn, text) !default;
-$social-count-background-color: primitive(colors, $scheme, socialCount, bg) !default;
+$btn-active-shadow: primitive(colors_v2, $scheme, btn, shadowActive) !default;
+$social-count-color:  primitive(colors_v2, $scheme, btn, text) !default;
+$social-count-background-color: primitive(colors_v2, $scheme, socialCount, bg) !default;
 $social-count-border-color: $btn-border-color !default;
-$social-count-hover-color: primitive(colors, $scheme, text, link) !default;
-$octicon-heart-color: primitive(colors, $scheme, scale, pink, 5) !default;
+$social-count-hover-color: primitive(colors_v2, $scheme, text, link) !default;
+$octicon-heart-color: primitive(colors_v2, $scheme, sponsors, fg) !default;
 
 .btn {
   @include blend(

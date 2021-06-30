@@ -2,6 +2,7 @@ import main from './scss/main.scss'
 import light from './scss/light.scss'
 import dark from './scss/dark.scss'
 import darkDimmed from './scss/dark_dimmed.scss'
+import darkHighContrast from './scss/dark_high_contrast.scss'
 
 import { parse } from './querystring'
 import { hasOwnProperty } from './util'
@@ -9,7 +10,8 @@ import { hasOwnProperty } from './util'
 const widgetColorSchemes = {
   light: light,
   dark: dark,
-  dark_dimmed: darkDimmed
+  dark_dimmed: darkDimmed,
+  dark_high_contrast: darkHighContrast
 }
 
 const getColorSchemeMediaQuery = function (systemColorScheme, widgetColorScheme) {
