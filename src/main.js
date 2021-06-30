@@ -13,6 +13,9 @@ import {
   defer
 } from './defer'
 import {
+  forEach
+} from './util'
+import {
   render as renderContent
 } from './content'
 import {
@@ -23,24 +26,21 @@ if (location.protocol + '//' + location.host + location.pathname === iframeURL) 
   renderContent(document.body, parseQueryString(window.name || location.hash.replace(/^#/, '')), function () {})
 } else {
   defer(function () {
-    const ref = document.querySelectorAll
+    const anchors = document.querySelectorAll
       ? document.querySelectorAll('a.' + buttonClass)
       : (function () {
           const results = []
-          const ref = document.getElementsByTagName('a')
-          for (let i = 0, len = ref.length; i < len; i++) {
-            if ((' ' + ref[i].className + ' ').replace(/[ \t\n\f\r]+/g, ' ').indexOf(' ' + buttonClass + ' ') !== -1) {
-              results.push(ref[i])
+          forEach(document.getElementsByTagName('a'), function (a) {
+            if ((' ' + a.className + ' ').replace(/[ \t\n\f\r]+/g, ' ').indexOf(' ' + buttonClass + ' ') !== -1) {
+              results.push(a)
             }
-          }
+          })
           return results
         })()
-    for (let i = 0, len = ref.length; i < len; i++) {
-      (function (anchor) {
-        renderContainer(anchor, function (el) {
-          anchor.parentNode.replaceChild(el, anchor)
-        })
-      })(ref[i])
-    }
+    forEach(anchors, function (anchor) {
+      renderContainer(anchor, function (el) {
+        anchor.parentNode.replaceChild(el, anchor)
+      })
+    })
   })
 }

@@ -1,3 +1,7 @@
+import {
+  forEach
+} from './util'
+
 export const stringify = function (obj, sep, eq, encodeURIComponent) {
   if (sep == null) {
     sep = '&'
@@ -29,13 +33,11 @@ export const parse = function (str, sep, eq, decodeURIComponent) {
     decodeURIComponent = window.decodeURIComponent
   }
   const obj = {}
-  const params = str.split(sep)
-  for (let i = 0, len = params.length; i < len; i++) {
-    const entry = params[i]
+  forEach(str.split(sep), function (entry) {
     if (entry !== '') {
       const ref = entry.split(eq)
       obj[decodeURIComponent(ref[0])] = (ref[1] != null ? decodeURIComponent(ref.slice(1).join(eq)) : undefined)
     }
-  }
+  })
   return obj
 }

@@ -28,6 +28,56 @@
 
   var useShadowDOM = useXHR && HTMLElement && 'attachShadow' in HTMLElement.prototype && !('prototype' in HTMLElement.prototype.attachShadow);
 
+  var forEach = function (obj, func) {
+    for (var i = 0, len = obj.length; i < len; i++) {
+      func(obj[i]);
+    }
+  };
+
+  var createElementInDocument = function (document) {
+    return function (tag, props, children) {
+      var el = document.createElement(tag);
+      if (props != null) {
+        for (var prop in props) {
+          var val = props[prop];
+          if (val != null) {
+            if (el[prop] != null) {
+              el[prop] = val;
+            } else {
+              el.setAttribute(prop, val);
+            }
+          }
+        }
+      }
+      if (children != null) {
+        forEach(children, function (child) {
+          el.appendChild(typeof child === 'string' ? document.createTextNode(child) : child);
+        });
+      }
+      return el
+    }
+  };
+
+  var createElement = createElementInDocument(document);
+
+  var dispatchOnce = function (func) {
+    var onceToken;
+    return function () {
+      if (!onceToken) {
+        onceToken = 1;
+        func.apply(this, arguments);
+      }
+    }
+  };
+
+  var hasOwnProperty = function (obj, prop) {
+    return {}.hasOwnProperty.call(obj, prop)
+  };
+
+  var toLowerCase = function (obj) {
+    return ('' + obj).toLowerCase()
+  };
+
   var stringify = function (obj, sep, eq, encodeURIComponent) {
     if (sep == null) {
       sep = '&';
@@ -59,14 +109,12 @@
       decodeURIComponent = window.decodeURIComponent;
     }
     var obj = {};
-    var params = str.split(sep);
-    for (var i = 0, len = params.length; i < len; i++) {
-      var entry = params[i];
+    forEach(str.split(sep), function (entry) {
       if (entry !== '') {
         var ref = entry.split(eq);
         obj[decodeURIComponent(ref[0])] = (ref[1] != null ? decodeURIComponent(ref.slice(1).join(eq)) : undefined);
       }
-    }
+    });
     return obj
   };
 
@@ -107,51 +155,6 @@
       };
       onEvent(target, eventName, callback);
     }
-  };
-
-  var createElementInDocument = function (document) {
-    return function (tag, props, children) {
-      var el = document.createElement(tag);
-      if (props != null) {
-        for (var prop in props) {
-          var val = props[prop];
-          if (val != null) {
-            if (el[prop] != null) {
-              el[prop] = val;
-            } else {
-              el.setAttribute(prop, val);
-            }
-          }
-        }
-      }
-      if (children != null) {
-        for (var i = 0, len = children.length; i < len; i++) {
-          var child = children[i];
-          el.appendChild(typeof child === 'string' ? document.createTextNode(child) : child);
-        }
-      }
-      return el
-    }
-  };
-
-  var createElement = createElementInDocument(document);
-
-  var dispatchOnce = function (func) {
-    var onceToken;
-    return function () {
-      if (!onceToken) {
-        onceToken = 1;
-        func.apply(this, arguments);
-      }
-    }
-  };
-
-  var hasOwnProperty = function (obj, prop) {
-    return {}.hasOwnProperty.call(obj, prop)
-  };
-
-  var toLowerCase = function (obj) {
-    return ('' + obj).toLowerCase()
   };
 
   var defer = function (func) {
@@ -473,14 +476,16 @@
       title: anchor.title,
       'aria-label': anchor.getAttribute('aria-label')
     };
-    var ref = ['icon', 'color-scheme', 'text', 'size', 'show-count'];
-    for (var i = 0, len = ref.length; i < len; i++) {
-      var attribute = 'data-' + ref[i];
+
+    forEach(['icon', 'color-scheme', 'text', 'size', 'show-count'], function (option) {
+      var attribute = 'data-' + option;
       options[attribute] = anchor.getAttribute(attribute);
-    }
+    });
+
     if (options['data-text'] == null) {
       options['data-text'] = anchor.textContent || anchor.innerText;
     }
+
     return options
   };
 
@@ -557,25 +562,22 @@
     render$1(document.body, parse(window.name || location.hash.replace(/^#/, '')), function () {});
   } else {
     defer(function () {
-      var ref = document.querySelectorAll
+      var anchors = document.querySelectorAll
         ? document.querySelectorAll('a.' + buttonClass)
         : (function () {
             var results = [];
-            var ref = document.getElementsByTagName('a');
-            for (var i = 0, len = ref.length; i < len; i++) {
-              if ((' ' + ref[i].className + ' ').replace(/[ \t\n\f\r]+/g, ' ').indexOf(' ' + buttonClass + ' ') !== -1) {
-                results.push(ref[i]);
+            forEach(document.getElementsByTagName('a'), function (a) {
+              if ((' ' + a.className + ' ').replace(/[ \t\n\f\r]+/g, ' ').indexOf(' ' + buttonClass + ' ') !== -1) {
+                results.push(a);
               }
-            }
+            });
             return results
           })();
-      for (var i = 0, len = ref.length; i < len; i++) {
-        (function (anchor) {
-          render(anchor, function (el) {
-            anchor.parentNode.replaceChild(el, anchor);
-          });
-        })(ref[i]);
-      }
+      forEach(anchors, function (anchor) {
+        render(anchor, function (el) {
+          anchor.parentNode.replaceChild(el, anchor);
+        });
+      });
     });
   }
 

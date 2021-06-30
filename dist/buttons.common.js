@@ -15,6 +15,12 @@ var HTMLElement = window.HTMLElement;
 
 var XMLHttpRequest = window.XMLHttpRequest;
 
+var forEach = function (obj, func) {
+  for (var i = 0, len = obj.length; i < len; i++) {
+    func(obj[i]);
+  }
+};
+
 var createElementInDocument = function (document) {
   return function (tag, props, children) {
     var el = document.createElement(tag);
@@ -31,10 +37,9 @@ var createElementInDocument = function (document) {
       }
     }
     if (children != null) {
-      for (var i = 0, len = children.length; i < len; i++) {
-        var child = children[i];
+      forEach(children, function (child) {
         el.appendChild(typeof child === 'string' ? document.createTextNode(child) : child);
-      }
+      });
     }
     return el
   }
@@ -115,14 +120,16 @@ var parseOptions = function (anchor) {
     title: anchor.title,
     'aria-label': anchor.getAttribute('aria-label')
   };
-  var ref = ['icon', 'color-scheme', 'text', 'size', 'show-count'];
-  for (var i = 0, len = ref.length; i < len; i++) {
-    var attribute = 'data-' + ref[i];
+
+  forEach(['icon', 'color-scheme', 'text', 'size', 'show-count'], function (option) {
+    var attribute = 'data-' + option;
     options[attribute] = anchor.getAttribute(attribute);
-  }
+  });
+
   if (options['data-text'] == null) {
     options['data-text'] = anchor.textContent || anchor.innerText;
   }
+
   return options
 };
 
@@ -167,14 +174,12 @@ var parse = function (str, sep, eq, decodeURIComponent) {
     decodeURIComponent = window.decodeURIComponent;
   }
   var obj = {};
-  var params = str.split(sep);
-  for (var i = 0, len = params.length; i < len; i++) {
-    var entry = params[i];
+  forEach(str.split(sep), function (entry) {
     if (entry !== '') {
       var ref = entry.split(eq);
       obj[decodeURIComponent(ref[0])] = (ref[1] != null ? decodeURIComponent(ref.slice(1).join(eq)) : undefined);
     }
-  }
+  });
   return obj
 };
 

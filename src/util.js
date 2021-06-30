@@ -1,5 +1,11 @@
 import { document } from './globals'
 
+export const forEach = function (obj, func) {
+  for (let i = 0, len = obj.length; i < len; i++) {
+    func(obj[i])
+  }
+}
+
 export const createElementInDocument = function (document) {
   return function (tag, props, children) {
     const el = document.createElement(tag)
@@ -16,10 +22,9 @@ export const createElementInDocument = function (document) {
       }
     }
     if (children != null) {
-      for (let i = 0, len = children.length; i < len; i++) {
-        const child = children[i]
+      forEach(children, function (child) {
         el.appendChild(typeof child === 'string' ? document.createTextNode(child) : child)
-      }
+      })
     }
     return el
   }
