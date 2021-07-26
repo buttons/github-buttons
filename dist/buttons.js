@@ -157,9 +157,8 @@
     }
   };
 
-  var defer = function (func) {
-    /* istanbul ignore else */
-    if (document.readyState === 'complete' || /* istanbul ignore next: IE lt 11 */ (document.readyState !== 'loading' && !document.documentElement.doScroll)) {
+  var defer = /* istanbul ignore next */ function (func) {
+    if (document.readyState === 'complete' || (document.readyState !== 'loading' && !document.documentElement.doScroll)) {
       setTimeout(func);
     } else {
       if (document.addEventListener) {
