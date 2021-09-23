@@ -2,6 +2,11 @@ import { plugins } from './rollup.config'
 import istanbul from 'rollup-plugin-istanbul'
 
 export default config => config.set({
+  client: {
+    mocha: {
+      timeout: process.env.CI ? 15000 : 3000
+    }
+  },
   frameworks: ['mocha', 'chai', 'sinon', 'sinon-chai'],
   reporters: ['mocha', 'coverage'],
   preprocessors: {
