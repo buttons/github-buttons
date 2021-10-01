@@ -12,9 +12,9 @@ $btn-active-background-color: darken(desaturate($btn-background-color-start, 10%
 $btn-active-border-color: $btn-hover-border-color !default;
 $btn-active-shadow: primitive(colors, $scheme, btn, shadowActive) !default;
 $social-count-color:  primitive(colors, $scheme, btn, text) !default;
-$social-count-background-color: primitive(colors, $scheme, socialCount, bg) !default;
+$social-count-background-color: primitive(colors, $scheme, canvas, default) !default;
 $social-count-border-color: $btn-border-color !default;
-$social-count-hover-color: primitive(colors, $scheme, text, link) !default;
+$social-count-hover-color: primitive(colors, $scheme, accent, fg) !default;
 $octicon-heart-color: primitive(colors, $scheme, sponsors, fg) !default;
 
 .btn {
