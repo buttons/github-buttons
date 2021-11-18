@@ -1,5 +1,6 @@
 import main from './scss/main.scss'
 import light from './scss/light.scss'
+import lightHighContrast from './scss/light_high_contrast.scss'
 import dark from './scss/dark.scss'
 import darkDimmed from './scss/dark_dimmed.scss'
 import darkHighContrast from './scss/dark_high_contrast.scss'
@@ -9,6 +10,7 @@ import { hasOwnProperty } from './util'
 
 const widgetColorSchemes = {
   light: light,
+  light_high_contrast: lightHighContrast,
   dark: dark,
   dark_dimmed: darkDimmed,
   dark_high_contrast: darkHighContrast
