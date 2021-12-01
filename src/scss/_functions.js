@@ -35,7 +35,7 @@ export default {
   'primitive($keys...)': function (keys) {
     let primitive = primitives
     for (let i = 0, len = keys.getLength(); i < len; i++) {
-      primitive = primitive[keys.getValue(i)]
+      primitive = primitive[keys.getValue(i).getValue()]
     }
     return parseValue(primitive)
   }
