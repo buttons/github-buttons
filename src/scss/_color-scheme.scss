@@ -17,16 +17,20 @@ $social-count-border-color: $btn-border-color !default;
 $social-count-hover-color: primitive(colors, $scheme, accent, fg) !default;
 $octicon-heart-color: primitive(colors, $scheme, sponsors, fg) !default;
 
+$enable-background-image-linear-gradient: str-index($scheme, '_high_contrast') == null !default;
+
 .btn {
   @include blend(
     $color: $btn-color,
     $background-color: $btn-background-color-stop,
     $border-color: $btn-border-color,
   );
-  @include background-image-linear-gradient(
-    $btn-background-color-start,
-    $btn-background-color-stop,
-  );
+  @if ($enable-background-image-linear-gradient) {
+    @include background-image-linear-gradient(
+      $btn-background-color-start,
+      $btn-background-color-stop,
+    );
+  }
 
   &:focus,
   &:hover {
@@ -35,10 +39,12 @@ $octicon-heart-color: primitive(colors, $scheme, sponsors, fg) !default;
       $background-position: 0 (-0.5em),
       $border-color: $btn-hover-border-color,
     );
-    @include background-image-linear-gradient(
-      $btn-hover-background-color-start,
-      $btn-hover-background-color-stop,
-    );
+    @if ($enable-background-image-linear-gradient) {
+      @include background-image-linear-gradient(
+        $btn-hover-background-color-start,
+        $btn-hover-background-color-stop,
+      );
+    }
   }
 
   &:active {
@@ -47,7 +53,9 @@ $octicon-heart-color: primitive(colors, $scheme, sponsors, fg) !default;
       $border-color: $btn-active-border-color,
       $box-shadow: $btn-active-shadow,
     );
-    @include background-image-none;
+    @if ($enable-background-image-linear-gradient) {
+      @include background-image-none;
+    }
   }
 }
 
