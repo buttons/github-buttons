@@ -1,9 +1,12 @@
 @use "mixins" as *;
 
 $scheme: light !default;
+
+$enable-background-image-linear-gradient: str-index($scheme, '_high_contrast') == null !default;
+
 $btn-color: primitive(colors, $scheme, btn, text) !default;
 $btn-background-color-start: primitive(colors, $scheme, btn, bg) !default;
-$btn-background-color-stop: darken($btn-background-color-start, 3.3333333333%) !default;
+$btn-background-color-stop: if($enable-background-image-linear-gradient, darken($btn-background-color-start, 3.3333333333%), $btn-background-color-start) !default;
 $btn-border-color: primitive(colors, $scheme, btn, border) !default;
 $btn-hover-background-color-start: primitive(colors, $scheme, btn, hoverBg) !default;
 $btn-hover-background-color-stop: darken($btn-hover-background-color-start, 3.3333333333%) !default;
@@ -17,7 +20,6 @@ $social-count-border-color: $btn-border-color !default;
 $social-count-hover-color: primitive(colors, $scheme, accent, fg) !default;
 $octicon-heart-color: primitive(colors, $scheme, sponsors, fg) !default;
 
-$enable-background-image-linear-gradient: str-index($scheme, '_high_contrast') == null !default;
 
 .btn {
   @include blend(
@@ -30,6 +32,9 @@ $enable-background-image-linear-gradient: str-index($scheme, '_high_contrast') =
       $btn-background-color-start,
       $btn-background-color-stop,
     );
+  }
+  @else {
+    @include background-image-none;
   }
 
   &:focus,
@@ -44,6 +49,9 @@ $enable-background-image-linear-gradient: str-index($scheme, '_high_contrast') =
         $btn-hover-background-color-start,
         $btn-hover-background-color-stop,
       );
+    }
+    @else {
+      @include background-image-none;
     }
   }
 
