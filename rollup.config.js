@@ -56,10 +56,9 @@ const sass = ({ include, exclude, extensions = ['.sass', '.scss'] } = {}) => {
       if (!extensions.includes(path.extname(id)) || !filter(id)) return
 
       return {
-        code: 'export default ' + JSON.stringify(sassImplementation.renderSync({
-          file: id,
+        code: 'export default ' + JSON.stringify(sassImplementation.compile(id, {
           functions: sassFunctions,
-          outputStyle: process.env.DEBUG ? 'expanded' : 'compressed'
+          style: process.env.DEBUG ? 'expanded' : 'compressed'
         }).css.toString()),
         map: { mappings: '' }
       }

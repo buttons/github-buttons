@@ -11,12 +11,11 @@ const unreserved = reservedCharacters
 
 const parseValue = function (source) {
   let value
-  sass.renderSync({
-    data: `a {b: foo((${source}))}`,
+  sass.compileString(`a {b: foo((${source}))}`, {
     functions: {
-      'foo($value)': function (_value) {
-        value = _value
-        return sass.types.Null.NULL
+      'foo($value)': function (args) {
+        value = args[0]
+        return sass.sassNull
       }
     }
   })
@@ -24,19 +23,19 @@ const parseValue = function (source) {
 }
 
 export default {
-  'encodeURIData($data)': function (data) {
-    return new sass.types.String(encodeURIComponent(data.getValue()).replace(/%[0-9A-Z]{2}/g, function (match) {
+  'encodeURIData($data)': function (args) {
+    return new sass.SassString(encodeURIComponent(args[0].text).replace(/%[0-9A-Z]{2}/g, function (match) {
       if (unreserved.includes(match)) {
         return decodeURIComponent(match)
       }
       return match.toLowerCase()
     }))
   },
-  'primitive($keys...)': function (keys) {
+  'primitive($keys...)': function (args) {
     let primitive = primitives
-    for (let i = 0, len = keys.getLength(); i < len; i++) {
-      primitive = primitive[keys.getValue(i).getValue()]
-    }
+    args[0].asList.forEach(value => {
+      primitive = primitive[value.text]
+    })
     return parseValue(primitive)
   }
 }
