@@ -1,1 +1,2 @@
 /dist/*.esm.js
+/dist/*.min.js

@@ -5,6 +5,7 @@
     "browser": true
   },
   "rules": {
-    "node/no-callback-literal": "off"
+    "object-shorthand": "off",
+    "n/no-callback-literal": "off"
   }
 }

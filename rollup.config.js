@@ -120,39 +120,39 @@ export { plugins }
 export default [
   {
     input: 'src/container.js',
-    plugins: plugins,
+    plugins,
     output: [
       {
         format: 'cjs',
         file: 'dist/buttons.common.js',
-        banner: banner
+        banner
       },
       {
         format: 'es',
         file: 'dist/buttons.esm.js',
-        banner: banner
+        banner
       }
     ]
   }, {
     input: 'src/main.js',
-    plugins: plugins,
+    plugins,
     output: [
       {
         format: 'iife',
         file: 'dist/buttons.js',
-        banner: banner,
+        banner,
         plugins: [
           process.env.NODE_ENV !== 'production' &&
           html({
             fileName: 'buttons.html',
-            template: template
+            template
           })
         ]
       },
       {
         format: 'iife',
         file: 'dist/buttons.min.js',
-        banner: banner,
+        banner,
         plugins: [
           terser({
             output: {
@@ -162,7 +162,7 @@ export default [
           process.env.NODE_ENV === 'production' &&
           html({
             fileName: 'buttons.html',
-            template: template
+            template
           })
         ]
       }
