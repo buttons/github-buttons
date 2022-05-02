@@ -61,7 +61,7 @@
     "karma-safari-launcher": "^1.0.0",
     "karma-sinon": "^1.0.5",
     "karma-sinon-chai": "^2.0.2",
-    "mocha": "^9.2.2",
+    "mocha": "^10.0.0",
     "rollup": "^2.70.2",
     "rollup-plugin-istanbul": "^3.0.0",
     "rollup-plugin-terser": "^7.0.2",
