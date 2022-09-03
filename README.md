@@ -1,8 +1,7 @@
 github-buttons
 ==============
 
-![build](https://github.com/ntkme/github-buttons/workflows/build/badge.svg)
-[![Coverage Status](https://coveralls.io/repos/github/ntkme/github-buttons/badge.svg?branch=main)](https://coveralls.io/github/ntkme/github-buttons?branch=main)
+![build](https://github.com/buttons/github-buttons/workflows/build/badge.svg)
 [![npm](https://img.shields.io/npm/v/github-buttons)](https://www.npmjs.com/github-buttons)
 
 Usage
@@ -14,8 +13,8 @@ Get started quickly with **[github:button configurator](https://buttons.github.i
 
 ### Use as a Component
 
-- [vue-github-button](https://github.com/ntkme/vue-github-button) for [Vue](https://vuejs.org)
-- [react-github-btn](https://github.com/ntkme/react-github-btn) for [React](https://reactjs.org)
+- [vue-github-button](https://github.com/buttons/vue-github-button) for [Vue](https://vuejs.org)
+- [react-github-btn](https://github.com/buttons/react-github-btn) for [React](https://reactjs.org)
 
 ### Use as a Module
 

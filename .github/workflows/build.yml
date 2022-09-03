@@ -36,24 +36,3 @@ jobs:
 
       - name: Diff
         run: git diff --exit-code
-
-      - name: Upload Coverage
-        uses: coverallsapp/github-action@1.1.3
-        with:
-          github-token: ${{ secrets.github_token }}
-          flag-name: ${{ matrix.os }}-${{ matrix.browser }}
-          parallel: true
-
-  post-build:
-    name: Post Build
-
-    needs: build
-
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Post Upload Coverage
-        uses: coverallsapp/github-action@1.1.3
-        with:
-          github-token: ${{ secrets.github_token }}
-          parallel-finished: true

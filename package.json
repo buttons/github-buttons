@@ -11,11 +11,11 @@
   "license": "BSD-2-Clause",
   "homepage": "https://buttons.github.io/",
   "bugs": {
-    "url": "https://github.com/ntkme/github-buttons/issues"
+    "url": "https://github.com/buttons/github-buttons/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/ntkme/github-buttons.git"
+    "url": "https://github.com/buttons/github-buttons.git"
   },
   "author": {
     "name": "なつき",
