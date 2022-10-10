@@ -38,7 +38,7 @@
     "@babel/preset-env": "^7.18.10",
     "@primer/octicons": "^17.4.0",
     "@primer/primitives": "^7.9.0",
-    "@rollup/plugin-alias": "^3.1.9",
+    "@rollup/plugin-alias": "^4.0.0",
     "@rollup/plugin-html": "^1.0.0",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^14.0.0",
