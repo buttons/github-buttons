@@ -40,7 +40,7 @@
     "@primer/primitives": "^7.9.0",
     "@rollup/plugin-alias": "^4.0.0",
     "@rollup/plugin-html": "^1.0.0",
-    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-json": "^5.0.0",
     "@rollup/plugin-node-resolve": "^14.0.0",
     "@rollup/plugin-replace": "^4.0.0",
     "@rollup/pluginutils": "^5.0.0",
