@@ -1,4 +1,4 @@
-import { get, set } from '@/size'
+import { get, set } from '../../src/size'
 
 describe('Size', () => {
   let el, size

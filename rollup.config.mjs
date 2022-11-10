@@ -1,14 +1,16 @@
-import alias from '@rollup/plugin-alias'
 import html from '@rollup/plugin-html'
 import json from '@rollup/plugin-json'
 import replace from '@rollup/plugin-replace'
 import resolve from '@rollup/plugin-node-resolve'
+import terser from '@rollup/plugin-terser'
 import { createFilter } from '@rollup/pluginutils'
-import { terser } from 'rollup-plugin-terser'
 import sassImplementation from 'sass'
-import sassFunctions from './src/scss/_functions'
+import sassFunctions from './src/scss/_functions.mjs'
+import fs from 'fs'
 import path from 'path'
-import packageJSON from './package.json'
+import url from 'url'
+
+const packageJSON = JSON.parse(fs.readFileSync('package.json'))
 
 const banner =
 `/*!
@@ -69,11 +71,6 @@ const sass = ({ include, exclude, extensions = ['.sass', '.scss'] } = {}) => {
 const template = ({ files }) => `<!doctype html><meta charset=utf-8><title>\u200b</title><meta name=robots content=noindex><body>${files.js.map(({ fileName }) => `<script src=${fileName}></script>`).join('')}`
 
 const plugins = [
-  alias({
-    entries: [
-      { find: '@', replacement: path.resolve(__dirname, 'src') }
-    ]
-  }),
   resolve(),
   octicons({
     include: [
@@ -109,7 +106,7 @@ const plugins = [
     values: {
       const: 'var',
       let: 'var',
-      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
+      'process.env.NODE_ENV': `'${process.env.NODE_ENV || 'development'}'`,
       'process.env.DEBUG': process.env.DEBUG || false
     }
   })

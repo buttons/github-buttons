@@ -1,7 +1,7 @@
 import {
   onEvent,
   onceEvent
-} from '@/event'
+} from '../../src/event'
 
 describe('Event', () => {
   let input

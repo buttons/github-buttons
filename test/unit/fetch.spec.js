@@ -1,5 +1,5 @@
-import { setUseXHR } from '@/config'
-import { fetch } from '@/fetch'
+import { setUseXHR } from '../../src/config'
+import { fetch } from '../../src/fetch'
 
 describe('Fetch', () => {
   const head = document.getElementsByTagName('head')[0]

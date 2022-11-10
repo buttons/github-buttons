@@ -1,6 +1,6 @@
 import {
   parseOptions
-} from '@/options'
+} from '../../src/options'
 
 describe('Options', () => {
   let a

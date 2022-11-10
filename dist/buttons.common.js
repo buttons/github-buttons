@@ -5,8 +5,6 @@
  */
 'use strict';
 
-Object.defineProperty(exports, '__esModule', { value: true });
-
 var document = window.document;
 
 var Math = window.Math;

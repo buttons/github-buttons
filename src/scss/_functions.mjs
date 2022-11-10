@@ -32,7 +32,7 @@ export default {
     }))
   },
   'primitive($keys...)': function (args) {
-    let primitive = primitives
+    let primitive = primitives.default !== undefined ? primitives.default : primitives
     args[0].asList.forEach(value => {
       primitive = primitive[value.text]
     })

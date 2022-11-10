@@ -1,7 +1,7 @@
 import {
   getColorScheme,
   widgetColorSchemes
-} from '@/css'
+} from '../../src/css'
 
 describe('CSS', () => {
   const getCss = (noPreference = 'light', light = 'light', dark = 'dark') => {

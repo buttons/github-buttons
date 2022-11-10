@@ -1,7 +1,7 @@
 import {
   setDevicePixelRatio,
   ceilPixel
-} from '@/pixel'
+} from '../../src/pixel'
 
 describe('Pixel', () => {
   describe('ceilPixel(px)', () => {

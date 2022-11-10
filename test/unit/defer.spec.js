@@ -1,4 +1,4 @@
-import { defer } from '@/defer'
+import { defer } from '../../src/defer'
 
 describe('Defer', () => {
   describe('defer(func)', () => {

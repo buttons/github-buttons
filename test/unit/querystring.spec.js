@@ -1,7 +1,7 @@
 import {
   stringify,
   parse
-} from '@/querystring'
+} from '../../src/querystring'
 
 describe('QueryString', () => {
   describe('stringify(obj)', () => {

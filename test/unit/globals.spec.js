@@ -2,7 +2,7 @@ import {
   document,
   location,
   Math
-} from '@/globals'
+} from '../../src/globals'
 
 describe('Globals', () => {
   it('should export an alias for window.document', () => {

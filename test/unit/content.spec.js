@@ -1,10 +1,10 @@
 import {
   render
-} from '@/content'
+} from '../../src/content'
 
 import {
   setApiBaseURL
-} from '@/config'
+} from '../../src/config'
 
 setApiBaseURL('/base/test/fixtures/xhr/api.github.com')
 

@@ -4,7 +4,7 @@ import {
   dispatchOnce,
   hasOwnProperty,
   toLowerCase
-} from '@/util'
+} from '../../src/util'
 
 describe('Util', () => {
   describe('createElement(tag, props, children)', () => {

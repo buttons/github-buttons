@@ -1,4 +1,4 @@
-import { iframeURL } from '@/config'
+import { iframeURL } from '../../src/config'
 
 describe('Config', () => {
   it('should export iframeUrl', () => {

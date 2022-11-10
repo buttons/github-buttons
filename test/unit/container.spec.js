@@ -1,10 +1,10 @@
-import { render } from '@/container'
+import { render } from '../../src/container'
 import {
   iframeURL,
   setApiBaseURL,
   setUseShadowDOM
-} from '@/config'
-import { onceEvent } from '@/event'
+} from '../../src/config'
+import { onceEvent } from '../../src/event'
 
 setApiBaseURL('/base/test/fixtures/api.github.com')
 
