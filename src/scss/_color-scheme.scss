@@ -14,7 +14,6 @@ $btn-hover-border-color: primitive(colors, $scheme, btn, hoverBorder) !default;
 $btn-focus-visible-outline-color: primitive(colors, $scheme, accent, fg) !default;
 $btn-active-background-color: darken(desaturate($btn-background-color-start, 10%), 6%) !default;
 $btn-active-border-color: $btn-hover-border-color !default;
-$btn-active-shadow: primitive(colors, $scheme, btn, shadowActive) !default;
 $social-count-color:  primitive(colors, $scheme, btn, text) !default;
 $social-count-background-color: primitive(colors, $scheme, canvas, default) !default;
 $social-count-border-color: $btn-border-color !default;
@@ -67,7 +66,6 @@ $octicon-heart-color: primitive(colors, $scheme, sponsors, fg) !default;
     @include blend(
       $background-color: $btn-active-background-color,
       $border-color: $btn-active-border-color,
-      $box-shadow: $btn-active-shadow,
     );
     @if ($enable-background-image-linear-gradient) {
       @include background-image-none;
