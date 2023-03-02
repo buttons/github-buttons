@@ -36,7 +36,7 @@
   "devDependencies": {
     "@babel/node": "^7.20.7",
     "@babel/preset-env": "^7.20.2",
-    "@primer/octicons": "^17.11.1",
+    "@primer/octicons": "^18.0.0",
     "@primer/primitives": "^7.11.1",
     "@rollup/plugin-html": "^1.0.2",
     "@rollup/plugin-json": "^6.0.0",
