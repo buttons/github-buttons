@@ -57,7 +57,7 @@ Assign `title` attribute for button.
 - Type: `string`
 - Default: `'octicon-mark-github'`
 
-Set icon on button. A [subset](rollup.config.js) of [Octicons](https://primer.style/octicons/) is bundled.
+Set icon on button. A [subset](rollup.config.mjs) of [Octicons](https://primer.style/octicons/) is bundled.
 
 ##### `data-color-scheme`
 
