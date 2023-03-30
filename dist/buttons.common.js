@@ -445,7 +445,7 @@ var render$1 = function (root, options, func) {
     href = '/watchers';
   } else if (!path[4] && path[3] === 'fork') {
     property = 'forks_count';
-    href = '/network/members';
+    href = '/forks';
   } else if (path[3] === 'issues') {
     property = 'open_issues_count';
     href = '/issues';
