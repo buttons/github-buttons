@@ -8,7 +8,6 @@ import sassImplementation from 'sass'
 import sassFunctions from './src/scss/_functions.mjs'
 import fs from 'fs'
 import path from 'path'
-import url from 'url'
 
 const packageJSON = JSON.parse(fs.readFileSync('package.json'))
 
@@ -84,7 +83,8 @@ const plugins = [
       'play',
       'repo-forked',
       'repo-template',
-      'star'
+      'star',
+      'star-fill'
     ],
     heights: [16]
   }),

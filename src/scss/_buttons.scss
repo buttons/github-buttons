@@ -8,7 +8,7 @@ a {
 }
 
 .widget {
-  display: inline-block;
+  display: flex;
   overflow: hidden;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif;
   font-size: 0;
@@ -19,8 +19,9 @@ a {
 .btn,
 .social-count {
   position: relative;
-  display: inline-block;
-  display: inline-flex;
+  display:flex;
+  justify-content: center;
+  align-items: center;
   height: 14px;
   padding: 2px 5px;
   font-size: 11px;
@@ -54,9 +55,9 @@ a {
 .widget-lg {
   .btn,
   .social-count {
-    height: 16px;
-    padding: 5px 10px;
-    font-size: 12px;
-    line-height: 16px;
+    height: 28px;
+    padding: 8px 12px;
+    font-size: 18px;
+    line-height: 28px;
   }
 }
