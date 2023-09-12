@@ -1,4 +1,4 @@
-import sass from 'sass'
+import * as sass from 'sass'
 import primitives from '@primer/primitives'
 
 // https://tools.ietf.org/html/rfc3986#section-2.2
