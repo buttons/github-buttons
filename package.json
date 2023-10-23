@@ -62,7 +62,7 @@
     "karma-sinon": "^1.0.5",
     "karma-sinon-chai": "^2.0.2",
     "mocha": "^10.2.0",
-    "rollup": "^3.22.0",
+    "rollup": "^4.1.4",
     "rollup-plugin-istanbul": "^5.0.0",
     "sass": "^1.62.1",
     "sinon": "^17.0.0",
