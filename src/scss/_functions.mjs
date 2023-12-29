@@ -11,9 +11,9 @@ const unreserved = reservedCharacters
 
 const parseValue = function (source) {
   let value
-  sass.compileString(`a {b: foo((${source}))}`, {
+  sass.compileString(`$_: yield((${source}));`, {
     functions: {
-      'foo($value)': function (args) {
+      'yield($value)': function (args) {
         value = args[0]
         return sass.sassNull
       }
