@@ -1,6 +1,6 @@
 /*!
  * github-buttons v2.27.0
- * (c) 2023 なつき
+ * (c) 2024 なつき
  * @license BSD-2-Clause
  */
 (function () {

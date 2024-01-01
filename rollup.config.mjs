@@ -8,14 +8,13 @@ import * as sassImplementation from 'sass'
 import sassFunctions from './src/scss/_functions.mjs'
 import fs from 'fs'
 import path from 'path'
-import url from 'url'
 
 const packageJSON = JSON.parse(fs.readFileSync('package.json'))
 
 const banner =
 `/*!
  * ${packageJSON.name} v${packageJSON.version}
- * (c) ${new Date().getFullYear()} ${packageJSON.author.name}
+ * (c) ${new Date().getUTCFullYear()} ${packageJSON.author.name}
  * @license ${packageJSON.license}
  */`
 
