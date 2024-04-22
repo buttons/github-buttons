@@ -1,24 +1,24 @@
 @use "mixins" as *;
 
-$scheme: light !default;
+$scheme: '@primer/primitives/dist/styleLint/functional/themes/light.json' !default;
 
-$enable-background-image-linear-gradient: str-index($scheme, '_high_contrast') == null !default;
+$enable-background-image-linear-gradient: str-index($scheme, '-high-contrast') == null !default;
 
-$btn-color: primitive(colors, $scheme, btn, text) !default;
-$btn-background-color-start: primitive(colors, $scheme, btn, bg) !default;
+$btn-color: json($scheme, button-default-fgColor-rest, value) !default;
+$btn-background-color-start: json($scheme, button-default-bgColor-rest, value) !default;
 $btn-background-color-stop: if($enable-background-image-linear-gradient, darken($btn-background-color-start, 3.3333333333%), $btn-background-color-start) !default;
-$btn-border-color: primitive(colors, $scheme, btn, border) !default;
-$btn-hover-background-color-start: primitive(colors, $scheme, btn, hoverBg) !default;
+$btn-border-color: json($scheme, button-default-borderColor-rest, value) !default;
+$btn-hover-background-color-start: json($scheme, button-default-bgColor-hover, value) !default;
 $btn-hover-background-color-stop: darken($btn-hover-background-color-start, 3.3333333333%) !default;
-$btn-hover-border-color: primitive(colors, $scheme, btn, hoverBorder) !default;
-$btn-focus-visible-outline-color: primitive(colors, $scheme, accent, fg) !default;
-$btn-active-background-color: darken(desaturate($btn-background-color-start, 10%), 6%) !default;
-$btn-active-border-color: $btn-hover-border-color !default;
-$social-count-color:  primitive(colors, $scheme, btn, text) !default;
-$social-count-background-color: primitive(colors, $scheme, canvas, default) !default;
+$btn-hover-border-color: json($scheme, button-default-borderColor-hover, value) !default;
+$btn-focus-visible-outline-color: json($scheme, focus-outlineColor, value) !default;
+$btn-active-background-color: json($scheme, button-default-bgColor-active, value) !default;
+$btn-active-border-color: json($scheme, button-default-borderColor-active, value) !default;
+$social-count-color:  json($scheme, button-default-fgColor-rest, value) !default;
+$social-count-background-color: json($scheme, bgColor-default, value) !default;
 $social-count-border-color: $btn-border-color !default;
-$social-count-hover-color: primitive(colors, $scheme, accent, fg) !default;
-$octicon-heart-color: primitive(colors, $scheme, sponsors, fg) !default;
+$social-count-hover-color: json($scheme, button-outline-fgColor-rest, value) !default;
+$octicon-heart-color: json($scheme, fgColor-sponsors, value) !default;
 
 .btn,
 .social-count {

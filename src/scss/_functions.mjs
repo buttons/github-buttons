@@ -1,5 +1,5 @@
 import * as sass from 'sass'
-import primitives from '@primer/primitives'
+import { require } from './_require.js'
 
 // https://tools.ietf.org/html/rfc3986#section-2.2
 const reservedCharacters = ":/?#[]@!$&'()*+,;=".split('')
@@ -31,11 +31,10 @@ export default {
       return match.toLowerCase()
     }))
   },
-  'primitive($keys...)': function (args) {
-    let primitive = primitives.default !== undefined ? primitives.default : primitives
-    args[0].asList.forEach(value => {
-      primitive = primitive[value.text]
-    })
-    return parseValue(primitive)
+  'json($path, $keys...)': function (args) {
+    const path = args[0].assertString('path').text
+    let value = require(path)
+    args[1].asList.forEach(key => { value = value[key.assertString().text] })
+    return parseValue(value)
   }
 }
