@@ -162,12 +162,6 @@ var stringify = function (obj, sep, eq, encodeURIComponent) {
 };
 
 var parse = function (str, sep, eq, decodeURIComponent) {
-  if (sep == null) {
-    sep = '&';
-  }
-  if (eq == null) {
-    eq = '=';
-  }
   if (decodeURIComponent == null) {
     decodeURIComponent = window.decodeURIComponent;
   }
