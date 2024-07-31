@@ -11,15 +11,11 @@ jobs:
 
     strategy:
       matrix:
-        os:
-          - macos-latest
-          - ubuntu-latest
-          - windows-latest
         browser:
           - ChromeHeadless
           - FirefoxHeadless
 
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Code
