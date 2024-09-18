@@ -1,0 +1,11 @@
+@use "sass:color";
+@use "sass:math";
+@use "sass:string";
+
+@function hex-str($color) {
+  @return string.to-lower-case(string.unquote("##{string.slice(color.ie-hex-str($color), 4)}"));
+}
+
+@function rounded-rgb($color) {
+  @return rgb(math.round(color.channel($color, "red")), math.round(color.channel($color, "green")), math.round(color.channel($color, "blue")));
+}

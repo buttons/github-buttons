@@ -1,3 +1,5 @@
+@use "sass:color";
+@use "functions" as *;
 @use "mixins" as *;
 
 $scheme: '@primer/primitives/dist/styleLint/functional/themes/light.json' !default;
@@ -6,10 +8,10 @@ $enable-background-image-linear-gradient: str-index($scheme, '-high-contrast') =
 
 $btn-color: json($scheme, button-default-fgColor-rest, value) !default;
 $btn-background-color-start: json($scheme, button-default-bgColor-rest, value) !default;
-$btn-background-color-stop: if($enable-background-image-linear-gradient, darken($btn-background-color-start, 3.3333333333%), $btn-background-color-start) !default;
+$btn-background-color-stop: if($enable-background-image-linear-gradient, rounded-rgb(color.adjust($btn-background-color-start, $lightness: -3.3333333333%, $space: hsl)), $btn-background-color-start) !default;
 $btn-border-color: json($scheme, button-default-borderColor-rest, value) !default;
 $btn-hover-background-color-start: json($scheme, button-default-bgColor-hover, value) !default;
-$btn-hover-background-color-stop: darken($btn-hover-background-color-start, 3.3333333333%) !default;
+$btn-hover-background-color-stop: rounded-rgb(color.adjust($btn-hover-background-color-start, $lightness: -3.3333333333%, $space: hsl)) !default;
 $btn-hover-border-color: json($scheme, button-default-borderColor-hover, value) !default;
 $btn-focus-visible-outline-color: json($scheme, focus-outlineColor, value) !default;
 $btn-active-background-color: json($scheme, button-default-bgColor-active, value) !default;

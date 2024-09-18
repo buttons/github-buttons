@@ -1,34 +1,37 @@
+@use "sass:color";
 @use "sass:math";
+@use "functions" as *;
 
 @mixin blend($args...) {
   $declarations: keywords($args);
   $background-color: map-get($declarations, "background-color");
 
   @each $property, $value in $declarations {
-    @if type-of($value) == color and alpha($value) != 1 {
+    @if type-of($value) == color and color.channel($value, "alpha") != 1 {
       $color: $value;
-      $red:   (1 - alpha($color)) * red($background-color) + alpha($color) * red($color);
-      $green: (1 - alpha($color)) * green($background-color) + alpha($color) * green($color);
-      $blue:  (1 - alpha($color)) * blue($background-color) + alpha($color) * blue($color);
-      #{$property}: rgb($red, $green, $blue);
+      $red:   (1 - color.channel($color, "alpha")) * color.channel($background-color, "red") + color.channel($color, "alpha") * color.channel($color, "red");
+      $green: (1 - color.channel($color, "alpha")) * color.channel($background-color, "green") + color.channel($color, "alpha") * color.channel($color, "green");
+      $blue:  (1 - color.channel($color, "alpha")) * color.channel($background-color, "blue") + color.channel($color, "alpha") * color.channel($color, "blue");
+      #{$property}: hex-str(rgb($red, $green, $blue));
     }
 
     #{$property}: $value;
   }
 }
 
-@mixin background-image-linear-gradient($color-start, $color-stop, $color-stop-percentage: 90%) {
-  $data: encodeURIData("<svg xmlns='http://www.w3.org/2000/svg'><linearGradient id='o' x2='0' y2='1'><stop stop-color='#{$color-start}'/><stop offset='#{$color-stop-percentage}' stop-color='#{$color-stop}'/></linearGradient><rect width='100%' height='100%' fill='url(#o)'/></svg>");
-  background-image: url("data:image/svg+xml,#{$data}");
-  background-image: -moz-linear-gradient(top, $color-start, $color-stop $color-stop-percentage);
-  background-image: linear-gradient(180deg, $color-start, $color-stop $color-stop-percentage);
 
-  $red: red($color-start) + math.div(red($color-stop) - red($color-start), $color-stop-percentage) * 100%;
-  $green: green($color-start) + math.div(green($color-stop) - green($color-start), $color-stop-percentage) * 100%;
-  $blue: blue($color-start) + math.div(blue($color-stop) - blue($color-start), $color-stop-percentage) * 100%;
+@mixin background-image-linear-gradient($color-start, $color-stop, $color-stop-percentage: 90%) {
+  $data: encodeURIData("<svg xmlns='http://www.w3.org/2000/svg'><linearGradient id='o' x2='0' y2='1'><stop stop-color='#{hex-str($color-start)}'/><stop offset='#{$color-stop-percentage}' stop-color='#{hex-str($color-stop)}'/></linearGradient><rect width='100%' height='100%' fill='url(#o)'/></svg>");
+  background-image: url("data:image/svg+xml,#{$data}");
+  background-image: -moz-linear-gradient(top, hex-str($color-start), hex-str($color-stop) $color-stop-percentage);
+  background-image: linear-gradient(180deg, hex-str($color-start), hex-str($color-stop) $color-stop-percentage);
+
+  $red: color.channel($color-start, "red") + math.div(color.channel($color-stop, "red") - color.channel($color-start, "red"), $color-stop-percentage) * 100%;
+  $green: color.channel($color-start, "green") + math.div(color.channel($color-stop, "green") - color.channel($color-start, "green"), $color-stop-percentage) * 100%;
+  $blue: color.channel($color-start, "blue") + math.div(color.channel($color-stop, "blue") - color.channel($color-start, "blue"), $color-stop-percentage) * 100%;
   $color-stop: rgb($red, $green, $blue);
 
-  filter: unquote("progid:DXImageTransform.Microsoft.Gradient(startColorstr='#{ie-hex-str($color-start)}', endColorstr='#{ie-hex-str($color-stop)}')");
+  filter: unquote("progid:DXImageTransform.Microsoft.Gradient(startColorstr='#{color.ie-hex-str($color-start)}', endColorstr='#{color.ie-hex-str($color-stop)}')");
 
   :root & {
     filter: none;
