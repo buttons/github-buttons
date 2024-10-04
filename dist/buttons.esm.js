@@ -508,6 +508,7 @@ var render = function (options, func) {
     });
     set(iframe, [0, 0]);
     iframe.style.border = 'none';
+    iframe.style.colorScheme = 'light';
     var callback = function () {
       var contentWindow = iframe.contentWindow;
       var body;

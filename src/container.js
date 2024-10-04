@@ -29,6 +29,7 @@ export const render = function (options, func) {
     })
     setSize(iframe, [0, 0])
     iframe.style.border = 'none'
+    iframe.style.colorScheme = 'light'
     const callback = function () {
       const contentWindow = iframe.contentWindow
       let body
