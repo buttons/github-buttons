@@ -1,10 +1,11 @@
 @use "sass:color";
+@use "sass:string";
 @use "functions" as *;
 @use "mixins" as *;
 
 $scheme: '@primer/primitives/dist/styleLint/functional/themes/light.json' !default;
 
-$enable-background-image-linear-gradient: str-index($scheme, '-high-contrast') == null !default;
+$enable-background-image-linear-gradient: string.index($scheme, '-high-contrast') == null !default;
 
 $btn-color: json($scheme, button-default-fgColor-rest, value) !default;
 $btn-background-color-start: json($scheme, button-default-bgColor-rest, value) !default;

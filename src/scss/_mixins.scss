@@ -1,13 +1,16 @@
 @use "sass:color";
+@use "sass:map";
 @use "sass:math";
+@use "sass:meta";
+@use "sass:string";
 @use "functions" as *;
 
 @mixin blend($args...) {
-  $declarations: keywords($args);
-  $background-color: map-get($declarations, "background-color");
+  $declarations: meta.keywords($args);
+  $background-color: map.get($declarations, "background-color");
 
   @each $property, $value in $declarations {
-    @if type-of($value) == color and color.channel($value, "alpha") != 1 {
+    @if meta.type-of($value) == color and color.channel($value, "alpha") != 1 {
       $color: $value;
       $red:   (1 - color.channel($color, "alpha")) * color.channel($background-color, "red") + color.channel($color, "alpha") * color.channel($color, "red");
       $green: (1 - color.channel($color, "alpha")) * color.channel($background-color, "green") + color.channel($color, "alpha") * color.channel($color, "green");
@@ -31,7 +34,7 @@
   $blue: color.channel($color-start, "blue") + math.div(color.channel($color-stop, "blue") - color.channel($color-start, "blue"), $color-stop-percentage) * 100%;
   $color-stop: rgb($red, $green, $blue);
 
-  filter: unquote("progid:DXImageTransform.Microsoft.Gradient(startColorstr='#{color.ie-hex-str($color-start)}', endColorstr='#{color.ie-hex-str($color-stop)}')");
+  filter: string.unquote("progid:DXImageTransform.Microsoft.Gradient(startColorstr='#{color.ie-hex-str($color-start)}', endColorstr='#{color.ie-hex-str($color-stop)}')");
 
   :root & {
     filter: none;

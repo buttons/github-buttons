@@ -64,7 +64,7 @@
     "mocha": "^10.4.0",
     "rollup": "^4.16.4",
     "rollup-plugin-istanbul": "^5.0.0",
-    "sass": "^1.79.0",
+    "sass": "^1.80.0",
     "sinon": "^19.0.0",
     "sinon-chai": "^3.7.0"
   }
