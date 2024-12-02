@@ -66,6 +66,6 @@
     "rollup-plugin-istanbul": "^5.0.0",
     "sass": "^1.80.0",
     "sinon": "^19.0.0",
-    "sinon-chai": "^3.7.0"
+    "sinon-chai": "^4.0.0"
   }
 }
