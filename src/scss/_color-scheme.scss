@@ -7,21 +7,21 @@ $scheme: '@primer/primitives/dist/styleLint/functional/themes/light.json' !defau
 
 $enable-background-image-linear-gradient: string.index($scheme, '-high-contrast') == null !default;
 
-$btn-color: json($scheme, button-default-fgColor-rest, value) !default;
-$btn-background-color-start: json($scheme, button-default-bgColor-rest, value) !default;
+$btn-color: json($scheme, button-default-fgColor-rest, '$value') !default;
+$btn-background-color-start: json($scheme, button-default-bgColor-rest, '$value') !default;
 $btn-background-color-stop: if($enable-background-image-linear-gradient, rounded-rgb(color.adjust($btn-background-color-start, $lightness: -3.3333333333%, $space: hsl)), $btn-background-color-start) !default;
-$btn-border-color: json($scheme, button-default-borderColor-rest, value) !default;
-$btn-hover-background-color-start: json($scheme, button-default-bgColor-hover, value) !default;
+$btn-border-color: json($scheme, button-default-borderColor-rest, '$value') !default;
+$btn-hover-background-color-start: json($scheme, button-default-bgColor-hover, '$value') !default;
 $btn-hover-background-color-stop: rounded-rgb(color.adjust($btn-hover-background-color-start, $lightness: -3.3333333333%, $space: hsl)) !default;
-$btn-hover-border-color: json($scheme, button-default-borderColor-hover, value) !default;
-$btn-focus-visible-outline-color: json($scheme, focus-outlineColor, value) !default;
-$btn-active-background-color: json($scheme, button-default-bgColor-active, value) !default;
-$btn-active-border-color: json($scheme, button-default-borderColor-active, value) !default;
-$social-count-color:  json($scheme, button-default-fgColor-rest, value) !default;
-$social-count-background-color: json($scheme, bgColor-default, value) !default;
+$btn-hover-border-color: json($scheme, button-default-borderColor-hover, '$value') !default;
+$btn-focus-visible-outline-color: json($scheme, focus-outlineColor, '$value') !default;
+$btn-active-background-color: json($scheme, button-default-bgColor-active, '$value') !default;
+$btn-active-border-color: json($scheme, button-default-borderColor-active, '$value') !default;
+$social-count-color:  json($scheme, button-default-fgColor-rest, '$value') !default;
+$social-count-background-color: json($scheme, bgColor-default, '$value') !default;
 $social-count-border-color: $btn-border-color !default;
-$social-count-hover-color: json($scheme, button-outline-fgColor-rest, value) !default;
-$octicon-heart-color: json($scheme, fgColor-sponsors, value) !default;
+$social-count-hover-color: json($scheme, button-outline-fgColor-rest, '$value') !default;
+$octicon-heart-color: json($scheme, fgColor-sponsors, '$value') !default;
 
 .btn,
 .social-count {
