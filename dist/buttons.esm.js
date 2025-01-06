@@ -1,6 +1,6 @@
 /*!
  * github-buttons v2.29.1
- * (c) 2024 なつき
+ * (c) 2025 なつき
  * @license BSD-2-Clause
  */
 var document = window.document;
