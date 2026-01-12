@@ -9,7 +9,7 @@ $enable-background-image-linear-gradient: string.index($scheme, '-high-contrast'
 
 $btn-color: json($scheme, button-default-fgColor-rest, '$value') !default;
 $btn-background-color-start: json($scheme, button-default-bgColor-rest, '$value') !default;
-$btn-background-color-stop: if($enable-background-image-linear-gradient, rounded-rgb(color.adjust($btn-background-color-start, $lightness: -3.3333333333%, $space: hsl)), $btn-background-color-start) !default;
+$btn-background-color-stop: if(sass($enable-background-image-linear-gradient): rounded-rgb(color.adjust($btn-background-color-start, $lightness: -3.3333333333%, $space: hsl)); else: $btn-background-color-start) !default;
 $btn-border-color: json($scheme, button-default-borderColor-rest, '$value') !default;
 $btn-hover-background-color-start: json($scheme, button-default-bgColor-hover, '$value') !default;
 $btn-hover-background-color-stop: rounded-rgb(color.adjust($btn-hover-background-color-start, $lightness: -3.3333333333%, $space: hsl)) !default;
