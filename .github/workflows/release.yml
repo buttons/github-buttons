@@ -43,6 +43,9 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    permissions:
+      id-token: write
+
     env:
       NODE_ENV: production
 
@@ -53,6 +56,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v6
         with:
+          node-version: lts/*
           registry-url: 'https://registry.npmjs.org'
 
       - name: Install Dependencies
@@ -68,5 +72,3 @@ jobs:
 
       - name: Publish
         run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
