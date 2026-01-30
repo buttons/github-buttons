@@ -2,5 +2,5 @@
 /coverage/
 /src/
 /test/
-/karma.conf.js
-/rollup.config.js
+/karma.conf.*
+/rollup.config.*
