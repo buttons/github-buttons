@@ -1,7 +1,7 @@
 github-buttons
 ==============
 
-![build](https://github.com/buttons/github-buttons/workflows/build/badge.svg)
+[![build](https://github.com/buttons/github-buttons/actions/workflows/build.yml/badge.svg)](https://github.com/buttons/github-buttons/actions/workflows/build.yml)
 [![npm](https://img.shields.io/npm/v/github-buttons)](https://www.npmjs.com/github-buttons)
 
 Usage
