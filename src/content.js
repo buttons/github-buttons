@@ -16,7 +16,8 @@ import {
   onEvent
 } from './event'
 import {
-  window
+  window,
+  document
 } from './globals'
 
 export const render = function (root, options, func) {
@@ -62,22 +63,23 @@ export const render = function (root, options, func) {
     tooltip = createElement('div', {
       className: 'tooltip tooltip-' + tooltipPosition,
       role: 'tooltip',
-      'aria-hidden': 'true'
+      'aria-hidden': 'true',
+      style: 'position: fixed; z-index: 999999;'
     }, [options['data-tooltip']])
 
     btn.setAttribute('aria-describedby', 'tooltip-' + Math.random().toString(36).substring(2, 11))
     tooltip.id = btn.getAttribute('aria-describedby')
-
-    widget.appendChild(tooltip)
 
     const calculatePosition = function () {
       const btnRect = btn.getBoundingClientRect()
       const tooltipRect = tooltip.getBoundingClientRect()
       const viewportWidth = window.innerWidth
       const viewportHeight = window.innerHeight
+      const offset = 4
 
       let finalPosition = tooltipPosition
-      const offset = 4
+      let left = 0
+      let top = 0
 
       if (tooltipPosition === 'top' || tooltipPosition === 'bottom') {
         const spaceTop = btnRect.top
@@ -89,21 +91,18 @@ export const render = function (root, options, func) {
           finalPosition = 'top'
         }
 
-        let left = (btnRect.width - tooltipRect.width) / 2
+        left = btnRect.left + (btnRect.width - tooltipRect.width) / 2
 
-        const tooltipLeft = btnRect.left + left
-        if (tooltipLeft < offset) {
-          left = offset - btnRect.left
-        } else if (tooltipLeft + tooltipRect.width > viewportWidth - offset) {
-          left = viewportWidth - offset - btnRect.left - tooltipRect.width
+        if (left < offset) {
+          left = offset
+        } else if (left + tooltipRect.width > viewportWidth - offset) {
+          left = viewportWidth - tooltipRect.width - offset
         }
 
-        tooltip.style.left = left + 'px'
-
         if (finalPosition === 'top') {
-          tooltip.style.top = (-tooltipRect.height - offset) + 'px'
+          top = btnRect.top - tooltipRect.height - offset
         } else {
-          tooltip.style.top = (btnRect.height + offset) + 'px'
+          top = btnRect.bottom + offset
         }
       } else {
         const spaceLeft = btnRect.left
@@ -115,28 +114,40 @@ export const render = function (root, options, func) {
           finalPosition = 'left'
         }
 
-        let top = (btnRect.height - tooltipRect.height) / 2
+        top = btnRect.top + (btnRect.height - tooltipRect.height) / 2
 
-        const tooltipTop = btnRect.top + top
-        if (tooltipTop < offset) {
-          top = offset - btnRect.top
-        } else if (tooltipTop + tooltipRect.height > viewportHeight - offset) {
-          top = viewportHeight - offset - btnRect.top - tooltipRect.height
+        if (top < offset) {
+          top = offset
+        } else if (top + tooltipRect.height > viewportHeight - offset) {
+          top = viewportHeight - tooltipRect.height - offset
         }
 
-        tooltip.style.top = top + 'px'
-
         if (finalPosition === 'left') {
-          tooltip.style.left = (-tooltipRect.width - offset) + 'px'
+          left = btnRect.left - tooltipRect.width - offset
         } else {
-          tooltip.style.left = (btnRect.width + offset) + 'px'
+          left = btnRect.right + offset
         }
       }
 
+      if (left < offset) {
+        left = offset
+      } else if (left + tooltipRect.width > viewportWidth - offset) {
+        left = viewportWidth - tooltipRect.width - offset
+      }
+
+      if (top < offset) {
+        top = offset
+      } else if (top + tooltipRect.height > viewportHeight - offset) {
+        top = viewportHeight - tooltipRect.height - offset
+      }
+
+      tooltip.style.left = left + 'px'
+      tooltip.style.top = top + 'px'
       tooltip.className = 'tooltip tooltip-' + finalPosition
     }
 
     const showTooltip = function () {
+      document.body.appendChild(tooltip)
       tooltip.setAttribute('aria-hidden', 'false')
       tooltip.classList.add('tooltip-visible')
       calculatePosition()
@@ -145,6 +156,9 @@ export const render = function (root, options, func) {
     const hideTooltip = function () {
       tooltip.setAttribute('aria-hidden', 'true')
       tooltip.classList.remove('tooltip-visible')
+      if (tooltip.parentNode) {
+        tooltip.parentNode.removeChild(tooltip)
+      }
     }
 
     onEvent(btn, 'mouseenter', showTooltip)
