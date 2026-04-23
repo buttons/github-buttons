@@ -409,9 +409,11 @@ var render$1 = function (root, options, func) {
     tooltip = createElement('div', {
       className: 'tooltip tooltip-' + tooltipPosition,
       role: 'tooltip',
-      'aria-hidden': 'true',
-      style: 'position: fixed; z-index: 999999;'
+      'aria-hidden': 'true'
     }, [options['data-tooltip']]);
+
+    tooltip.style.position = 'fixed';
+    tooltip.style.zIndex = '999999';
 
     btn.setAttribute('aria-describedby', 'tooltip-' + Math.random().toString(36).substring(2, 11));
     tooltip.id = btn.getAttribute('aria-describedby');
