@@ -12,6 +12,12 @@ import {
 } from './config'
 import { octicon } from './octicons'
 import { fetch } from './fetch'
+import {
+  onEvent
+} from './event'
+import {
+  window
+} from './globals'
 
 export const render = function (root, options, func) {
   const createElement = createElementInDocument(root.ownerDocument)
@@ -48,6 +54,104 @@ export const render = function (root, options, func) {
   }, [
     btn
   ]))
+
+  let tooltip
+  const hasTooltip = options['data-tooltip'] != null && options['data-tooltip'] !== ''
+  if (hasTooltip) {
+    const tooltipPosition = toLowerCase(options['data-tooltip-position']) || 'top'
+    tooltip = createElement('div', {
+      className: 'tooltip tooltip-' + tooltipPosition,
+      role: 'tooltip',
+      'aria-hidden': 'true'
+    }, [options['data-tooltip']])
+
+    btn.setAttribute('aria-describedby', 'tooltip-' + Math.random().toString(36).substring(2, 11))
+    tooltip.id = btn.getAttribute('aria-describedby')
+
+    widget.appendChild(tooltip)
+
+    const calculatePosition = function () {
+      const btnRect = btn.getBoundingClientRect()
+      const tooltipRect = tooltip.getBoundingClientRect()
+      const viewportWidth = window.innerWidth
+      const viewportHeight = window.innerHeight
+
+      let finalPosition = tooltipPosition
+      const offset = 4
+
+      if (tooltipPosition === 'top' || tooltipPosition === 'bottom') {
+        const spaceTop = btnRect.top
+        const spaceBottom = viewportHeight - btnRect.bottom
+
+        if (tooltipPosition === 'top' && spaceTop < tooltipRect.height + offset && spaceBottom > spaceTop) {
+          finalPosition = 'bottom'
+        } else if (tooltipPosition === 'bottom' && spaceBottom < tooltipRect.height + offset && spaceTop > spaceBottom) {
+          finalPosition = 'top'
+        }
+
+        let left = (btnRect.width - tooltipRect.width) / 2
+
+        const tooltipLeft = btnRect.left + left
+        if (tooltipLeft < offset) {
+          left = offset - btnRect.left
+        } else if (tooltipLeft + tooltipRect.width > viewportWidth - offset) {
+          left = viewportWidth - offset - btnRect.left - tooltipRect.width
+        }
+
+        tooltip.style.left = left + 'px'
+
+        if (finalPosition === 'top') {
+          tooltip.style.top = (-tooltipRect.height - offset) + 'px'
+        } else {
+          tooltip.style.top = (btnRect.height + offset) + 'px'
+        }
+      } else {
+        const spaceLeft = btnRect.left
+        const spaceRight = viewportWidth - btnRect.right
+
+        if (tooltipPosition === 'left' && spaceLeft < tooltipRect.width + offset && spaceRight > spaceLeft) {
+          finalPosition = 'right'
+        } else if (tooltipPosition === 'right' && spaceRight < tooltipRect.width + offset && spaceLeft > spaceRight) {
+          finalPosition = 'left'
+        }
+
+        let top = (btnRect.height - tooltipRect.height) / 2
+
+        const tooltipTop = btnRect.top + top
+        if (tooltipTop < offset) {
+          top = offset - btnRect.top
+        } else if (tooltipTop + tooltipRect.height > viewportHeight - offset) {
+          top = viewportHeight - offset - btnRect.top - tooltipRect.height
+        }
+
+        tooltip.style.top = top + 'px'
+
+        if (finalPosition === 'left') {
+          tooltip.style.left = (-tooltipRect.width - offset) + 'px'
+        } else {
+          tooltip.style.left = (btnRect.width + offset) + 'px'
+        }
+      }
+
+      tooltip.className = 'tooltip tooltip-' + finalPosition
+    }
+
+    const showTooltip = function () {
+      tooltip.setAttribute('aria-hidden', 'false')
+      tooltip.classList.add('tooltip-visible')
+      calculatePosition()
+    }
+
+    const hideTooltip = function () {
+      tooltip.setAttribute('aria-hidden', 'true')
+      tooltip.classList.remove('tooltip-visible')
+    }
+
+    onEvent(btn, 'mouseenter', showTooltip)
+    onEvent(btn, 'mouseleave', hideTooltip)
+    onEvent(btn, 'focus', showTooltip)
+    onEvent(btn, 'blur', hideTooltip)
+  }
 
   const hostname = btn.hostname.replace(/\.$/, '')
   if (('.' + hostname).substring(hostname.length - domain.length) !== ('.' + domain)) {

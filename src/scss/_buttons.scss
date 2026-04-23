@@ -8,8 +8,8 @@ a {
 }
 
 .widget {
+  position: relative;
   display: inline-block;
-  overflow: hidden;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif;
   font-size: 0;
   line-height: 0;
@@ -59,4 +59,77 @@ a {
     font-size: 12px;
     line-height: 16px;
   }
+}
+
+.tooltip {
+  position: absolute;
+  padding: 4px 8px;
+  font-size: 11px;
+  line-height: 1.4;
+  color: #fff;
+  background-color: #24292e;
+  border-radius: 3px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  z-index: 1000;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.15s ease-in-out, transform 0.15s ease-in-out;
+  pointer-events: none;
+}
+
+.tooltip::after {
+  content: "";
+  position: absolute;
+  border: 5px solid transparent;
+}
+
+.tooltip-top {
+  transform: translateY(5px);
+}
+
+.tooltip-top::after {
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-top-color: #24292e;
+}
+
+.tooltip-bottom {
+  transform: translateY(-5px);
+}
+
+.tooltip-bottom::after {
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-bottom-color: #24292e;
+}
+
+.tooltip-left {
+  transform: translateX(5px);
+}
+
+.tooltip-left::after {
+  top: 50%;
+  left: 100%;
+  transform: translateY(-50%);
+  border-left-color: #24292e;
+}
+
+.tooltip-right {
+  transform: translateX(-5px);
+}
+
+.tooltip-right::after {
+  top: 50%;
+  right: 100%;
+  transform: translateY(-50%);
+  border-right-color: #24292e;
+}
+
+.tooltip-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(0, 0);
 }

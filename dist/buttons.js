@@ -6,15 +6,17 @@
 (function () {
   'use strict';
 
-  var document = window.document;
+  var window$1 = globalThis.window;
+
+  var document = window$1.document;
 
   var location = document.location;
 
-  var Math = window.Math;
+  var Math$1 = window$1.Math;
 
-  var HTMLElement = window.HTMLElement;
+  var HTMLElement = window$1.HTMLElement;
 
-  var XMLHttpRequest = window.XMLHttpRequest;
+  var XMLHttpRequest = window$1.XMLHttpRequest;
 
   var buttonClass = 'github-button';
 
@@ -171,7 +173,7 @@
     }
   };
 
-  var buttonsCssText = "body{margin:0}a{text-decoration:none;outline:0}.widget{display:inline-block;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif;font-size:0;line-height:0;white-space:nowrap}.btn,.social-count{position:relative;display:inline-block;display:inline-flex;height:14px;padding:2px 5px;font-size:11px;font-weight:600;line-height:14px;vertical-align:bottom;cursor:pointer;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;background-repeat:repeat-x;background-position:-1px -1px;background-size:110% 110%;border:1px solid}.btn{border-radius:.25em}.btn:not(:last-child){border-radius:.25em 0 0 .25em}.social-count{border-left:0;border-radius:0 .25em .25em 0}.widget-lg .btn,.widget-lg .social-count{height:16px;padding:5px 10px;font-size:12px;line-height:16px}.octicon{display:inline-block;vertical-align:text-top;fill:currentColor;overflow:visible}";
+  var buttonsCssText = "body{margin:0}a{text-decoration:none;outline:0}.widget{position:relative;display:inline-block;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif;font-size:0;line-height:0;white-space:nowrap}.btn,.social-count{position:relative;display:inline-block;display:inline-flex;height:14px;padding:2px 5px;font-size:11px;font-weight:600;line-height:14px;vertical-align:bottom;cursor:pointer;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;background-repeat:repeat-x;background-position:-1px -1px;background-size:110% 110%;border:1px solid}.btn{border-radius:.25em}.btn:not(:last-child){border-radius:.25em 0 0 .25em}.social-count{border-left:0;border-radius:0 .25em .25em 0}.widget-lg .btn,.widget-lg .social-count{height:16px;padding:5px 10px;font-size:12px;line-height:16px}.tooltip{position:absolute;padding:4px 8px;font-size:11px;line-height:1.4;color:#fff;background-color:#24292e;border-radius:3px;box-shadow:0 1px 3px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.24);z-index:1000;white-space:nowrap;opacity:0;visibility:hidden;transition:opacity .15s ease-in-out,transform .15s ease-in-out;pointer-events:none}.tooltip::after{content:\"\";position:absolute;border:5px solid rgba(0,0,0,0)}.tooltip-top{transform:translateY(5px)}.tooltip-top::after{top:100%;left:50%;transform:translateX(-50%);border-top-color:#24292e}.tooltip-bottom{transform:translateY(-5px)}.tooltip-bottom::after{bottom:100%;left:50%;transform:translateX(-50%);border-bottom-color:#24292e}.tooltip-left{transform:translateX(5px)}.tooltip-left::after{top:50%;left:100%;transform:translateY(-50%);border-left-color:#24292e}.tooltip-right{transform:translateX(-5px)}.tooltip-right::after{top:50%;right:100%;transform:translateY(-50%);border-right-color:#24292e}.tooltip-visible{opacity:1;visibility:visible;transform:translate(0, 0)}.octicon{display:inline-block;vertical-align:text-top;fill:currentColor;overflow:visible}";
 
   var light = ".btn:focus-visible,.social-count:focus-visible{outline:2px solid #0969da;outline-offset:-2px}.btn{color:#25292e;background-color:#ebf0f4;border-color:#d1d9e0;background-image:url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg'%3e%3clinearGradient id='o' x2='0' y2='1'%3e%3cstop stop-color='%23f6f8fa'/%3e%3cstop offset='90%25' stop-color='%23ebf0f4'/%3e%3c/linearGradient%3e%3crect width='100%25' height='100%25' fill='url(%23o)'/%3e%3c/svg%3e\");background-image:-moz-linear-gradient(top, #f6f8fa, #ebf0f4 90%);background-image:linear-gradient(180deg, #f6f8fa, #ebf0f4 90%);filter:progid:DXImageTransform.Microsoft.Gradient(startColorstr='#FFF6F8FA', endColorstr='#FFEAEFF3')}:root .btn{filter:none}.btn:hover,.btn:focus{background-color:#e5eaee;background-position:0 -0.5em;border-color:#d1d9e0;background-image:url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg'%3e%3clinearGradient id='o' x2='0' y2='1'%3e%3cstop stop-color='%23eff2f5'/%3e%3cstop offset='90%25' stop-color='%23e5eaee'/%3e%3c/linearGradient%3e%3crect width='100%25' height='100%25' fill='url(%23o)'/%3e%3c/svg%3e\");background-image:-moz-linear-gradient(top, #eff2f5, #e5eaee 90%);background-image:linear-gradient(180deg, #eff2f5, #e5eaee 90%);filter:progid:DXImageTransform.Microsoft.Gradient(startColorstr='#FFEFF2F5', endColorstr='#FFE4E9ED')}:root .btn:hover,:root .btn:focus{filter:none}.btn:active{background-color:#e6eaef;border-color:#d1d9e0;background-image:none;filter:none}.social-count{color:#25292e;background-color:#fff;border-color:#d1d9e0}.social-count:hover,.social-count:focus{color:#0969da}.octicon-heart{color:#bf3989}";
 
@@ -408,6 +410,104 @@
       btn
     ]));
 
+    var tooltip;
+    var hasTooltip = options['data-tooltip'] != null && options['data-tooltip'] !== '';
+    if (hasTooltip) {
+      var tooltipPosition = toLowerCase(options['data-tooltip-position']) || 'top';
+      tooltip = createElement('div', {
+        className: 'tooltip tooltip-' + tooltipPosition,
+        role: 'tooltip',
+        'aria-hidden': 'true'
+      }, [options['data-tooltip']]);
+
+      btn.setAttribute('aria-describedby', 'tooltip-' + Math.random().toString(36).substring(2, 11));
+      tooltip.id = btn.getAttribute('aria-describedby');
+
+      widget.appendChild(tooltip);
+
+      var calculatePosition = function () {
+        var btnRect = btn.getBoundingClientRect();
+        var tooltipRect = tooltip.getBoundingClientRect();
+        var viewportWidth = window$1.innerWidth;
+        var viewportHeight = window$1.innerHeight;
+
+        var finalPosition = tooltipPosition;
+        var offset = 4;
+
+        if (tooltipPosition === 'top' || tooltipPosition === 'bottom') {
+          var spaceTop = btnRect.top;
+          var spaceBottom = viewportHeight - btnRect.bottom;
+
+          if (tooltipPosition === 'top' && spaceTop < tooltipRect.height + offset && spaceBottom > spaceTop) {
+            finalPosition = 'bottom';
+          } else if (tooltipPosition === 'bottom' && spaceBottom < tooltipRect.height + offset && spaceTop > spaceBottom) {
+            finalPosition = 'top';
+          }
+
+          var left = (btnRect.width - tooltipRect.width) / 2;
+
+          var tooltipLeft = btnRect.left + left;
+          if (tooltipLeft < offset) {
+            left = offset - btnRect.left;
+          } else if (tooltipLeft + tooltipRect.width > viewportWidth - offset) {
+            left = viewportWidth - offset - btnRect.left - tooltipRect.width;
+          }
+
+          tooltip.style.left = left + 'px';
+
+          if (finalPosition === 'top') {
+            tooltip.style.top = (-tooltipRect.height - offset) + 'px';
+          } else {
+            tooltip.style.top = (btnRect.height + offset) + 'px';
+          }
+        } else {
+          var spaceLeft = btnRect.left;
+          var spaceRight = viewportWidth - btnRect.right;
+
+          if (tooltipPosition === 'left' && spaceLeft < tooltipRect.width + offset && spaceRight > spaceLeft) {
+            finalPosition = 'right';
+          } else if (tooltipPosition === 'right' && spaceRight < tooltipRect.width + offset && spaceLeft > spaceRight) {
+            finalPosition = 'left';
+          }
+
+          var top = (btnRect.height - tooltipRect.height) / 2;
+
+          var tooltipTop = btnRect.top + top;
+          if (tooltipTop < offset) {
+            top = offset - btnRect.top;
+          } else if (tooltipTop + tooltipRect.height > viewportHeight - offset) {
+            top = viewportHeight - offset - btnRect.top - tooltipRect.height;
+          }
+
+          tooltip.style.top = top + 'px';
+
+          if (finalPosition === 'left') {
+            tooltip.style.left = (-tooltipRect.width - offset) + 'px';
+          } else {
+            tooltip.style.left = (btnRect.width + offset) + 'px';
+          }
+        }
+
+        tooltip.className = 'tooltip tooltip-' + finalPosition;
+      };
+
+      var showTooltip = function () {
+        tooltip.setAttribute('aria-hidden', 'false');
+        tooltip.classList.add('tooltip-visible');
+        calculatePosition();
+      };
+
+      var hideTooltip = function () {
+        tooltip.setAttribute('aria-hidden', 'true');
+        tooltip.classList.remove('tooltip-visible');
+      };
+
+      onEvent(btn, 'mouseenter', showTooltip);
+      onEvent(btn, 'mouseleave', hideTooltip);
+      onEvent(btn, 'focus', showTooltip);
+      onEvent(btn, 'blur', hideTooltip);
+    }
+
     var hostname = btn.hostname.replace(/\.$/, '');
     if (('.' + hostname).substring(hostname.length - domain.length) !== ('.' + domain)) {
       btn.removeAttribute('href');
@@ -479,7 +579,7 @@
       'aria-label': anchor.getAttribute('aria-label')
     };
 
-    forEach(['icon', 'color-scheme', 'text', 'size', 'show-count'], function (option) {
+    forEach(['icon', 'color-scheme', 'text', 'size', 'show-count', 'tooltip', 'tooltip-position'], function (option) {
       var attribute = 'data-' + option;
       options[attribute] = anchor.getAttribute(attribute);
     });
@@ -494,7 +594,7 @@
   var devicePixelRatio = window.devicePixelRatio || /* istanbul ignore next */ 1;
 
   var ceilPixel = function (px) {
-    return (devicePixelRatio > 1 ? Math.ceil(Math.round(px * devicePixelRatio) / devicePixelRatio * 2) / 2 : Math.ceil(px)) || 0
+    return (devicePixelRatio > 1 ? Math$1.ceil(Math$1.round(px * devicePixelRatio) / devicePixelRatio * 2) / 2 : Math$1.ceil(px)) || 0
   };
 
   var get = function (el) {
@@ -502,8 +602,8 @@
     var height = el.offsetHeight;
     if (el.getBoundingClientRect) {
       var boundingClientRect = el.getBoundingClientRect();
-      width = Math.max(width, ceilPixel(boundingClientRect.width));
-      height = Math.max(height, ceilPixel(boundingClientRect.height));
+      width = Math$1.max(width, ceilPixel(boundingClientRect.width));
+      height = Math$1.max(height, ceilPixel(boundingClientRect.height));
     }
     return [width, height]
   };

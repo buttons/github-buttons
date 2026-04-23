@@ -9,7 +9,7 @@ export const parseOptions = function (anchor) {
     'aria-label': anchor.getAttribute('aria-label')
   }
 
-  forEach(['icon', 'color-scheme', 'text', 'size', 'show-count'], function (option) {
+  forEach(['icon', 'color-scheme', 'text', 'size', 'show-count', 'tooltip', 'tooltip-position'], function (option) {
     const attribute = 'data-' + option
     options[attribute] = anchor.getAttribute(attribute)
   })

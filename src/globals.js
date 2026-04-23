@@ -1,3 +1,5 @@
+export const window = globalThis.window
+
 export const document = window.document
 
 export const location = document.location
