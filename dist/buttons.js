@@ -439,10 +439,10 @@
       href = '?tab=followers';
     } else if (!path[3] && path[2]) {
       property = 'stargazers_count';
-      href = '/stargazers';
+      href = '';
     } else if (!path[4] && path[3] === 'subscription') {
       property = 'subscribers_count';
-      href = '/watchers';
+      href = '';
     } else if (!path[4] && path[3] === 'fork') {
       property = 'forks_count';
       href = '/forks';

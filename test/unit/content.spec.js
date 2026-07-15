@@ -245,7 +245,7 @@ describe('Content', () => {
       render(root, options, (widget) => {
         const count = widget.querySelector('.social-count')
         expect(count.href)
-          .to.equal('https://github.com/ntkme/github-buttons/watchers')
+          .to.equal('https://github.com/ntkme/github-buttons')
         expect(count.textContent)
           .to.equal('36')
         expect(count.getAttribute('aria-label'))
@@ -262,7 +262,7 @@ describe('Content', () => {
       render(root, options, (widget) => {
         const count = widget.querySelector('.social-count')
         expect(count.href)
-          .to.equal('https://github.com/ntkme/github-buttons/stargazers')
+          .to.equal('https://github.com/ntkme/github-buttons')
         expect(count.textContent)
           .to.equal('546')
         expect(count.getAttribute('aria-label'))
