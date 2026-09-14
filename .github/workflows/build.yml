@@ -32,3 +32,26 @@ jobs:
 
       - name: Diff
         run: git diff --exit-code
+
+  dependabot:
+
+    if: github.event.repository.fork == false && github.event.pull_request.user.login == 'dependabot[bot]'
+
+    needs: [build]
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Fetch Dependabot metadata
+        id: dependabot-metadata
+        uses: dependabot/fetch-metadata@v3
+
+      - name: Enable auto-merge for Dependabot PRs
+        if: steps.dependabot-metadata.outputs.update-type == 'version-update:semver-minor' || steps.dependabot-metadata.outputs.update-type == 'version-update:semver-patch'
+        run: gh pr merge --auto --squash ${{ github.event.pull_request.html_url }}
+        env:
+          GH_TOKEN: ${{ github.token }}
