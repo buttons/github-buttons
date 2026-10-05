@@ -44,7 +44,7 @@
     "@rollup/plugin-replace": "^6.0.3",
     "@rollup/plugin-terser": "^1.0.0",
     "@rollup/pluginutils": "^5.4.0",
-    "chai": "^4.5.0",
+    "chai": "^6.3.0",
     "eslint": "^8.57.1",
     "eslint-config-standard": "^17.1.0",
     "eslint-plugin-import": "^2.32.0",
